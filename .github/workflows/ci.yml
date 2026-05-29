@@ -1,0 +1,42 @@
+name: CI
+
+# Static checks that gate every PR into main. The heavy build + runtime check
+# is owned by Vercel's Preview Deploy (it builds with real env + DB), so this
+# workflow stays fast and DB-free: install + typecheck. Lint and tests are
+# added here as they become green (lint needs the @eslint/eslintrc devDep; no
+# test runner is wired yet).
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+# A newer push to the same branch cancels the in-flight run.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    name: typecheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.14.0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install (frozen lockfile)
+        run: pnpm install --frozen-lockfile
+
+      - name: Typecheck
+        run: pnpm turbo run typecheck

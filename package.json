@@ -9,6 +9,8 @@
   "scripts": {
     "dev": "turbo dev",
     "build": "turbo build",
+    "vercel-build": "node scripts/migrate-prod.mjs && turbo run build",
+    "migrate:prod": "node scripts/migrate-prod.mjs",
     "lint": "turbo lint",
     "typecheck": "turbo typecheck",
     "clean": "turbo clean && rm -rf node_modules",
