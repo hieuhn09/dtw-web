@@ -9,16 +9,17 @@ import { AudioPlayerBar } from "@/components/article/audio-player";
 import { ShareBar } from "@/components/article/share-bar";
 import { Paywall } from "@/components/article/paywall";
 import { RelatedRow } from "@/components/article/related-row";
-import type { ArticleView } from "@/lib/article-view";
+import type { ArticleBodyState, ArticleView } from "@/lib/article-view";
 import { fmtDateL, localizedPillarLabel, useLang, useT } from "@/lib/i18n";
 import { useShell } from "@/lib/shell";
 
 export interface ArticleContentProps {
   article: ArticleView;
+  body: ArticleBodyState;
   related: ReadonlyArray<ArticleView>;
 }
 
-export function ArticleContent({ article, related }: ArticleContentProps) {
+export function ArticleContent({ article, body, related }: ArticleContentProps) {
   const t = useT();
   const { lang } = useLang();
   const { articlesRead, incrementRead, user, openAuth } = useShell();
@@ -173,7 +174,7 @@ export function ArticleContent({ article, related }: ArticleContentProps) {
       <AudioPlayerBar />
 
       <div style={{ marginTop: 32 }}>
-        <ArticleBody article={article} />
+        <ArticleBody body={body} article={article} />
       </div>
 
       {!hitPaywall && <ShareBar />}

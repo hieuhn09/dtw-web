@@ -24,5 +24,5 @@ export default async function ArticlePage({
     .filter((a) => a.slug !== view.slug)
     .slice(0, 3);
 
-  return <ArticleContent article={view} related={related} />;
+  return <ArticleContent article={view} body={article.body ?? null} related={related} />;
 }

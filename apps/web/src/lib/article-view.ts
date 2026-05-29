@@ -11,6 +11,11 @@
 import type { PillarId } from "./data";
 import type { Article } from "../payload/payload-types";
 
+/** Lexical editor state for an article body. Passed only to the article detail
+ *  page — deliberately NOT part of ArticleView so list/related views stay lean
+ *  and don't serialise every body into the page payload. */
+export type ArticleBodyState = Article["body"];
+
 export interface ArticleView {
   id: string;
   slug: string;

@@ -71,6 +71,27 @@ const TAGS: ReadonlyArray<{ slug: string; en: string }> = [
   { slug: "cloud", en: "Cloud" },
 ];
 
+// ── Minimal Lexical editor-state builder ────────────────────────────────────
+// Payload's richText field stores a Lexical SerializedEditorState. The reader
+// renders it via @payloadcms/richtext-lexical/react RichText. We build a tiny
+// subset (paragraph / h2 / h3 / quote) from plain text so seed articles have
+// real body content to render.
+type BlockKind = "p" | "h2" | "h3" | "quote";
+type Block = readonly [BlockKind, string];
+
+function lexText(text: string) {
+  return { type: "text", text, detail: 0, format: 0, mode: "normal", style: "", version: 1 };
+}
+function lexBody(blocks: ReadonlyArray<Block>) {
+  const children = blocks.map(([kind, text]) => {
+    const base = { direction: "ltr" as const, format: "" as const, indent: 0, version: 1, children: [lexText(text)] };
+    if (kind === "h2" || kind === "h3") return { ...base, type: "heading", tag: kind };
+    if (kind === "quote") return { ...base, type: "quote" };
+    return { ...base, type: "paragraph", textFormat: 0, textStyle: "" };
+  });
+  return { root: { type: "root", direction: "ltr", format: "", indent: 0, version: 1, children } };
+}
+
 interface ArticleFixture {
   slug: string;
   pillarSlug: string;
@@ -88,6 +109,7 @@ interface ArticleFixture {
   affiliate?: boolean;
   deepDive?: boolean;
   imageLabel?: string;
+  bodyBlocks?: ReadonlyArray<Block>;
 }
 
 const ARTICLES: ReadonlyArray<ArticleFixture> = [
@@ -105,6 +127,15 @@ const ARTICLES: ReadonlyArray<ArticleFixture> = [
     readMin: 14,
     publishedAt: "2026-05-26T08:12:00+08:00",
     imageLabel: "HERO – rack hall, low blue light",
+    bodyBlocks: [
+      ["p", "On the edge of Tuas, behind two security fences and a row of palm trees nobody planted, sits a building most Singaporeans will never enter. Inside: 220 megawatts of compute, a private fibre ring to Changi, and the quiet ambition of a city-state to host the largest sovereign AI cluster in Southeast Asia."],
+      ["p", "The official story is procurement. The unofficial story — told over three months of conversations with engineers, ministry officials, and one very tired procurement lawyer — is more interesting."],
+      ["p", "Tuas-3, as it is internally called, was conceived in late 2024 as a hedge. Singapore's compute exports to the rest of ASEAN had quietly become an instrument of soft power, and the Economic Development Board wanted to keep the option open as workloads grew."],
+      ["h3", "The wait-list, in order"],
+      ["p", "By the time the second of three halls came online this March, the wait-list for capacity included two ministerial-grade tenants from Jakarta, a Hanoi-based foundation model lab, and three Bangkok unicorns."],
+      ["quote", "Tuas-3 sidesteps the moratorium by operating as a regulated industrial customer of a power purchase agreement that nobody else can replicate."],
+      ["p", "Whether the model travels is the open question. Singapore's regulatory consistency is part of what makes the financing work; the next reveal is expected in Q3."],
+    ],
   },
   {
     slug: "baidu-open-weights",
@@ -117,6 +148,12 @@ const ARTICLES: ReadonlyArray<ArticleFixture> = [
     section: "Models",
     readMin: 8,
     publishedAt: "2026-05-27T07:40:00+07:00",
+    bodyBlocks: [
+      ["p", "Baidu's ERNIE-X 350B landed on Friday with permissive commercial terms and benchmark scores that, on Chinese-language reasoning, edge past the GPT-class incumbents it was measured against."],
+      ["p", "The release matters less for the leaderboard than for the licence. For the first time a frontier-tier Chinese model can be self-hosted and shipped in a commercial product without a bespoke agreement."],
+      ["p", "Three Vietnamese banks have already pulled the weights into internal evaluation sandboxes, drawn by data-residency control as much as by cost."],
+      ["p", "The open question is durability: open-weights releases have a habit of arriving with fanfare and quietly stagnating. Baidu says a 3B and a 30B variant follow this quarter."],
+    ],
   },
   {
     slug: "vng-cloud-listing",
@@ -129,6 +166,12 @@ const ARTICLES: ReadonlyArray<ArticleFixture> = [
     section: "Markets",
     readMin: 6,
     publishedAt: "2026-05-27T05:55:00+07:00",
+    bodyBlocks: [
+      ["p", "VNG has filed to list its cloud-infrastructure arm in Singapore, carving the unit out ahead of its better-known consumer businesses in a sequencing that is itself the signal."],
+      ["p", "By valuing infrastructure first, the company is telling the next ten Vietnamese founders watching from Ho Chi Minh City where the durable multiples are."],
+      ["p", "Bankers close to the deal frame the Singapore venue as a liquidity and governance choice rather than a flight from Hanoi — a distinction Vietnamese regulators have been keen to preserve."],
+      ["p", "If the window holds, two more carve-outs are expected to test it before year-end."],
+    ],
   },
   {
     slug: "dtw-studio-aws-asean",
@@ -142,6 +185,11 @@ const ARTICLES: ReadonlyArray<ArticleFixture> = [
     publishedAt: "2026-05-24T09:00:00+08:00",
     sponsored: true,
     sponsor: "AWS ASEAN",
+    bodyBlocks: [
+      ["p", "When a mid-sized ASEAN insurer set out to rebuild its claims pipeline, the brief was unglamorous: cut the 11-day median settlement time without adding headcount."],
+      ["p", "The team rebuilt the pipeline on a serverless event architecture in 18 weeks, replacing a nightly batch job with per-event processing and a managed queue."],
+      ["p", "Median settlement fell to four days. This feature was produced by DTW Studio for AWS ASEAN; the DTW newsroom was not involved in its writing or editing."],
+    ],
   },
   {
     slug: "deep-dive-asia-capex",
@@ -155,6 +203,13 @@ const ARTICLES: ReadonlyArray<ArticleFixture> = [
     readMin: 22,
     publishedAt: "2026-05-23T07:00:00+08:00",
     deepDive: true,
+    bodyBlocks: [
+      ["p", "We pulled filings, planning permits, and grid-connection requests from seven ASEAN jurisdictions to answer one question: how much datacenter capacity has actually been committed in the last twelve months?"],
+      ["p", "The headline figure is $84 billion across 41 announced projects. But “announced” is doing a lot of work in that sentence."],
+      ["h3", "What the spreadsheet actually says"],
+      ["p", "Strip out projects without a secured grid connection and the committed total falls to roughly $51 billion — still a record, but a third smaller than the press releases imply."],
+      ["p", "Indonesia leads on announced capacity; Malaysia leads on capacity with power actually contracted. The gap between those two columns is the real story of ASEAN's build-out."],
+    ],
   },
   {
     slug: "ai-assisted-translation-note",
@@ -166,6 +221,12 @@ const ARTICLES: ReadonlyArray<ArticleFixture> = [
     readMin: 5,
     publishedAt: "2026-05-22T10:00:00+08:00",
     aiAssisted: true,
+    bodyBlocks: [
+      ["p", "Every article on DailyTechWire that used an AI tool carries a disclosure box. This piece explains exactly what that box does and does not mean."],
+      ["p", "We use machine assistance for three things: translating source documents, transcribing interviews, and summarising long filings for a reporter to verify. We do not use it to generate published prose."],
+      ["h3", "The checklist"],
+      ["p", "Before an AI-assisted tag goes on, an editor confirms a human wrote the article, a human verified every translated quote against the source, and no generated text reached the page unedited."],
+    ],
   },
   {
     slug: "react-server-actions-tradeoffs",
@@ -177,6 +238,12 @@ const ARTICLES: ReadonlyArray<ArticleFixture> = [
     section: "Engineering",
     readMin: 11,
     publishedAt: "2026-05-26T11:00:00+08:00",
+    bodyBlocks: [
+      ["p", "Server Actions promised to collapse the boundary between client and server. Three teams we spoke to shipped them to production; here is what the framework docs left out."],
+      ["p", "The first regret was caching. Actions that mutate data need their revalidation wired explicitly, and the failure mode is silent: stale reads that look fine in development."],
+      ["p", "The second was error surfacing. A thrown action error with no boundary drops users to a blank screen — the kind of thing you discover at 03:00, not in review."],
+      ["p", "The quiet success: one team treated actions as a thin transport over a well-tested service layer, and barely noticed the framework at all. That, they argue, is the point."],
+    ],
   },
   {
     slug: "oppo-find-x9-review",
@@ -188,6 +255,12 @@ const ARTICLES: ReadonlyArray<ArticleFixture> = [
     readMin: 10,
     publishedAt: "2026-05-25T16:20:00+08:00",
     affiliate: true,
+    bodyBlocks: [
+      ["p", "The Oppo Find X9 Pro is a camera-first flagship that, refreshingly, trusts its own hardware. The 1-inch main sensor does real work; the computational pipeline does less, and is better for it."],
+      ["p", "In daylight the results are clean and unhurried. The phone resists the over-sharpened, over-saturated look that has crept into its rivals' night modes."],
+      ["h3", "Where it slips"],
+      ["p", "Battery life is merely good, not exceptional, and the bundled-charger politics will annoy. But for anyone who buys a phone primarily to photograph, this is the one to beat this year."],
+    ],
   },
   {
     slug: "taiwan-chip-export-rules",
@@ -198,6 +271,11 @@ const ARTICLES: ReadonlyArray<ArticleFixture> = [
     section: "Trade",
     readMin: 7,
     publishedAt: "2026-05-26T15:10:00+08:00",
+    bodyBlocks: [
+      ["p", "Taipei published a revised export schedule for advanced packaging this week. The list of who qualifies is short; the list of who was quietly left off is the document worth reading."],
+      ["p", "Advanced packaging — not raw wafers — is the current chokepoint for high-end AI accelerators, which makes the schedule a more precise instrument of policy than headline chip bans."],
+      ["p", "Two ASEAN assembly partners gained eligibility. One prominent mainland-linked subcontractor did not, despite meeting the stated technical criteria — a reminder that the exclusions are louder than the inclusions."],
+    ],
   },
 ];
 
@@ -307,6 +385,7 @@ async function seed() {
       title: a.title,
       slug: a.slug,
       dek: a.dek,
+      body: lexBody(a.bodyBlocks ?? []),
       section: a.section,
       readMin: a.readMin,
       publishedAt: new Date(a.publishedAt).toISOString(),
@@ -324,6 +403,9 @@ async function seed() {
       editedByHuman: true,
       lockedFields: [],
       version: 1,
+      // Publish on seed so the published-only reader queries surface them
+      // (drafts are enabled on the Articles collection).
+      _status: "published" as const,
     };
 
     const existing = await findIdBy(payload, "articles", { slug: { equals: a.slug } });
@@ -339,7 +421,12 @@ async function seed() {
   }
   console.log(`[seed] articles: inserted=${inserted} updated=${updated}`);
 
-  // 5. Wire drops — keep last 12 to avoid runaway accumulation across reruns
+  // 5. Wire drops — clear existing first so reruns don't accumulate duplicates
+  const existingDrops = await payload.find({ collection: "wireDrops", limit: 500, depth: 0 });
+  for (const d of existingDrops.docs) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    await payload.delete({ collection: "wireDrops", id: (d as any).id, context: { disableRevalidate: true } } as any);
+  }
   for (const w of WIRE_DROPS) {
     await payload.create({
       collection: "wireDrops",
