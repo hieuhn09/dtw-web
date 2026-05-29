@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -fsSL https://raw.githubusercontent.com/withkynam/vibecode-pro-max-kit/main/install.sh -o /tmp/vibecode-install.sh)",
+      "Read(//tmp/**)",
+      "Bash(bash /tmp/vibecode-install.sh)",
+      "Read(//Users/hieuhn09/**)",
+      "Read(//Users/hieuhn09/Work/**)",
+      "Bash(python3 -c ' *)",
+      "Bash(pip3 install *)",
+      "Bash(python3 -c \"import openpyxl; print\\('ok'\\)\")"
+    ]
+  }
+}

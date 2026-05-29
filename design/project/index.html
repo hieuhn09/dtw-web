@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>DailyTechWire – Asia Tech</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,500;8..60,600;8..60,700;8..60,800&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --paper:#FAF8F2;
+  --surface:#FFFFFF;
+  --surface-2:#F2EFE5;
+  --ink:#111111;
+  --ink-2:#2A2A28;
+  --muted:#5B5B58;
+  --muted-2:#8C8B85;
+  --hair:#E5E2D8;
+  --hair-2:#D8D4C6;
+  --accent:#E04E1F;      /* DTW coral */
+  --accent-ink:#B83D14;
+  --sponsored:#FEF3C7;   /* spec */
+  --up:#10B981;          /* spec */
+  --down:#EF4444;        /* spec */
+  --ai:#7C3AED;
+  --startups:#0EA5E9;
+  --asia:#E04E1F;
+  --dev:#16A34A;
+  --products:#D97706;
+  --policy:#475569;
+  --shadow: 0 1px 0 rgba(17,17,17,.04), 0 12px 32px -16px rgba(17,17,17,.12);
+  --font-serif: "Source Serif 4", "Iowan Old Style", "Charter", Georgia, serif;
+  --font-sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --maxw: 1280px;
+}
+html[data-theme="dark"]{
+  --paper:#0F172A;
+  --surface:#111C30;
+  --surface-2:#15223A;
+  --ink:#E2E8F0;
+  --ink-2:#CBD5E1;
+  --muted:#94A3B8;
+  --muted-2:#64748B;
+  --hair:#1E2B45;
+  --hair-2:#243453;
+  --sponsored:#3B2E0A;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--paper);color:var(--ink);font-family:var(--font-sans);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+body{font-size:15px;line-height:1.5}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer}
+img{max-width:100%;display:block}
+.serif{font-family:var(--font-serif);font-feature-settings:"ss01","ss02"}
+.mono{font-family:var(--font-mono)}
+.hair{border-color:var(--hair)}
+
+/* utility */
+.container{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+@media(max-width:720px){.container{padding:0 16px}}
+.pill{display:inline-flex;align-items:center;gap:6px;font:500 11px/1 var(--font-sans);letter-spacing:.08em;text-transform:uppercase;padding:6px 10px;border-radius:999px;border:1px solid var(--hair-2);color:var(--ink-2);background:var(--surface)}
+.kicker{font:600 11px/1 var(--font-sans);letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+.kicker.muted{color:var(--muted)}
+.divider{height:1px;background:var(--hair);width:100%}
+.rule-thick{height:3px;background:var(--ink);width:100%}
+
+/* placeholder image */
+.ph{position:relative;background:repeating-linear-gradient(135deg,var(--surface-2) 0 14px,var(--paper) 14px 28px);border:1px solid var(--hair);display:flex;align-items:flex-end;justify-content:flex-start;overflow:hidden}
+.ph::after{content:attr(data-label);font:500 11px/1.2 var(--font-mono);color:var(--muted);background:var(--surface);padding:6px 8px;margin:8px;border:1px solid var(--hair);border-radius:4px}
+.ph.dark{background:repeating-linear-gradient(135deg,#0b1220 0 14px,#0f172a 14px 28px)}
+
+/* focus */
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:2px}
+
+/* selection */
+::selection{background:var(--accent);color:#fff}
+
+/* scrollbar (subtle) */
+::-webkit-scrollbar{height:10px;width:10px}
+::-webkit-scrollbar-thumb{background:var(--hair-2);border-radius:999px}
+
+/* anim */
+@keyframes fadeUp{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.fade-up{animation:fadeUp .4s ease both}
+@keyframes pulse-dot{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(239,68,68,.6)}50%{opacity:.55;box-shadow:0 0 0 6px rgba(239,68,68,0)}}
+.live-dot{width:8px;height:8px;border-radius:999px;background:var(--down);animation:pulse-dot 1.6s ease-in-out infinite;display:inline-block}
+
+/* Accent-glow button (overrides Button variant=accent on :hover) */
+button:hover{ transition: box-shadow .25s ease, transform .15s ease; }
+button[data-glow="1"]:hover, .accent-glow:hover{
+  box-shadow: 0 0 0 1px rgba(224,78,31,.4), 0 8px 28px -6px rgba(224,78,31,.45);
+}
+
+/* Cover-art hover micro-lift */
+.card-hover:hover .ph, .card-hover:hover svg{ transform: translateY(-1px); }
+
+/* link underline (editorial) */
+.linkish{background-image:linear-gradient(to bottom,transparent calc(100% - 1px),currentColor 1px);background-repeat:no-repeat;background-size:0% 100%;transition:background-size .3s ease}
+.linkish:hover{background-size:100% 100%}
+
+/* card hover */
+.card-hover{transition:transform .25s ease, box-shadow .25s ease}
+.card-hover:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
+
+/* utility text */
+.text-mute{color:var(--muted)}
+.text-mute-2{color:var(--muted-2)}
+.upper{text-transform:uppercase;letter-spacing:.08em}
+.tnum{font-variant-numeric:tabular-nums}
+
+/* Tweaks panel z-index */
+.tweaks-host{position:fixed;right:16px;bottom:16px;z-index:9999}
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script type="text/babel" src="src/data.jsx"></script>
+<script type="text/babel" src="src/i18n.jsx"></script>
+<script type="text/babel" src="src/icons.jsx"></script>
+<script type="text/babel" src="src/art.jsx"></script>
+<script type="text/babel" src="src/effects.jsx"></script>
+<script type="text/babel" src="src/ui.jsx"></script>
+<script type="text/babel" src="src/header.jsx"></script>
+<script type="text/babel" src="src/footer.jsx"></script>
+<script type="text/babel" src="src/auth.jsx"></script>
+<script type="text/babel" src="src/homepage.jsx"></script>
+<script type="text/babel" src="src/article.jsx"></script>
+<script type="text/babel" src="src/pillar.jsx"></script>
+<script type="text/babel" src="src/dashboards.jsx"></script>
+<script type="text/babel" src="src/search.jsx"></script>
+<script type="text/babel" src="src/newsletters.jsx"></script>
+<script type="text/babel" src="src/account.jsx"></script>
+<script type="text/babel" src="src/trust.jsx"></script>
+<script type="text/babel" src="src/about.jsx"></script>
+<script type="text/babel" src="src/app.jsx"></script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+{
+  "name": "@dtw/ui",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./pillars": "./src/pillars.ts",
+    "./styles.css": "./src/styles.css"
+  },
+  "scripts": {
+    "lint": "echo '(lint skipped - ui package)'",
+    "typecheck": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0"
+  },
+  "devDependencies": {
+    "@dtw/config": "workspace:*",
+    "@types/react": "^19.0.0",
+    "react": "^19.0.0",
+    "typescript": "^5.6.3"
+  }
+}

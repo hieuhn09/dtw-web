@@ -1,0 +1,296 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------------
+   Design tokens — single source of truth.
+   Mirrors design/project/index.html. See process/context/uxui/all-uxui.md.
+   --------------------------------------------------------------------------- */
+
+:root {
+  --paper: #FAF8F2;
+  --surface: #FFFFFF;
+  --surface-2: #F2EFE5;
+  --ink: #111111;
+  --ink-2: #2A2A28;
+  --muted: #5B5B58;
+  --muted-2: #8C8B85;
+  --hair: #E5E2D8;
+  --hair-2: #D8D4C6;
+
+  /* Brand */
+  --accent: #E04E1F;      /* DTW coral */
+  --accent-ink: #B83D14;
+  --sponsored: #FEF3C7;   /* spec invariant */
+  --up: #10B981;          /* spec invariant */
+  --down: #EF4444;        /* spec invariant */
+
+  /* Pillars */
+  --ai: #7C3AED;
+  --startups: #0EA5E9;
+  --asia: #E04E1F;
+  --dev: #16A34A;
+  --products: #D97706;
+  --policy: #475569;
+
+  --shadow:
+    0 1px 0 rgba(17, 17, 17, 0.04),
+    0 12px 32px -16px rgba(17, 17, 17, 0.12);
+
+  --font-serif: var(--font-serif-loaded, "Source Serif 4"), "Iowan Old Style", "Charter", Georgia, serif;
+  --font-sans: var(--font-sans-loaded, "IBM Plex Sans"), system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: var(--font-mono-loaded, "IBM Plex Mono"), ui-monospace, "SF Mono", Menlo, monospace;
+
+  --maxw: 1280px;
+}
+
+html[data-theme="dark"] {
+  --paper: #0F172A;
+  --surface: #111C30;
+  --surface-2: #15223A;
+  --ink: #E2E8F0;
+  --ink-2: #CBD5E1;
+  --muted: #94A3B8;
+  --muted-2: #64748B;
+  --hair: #1E2B45;
+  --hair-2: #243453;
+  --sponsored: #3B2E0A;
+}
+
+/* ---------------------------------------------------------------------------
+   Map CSS variables into Tailwind utilities (v4 @theme).
+   Lets us write `bg-paper text-ink border-hair text-accent` etc.
+   --------------------------------------------------------------------------- */
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-muted: var(--muted);
+  --color-muted-2: var(--muted-2);
+  --color-hair: var(--hair);
+  --color-hair-2: var(--hair-2);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-sponsored: var(--sponsored);
+  --color-up: var(--up);
+  --color-down: var(--down);
+
+  --color-ai: var(--ai);
+  --color-startups: var(--startups);
+  --color-asia: var(--asia);
+  --color-dev: var(--dev);
+  --color-products: var(--products);
+  --color-policy: var(--policy);
+
+  --font-serif: var(--font-serif);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+}
+
+/* ---------------------------------------------------------------------------
+   Base resets + editorial typography
+   --------------------------------------------------------------------------- */
+
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+body {
+  font-size: 15px;
+  line-height: 1.5;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+img {
+  max-width: 100%;
+  display: block;
+}
+.serif {
+  font-family: var(--font-serif);
+  font-feature-settings: "ss01", "ss02";
+}
+.mono {
+  font-family: var(--font-mono);
+}
+.tnum {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------------------------------------------------------------------------
+   Layout shell + utility classes
+   Ported from design/project/index.html. Note: `.container` here intentionally
+   shadows Tailwind v4's built-in `.container` utility (which has width:100%
+   but no auto margins). This rule must stay AFTER `@import "tailwindcss"`.
+   --------------------------------------------------------------------------- */
+
+.container {
+  max-width: var(--maxw);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+@media (max-width: 720px) {
+  .container {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
+
+.kicker {
+  font: 600 11px/1 var(--font-sans);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.kicker.muted {
+  color: var(--muted);
+}
+
+.divider {
+  height: 1px;
+  background: var(--hair);
+  width: 100%;
+}
+.rule-thick {
+  height: 3px;
+  background: var(--ink);
+  width: 100%;
+}
+
+.text-mute {
+  color: var(--muted);
+}
+.text-mute-2 {
+  color: var(--muted-2);
+}
+.upper {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.card-hover {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+}
+
+.linkish {
+  background-image: linear-gradient(
+    to bottom,
+    transparent calc(100% - 1px),
+    currentColor 1px
+  );
+  background-repeat: no-repeat;
+  background-size: 0% 100%;
+  transition: background-size 0.3s ease;
+}
+.linkish:hover {
+  background-size: 100% 100%;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font: 500 11px/1 var(--font-sans);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--hair-2);
+  color: var(--ink-2);
+  background: var(--surface);
+}
+
+/* Focus / selection */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+::selection {
+  background: var(--accent);
+  color: #fff;
+}
+::-webkit-scrollbar {
+  height: 10px;
+  width: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--hair-2);
+  border-radius: 999px;
+}
+
+/* Animations + interactive micro-states */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.fade-up {
+  animation: fadeUp 0.4s ease both;
+}
+
+@keyframes pulseDot {
+  0%,
+  100% {
+    opacity: 1;
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.6);
+  }
+  50% {
+    opacity: 0.55;
+    box-shadow: 0 0 0 6px rgba(239, 68, 68, 0);
+  }
+}
+.live-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--down);
+  animation: pulseDot 1.6s ease-in-out infinite;
+  display: inline-block;
+}
+
+/* Accent button glow on hover (paired with data-glow="1") */
+button {
+  transition: box-shadow 0.25s ease, transform 0.15s ease;
+}
+button[data-glow="1"]:hover {
+  box-shadow:
+    0 0 0 1px rgba(224, 78, 31, 0.4),
+    0 8px 28px -6px rgba(224, 78, 31, 0.45);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

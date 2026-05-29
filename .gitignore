@@ -1,0 +1,35 @@
+# dependencies
+node_modules/
+.pnpm-store/
+
+# next.js
+.next/
+out/
+next-env.d.ts
+
+# turbo
+.turbo/
+
+# typescript
+*.tsbuildinfo
+
+# env
+.env
+.env.local
+.env*.local
+
+# OS / editor
+.DS_Store
+*.log
+
+# build outputs
+dist/
+build/
+
+# kit metadata is committed elsewhere; ignore temp install bundles
+*.bin
+.vibecode-backup/
+
+# kit skill example screenshots — audit artifacts from other apps, not part of DTW (~14MB)
+.claude/skills/*/screenshots/
+.codex/skills/*/screenshots/

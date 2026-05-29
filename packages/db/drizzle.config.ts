@@ -1,0 +1,17 @@
+import { defineConfig } from "drizzle-kit";
+
+const databaseUrl = process.env.DATABASE_URL;
+if (!databaseUrl) {
+  throw new Error(
+    "DATABASE_URL is required. Copy .env.example to .env.local and start Postgres with `pnpm db:up`."
+  );
+}
+
+export default defineConfig({
+  schema: "./src/schema/index.ts",
+  out: "./migrations",
+  dialect: "postgresql",
+  dbCredentials: { url: databaseUrl },
+  strict: true,
+  verbose: true,
+});

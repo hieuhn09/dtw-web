@@ -1,0 +1,34 @@
+{
+  "name": "@dtw/db",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./schema": "./src/schema/index.ts",
+    "./client": "./src/client.ts"
+  },
+  "scripts": {
+    "lint": "echo '(lint skipped - db package)'",
+    "typecheck": "tsc --noEmit",
+    "with-env": "dotenv -e ../../.env.local --",
+    "db:generate": "pnpm with-env drizzle-kit generate",
+    "db:migrate": "pnpm with-env drizzle-kit migrate",
+    "db:push": "pnpm with-env drizzle-kit push",
+    "db:studio": "pnpm with-env drizzle-kit studio",
+    "db:seed": "pnpm --filter web run db:seed"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "drizzle-orm": "^0.39.3",
+    "postgres": "^3.4.5"
+  },
+  "devDependencies": {
+    "@dtw/config": "workspace:*",
+    "@types/node": "^22.10.5",
+    "dotenv-cli": "^8.0.0",
+    "drizzle-kit": "^0.30.5",
+    "tsx": "^4.19.2",
+    "typescript": "^5.6.3"
+  }
+}
