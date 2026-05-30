@@ -87,6 +87,7 @@ export function PillarShowcase({ byPillar }: PillarShowcaseProps) {
                       <CoverArt
                         pillar={a.pillar}
                         seed={a.id}
+                        src={a.heroImageUrl}
                         variant={(i + 2) % 6}
                         height={120}
                         style={{ marginBottom: 10 }}
@@ -118,7 +119,7 @@ export function PillarShowcase({ byPillar }: PillarShowcaseProps) {
                         </div>
                       </div>
                       {i !== 0 && (
-                        <CoverArt pillar={a.pillar} seed={a.id} variant={(i + 3) % 6} height={48} />
+                        <CoverArt pillar={a.pillar} seed={a.id} src={a.heroImageUrl} variant={(i + 3) % 6} height={48} />
                       )}
                     </div>
                   </article>

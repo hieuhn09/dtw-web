@@ -37,6 +37,7 @@ export function DeepDive({ article }: DeepDiveProps) {
           <CoverArt
             pillar={article.pillar}
             seed={article.id}
+            src={article.heroImageUrl}
             variant={4}
             height={380}
             label="DATA · ASEAN CAPEX MAP"

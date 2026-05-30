@@ -51,6 +51,7 @@ export function RelatedRow({ articles }: RelatedRowProps) {
               <CoverArt
                 pillar={a.pillar}
                 seed={a.id}
+                src={a.heroImageUrl}
                 variant={hashStr(a.id) % 6}
                 height={160}
                 style={{ marginBottom: 12 }}
