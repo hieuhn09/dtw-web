@@ -30,6 +30,10 @@ export const Articles: CollectionConfig = {
     description:
       "Every story DTW publishes. Engine drafts flow in via API; editors review here.",
     listSearchableFields: ["title", "dek", "slug"],
+    // "Preview" button → authenticated /preview route enables draft mode and
+    // renders the unpublished draft exactly as it will look once published.
+    preview: (doc) =>
+      typeof doc?.slug === "string" ? `/preview?slug=${doc.slug}` : null,
   },
   versions: { drafts: true },
   hooks: {

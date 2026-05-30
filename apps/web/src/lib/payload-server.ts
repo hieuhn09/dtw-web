@@ -113,6 +113,26 @@ export const getArticleBySlug = unstable_cache(
   { tags: ["articles:all"], revalidate: 60 }
 );
 
+/**
+ * Draft-aware single-article fetch — NOT cached and NOT status-filtered.
+ * Only called from the article page when Next.js draft mode is enabled, which
+ * can only be turned on by the authenticated `/preview` route. Lets editors see
+ * an unpublished draft exactly as it will render, without leaking drafts to the
+ * public (the cached `getArticleBySlug` above stays published-only).
+ */
+export async function getArticleBySlugDraft(slug: string): Promise<Article | null> {
+  const p = await payload();
+  const r = await p.find({
+    collection: "articles",
+    where: { slug: { equals: slug } },
+    draft: true,
+    overrideAccess: true,
+    limit: 1,
+    depth: 2,
+  });
+  return r.docs[0] ?? null;
+}
+
 export const getDeepDive = unstable_cache(
   async (): Promise<Article | null> => {
     const p = await payload();
