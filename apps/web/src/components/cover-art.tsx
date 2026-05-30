@@ -57,6 +57,34 @@ export interface CoverArtProps {
   /** Force a specific composition (0–5). When omitted, picks from the seed hash. */
   variant?: number;
   style?: CSSProperties;
+  /** Real uploaded image URL. When set, the photo is shown instead of the
+   *  generative SVG (which becomes the fallback for articles without a hero). */
+  src?: string | null;
+}
+
+function CoverLabel({ label }: { label?: string }) {
+  if (!label) return null;
+  return (
+    <div
+      className="mono"
+      style={{
+        position: "absolute",
+        left: 10,
+        bottom: 10,
+        padding: "4px 8px",
+        fontSize: 10,
+        letterSpacing: ".1em",
+        background: "rgba(255,255,255,.85)",
+        color: "#111",
+        border: "1px solid rgba(0,0,0,.08)",
+        borderRadius: 3,
+        textTransform: "uppercase",
+        fontWeight: 600,
+      }}
+    >
+      {label}
+    </div>
+  );
 }
 
 export function CoverArt({
@@ -66,7 +94,22 @@ export function CoverArt({
   height = 240,
   variant,
   style = {},
+  src,
 }: CoverArtProps) {
+  if (src) {
+    return (
+      <div style={{ position: "relative", height, overflow: "hidden", ...style }}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={src}
+          alt={label ?? ""}
+          style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+        />
+        <CoverLabel label={label} />
+      </div>
+    );
+  }
+
   const h = hashStr(String(seed));
   const v = variant != null ? variant : h % 6;
   const [c1, c2, c3, c4] = pickPalette(pillar, h);
@@ -262,27 +305,7 @@ export function CoverArt({
       >
         {body}
       </svg>
-      {label && (
-        <div
-          className="mono"
-          style={{
-            position: "absolute",
-            left: 10,
-            bottom: 10,
-            padding: "4px 8px",
-            fontSize: 10,
-            letterSpacing: ".1em",
-            background: "rgba(255,255,255,.85)",
-            color: "#111",
-            border: "1px solid rgba(0,0,0,.08)",
-            borderRadius: 3,
-            textTransform: "uppercase",
-            fontWeight: 600,
-          }}
-        >
-          {label}
-        </div>
-      )}
+      <CoverLabel label={label} />
     </div>
   );
 }

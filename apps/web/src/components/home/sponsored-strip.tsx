@@ -82,6 +82,7 @@ export function SponsoredStrip({ article: s }: SponsoredStripProps) {
             <CoverArt
               pillar="products"
               seed={s.id}
+              src={s.heroImageUrl}
               variant={5}
               height={140}
               label={s.sponsor?.toUpperCase()}

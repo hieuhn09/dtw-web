@@ -111,6 +111,7 @@ export function AsiaSpotlight({ articles }: AsiaSpotlightProps) {
               <CoverArt
                 pillar={a.pillar}
                 seed={a.id}
+                src={a.heroImageUrl}
                 variant={(i + 1) % 6}
                 height={150}
                 style={{ marginBottom: 12 }}

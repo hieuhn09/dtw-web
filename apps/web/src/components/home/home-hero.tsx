@@ -30,7 +30,7 @@ export function HomeHero({ lead, aside }: HomeHeroProps) {
         href={`/article/${lead.slug}`}
         style={{ cursor: "pointer", color: "inherit", textDecoration: "none" }}
       >
-        <CoverArt pillar={lead.pillar} seed={lead.id} variant={0} height={410} label="DTW HERO" />
+        <CoverArt pillar={lead.pillar} seed={lead.id} src={lead.heroImageUrl} variant={0} height={410} label="DTW HERO" />
         <div style={{ marginTop: 10, display: "flex", alignItems: "center", gap: 10 }}>
           <PillarTag id={lead.pillar} label={localizedPillarLabel(lead.pillar, lang)} />
           <span className="mono text-mute-2" style={{ fontSize: 11 }}>{lead.section}</span>
@@ -115,7 +115,7 @@ export function HomeHero({ lead, aside }: HomeHeroProps) {
                   {t("By", "Bởi", "Oleh")} {a.author} · {a.readMin} {t("min", "phút", "menit")}
                 </div>
               </div>
-              <CoverArt pillar={a.pillar} seed={a.id} variant={2 + (i % 3)} height={86} />
+              <CoverArt pillar={a.pillar} seed={a.id} src={a.heroImageUrl} variant={2 + (i % 3)} height={86} />
             </article>
           </Link>
         ))}
