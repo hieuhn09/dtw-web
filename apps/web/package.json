@@ -6,6 +6,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "vercel-build": "node scripts/migrate-prod.mjs && next build",
+    "migrate:prod": "node scripts/migrate-prod.mjs",
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
