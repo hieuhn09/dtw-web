@@ -129,6 +129,14 @@ export const Articles: CollectionConfig = {
                 condition: (data) => Boolean(data?.sponsored),
                 description: "Sponsor brand name (shown on the disclosure box).",
               },
+              // Required only when sponsored — a sponsored article must never
+              // publish as "PAID PARTNER · undefined".
+              validate: (value: string | null | undefined, { data }: { data?: { sponsored?: boolean } }) => {
+                if (data?.sponsored && !value) {
+                  return "Sponsor name is required when 'sponsored' is checked.";
+                }
+                return true;
+              },
             },
             { name: "affiliate", type: "checkbox", defaultValue: false },
             { name: "deepDive", type: "checkbox", defaultValue: false },
@@ -184,8 +192,25 @@ export const Articles: CollectionConfig = {
         {
           label: "Media",
           fields: [
-            { name: "imageLabel", type: "text" },
-            { name: "imageUrl", type: "text", admin: { description: "Hero image URL. Cloudflare R2 + CF Images in Phase 2." } },
+            {
+              name: "heroImage",
+              type: "upload",
+              relationTo: "media",
+              admin: {
+                description:
+                  "Hero image (uploaded to R2). If empty, the reader falls back to generative cover art.",
+              },
+            },
+            {
+              name: "imageLabel",
+              type: "text",
+              admin: { description: "Label overlaid on the generative cover art when there is no hero image." },
+            },
+            {
+              name: "imageUrl",
+              type: "text",
+              admin: { description: "Deprecated — use the heroImage upload instead. External URL fallback only." },
+            },
           ],
         },
       ],

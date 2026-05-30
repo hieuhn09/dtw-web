@@ -156,19 +156,36 @@ export function ArticleContent({ article, body, related }: ArticleContentProps) 
       </header>
 
       <div style={{ maxWidth: 1100, margin: "0 auto 8px" }}>
-        <CoverArt
-          pillar={article.pillar}
-          seed={article.id}
-          variant={0}
-          height={520}
-          label={article.image?.label ?? "HERO"}
-        />
-        <div
-          className="text-mute"
-          style={{ fontSize: 11, marginTop: 8, fontStyle: "italic", padding: "0 4px" }}
-        >
-          Cover: editorial composition · srcset 320 / 640 / 1024 / 1920 · AVIF + WebP · LQIP blur
-        </div>
+        {article.heroImageUrl ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={article.heroImageUrl}
+            alt={article.heroImageAlt ?? article.title}
+            style={{
+              width: "100%",
+              height: 520,
+              objectFit: "cover",
+              borderRadius: 8,
+              display: "block",
+            }}
+          />
+        ) : (
+          <CoverArt
+            pillar={article.pillar}
+            seed={article.id}
+            variant={0}
+            height={520}
+            label={article.image?.label ?? "HERO"}
+          />
+        )}
+        {article.heroImageAlt && (
+          <div
+            className="text-mute"
+            style={{ fontSize: 11, marginTop: 8, fontStyle: "italic", padding: "0 4px" }}
+          >
+            {article.heroImageAlt}
+          </div>
+        )}
       </div>
 
       <AudioPlayerBar />

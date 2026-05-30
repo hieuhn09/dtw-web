@@ -57,3 +57,6 @@ Rationale: must publish a real article before SEO/search have anything to index.
 
 ## Progress log
 - 2026-05-30: Plan created from audit. Starting P0-A (body rendering + draft gate cluster).
+- 2026-05-30: P0-A body cluster done & verified (Lexical body render, `_status` published filter, seed bodies+published, lean ArticleView). Branch `feat/p0a-article-body`.
+- 2026-05-30: P0-A image pipeline done & verified — Cloudflare R2 chosen. Media upload collection + `@payloadcms/storage-s3` (gated on R2_* env), `heroImage` field on Articles, reader renders hero (CoverArt fallback), migration `20260530_090650_p0a_media` applied to Neon, R2 upload round-trip tested OK. Also: `sponsor` now required when `sponsored`. turbo.json + Vercel need R2_* env.
+- P0-A remaining: **draft preview** (Next draftMode + Payload preview URL) — the mandatory companion to the draft gate. Then P0-B.

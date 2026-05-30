@@ -5,7 +5,14 @@
     "build": {
       "dependsOn": ["^build"],
       "outputs": [".next/**", "!.next/cache/**", "dist/**"],
-      "env": ["DATABASE_URL", "PAYLOAD_SECRET"]
+      "env": [
+        "DATABASE_URL",
+        "PAYLOAD_SECRET",
+        "R2_BUCKET",
+        "R2_ENDPOINT",
+        "R2_ACCESS_KEY_ID",
+        "R2_SECRET_ACCESS_KEY"
+      ]
     },
     "dev": {
       "cache": false,

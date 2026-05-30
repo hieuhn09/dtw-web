@@ -37,6 +37,9 @@ export interface ArticleView {
   deepDive: boolean;
   affiliate: boolean;
   image?: { label: string };
+  /** Uploaded hero image URL (R2-backed), or null to fall back to cover art. */
+  heroImageUrl: string | null;
+  heroImageAlt: string | null;
 }
 
 function pickRelationship<T extends { id: string | number }>(
@@ -84,6 +87,11 @@ export function toArticleView(a: Article): ArticleView {
   const coAuthors = pickRelationshipArray<{ id: string | number; name: string }>(
     a.coAuthors
   );
+  const hero = pickRelationship<{
+    id: string | number;
+    url?: string | null;
+    alt?: string | null;
+  }>(a.heroImage);
 
   return {
     id: String(a.id),
@@ -106,5 +114,7 @@ export function toArticleView(a: Article): ArticleView {
     deepDive: Boolean(a.deepDive),
     affiliate: Boolean(a.affiliate),
     image: a.imageLabel ? { label: a.imageLabel } : undefined,
+    heroImageUrl: hero?.url ?? null,
+    heroImageAlt: hero?.alt ?? null,
   };
 }
