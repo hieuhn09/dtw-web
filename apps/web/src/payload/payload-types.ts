@@ -68,6 +68,7 @@ export interface Config {
   blocks: {};
   collections: {
     users: User;
+    media: Media;
     pillars: Pillar;
     authors: Author;
     tags: Tag;
@@ -84,6 +85,7 @@ export interface Config {
   collectionsJoins: {};
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
+    media: MediaSelect<false> | MediaSelect<true>;
     pillars: PillarsSelect<false> | PillarsSelect<true>;
     authors: AuthorsSelect<false> | AuthorsSelect<true>;
     tags: TagsSelect<false> | TagsSelect<true>;
@@ -160,6 +162,60 @@ export interface User {
     | null;
   password?: string | null;
   collection: 'users';
+}
+/**
+ * Uploaded images. Stored in Cloudflare R2 in production.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media".
+ */
+export interface Media {
+  id: number;
+  /**
+   * Alt text — required for accessibility (WCAG 2.1 AA).
+   */
+  alt: string;
+  /**
+   * Photographer / source credit, shown as the caption.
+   */
+  credit?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+  sizes?: {
+    thumbnail?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    card?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    hero?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+  };
 }
 /**
  * Top-level beats. Order controls nav + homepage band order.
@@ -321,9 +377,16 @@ export interface Article {
    * Optimistic-lock counter. Bumped on every write.
    */
   version: number;
+  /**
+   * Hero image (uploaded to R2). If empty, the reader falls back to generative cover art.
+   */
+  heroImage?: (number | null) | Media;
+  /**
+   * Label overlaid on the generative cover art when there is no hero image.
+   */
   imageLabel?: string | null;
   /**
-   * Hero image URL. Cloudflare R2 + CF Images in Phase 2.
+   * Deprecated — use the heroImage upload instead. External URL fallback only.
    */
   imageUrl?: string | null;
   updatedAt: string;
@@ -469,6 +532,10 @@ export interface PayloadLockedDocument {
         value: number | User;
       } | null)
     | ({
+        relationTo: 'media';
+        value: number | Media;
+      } | null)
+    | ({
         relationTo: 'pillars';
         value: number | Pillar;
       } | null)
@@ -568,6 +635,59 @@ export interface UsersSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media_select".
+ */
+export interface MediaSelect<T extends boolean = true> {
+  alt?: T;
+  credit?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
+  sizes?:
+    | T
+    | {
+        thumbnail?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        card?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        hero?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+      };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "pillars_select".
  */
 export interface PillarsSelect<T extends boolean = true> {
@@ -645,6 +765,7 @@ export interface ArticlesSelect<T extends boolean = true> {
         id?: T;
       };
   version?: T;
+  heroImage?: T;
   imageLabel?: T;
   imageUrl?: T;
   updatedAt?: T;

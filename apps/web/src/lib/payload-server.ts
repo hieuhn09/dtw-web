@@ -59,6 +59,7 @@ export const getRecentArticles = unstable_cache(
     const p = await payload();
     const r = await p.find({
       collection: "articles",
+      where: { _status: { equals: "published" } },
       sort: "-publishedAt",
       limit,
       depth: 1,
@@ -82,7 +83,9 @@ export const getArticlesByPillar = unstable_cache(
     if (pillarId == null) return [];
     const r = await p.find({
       collection: "articles",
-      where: { pillar: { equals: pillarId } },
+      where: {
+        and: [{ pillar: { equals: pillarId } }, { _status: { equals: "published" } }],
+      },
       sort: "-publishedAt",
       limit,
       depth: 1,
@@ -98,7 +101,9 @@ export const getArticleBySlug = unstable_cache(
     const p = await payload();
     const r = await p.find({
       collection: "articles",
-      where: { slug: { equals: slug } },
+      where: {
+        and: [{ slug: { equals: slug } }, { _status: { equals: "published" } }],
+      },
       limit: 1,
       depth: 2,
     });
@@ -108,12 +113,34 @@ export const getArticleBySlug = unstable_cache(
   { tags: ["articles:all"], revalidate: 60 }
 );
 
+/**
+ * Draft-aware single-article fetch — NOT cached and NOT status-filtered.
+ * Only called from the article page when Next.js draft mode is enabled, which
+ * can only be turned on by the authenticated `/preview` route. Lets editors see
+ * an unpublished draft exactly as it will render, without leaking drafts to the
+ * public (the cached `getArticleBySlug` above stays published-only).
+ */
+export async function getArticleBySlugDraft(slug: string): Promise<Article | null> {
+  const p = await payload();
+  const r = await p.find({
+    collection: "articles",
+    where: { slug: { equals: slug } },
+    draft: true,
+    overrideAccess: true,
+    limit: 1,
+    depth: 2,
+  });
+  return r.docs[0] ?? null;
+}
+
 export const getDeepDive = unstable_cache(
   async (): Promise<Article | null> => {
     const p = await payload();
     const r = await p.find({
       collection: "articles",
-      where: { deepDive: { equals: true } },
+      where: {
+        and: [{ deepDive: { equals: true } }, { _status: { equals: "published" } }],
+      },
       sort: "-publishedAt",
       limit: 1,
       depth: 1,
@@ -129,7 +156,9 @@ export const getSponsoredArticle = unstable_cache(
     const p = await payload();
     const r = await p.find({
       collection: "articles",
-      where: { sponsored: { equals: true } },
+      where: {
+        and: [{ sponsored: { equals: true } }, { _status: { equals: "published" } }],
+      },
       sort: "-publishedAt",
       limit: 1,
       depth: 1,

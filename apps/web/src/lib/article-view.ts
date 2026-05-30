@@ -11,6 +11,11 @@
 import type { PillarId } from "./data";
 import type { Article } from "../payload/payload-types";
 
+/** Lexical editor state for an article body. Passed only to the article detail
+ *  page — deliberately NOT part of ArticleView so list/related views stay lean
+ *  and don't serialise every body into the page payload. */
+export type ArticleBodyState = Article["body"];
+
 export interface ArticleView {
   id: string;
   slug: string;
@@ -32,6 +37,9 @@ export interface ArticleView {
   deepDive: boolean;
   affiliate: boolean;
   image?: { label: string };
+  /** Uploaded hero image URL (R2-backed), or null to fall back to cover art. */
+  heroImageUrl: string | null;
+  heroImageAlt: string | null;
 }
 
 function pickRelationship<T extends { id: string | number }>(
@@ -79,6 +87,11 @@ export function toArticleView(a: Article): ArticleView {
   const coAuthors = pickRelationshipArray<{ id: string | number; name: string }>(
     a.coAuthors
   );
+  const hero = pickRelationship<{
+    id: string | number;
+    url?: string | null;
+    alt?: string | null;
+  }>(a.heroImage);
 
   return {
     id: String(a.id),
@@ -101,5 +114,7 @@ export function toArticleView(a: Article): ArticleView {
     deepDive: Boolean(a.deepDive),
     affiliate: Boolean(a.affiliate),
     image: a.imageLabel ? { label: a.imageLabel } : undefined,
+    heroImageUrl: hero?.url ?? null,
+    heroImageAlt: hero?.alt ?? null,
   };
 }
