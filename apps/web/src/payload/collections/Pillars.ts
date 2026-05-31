@@ -43,6 +43,15 @@ export const Pillars: CollectionConfig = {
         { name: "vi", type: "text" },
         { name: "id", type: "text" },
       ],
+      admin: { description: "Short label for nav, chips, and homepage band (e.g. \"AI\")." },
+    },
+    {
+      name: "heading",
+      type: "text",
+      admin: {
+        description:
+          "Long heading shown as the H1 on the pillar page (e.g. \"Artificial Intelligence\"). Falls back to the short title if empty.",
+      },
     },
     {
       name: "color",

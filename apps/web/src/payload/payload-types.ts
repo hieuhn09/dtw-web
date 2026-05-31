@@ -229,11 +229,18 @@ export interface Pillar {
    * URL slug, matches frontend pillar ids (ai|startups|asia|dev|products|policy).
    */
   slug: string;
+  /**
+   * Short label for nav, chips, and homepage band (e.g. "AI").
+   */
   title: {
     en: string;
     vi?: string | null;
     id?: string | null;
   };
+  /**
+   * Long heading shown as the H1 on the pillar page (e.g. "Artificial Intelligence"). Falls back to the short title if empty.
+   */
+  heading?: string | null;
   /**
    * CSS color reference (var(--ai) etc.) used in nav + cover art tints.
    */
@@ -699,6 +706,7 @@ export interface PillarsSelect<T extends boolean = true> {
         vi?: T;
         id?: T;
       };
+  heading?: T;
   color?: T;
   icon?: T;
   order?: T;

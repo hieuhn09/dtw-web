@@ -8,14 +8,17 @@ import { Icon } from "@/components/icons";
 import { BylineWired } from "@/components/byline-wired";
 import { TimeAgo } from "@/components/time-ago";
 import type { ArticleView } from "@/lib/article-view";
-import { PILLAR_ICONS, type PillarId } from "@/lib/data";
+import { type PillarId } from "@/lib/data";
 import { localizedPillarLabel, useLang, useT } from "@/lib/i18n";
 
 const PAGE_SIZE = 21;
 
 export interface PillarContentProps {
-  pillarId: PillarId;
+  /** Pillar slug from the CMS (not constrained to the 6 known ids). */
+  pillarId: string;
   pillarColor: string;
+  /** Icon name from the CMS pillar doc. */
+  pillarIcon: string;
   pillarHeading: string;
   pillarDescription: string;
   articles: ReadonlyArray<ArticleView>;
@@ -26,6 +29,7 @@ export interface PillarContentProps {
 export function PillarContent({
   pillarId,
   pillarColor,
+  pillarIcon,
   pillarHeading,
   pillarDescription,
   articles,
@@ -33,6 +37,9 @@ export function PillarContent({
 }: PillarContentProps) {
   const t = useT();
   const { lang } = useLang();
+  // i18n label for the 6 known pillars; falls back to the CMS heading for any
+  // pillar added later that isn't in the static label map.
+  const pillarLabel = localizedPillarLabel(pillarId as PillarId, lang) || pillarHeading;
 
   const featured = articles[0] ?? null;
   const rest = articles.slice(1);
@@ -65,7 +72,7 @@ export function PillarContent({
         }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 8 }}>
-          <Icon name={PILLAR_ICONS[pillarId]} size={22} color={pillarColor} stroke={2} />
+          <Icon name={pillarIcon} size={22} color={pillarColor} stroke={2} />
           <span
             className="upper"
             style={{
@@ -76,7 +83,7 @@ export function PillarContent({
               textTransform: "uppercase",
             }}
           >
-            DTW · {localizedPillarLabel(pillarId, lang)}
+            DTW · {pillarLabel}
           </span>
         </div>
         <h1
@@ -100,7 +107,7 @@ export function PillarContent({
         </p>
         <div style={{ display: "flex", gap: 8, alignItems: "center", marginTop: 20 }}>
           <Button variant="outline" size="sm">
-            {t("Follow", "Theo dõi", "Ikuti")} {localizedPillarLabel(pillarId, lang)}
+            {t("Follow", "Theo dõi", "Ikuti")} {pillarLabel}
           </Button>
           <Button variant="ghost" size="sm">
             RSS feed

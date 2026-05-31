@@ -37,17 +37,18 @@ const PILLARS: ReadonlyArray<{
   titleEn: string;
   titleVi: string;
   titleId: string;
+  heading: string;
   color: string;
   icon: string;
   order: number;
   description: string;
 }> = [
-  { slug: "ai", titleEn: "AI", titleVi: "AI", titleId: "AI", color: "var(--ai)", icon: "spark", order: 1, description: "Frontier models, infrastructure, and the policy that shapes them." },
-  { slug: "startups", titleEn: "Startups", titleVi: "Khởi nghiệp", titleId: "Startup", color: "var(--startups)", icon: "trend-up", order: 2, description: "Term sheets, IPOs, layoffs, and the operators building the next wave." },
-  { slug: "asia", titleEn: "Asia", titleVi: "Châu Á", titleId: "Asia", color: "var(--asia)", icon: "asia", order: 3, description: "Our flagship beat. Geopolitics, capital flows, product launches." },
-  { slug: "dev", titleEn: "Dev", titleVi: "Lập trình", titleId: "Pengembang", color: "var(--dev)", icon: "code", order: 4, description: "Engineering practice. Tools, frameworks, trade-offs in production." },
-  { slug: "products", titleEn: "Products", titleVi: "Sản phẩm", titleId: "Produk", color: "var(--products)", icon: "product", order: 5, description: "Independent reviews of phones, laptops, audio, and wearables." },
-  { slug: "policy", titleEn: "Policy", titleVi: "Chính sách", titleId: "Kebijakan", color: "var(--policy)", icon: "policy", order: 6, description: "Trade rules, export controls, central banks, regulators." },
+  { slug: "ai", titleEn: "AI", titleVi: "AI", titleId: "AI", heading: "Artificial Intelligence", color: "var(--ai)", icon: "spark", order: 1, description: "Frontier models, infrastructure, and the policy that shapes them. Reported across Seoul, Singapore, Bengaluru, and Hangzhou." },
+  { slug: "startups", titleEn: "Startups", titleVi: "Khởi nghiệp", titleId: "Startup", heading: "Startups & Capital", color: "var(--startups)", icon: "trend-up", order: 2, description: "Term sheets, IPOs, layoffs, and the operators building the next wave across ASEAN, India, and Greater China." },
+  { slug: "asia", titleEn: "Asia", titleVi: "Châu Á", titleId: "Asia", heading: "Asia", color: "var(--asia)", icon: "asia", order: 3, description: "Our flagship beat. Geopolitics, capital flows, and product launches across the most consequential tech region of the decade." },
+  { slug: "dev", titleEn: "Dev", titleVi: "Lập trình", titleId: "Pengembang", heading: "Developers", color: "var(--dev)", icon: "code", order: 4, description: "Engineering practice. Tools, frameworks, and the trade-offs teams are actually making in production." },
+  { slug: "products", titleEn: "Products", titleVi: "Sản phẩm", titleId: "Produk", heading: "Products & Reviews", color: "var(--products)", icon: "product", order: 5, description: "Independent reviews of phones, laptops, audio, and wearables. Affiliate-disclosed. Manufacturers do not approve our copy." },
+  { slug: "policy", titleEn: "Policy", titleVi: "Chính sách", titleId: "Kebijakan", heading: "Policy & Regulation", color: "var(--policy)", icon: "policy", order: 6, description: "Trade rules, export controls, central-bank decisions, and the regulators who write them — covered as the technology beat they have become." },
 ];
 
 const AUTHORS: ReadonlyArray<{ name: string; role: string; city: string }> = [
@@ -330,12 +331,41 @@ async function seed() {
   const payload = await getPayload({ config });
   console.log("[seed] connected");
 
+  // 0. First editorial admin (idempotent) — so a fresh DB can log into /admin
+  //    without the create-first-user dance. Set SEED_ADMIN_EMAIL +
+  //    SEED_ADMIN_PASSWORD in .env.local. Skipped if unset or already present.
+  const adminEmail = process.env.SEED_ADMIN_EMAIL;
+  const adminPassword = process.env.SEED_ADMIN_PASSWORD;
+  if (adminEmail && adminPassword) {
+    const existing = await payload.find({
+      collection: "users",
+      where: { email: { equals: adminEmail } },
+      limit: 1,
+    });
+    if (existing.docs.length === 0) {
+      await payload.create({
+        collection: "users",
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        data: { email: adminEmail, password: adminPassword, name: "DTW Admin", role: "admin" } as any,
+        context: { disableRevalidate: true },
+      });
+      console.log(`[seed] admin user created: ${adminEmail}`);
+    } else {
+      console.log(`[seed] admin user already exists: ${adminEmail}`);
+    }
+  } else {
+    console.log(
+      "[seed] SEED_ADMIN_EMAIL/SEED_ADMIN_PASSWORD not set — skipping admin seed (use /admin create-first-user instead)"
+    );
+  }
+
   // 1. Pillars
   const pillarIds = new Map<string, string | number>();
   for (const p of PILLARS) {
     const id = await upsert(payload, "pillars", { slug: { equals: p.slug } }, {
       slug: p.slug,
       title: { en: p.titleEn, vi: p.titleVi, id: p.titleId },
+      heading: p.heading,
       color: p.color,
       icon: p.icon,
       order: p.order,
