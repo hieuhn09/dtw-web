@@ -1,9 +1,27 @@
-"use client";
-
-import { use } from "react";
 import Link from "next/link";
+import { getCorrections } from "@/lib/payload-server";
+
+export const revalidate = 300;
 
 type TrustSlug = "editorial" | "ai" | "corrections" | "transparency" | "sponsored";
+
+interface CorrectionView {
+  d: string;
+  art: string;
+  summary: string;
+  was: string;
+  now: string;
+  editor?: string;
+}
+
+function fmtCorrectionDate(iso: string): string {
+  return new Date(iso).toLocaleDateString("en-GB", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+    timeZone: "Asia/Singapore",
+  });
+}
 
 interface TrustPageContent {
   title: string;
@@ -123,37 +141,28 @@ const PAGES: Record<TrustSlug, TrustPageContent> = {
   },
 };
 
-const CORRECTIONS = [
-  {
-    d: "22 May 2026",
-    art: "VNG cloud arm files for a Singapore listing…",
-    was: "…revenue grew 41% YoY",
-    now: "…revenue grew 31% YoY (per draft prospectus, page 14)",
-  },
-  {
-    d: "18 May 2026",
-    art: "Taipei's new chip export schedule…",
-    was: "…effective July 1",
-    now: "…effective August 15",
-  },
-  {
-    d: "05 May 2026",
-    art: "How an ASEAN insurer rebuilt…",
-    was: "…in 18 months",
-    now: "…in 18 weeks (sponsor confirmed)",
-  },
-  {
-    d: "29 Apr 2026",
-    art: "Server Actions in production…",
-    was: "three regrets, two quiet successes",
-    now: "three regrets, one quiet success",
-  },
-] as const;
-
-function CorrectionsLog() {
+function CorrectionsLog({ items }: { items: ReadonlyArray<CorrectionView> }) {
+  if (items.length === 0) {
+    return (
+      <div
+        style={{
+          padding: "32px 24px",
+          border: "1px dashed var(--hair-2)",
+          borderRadius: 6,
+          color: "var(--muted)",
+          fontSize: 15,
+          lineHeight: 1.6,
+        }}
+      >
+        No corrections have been issued yet. When we correct a published article,
+        the change is logged here in full — date, original text, and corrected
+        text — with the editor who signed it off.
+      </div>
+    );
+  }
   return (
     <div>
-      {CORRECTIONS.map((c, i) => (
+      {items.map((c, i) => (
         <div key={i} style={{ padding: "18px 0", borderBottom: "1px solid var(--hair)" }}>
           <div className="mono text-mute" style={{ fontSize: 11, marginBottom: 6 }}>
             {c.d}
@@ -164,6 +173,11 @@ function CorrectionsLog() {
           >
             {c.art}
           </div>
+          {c.summary && (
+            <div className="text-mute" style={{ fontSize: 14, marginBottom: 10 }}>
+              {c.summary}
+            </div>
+          )}
           <div
             style={{
               display: "grid",
@@ -186,20 +200,37 @@ function CorrectionsLog() {
             </span>
             <span style={{ color: "var(--ink)" }}>{c.now}</span>
           </div>
+          {c.editor && (
+            <div className="text-mute-2 mono" style={{ fontSize: 11, marginTop: 8 }}>
+              Signed off by {c.editor}
+            </div>
+          )}
         </div>
       ))}
     </div>
   );
 }
 
-export default function TrustPage({
+export default async function TrustPage({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }) {
-  const { slug } = use(params);
+  const { slug } = await params;
   const key = (slug as TrustSlug) in PAGES ? (slug as TrustSlug) : "editorial";
   const page = PAGES[key];
+
+  const corrections: CorrectionView[] =
+    key === "corrections"
+      ? (await getCorrections()).map((c) => ({
+          d: fmtCorrectionDate(c.correctionDate),
+          art: typeof c.article === "object" && c.article ? c.article.title : "",
+          summary: c.summary,
+          was: c.wasText,
+          now: c.nowText,
+          editor: typeof c.editor === "object" && c.editor ? c.editor.name : undefined,
+        }))
+      : [];
 
   return (
     <div className="container" style={{ paddingTop: 24, paddingBottom: 48 }}>
@@ -259,7 +290,7 @@ export default function TrustPage({
           </h1>
 
           {key === "corrections" ? (
-            <CorrectionsLog />
+            <CorrectionsLog items={corrections} />
           ) : (
             <div style={{ fontFamily: "var(--font-serif)" }}>
               {page.body?.map(([h, text]) => (

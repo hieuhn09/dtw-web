@@ -2,7 +2,7 @@ import "server-only";
 import { unstable_cache } from "next/cache";
 import { getPayload } from "payload";
 import config from "../../payload.config";
-import type { Article, Pillar, Author, WireDrop, Tag } from "../payload/payload-types";
+import type { Article, Pillar, Author, WireDrop, Tag, Correction } from "../payload/payload-types";
 
 /**
  * Server-side Payload client + cached query helpers.
@@ -184,4 +184,19 @@ export const getWireDrops = unstable_cache(
   { tags: ["wire-drops"], revalidate: 30 }
 );
 
-export type { Article, Pillar, Author, WireDrop, Tag };
+export const getCorrections = unstable_cache(
+  async (): Promise<Correction[]> => {
+    const p = await payload();
+    const r = await p.find({
+      collection: "corrections",
+      sort: "-correctionDate",
+      limit: 200,
+      depth: 1, // expand the article (title/slug) + editor (name)
+    });
+    return r.docs;
+  },
+  ["corrections:all"],
+  { tags: ["corrections:all"], revalidate: 300 }
+);
+
+export type { Article, Pillar, Author, WireDrop, Tag, Correction };
