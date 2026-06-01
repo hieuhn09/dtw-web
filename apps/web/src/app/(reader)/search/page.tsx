@@ -1,37 +1,23 @@
 "use client";
 
-import { Suspense, useMemo, useState, type ReactNode } from "react";
+import { Suspense, useEffect, useState, type ReactNode } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { PillarTag } from "@dtw/ui";
 import { CoverArt } from "@/components/cover-art";
 import { TimeAgo } from "@/components/time-ago";
-import { ARTICLES, PILLARS, pillarOf, type PillarId } from "@/lib/data";
+import { PILLARS, pillarOf, type PillarId } from "@/lib/data";
+import type { ArticleView } from "@/lib/article-view";
 import { fmtDateL, localizedPillarLabel, useLang, useT } from "@/lib/i18n";
+import { runSearch } from "./search-action";
 
-const DATE_RANGES = [
-  ["any", "Any time"],
-  ["24h", "Last 24h"],
-  ["7d", "Last 7 days"],
-  ["30d", "Last 30 days"],
-  ["12m", "Last 12 months"],
-] as const;
-
-const TYPES = [
-  ["any", "Anything"],
-  ["article", "Articles"],
-  ["dashboard", "Dashboards"],
-  ["author", "Authors"],
-  ["award", "Awards"],
-] as const;
-
-const TRENDING = [
-  "sovereign AI Singapore",
-  "VNG IPO Singapore",
-  "TSMC advanced packaging",
-  "UPI Vietnam bilateral",
-  "Tokopedia Grab layoffs",
-  "ERNIE-X open weights",
+const SUGGESTED = [
+  "sovereign AI",
+  "VNG",
+  "TSMC",
+  "datacenter",
+  "open weights",
+  "server actions",
 ];
 
 function FacetBlock({ title, children }: { title: string; children: ReactNode }) {
@@ -62,22 +48,30 @@ function SearchInner() {
   const { lang } = useLang();
   const [q, setQ] = useState<string>(params.get("q") ?? "");
   const [pillar, setPillar] = useState<"All" | PillarId>("All");
-  const [dateRange, setDateRange] = useState<string>("any");
-  const [type, setType] = useState<string>("any");
+  const [allResults, setAllResults] = useState<ReadonlyArray<ArticleView>>([]);
+  const [loading, setLoading] = useState(false);
 
-  const results = useMemo(() => {
-    let r = ARTICLES;
-    if (q.trim()) {
-      const Q = q.toLowerCase();
-      r = r.filter(
-        (a) => a.title.toLowerCase().includes(Q) || a.dek.toLowerCase().includes(Q)
-      );
+  // Debounced DB search via the server action. Pillar narrowing happens
+  // client-side on the returned set (small, capped) so the facet stays instant.
+  useEffect(() => {
+    const query = q.trim();
+    if (!query) {
+      setAllResults([]);
+      setLoading(false);
+      return;
     }
-    if (pillar !== "All") {
-      r = r.filter((a) => a.pillar === pillar);
-    }
-    return r;
-  }, [q, pillar]);
+    setLoading(true);
+    const id = setTimeout(() => {
+      runSearch(query)
+        .then((r) => setAllResults(r))
+        .catch(() => setAllResults([]))
+        .finally(() => setLoading(false));
+    }, 220);
+    return () => clearTimeout(id);
+  }, [q]);
+
+  const results =
+    pillar === "All" ? allResults : allResults.filter((a) => a.pillar === pillar);
 
   return (
     <div className="container" style={{ paddingTop: 24, paddingBottom: 48 }}>
@@ -91,9 +85,9 @@ function SearchInner() {
             onChange={(e) => setQ(e.target.value)}
             autoFocus
             placeholder={t(
-              "Search stories, dashboards, authors, awards…",
-              "Tìm bài, bảng, tác giả, giải thưởng…",
-              "Cari artikel, dasbor, penulis, penghargaan…"
+              "Search published stories…",
+              "Tìm bài đã đăng…",
+              "Cari artikel terbit…"
             )}
             style={{
               flex: 1,
@@ -108,7 +102,9 @@ function SearchInner() {
             }}
           />
           <span className="text-mute mono" style={{ fontSize: 11 }}>
-            {results.length} {t("matches", "kết quả", "hasil")} · 134ms
+            {loading
+              ? t("Searching…", "Đang tìm…", "Mencari…")
+              : `${results.length} ${t("matches", "kết quả", "hasil")}`}
           </span>
         </div>
       </div>
@@ -153,55 +149,9 @@ function SearchInner() {
                   style={{ fontSize: 10, marginLeft: "auto" }}
                 >
                   {p === "All"
-                    ? ARTICLES.length
-                    : ARTICLES.filter((a) => a.pillar === p).length}
+                    ? allResults.length
+                    : allResults.filter((a) => a.pillar === p).length}
                 </span>
-              </button>
-            ))}
-          </FacetBlock>
-
-          <FacetBlock title={t("Date", "Ngày", "Tanggal")}>
-            {DATE_RANGES.map(([k, l]) => (
-              <button
-                key={k}
-                onClick={() => setDateRange(k)}
-                style={{
-                  display: "block",
-                  width: "100%",
-                  textAlign: "left",
-                  padding: "6px 8px",
-                  background: dateRange === k ? "var(--surface-2)" : "transparent",
-                  border: "none",
-                  borderRadius: 4,
-                  fontSize: 13,
-                  cursor: "pointer",
-                  color: "var(--ink)",
-                }}
-              >
-                {l}
-              </button>
-            ))}
-          </FacetBlock>
-
-          <FacetBlock title={t("Type", "Loại", "Tipe")}>
-            {TYPES.map(([k, l]) => (
-              <button
-                key={k}
-                onClick={() => setType(k)}
-                style={{
-                  display: "block",
-                  width: "100%",
-                  textAlign: "left",
-                  padding: "6px 8px",
-                  background: type === k ? "var(--surface-2)" : "transparent",
-                  border: "none",
-                  borderRadius: 4,
-                  fontSize: 13,
-                  cursor: "pointer",
-                  color: "var(--ink)",
-                }}
-              >
-                {l}
               </button>
             ))}
           </FacetBlock>
@@ -213,24 +163,16 @@ function SearchInner() {
               border: "1px solid var(--hair)",
               borderRadius: 6,
               marginTop: 18,
+              fontSize: 12,
+              color: "var(--muted)",
+              lineHeight: 1.45,
             }}
           >
-            <div
-              className="mono upper text-mute"
-              style={{
-                fontSize: 9,
-                fontWeight: 600,
-                letterSpacing: ".14em",
-                textTransform: "uppercase",
-              }}
-            >
-              Powered by Meilisearch
-            </div>
-            <div
-              style={{ fontSize: 12, color: "var(--ink)", marginTop: 6, lineHeight: 1.45 }}
-            >
-              Typo-tolerant. EN · ID · VI. Indexed across articles, dashboards, awards, and people.
-            </div>
+            {t(
+              "Searches published article titles and standfirsts. Typo-tolerant search and more filters are coming.",
+              "Tìm trong tiêu đề và sapo của bài đã đăng. Tìm kiếm chịu lỗi gõ và bộ lọc thêm sẽ có sau.",
+              "Mencari judul dan standfirst artikel terbit. Pencarian toleran typo dan filter lain menyusul."
+            )}
           </div>
         </aside>
 
@@ -238,10 +180,10 @@ function SearchInner() {
           {!q.trim() && (
             <div style={{ padding: "32px 0" }}>
               <div className="kicker text-mute" style={{ marginBottom: 14 }}>
-                {t("Trending searches", "Tìm kiếm phổ biến", "Pencarian populer")}
+                {t("Try searching", "Thử tìm", "Coba cari")}
               </div>
               <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-                {TRENDING.map((tt) => (
+                {SUGGESTED.map((tt) => (
                   <button
                     key={tt}
                     onClick={() => setQ(tt)}
@@ -255,7 +197,7 @@ function SearchInner() {
             </div>
           )}
 
-          {q.trim() && results.length === 0 && (
+          {q.trim() && !loading && results.length === 0 && (
             <div
               style={{
                 padding: "40px 24px",
@@ -269,9 +211,9 @@ function SearchInner() {
               </div>
               <div className="text-mute" style={{ fontSize: 13 }}>
                 {t(
-                  "We log empty queries so editors know what we're missing. Try fewer words.",
-                  "Chúng tôi ghi nhận truy vấn rỗng để biên tập biết còn thiếu gì. Thử ít từ hơn.",
-                  "Kami mencatat kueri kosong agar editor tahu yang masih kurang. Coba kata yang lebih sedikit."
+                  "Try a different keyword.",
+                  "Thử từ khóa khác.",
+                  "Coba kata kunci lain."
                 )}
               </div>
             </div>
@@ -297,6 +239,7 @@ function SearchInner() {
                   <CoverArt
                     pillar={a.pillar}
                     seed={a.id}
+                    src={a.heroImageUrl}
                     variant={a.id.charCodeAt(0) % 6}
                     height={110}
                   />
@@ -355,8 +298,7 @@ function SearchInner() {
 /**
  * `useSearchParams()` forces this subtree to render client-side, so Next 15
  * requires a Suspense boundary around it or the whole route bails out of static
- * generation and the production build errors. The fallback is the bare page
- * shell; the interactive search hydrates inside it.
+ * generation and the production build errors.
  */
 export default function SearchPage() {
   return (

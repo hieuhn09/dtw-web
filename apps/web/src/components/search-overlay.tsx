@@ -5,14 +5,18 @@ import { useRouter } from "next/navigation";
 import { Icon } from "@/components/icons";
 import { useT } from "@/lib/i18n";
 import { useShell } from "@/lib/shell";
-import { ARTICLES } from "@/lib/data";
+import { runSearch } from "@/app/(reader)/search/search-action";
+import type { ArticleView } from "@/lib/article-view";
 
-/** Cmd/Ctrl+K overlay. Phase 1 stub — full Meilisearch wiring later. */
+const SUGGESTED = ["sovereign AI", "VNG", "TSMC", "datacenter", "open weights"];
+
+/** Cmd/Ctrl+K overlay — DB-backed search via the runSearch server action. */
 export function SearchOverlay() {
   const t = useT();
   const router = useRouter();
   const { searchOpen, closeSearch } = useShell();
   const [q, setQ] = useState("");
+  const [hits, setHits] = useState<ReadonlyArray<ArticleView>>([]);
 
   useEffect(() => {
     if (!searchOpen) setQ("");
@@ -26,14 +30,21 @@ export function SearchOverlay() {
     return () => window.removeEventListener("keydown", onKey);
   }, [closeSearch]);
 
-  if (!searchOpen) return null;
+  useEffect(() => {
+    const ql = q.trim();
+    if (!ql) {
+      setHits([]);
+      return;
+    }
+    const id = setTimeout(() => {
+      runSearch(ql)
+        .then((r) => setHits(r.slice(0, 8)))
+        .catch(() => setHits([]));
+    }, 200);
+    return () => clearTimeout(id);
+  }, [q]);
 
-  const ql = q.trim().toLowerCase();
-  const hits = ql
-    ? ARTICLES.filter(
-        (a) => a.title.toLowerCase().includes(ql) || a.dek.toLowerCase().includes(ql)
-      ).slice(0, 8)
-    : [];
+  if (!searchOpen) return null;
 
   return (
     <div
@@ -82,9 +93,9 @@ export function SearchOverlay() {
               }
             }}
             placeholder={t(
-              "Search stories, dashboards, awards…",
-              "Tìm bài, bảng, giải thưởng…",
-              "Cari artikel, dasbor, penghargaan…"
+              "Search published stories…",
+              "Tìm bài đã đăng…",
+              "Cari artikel terbit…"
             )}
             style={{
               flex: 1,
@@ -112,37 +123,30 @@ export function SearchOverlay() {
         </div>
 
         <div style={{ maxHeight: "50vh", overflow: "auto" }}>
-          {hits.length === 0 ? (
+          {q.trim() === "" ? (
             <div style={{ padding: 20 }}>
               <div
                 className="mono upper text-mute"
                 style={{ fontSize: 10, marginBottom: 10, letterSpacing: ".14em" }}
               >
-                {t("Trending", "Đang hot", "Sedang tren")}
+                {t("Try searching", "Thử tìm", "Coba cari")}
               </div>
-              {ARTICLES.slice(0, 5).map((a) => (
-                <button
-                  key={a.id}
-                  onClick={() => {
-                    router.push(`/article/${a.slug}`);
-                    closeSearch();
-                  }}
-                  style={{
-                    display: "block",
-                    width: "100%",
-                    textAlign: "left",
-                    padding: "8px 10px",
-                    background: "transparent",
-                    border: "none",
-                    fontSize: 13,
-                    color: "var(--ink)",
-                    cursor: "pointer",
-                    borderRadius: 4,
-                  }}
-                >
-                  {a.title}
-                </button>
-              ))}
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+                {SUGGESTED.map((s) => (
+                  <button
+                    key={s}
+                    onClick={() => setQ(s)}
+                    className="pill"
+                    style={{ cursor: "pointer", border: "1px solid var(--hair-2)" }}
+                  >
+                    {s}
+                  </button>
+                ))}
+              </div>
+            </div>
+          ) : hits.length === 0 ? (
+            <div className="text-mute" style={{ padding: 20, fontSize: 13 }}>
+              {t("No results yet…", "Chưa có kết quả…", "Belum ada hasil…")}
             </div>
           ) : (
             hits.map((a) => (

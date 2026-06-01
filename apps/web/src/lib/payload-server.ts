@@ -133,6 +133,32 @@ export async function getArticleBySlugDraft(slug: string): Promise<Article | nul
   return r.docs[0] ?? null;
 }
 
+/**
+ * Full-text-ish article search — Postgres `like` on title + dek, published only.
+ * Uncached (results are per-query and low-traffic). No Meilisearch: substring
+ * match, not typo-tolerant — sufficient for a launch-size archive; Meilisearch
+ * is a later (P2) upgrade once the archive and query volume grow.
+ */
+export async function searchArticles(q: string, limit = 40): Promise<Article[]> {
+  const query = q.trim();
+  const p = await payload();
+  const r = await p.find({
+    collection: "articles",
+    where: query
+      ? {
+          and: [
+            { _status: { equals: "published" } },
+            { or: [{ title: { like: query } }, { dek: { like: query } }] },
+          ],
+        }
+      : { _status: { equals: "published" } },
+    sort: "-publishedAt",
+    limit,
+    depth: 1,
+  });
+  return r.docs;
+}
+
 export const getDeepDive = unstable_cache(
   async (): Promise<Article | null> => {
     const p = await payload();
