@@ -109,8 +109,7 @@ export function FundingTracker() {
             Asia Funding Tracker
           </h2>
           <div className="text-mute mono" style={{ fontSize: 11 }}>
-            <span className="live-dot" style={{ marginRight: 6 }} />
-            Last update 12:42 SGT · next in 14 min · 138 instruments tracked
+            Sample data — live market feed coming soon
           </div>
         </div>
         <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
