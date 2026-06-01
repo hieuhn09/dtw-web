@@ -32,7 +32,8 @@ export default function StudioPage() {
           color: "var(--muted)",
         }}
       >
-        This page is wired through the CMS – editors update content without a deploy.
+        Partnership enquiries: studio@dailytechwire.asia. Every Studio piece carries a Paid
+        Partner disclosure, top to bottom.
       </div>
     </div>
   );

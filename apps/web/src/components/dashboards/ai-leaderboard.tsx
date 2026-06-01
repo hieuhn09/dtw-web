@@ -130,7 +130,7 @@ export function AILeaderboard() {
             AI Leaderboard
           </h2>
           <div className="text-mute mono" style={{ fontSize: 11 }}>
-            Sort by what you actually use the model for · 18 models tracked · methodology disclosed
+            Sort by what you actually use the model for · sample data, preview
           </div>
         </div>
         <div style={{ display: "flex", gap: 6, alignItems: "center" }}>

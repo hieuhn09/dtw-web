@@ -46,7 +46,7 @@ export default function DashboardsPage({
               gap: 8,
             }}
           >
-            <span className="live-dot" /> Data Desk · Live
+            Data Desk · Preview
           </div>
           <h1
             className="serif"
@@ -58,14 +58,14 @@ export default function DashboardsPage({
               lineHeight: 1,
             }}
           >
-            Live Dashboards
+            Dashboards
           </h1>
           <p
             className="serif text-mute"
             style={{ margin: 0, fontSize: 17, lineHeight: 1.45, maxWidth: 760 }}
           >
-            Two trackers that move with the news. Built from filings, scraped tickers, and a
-            handful of human checks. Updated every 15 minutes.
+            Two trackers in development — Asia tech markets and an AI model leaderboard. The
+            figures shown are sample data while we wire up the feeds. Coming soon.
           </p>
         </div>
       </header>

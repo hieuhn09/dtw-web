@@ -17,11 +17,11 @@ export function DashboardsTeaser() {
   return (
     <section style={{ marginBottom: 48 }}>
       <SectionHeader
-        title={t("Live Dashboards", "Bảng điều khiển trực tiếp", "Dasbor Langsung")}
+        title={t("Dashboards", "Bảng dữ liệu", "Dasbor")}
         kicker={t(
-          "Data desk · updated every 15 min",
-          "Bàn dữ liệu · cập nhật mỗi 15 phút",
-          "Meja data · diperbarui tiap 15 menit"
+          "Data desk · preview",
+          "Bàn dữ liệu · bản xem trước",
+          "Meja data · pratinjau"
         )}
         right={
           <Button href="/dashboards" size="sm" variant="outline">
