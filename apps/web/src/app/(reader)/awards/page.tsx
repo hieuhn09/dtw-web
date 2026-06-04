@@ -78,7 +78,7 @@ export default function AwardsPage() {
             transform: "translate(-50%,-50%)",
             fontFamily: "var(--font-serif)",
             fontWeight: 700,
-            fontSize: 440,
+            fontSize: "clamp(110px, 40vw, 440px)",
             lineHeight: 1,
             letterSpacing: "-0.05em",
             color: "color-mix(in oklab, var(--paper) 4%, transparent)",
@@ -138,7 +138,7 @@ export default function AwardsPage() {
             className="serif"
             style={{
               margin: "0 auto 14px",
-              fontSize: 96,
+              fontSize: "clamp(48px, 14vw, 96px)",
               fontWeight: 500,
               letterSpacing: "-0.03em",
               lineHeight: 0.95,

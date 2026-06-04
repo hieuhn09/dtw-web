@@ -8,7 +8,7 @@ export default function StudioPage() {
         className="serif"
         style={{
           margin: "0 0 18px",
-          fontSize: 48,
+          fontSize: "clamp(30px, 8vw, 48px)",
           fontWeight: 700,
           letterSpacing: "-0.025em",
           lineHeight: 1.05,

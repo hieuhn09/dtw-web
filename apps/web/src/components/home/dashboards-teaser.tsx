@@ -33,7 +33,7 @@ export function DashboardsTeaser() {
           </Button>
         }
       />
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 320px), 1fr))", gap: 24 }}>
         {/* Asia Funding teaser */}
         <Link
           href="/dashboards/funding"

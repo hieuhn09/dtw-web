@@ -70,10 +70,9 @@ export function Footer() {
       {/* Newsletter strip */}
       <div style={{ borderBottom: "1px solid var(--hair)" }}>
         <div
-          className="container"
+          className="container r-footer-news"
           style={{
             display: "grid",
-            gridTemplateColumns: "1fr 1fr",
             gap: 48,
             alignItems: "center",
             padding: "40px 24px",
@@ -137,11 +136,10 @@ export function Footer() {
 
       {/* Cols */}
       <div
-        className="container"
+        className="container r-footer-cols"
         style={{
           padding: "48px 24px",
           display: "grid",
-          gridTemplateColumns: "1.4fr 1fr 1fr 1fr 1fr",
           gap: 32,
         }}
       >

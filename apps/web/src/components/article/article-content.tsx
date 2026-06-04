@@ -117,7 +117,7 @@ export function ArticleContent({ article, body, related }: ArticleContentProps) 
           className="serif"
           style={{
             margin: "0 0 18px",
-            fontSize: 54,
+            fontSize: "clamp(28px, 7vw, 54px)",
             fontWeight: 700,
             letterSpacing: "-0.028em",
             lineHeight: 1.05,
@@ -163,7 +163,7 @@ export function ArticleContent({ article, body, related }: ArticleContentProps) 
             alt={article.heroImageAlt ?? article.title}
             style={{
               width: "100%",
-              height: 520,
+              height: "clamp(220px, 50vw, 520px)",
               objectFit: "cover",
               borderRadius: 8,
               display: "block",

@@ -52,7 +52,7 @@ export default function DashboardsPage({
             className="serif"
             style={{
               margin: "0 0 10px",
-              fontSize: 48,
+              fontSize: "clamp(30px, 8vw, 48px)",
               fontWeight: 700,
               letterSpacing: "-0.025em",
               lineHeight: 1,
@@ -106,10 +106,10 @@ export default function DashboardsPage({
 
       {/* Methodology + sponsor slot */}
       <section
+        className="r-split-21"
         style={{
           marginTop: 48,
           display: "grid",
-          gridTemplateColumns: "2fr 1fr",
           gap: 24,
         }}
       >

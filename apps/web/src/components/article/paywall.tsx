@@ -87,7 +87,7 @@ export function Paywall({ onLogin }: PaywallProps) {
           paddingTop: 24,
           borderTop: "1px solid var(--hair)",
           display: "grid",
-          gridTemplateColumns: "repeat(3, 1fr)",
+          gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 150px), 1fr))",
           gap: 18,
           textAlign: "left",
         }}

@@ -15,7 +15,7 @@ export function NewsletterCta() {
           borderRadius: 8,
           padding: "48px",
           display: "grid",
-          gridTemplateColumns: "1.4fr 1fr",
+          gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 280px), 1fr))",
           gap: 48,
           alignItems: "center",
           position: "relative",

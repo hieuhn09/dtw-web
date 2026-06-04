@@ -109,7 +109,7 @@ function SearchInner() {
         </div>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "220px 1fr", gap: 36 }}>
+      <div className="r-sidebar" style={{ display: "grid", gap: 36 }}>
         <aside style={{ position: "sticky", top: 160, alignSelf: "flex-start" }}>
           <FacetBlock title={t("Pillar", "Chuyên mục", "Pilar")}>
             {(["All", ...PILLARS.map((p) => p.id)] as Array<"All" | PillarId>).map((p) => (

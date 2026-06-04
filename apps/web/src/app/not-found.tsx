@@ -19,7 +19,7 @@ export default function NotFound() {
         className="serif"
         style={{
           margin: "0 0 14px",
-          fontSize: 60,
+          fontSize: "clamp(40px, 12vw, 60px)",
           fontWeight: 700,
           letterSpacing: "-0.03em",
         }}

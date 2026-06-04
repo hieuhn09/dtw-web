@@ -71,9 +71,9 @@ export function SponsoredStrip({ article: s }: SponsoredStripProps) {
           style={{ color: "inherit", textDecoration: "none" }}
         >
           <article
+            className="r-strip-3"
             style={{
               display: "grid",
-              gridTemplateColumns: "1fr 2fr auto",
               gap: 24,
               alignItems: "center",
               cursor: "pointer",

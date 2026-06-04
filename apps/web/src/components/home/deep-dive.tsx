@@ -27,7 +27,7 @@ export function DeepDive({ article }: DeepDiveProps) {
         <article
           style={{
             display: "grid",
-            gridTemplateColumns: "1.1fr 1fr",
+            gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 300px), 1fr))",
             gap: 40,
             alignItems: "center",
             cursor: "pointer",

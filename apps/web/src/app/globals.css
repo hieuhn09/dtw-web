@@ -125,6 +125,13 @@ img {
   font-family: var(--font-serif);
   font-feature-settings: "ss01", "ss02";
 }
+/* Headings must wrap long tokens instead of overflowing on narrow screens. */
+h1,
+h2,
+h3,
+h4 {
+  overflow-wrap: break-word;
+}
 .mono {
   font-family: var(--font-mono);
 }
@@ -151,6 +158,199 @@ img {
     padding-left: 16px;
     padding-right: 16px;
   }
+}
+
+/* ---------------------------------------------------------------------------
+   Responsive layout system.
+   Components author DESKTOP values inline; these classes override the grid at
+   tablet (<=1024px) and phone (<=640px) so layouts COLLAPSE instead of
+   overflowing the viewport. A class only wins over an inline style when the
+   inline style does NOT set the same property — so any component using these
+   must drop its inline `grid-template-columns` and keep only `display:grid`
+   (+ gap) inline. Breakpoints: phone <=640, tablet <=1024, desktop >1024.
+   See process/context/uxui/all-uxui.md.
+   --------------------------------------------------------------------------- */
+
+/* Safety net: clip (not hidden) keeps the sticky header working while still
+   preventing a stray wide child from creating a horizontal scrollbar. */
+body {
+  overflow-x: clip;
+}
+
+/* Header desktop/mobile swap (hamburger menu appears <=900px). */
+.desktop-only {
+  display: flex;
+}
+.mobile-only {
+  display: none;
+}
+@media (max-width: 900px) {
+  .desktop-only {
+    display: none !important;
+  }
+  .mobile-only {
+    display: flex !important;
+  }
+  /* Top utility strip: keep only the date (left) and language picker (right).
+     !important is needed because some of these children carry an inline
+     display value that would otherwise win over the stylesheet. */
+  .util-left > *:not(:first-child) {
+    display: none !important;
+  }
+  .util-right > *:not(:last-child) {
+    display: none !important;
+  }
+  /* Pillar nav row: hide the (overflowing) nav, keep the ink bottom rule.
+     The hamburger drawer owns navigation on mobile. !important beats the
+     inline display:flex on the inner container. */
+  .pillar-nav-row > .container {
+    display: none !important;
+  }
+}
+
+/* Symmetric card grids: 4->2->1 and 3->2->1 and 2->1. */
+.r-grid-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+.r-grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+.r-grid-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+@media (max-width: 1024px) {
+  .r-grid-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .r-grid-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 640px) {
+  .r-grid-4,
+  .r-grid-3,
+  .r-grid-2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Hero: lead + "also leading" rail -> single column. */
+.r-hero {
+  grid-template-columns: 1.7fr 1fr;
+}
+@media (max-width: 900px) {
+  .r-hero {
+    grid-template-columns: 1fr;
+  }
+  .r-hero-aside {
+    border-inline-start: none !important;
+    padding-inline-start: 0 !important;
+  }
+}
+@media (max-width: 480px) {
+  .r-hero-item {
+    grid-template-columns: 1fr 84px !important;
+  }
+}
+
+/* Brief band: label | brief | brief | button. */
+.r-brief {
+  grid-template-columns: 200px 1fr 1fr 150px;
+}
+@media (max-width: 860px) {
+  .r-brief {
+    grid-template-columns: 1fr 1fr;
+  }
+  .r-brief-divider {
+    display: none !important;
+  }
+}
+@media (max-width: 560px) {
+  .r-brief {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Asymmetric "main + side" patterns -> stack. */
+.r-split-12 {
+  grid-template-columns: 1fr 2fr;
+}
+.r-split-21 {
+  grid-template-columns: 2fr 1fr;
+}
+@media (max-width: 820px) {
+  .r-split-12,
+  .r-split-21 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Feature block (cover image | headline) -> stack on tablet/phone. */
+.r-feature {
+  grid-template-columns: 1.3fr 1fr;
+}
+@media (max-width: 768px) {
+  .r-feature {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Fixed-width sidebar + content (facets, account nav, trust nav) -> stack. */
+.r-sidebar {
+  grid-template-columns: 220px 1fr;
+}
+@media (max-width: 768px) {
+  .r-sidebar {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Sponsored strip (img | text | cta) + awards (medallion | text | cta). */
+.r-strip-3 {
+  grid-template-columns: 1fr 2fr auto;
+}
+.r-awards {
+  grid-template-columns: auto 1fr auto;
+}
+@media (max-width: 720px) {
+  .r-strip-3 {
+    grid-template-columns: 1fr;
+  }
+  .r-awards {
+    grid-template-columns: 1fr;
+    justify-items: start;
+  }
+}
+
+/* Footer grids. */
+.r-footer-news {
+  grid-template-columns: 1fr 1fr;
+}
+.r-footer-cols {
+  grid-template-columns: 1.4fr 1fr 1fr 1fr 1fr;
+}
+@media (max-width: 860px) {
+  .r-footer-cols {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+@media (max-width: 640px) {
+  .r-footer-news {
+    grid-template-columns: 1fr;
+  }
+  .r-footer-cols {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Wide data tables: scroll horizontally inside their card instead of pushing
+   the whole page wide. */
+.r-table-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.r-table-scroll > table {
+  min-width: 680px;
 }
 
 .kicker {

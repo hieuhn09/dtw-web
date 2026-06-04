@@ -90,7 +90,7 @@ export function PillarContent({
           className="serif"
           style={{
             margin: "0 0 12px",
-            fontSize: 64,
+            fontSize: "clamp(32px, 9vw, 64px)",
             fontWeight: 700,
             letterSpacing: "-0.03em",
             lineHeight: 1,
@@ -178,9 +178,9 @@ export function PillarContent({
       {featured && (
         <Link href={`/article/${featured.slug}`} style={{ color: "inherit", textDecoration: "none" }}>
           <article
+            className="r-feature"
             style={{
               display: "grid",
-              gridTemplateColumns: "1.3fr 1fr",
               gap: 36,
               cursor: "pointer",
               marginBottom: 48,
@@ -204,7 +204,7 @@ export function PillarContent({
                 className="serif"
                 style={{
                   margin: "0 0 14px",
-                  fontSize: 42,
+                  fontSize: "clamp(26px, 6vw, 42px)",
                   fontWeight: 700,
                   letterSpacing: "-0.025em",
                   lineHeight: 1.05,
@@ -222,7 +222,7 @@ export function PillarContent({
       )}
 
       {/* Grid */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 32 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 260px), 1fr))", gap: 32 }}>
         {paged.map((a, i) => (
           <Link
             key={a.id}

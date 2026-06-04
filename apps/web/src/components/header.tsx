@@ -28,6 +28,7 @@ export function Header() {
 
   const [scrolled, setScrolled] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const [nudgeDismissed, setNudgeDismissed] = useState(false);
   const [dateLabel, setDateLabel] = useState<string>("");
   const headerRef = useRef<HTMLElement | null>(null);
@@ -63,6 +64,26 @@ export function Header() {
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  // Close the mobile drawer whenever the route changes.
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [pathname]);
+
+  // While the drawer is open: lock body scroll and close on Escape.
+  useEffect(() => {
+    if (!menuOpen) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMenuOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = prev;
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [menuOpen]);
 
   // Publish --header-h so other sections can fit one screen.
   useEffect(() => {
@@ -111,7 +132,7 @@ export function Header() {
           }}
         >
           <div
-            className="mono text-mute"
+            className="mono text-mute util-left"
             style={{ display: "flex", gap: 18, alignItems: "center" }}
           >
             <span suppressHydrationWarning>{dateLabel || " "}</span>
@@ -125,7 +146,7 @@ export function Header() {
               )}
             </span>
           </div>
-          <div style={{ display: "flex", gap: 14, alignItems: "center" }}>
+          <div className="util-right" style={{ display: "flex", gap: 14, alignItems: "center" }}>
             <Link
               href="/trust/editorial"
               className="linkish text-mute"
@@ -211,7 +232,7 @@ export function Header() {
         </Link>
 
         {/* Search */}
-        <div style={{ flex: 1, maxWidth: 520, display: "flex" }}>
+        <div className="desktop-only" style={{ flex: 1, maxWidth: 520 }}>
           <button
             onClick={openSearch}
             style={{
@@ -257,6 +278,7 @@ export function Header() {
         <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
           <Link
             href="/newsletters"
+            className="desktop-only"
             style={{
               padding: "9px 14px",
               border: "1px solid var(--accent)",
@@ -267,10 +289,31 @@ export function Header() {
               fontWeight: 600,
               cursor: "pointer",
               textDecoration: "none",
+              alignItems: "center",
             }}
           >
             {t("Subscribe", "Đăng ký", "Berlangganan")}
           </Link>
+
+          {/* Mobile: open the ⌘K search overlay */}
+          <button
+            className="mobile-only"
+            onClick={openSearch}
+            aria-label={t("Search", "Tìm kiếm", "Cari")}
+            style={{
+              width: 38,
+              height: 38,
+              border: "1px solid var(--hair)",
+              background: "transparent",
+              borderRadius: 5,
+              cursor: "pointer",
+              alignItems: "center",
+              justifyContent: "center",
+              color: "var(--ink)",
+            }}
+          >
+            <Icon name="search" size={16} />
+          </button>
 
           <button
             onClick={() => setTheme(isDark ? "light" : "dark")}
@@ -292,7 +335,7 @@ export function Header() {
           </button>
 
           {user ? (
-            <div style={{ position: "relative" }}>
+            <div className="desktop-only" style={{ position: "relative" }}>
               <button
                 onClick={() => setUserMenuOpen((o) => !o)}
                 style={{
@@ -417,6 +460,7 @@ export function Header() {
           ) : (
             <button
               onClick={openAuth}
+              className="desktop-only"
               style={{
                 padding: "9px 14px",
                 border: "1px solid var(--hair-2)",
@@ -426,16 +470,41 @@ export function Header() {
                 fontSize: 12,
                 fontWeight: 500,
                 cursor: "pointer",
+                alignItems: "center",
               }}
             >
               {t("Log in", "Đăng nhập", "Masuk")}
             </button>
           )}
+
+          {/* Mobile: hamburger opens the full-nav drawer */}
+          <button
+            className="mobile-only"
+            onClick={() => setMenuOpen(true)}
+            aria-label={t("Menu", "Menu", "Menu")}
+            aria-expanded={menuOpen}
+            style={{
+              width: 38,
+              height: 38,
+              border: "1px solid var(--hair)",
+              background: "transparent",
+              borderRadius: 5,
+              cursor: "pointer",
+              alignItems: "center",
+              justifyContent: "center",
+              color: "var(--ink)",
+            }}
+          >
+            <Icon name="menu" size={18} />
+          </button>
         </div>
       </div>
 
       {/* Pillar + extras nav */}
-      <div style={{ borderTop: "1px solid var(--hair)", borderBottom: "3px solid var(--ink)" }}>
+      <div
+        className="pillar-nav-row"
+        style={{ borderTop: "1px solid var(--hair)", borderBottom: "3px solid var(--ink)" }}
+      >
         <div
           className="container"
           style={{
@@ -598,6 +667,224 @@ export function Header() {
             </button>
           </div>
           <style>{`@keyframes paywallSlide{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}`}</style>
+        </div>
+      )}
+
+      {/* Mobile nav drawer */}
+      {menuOpen && (
+        <div
+          className="mobile-only"
+          onClick={() => setMenuOpen(false)}
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 80,
+            background: "color-mix(in oklab, var(--ink) 55%, transparent)",
+            display: "block",
+          }}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="fade-up"
+            style={{
+              position: "absolute",
+              top: 0,
+              insetInlineEnd: 0,
+              height: "100%",
+              width: "min(86vw, 340px)",
+              background: "var(--paper)",
+              borderInlineStart: "1px solid var(--hair)",
+              boxShadow: "var(--shadow)",
+              display: "flex",
+              flexDirection: "column",
+              overflowY: "auto",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                padding: "16px 18px",
+                borderBottom: "1px solid var(--hair)",
+              }}
+            >
+              <span
+                className="serif"
+                style={{ fontWeight: 700, letterSpacing: "-0.02em", fontSize: 20 }}
+              >
+                Daily<span style={{ color: "var(--accent)" }}>Tech</span>Wire
+              </span>
+              <button
+                onClick={() => setMenuOpen(false)}
+                aria-label={t("Close", "Đóng", "Tutup")}
+                style={{
+                  width: 34,
+                  height: 34,
+                  border: "1px solid var(--hair)",
+                  background: "transparent",
+                  borderRadius: 5,
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  color: "var(--ink)",
+                }}
+              >
+                <Icon name="close" size={15} />
+              </button>
+            </div>
+
+            <nav style={{ padding: "10px 8px", display: "flex", flexDirection: "column" }}>
+              {PILLARS.map((p) => {
+                const active = pathname.startsWith(p.slug);
+                return (
+                  <Link
+                    key={p.id}
+                    href={p.slug}
+                    onClick={() => setMenuOpen(false)}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 12,
+                      padding: "12px 12px",
+                      borderRadius: 6,
+                      color: active ? p.color : "var(--ink)",
+                      fontWeight: 600,
+                      fontSize: 16,
+                      textDecoration: "none",
+                    }}
+                  >
+                    <Icon name={PILLAR_ICONS[p.id]} size={17} color={p.color} />
+                    {localizedPillarLabel(p.id, lang)}
+                  </Link>
+                );
+              })}
+
+              <div className="divider" style={{ margin: "8px 12px" }} />
+
+              {NAV_EXTRA.map((n) => (
+                <Link
+                  key={n.id}
+                  href={n.slug}
+                  onClick={() => setMenuOpen(false)}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 8,
+                    padding: "11px 12px",
+                    borderRadius: 6,
+                    color: "var(--muted)",
+                    fontWeight: 500,
+                    fontSize: 13,
+                    textTransform: "uppercase",
+                    letterSpacing: ".08em",
+                    textDecoration: "none",
+                  }}
+                >
+                  {localizedNavLabel(n.id, lang)}
+                  {n.badge && (
+                    <span
+                      className="mono"
+                      style={{
+                        fontSize: 9,
+                        padding: "1px 5px",
+                        borderRadius: 2,
+                        background: "var(--accent)",
+                        color: "#fff",
+                        fontWeight: 600,
+                      }}
+                    >
+                      PRO
+                    </span>
+                  )}
+                </Link>
+              ))}
+            </nav>
+
+            <div
+              style={{
+                marginTop: "auto",
+                padding: 18,
+                borderTop: "1px solid var(--hair)",
+                display: "flex",
+                flexDirection: "column",
+                gap: 10,
+              }}
+            >
+              <Link
+                href="/newsletters"
+                onClick={() => setMenuOpen(false)}
+                style={{
+                  padding: "12px 14px",
+                  background: "var(--accent)",
+                  color: "#fff",
+                  borderRadius: 6,
+                  fontSize: 14,
+                  fontWeight: 600,
+                  textAlign: "center",
+                  textDecoration: "none",
+                }}
+              >
+                {t("Subscribe", "Đăng ký", "Berlangganan")}
+              </Link>
+              {user ? (
+                <>
+                  <Link
+                    href="/account"
+                    onClick={() => setMenuOpen(false)}
+                    style={{
+                      padding: "12px 14px",
+                      border: "1px solid var(--hair-2)",
+                      borderRadius: 6,
+                      fontSize: 14,
+                      fontWeight: 500,
+                      textAlign: "center",
+                      color: "var(--ink)",
+                      textDecoration: "none",
+                    }}
+                  >
+                    {user.name.split(" ")[0]} · {t("Account", "Tài khoản", "Akun")}
+                  </Link>
+                  <button
+                    onClick={() => {
+                      setUser(null);
+                      setMenuOpen(false);
+                    }}
+                    style={{
+                      padding: "10px 14px",
+                      border: "none",
+                      background: "transparent",
+                      color: "var(--muted)",
+                      fontSize: 13,
+                      cursor: "pointer",
+                    }}
+                  >
+                    {t("Log out", "Đăng xuất", "Keluar")}
+                  </button>
+                </>
+              ) : (
+                <button
+                  onClick={() => {
+                    setMenuOpen(false);
+                    openAuth();
+                  }}
+                  style={{
+                    padding: "12px 14px",
+                    border: "1px solid var(--hair-2)",
+                    background: "transparent",
+                    color: "var(--ink)",
+                    borderRadius: 6,
+                    fontSize: 14,
+                    fontWeight: 500,
+                    cursor: "pointer",
+                  }}
+                >
+                  {t("Log in", "Đăng nhập", "Masuk")}
+                </button>
+              )}
+            </div>
+          </div>
         </div>
       )}
     </header>
