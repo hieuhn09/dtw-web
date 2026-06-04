@@ -58,6 +58,20 @@ const AUTHORS: ReadonlyArray<{ name: string; role: string; city: string }> = [
   { name: "Jordan Chen", role: "Markets Editor", city: "Hong Kong" },
   { name: "Arif Rahman", role: "Startups Reporter", city: "Jakarta" },
   { name: "Ananya Iyer", role: "Policy Reporter", city: "Bengaluru" },
+  // Engine bylines — must match content-engine's DTW byline pool EXACTLY
+  // (src/lib/publications/dtw/index.ts DTW_BYLINES). The intake endpoint
+  // resolves a published byline to one of these Author rows by name. Roles +
+  // cities below are editorial assignments — FLAG FOR REVIEW.
+  { name: "Arjun S. Mehta", role: "AI Correspondent", city: "Bengaluru" },
+  { name: "Mei-Lin Tan", role: "Asia Tech Correspondent", city: "Singapore" },
+  { name: "Daniel R. Whitfield", role: "Markets & Venture Reporter", city: "Hong Kong" },
+  { name: "Priya Nair", role: "Startups Reporter", city: "Bengaluru" },
+  { name: "Kenji Watanabe", role: "Hardware & Products Reporter", city: "Tokyo" },
+  { name: "Sofia M. Reyes", role: "Policy & Trade Reporter", city: "Manila" },
+  { name: "Wei Zhang", role: "China Tech Correspondent", city: "Hangzhou" },
+  { name: "Hana Park", role: "Semiconductors Reporter", city: "Seoul" },
+  { name: "Marcus Halloran", role: "Developer Tools Reporter", city: "Singapore" },
+  { name: "Linh T. Pham", role: "Southeast Asia Reporter", city: "Hanoi" },
 ];
 
 const TAGS: ReadonlyArray<{ slug: string; en: string }> = [
