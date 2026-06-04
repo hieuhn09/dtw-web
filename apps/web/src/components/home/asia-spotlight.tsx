@@ -44,6 +44,8 @@ export function AsiaSpotlight({ articles }: AsiaSpotlightProps) {
       <div
         style={{
           display: "flex",
+          flexWrap: "wrap",
+          gap: 16,
           alignItems: "flex-end",
           justifyContent: "space-between",
           marginBottom: 22,
@@ -96,7 +98,7 @@ export function AsiaSpotlight({ articles }: AsiaSpotlightProps) {
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(4, 1fr)",
+          gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 200px), 1fr))",
           gap: 24,
           position: "relative",
         }}

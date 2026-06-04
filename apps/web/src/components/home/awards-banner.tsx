@@ -8,13 +8,13 @@ export function AwardsBanner() {
   return (
     <section style={{ marginBottom: 48 }}>
       <div
+        className="r-awards"
         style={{
           background: "var(--paper)",
           border: "1px solid var(--ink)",
           borderRadius: 10,
           padding: "28px 32px",
           display: "grid",
-          gridTemplateColumns: "auto 1fr auto",
           gap: 28,
           alignItems: "center",
           position: "relative",

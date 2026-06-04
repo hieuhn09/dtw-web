@@ -179,7 +179,7 @@ export default function AboutPage() {
             className="serif"
             style={{
               margin: "0 0 18px",
-              fontSize: 64,
+              fontSize: "clamp(34px, 9vw, 64px)",
               fontWeight: 700,
               letterSpacing: "-0.03em",
               lineHeight: 1.02,
@@ -207,7 +207,7 @@ export default function AboutPage() {
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(3, 1fr)",
+              gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 240px), 1fr))",
               gap: 32,
               marginTop: 36,
               paddingTop: 28,
@@ -259,7 +259,7 @@ export default function AboutPage() {
           <section
             style={{
               display: "grid",
-              gridTemplateColumns: "1fr 2fr",
+              gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 260px), 1fr))",
               gap: 64,
               marginBottom: 80,
             }}
@@ -377,7 +377,7 @@ export default function AboutPage() {
               style={{
                 position: "relative",
                 display: "grid",
-                gridTemplateColumns: "1fr 2fr",
+                gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 260px), 1fr))",
                 gap: 48,
               }}
             >
@@ -481,7 +481,7 @@ export default function AboutPage() {
             <div
               style={{
                 display: "grid",
-                gridTemplateColumns: "360px 1fr",
+                gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 300px), 1fr))",
                 gap: 48,
                 background: "var(--surface)",
                 border: "1px solid var(--hair)",
@@ -523,7 +523,7 @@ export default function AboutPage() {
                   className="serif"
                   style={{
                     margin: "0 0 8px",
-                    fontSize: 42,
+                    fontSize: "clamp(28px, 6vw, 42px)",
                     fontWeight: 700,
                     letterSpacing: "-0.025em",
                     lineHeight: 1.05,
@@ -589,7 +589,7 @@ export default function AboutPage() {
                 <div
                   style={{
                     display: "grid",
-                    gridTemplateColumns: "repeat(2, 1fr)",
+                    gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 280px), 1fr))",
                     gap: 16,
                     paddingTop: 20,
                     borderTop: "1px solid var(--hair)",
@@ -649,7 +649,7 @@ export default function AboutPage() {
             <div
               style={{
                 display: "grid",
-                gridTemplateColumns: "repeat(4, 1fr)",
+                gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 200px), 1fr))",
                 gap: 20,
               }}
             >
@@ -900,7 +900,7 @@ export default function AboutPage() {
             <div
               style={{
                 display: "grid",
-                gridTemplateColumns: "1fr 2fr",
+                gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 260px), 1fr))",
                 gap: 32,
                 alignItems: "center",
               }}
@@ -1099,7 +1099,7 @@ export default function AboutPage() {
             paddingTop: 32,
             borderTop: "1px solid var(--hair)",
             display: "grid",
-            gridTemplateColumns: "repeat(4, 1fr)",
+            gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 200px), 1fr))",
             gap: 24,
           }}
         >

@@ -25,9 +25,9 @@ export function BriefBand() {
   return (
     <section style={{ margin: "0 0 40px" }}>
       <div
+        className="r-brief"
         style={{
           display: "grid",
-          gridTemplateColumns: "200px 1fr 1fr 150px",
           background: "var(--surface)",
           border: "1px solid var(--hair)",
           borderRadius: 10,
@@ -54,6 +54,7 @@ export function BriefBand() {
             )}
           </div>
           <div
+            className="r-brief-divider"
             style={{
               position: "absolute",
               right: 0,
@@ -118,6 +119,7 @@ export function BriefBand() {
               {b.txt}
             </div>
             <div
+              className="r-brief-divider"
               style={{
                 position: "absolute",
                 right: 0,

@@ -234,7 +234,7 @@ export default async function TrustPage({
 
   return (
     <div className="container" style={{ paddingTop: 24, paddingBottom: 48 }}>
-      <div style={{ display: "grid", gridTemplateColumns: "220px 1fr", gap: 48 }}>
+      <div className="r-sidebar" style={{ display: "grid", gap: 48 }}>
         <nav style={{ position: "sticky", top: 160, alignSelf: "flex-start" }}>
           <div
             className="upper text-mute"
@@ -280,7 +280,7 @@ export default async function TrustPage({
             className="serif"
             style={{
               margin: "0 0 28px",
-              fontSize: 48,
+              fontSize: "clamp(30px, 8vw, 48px)",
               fontWeight: 700,
               letterSpacing: "-0.025em",
               lineHeight: 1.05,

@@ -27,7 +27,7 @@ export function PillarShowcase({ byPillar }: PillarShowcaseProps) {
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(3, 1fr)",
+          gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 260px), 1fr))",
           gap: 32,
         }}
       >

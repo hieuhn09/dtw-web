@@ -169,7 +169,8 @@ export function AILeaderboard() {
           background: "var(--surface)",
         }}
       >
-        <table style={{ width: "100%", borderCollapse: "collapse" }}>
+        <div className="r-table-scroll">
+          <table style={{ width: "100%", borderCollapse: "collapse" }}>
           <thead>
             <tr>
               <Th k="rank" num sortKey={sortKey} sortDir={sortDir} onSort={onSort}>
@@ -257,6 +258,7 @@ export function AILeaderboard() {
             ))}
           </tbody>
         </table>
+        </div>
       </div>
     </section>
   );

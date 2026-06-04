@@ -38,7 +38,7 @@ export default function NewslettersPage() {
           className="serif"
           style={{
             margin: "0 0 10px",
-            fontSize: 48,
+            fontSize: "clamp(30px, 8vw, 48px)",
             fontWeight: 700,
             letterSpacing: "-0.025em",
             lineHeight: 1,
@@ -65,7 +65,7 @@ export default function NewslettersPage() {
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(2, 1fr)",
+          gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 320px), 1fr))",
           gap: 18,
           marginBottom: 32,
         }}
@@ -176,9 +176,10 @@ export default function NewslettersPage() {
           display: "flex",
           gap: 20,
           alignItems: "center",
+          flexWrap: "wrap",
         }}
       >
-        <div style={{ flex: 1 }}>
+        <div style={{ flex: 1, minWidth: 220 }}>
           <div className="kicker" style={{ color: "var(--accent)", marginBottom: 4 }}>
             {picks.size}{" "}
             {t(

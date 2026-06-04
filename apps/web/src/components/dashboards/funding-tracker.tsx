@@ -159,7 +159,8 @@ export function FundingTracker() {
           background: "var(--surface)",
         }}
       >
-        <table style={{ width: "100%", borderCollapse: "collapse" }}>
+        <div className="r-table-scroll">
+          <table style={{ width: "100%", borderCollapse: "collapse" }}>
           <thead>
             <tr>
               <Th k="ticker" sortKey={sortKey} sortDir={sortDir} onSort={onSort}>
@@ -242,13 +243,14 @@ export function FundingTracker() {
             ))}
           </tbody>
         </table>
+        </div>
       </div>
 
       {/* Charts */}
       <div
+        className="r-split-21"
         style={{
           display: "grid",
-          gridTemplateColumns: "2fr 1fr",
           gap: 24,
           marginTop: 28,
         }}

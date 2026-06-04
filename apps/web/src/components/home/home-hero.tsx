@@ -19,9 +19,9 @@ export function HomeHero({ lead, aside }: HomeHeroProps) {
 
   return (
     <section
+      className="r-hero"
       style={{
         display: "grid",
-        gridTemplateColumns: "1.7fr 1fr",
         gap: 32,
         padding: "25px 0 32px",
       }}
@@ -42,7 +42,7 @@ export function HomeHero({ lead, aside }: HomeHeroProps) {
         <h2
           className="serif"
           style={{
-            fontSize: 46,
+            fontSize: "clamp(28px, 6vw, 46px)",
             fontWeight: 700,
             lineHeight: 1.05,
             letterSpacing: "-0.025em",
@@ -60,6 +60,7 @@ export function HomeHero({ lead, aside }: HomeHeroProps) {
       </Link>
 
       <div
+        className="r-hero-aside"
         style={{
           borderLeft: "1px solid var(--hair)",
           paddingLeft: 24,
@@ -83,6 +84,7 @@ export function HomeHero({ lead, aside }: HomeHeroProps) {
         {aside.map((a, i) => (
           <Link key={a.id} href={`/article/${a.slug}`} style={{ color: "inherit", textDecoration: "none" }}>
             <article
+              className="r-hero-item"
               style={{
                 cursor: "pointer",
                 paddingBottom: 18,

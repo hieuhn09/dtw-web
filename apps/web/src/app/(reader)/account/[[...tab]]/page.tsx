@@ -191,7 +191,7 @@ function AccountFollowing() {
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(2, 1fr)",
+          gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 280px), 1fr))",
           gap: 12,
         }}
       >
@@ -431,7 +431,7 @@ export default function AccountPage({
         </Button>
       </header>
 
-      <div style={{ display: "grid", gridTemplateColumns: "220px 1fr", gap: 36 }}>
+      <div className="r-sidebar" style={{ display: "grid", gap: 36 }}>
         <nav style={{ display: "flex", flexDirection: "column", gap: 2 }}>
           {TABS.map(([k, l]) => (
             <Link
