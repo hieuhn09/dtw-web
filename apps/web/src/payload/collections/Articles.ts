@@ -191,6 +191,26 @@ export const Articles: CollectionConfig = {
                 readOnly: true,
               },
             },
+            {
+              name: "engineSourceUrl",
+              type: "text",
+              admin: {
+                description:
+                  "Provenance: canonical URL of the source the Engine rewrote from. Set by the intake endpoint; read-only.",
+                readOnly: true,
+                position: "sidebar",
+              },
+            },
+            {
+              name: "engineSourceName",
+              type: "text",
+              admin: {
+                description:
+                  "Provenance: publisher/source name the Engine rewrote from. Set by the intake endpoint; read-only.",
+                readOnly: true,
+                position: "sidebar",
+              },
+            },
           ],
         },
         {

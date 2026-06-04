@@ -385,6 +385,14 @@ export interface Article {
    */
   version: number;
   /**
+   * Provenance: canonical URL of the source the Engine rewrote from. Set by the intake endpoint; read-only.
+   */
+  engineSourceUrl?: string | null;
+  /**
+   * Provenance: publisher/source name the Engine rewrote from. Set by the intake endpoint; read-only.
+   */
+  engineSourceName?: string | null;
+  /**
    * Hero image (uploaded to R2). If empty, the reader falls back to generative cover art.
    */
   heroImage?: (number | null) | Media;
@@ -773,6 +781,8 @@ export interface ArticlesSelect<T extends boolean = true> {
         id?: T;
       };
   version?: T;
+  engineSourceUrl?: T;
+  engineSourceName?: T;
   heroImage?: T;
   imageLabel?: T;
   imageUrl?: T;
