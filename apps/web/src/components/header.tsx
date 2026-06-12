@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { Icon } from "@/components/icons";
+import { DtwLogo, DtwLogoCompact } from "@/components/dtw-logo";
 import { TickerTape } from "@/components/effects";
 import { useTheme } from "@/components/theme-provider";
 import {
@@ -195,29 +196,14 @@ export function Header() {
           padding: "14px 24px",
         }}
       >
-        {/* Wordmark + tagline */}
+        {/* Logo lock-up + localized tagline */}
         <Link
           href="/"
+          aria-label="DailyTechWire"
           style={{ display: "flex", alignItems: "center", gap: 12, cursor: "pointer" }}
         >
           <div>
-            <span
-              aria-label="DailyTechWire"
-              className="serif"
-              style={{
-                display: "inline-flex",
-                alignItems: "baseline",
-                gap: 0,
-                fontWeight: 700,
-                letterSpacing: "-0.025em",
-                lineHeight: 1,
-                color: "var(--ink)",
-              }}
-            >
-              <span style={{ fontSize: 32 }}>Daily</span>
-              <span style={{ fontSize: 32, color: "var(--accent)" }}>Tech</span>
-              <span style={{ fontSize: 32 }}>Wire</span>
-            </span>
+            <DtwLogo height={36} />
             <div
               className="mono text-mute"
               style={{ letterSpacing: ".08em", margin: "4px 0 0", fontSize: 11 }}
@@ -709,11 +695,8 @@ export function Header() {
                 borderBottom: "1px solid var(--hair)",
               }}
             >
-              <span
-                className="serif"
-                style={{ fontWeight: 700, letterSpacing: "-0.02em", fontSize: 20 }}
-              >
-                Daily<span style={{ color: "var(--accent)" }}>Tech</span>Wire
+              <span aria-label="DailyTechWire" style={{ display: "inline-flex" }}>
+                <DtwLogoCompact height={26} />
               </span>
               <button
                 onClick={() => setMenuOpen(false)}

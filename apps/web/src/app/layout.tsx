@@ -30,6 +30,10 @@ const plexMono = IBM_Plex_Mono({
 export const metadata: Metadata = {
   title: "DailyTechWire — Asia Tech",
   description: "Tech Intelligence, Wired Daily.",
+  icons: {
+    icon: [{ url: "/dtw-monogram.svg", type: "image/svg+xml" }],
+  },
+  manifest: "/manifest.webmanifest",
 };
 
 export default function RootLayout({
