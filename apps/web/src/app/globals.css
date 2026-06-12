@@ -2,38 +2,52 @@
 
 /* ---------------------------------------------------------------------------
    Design tokens — single source of truth.
-   Mirrors design/project/index.html. See process/context/uxui/all-uxui.md.
+   Palette per DTW-Brand-Guideline-v1.0.pdf §4 (primary + extended palette):
+   70% neutral / 20% primary navy-blue / 10% amber accent. Amber is badge,
+   icon, and pulse-dot only — never a large background, never text on white
+   (2.3:1, fails WCAG — guideline §4.4). See process/context/uxui/all-uxui.md.
    --------------------------------------------------------------------------- */
 
 :root {
-  --paper: #FAF8F2;
-  --surface: #FFFFFF;
-  --surface-2: #F2EFE5;
-  --ink: #111111;
-  --ink-2: #2A2A28;
-  --muted: #5B5B58;
-  --muted-2: #8C8B85;
-  --hair: #E5E2D8;
-  --hair-2: #D8D4C6;
+  /* Neutrals (guideline §4.1–4.2) */
+  --paper: #FFFFFF;       /* white — page bg, article body */
+  --surface: #FFFFFF;     /* cards */
+  --surface-2: #F9FAFB;   /* neutral-50 — section backgrounds */
+  --ink: #0F172A;         /* neutral-900 — body text */
+  --ink-2: #1E293B;       /* strong secondary text */
+  --muted: #475569;       /* neutral-600 — secondary text, meta */
+  --muted-2: #64748B;     /* tertiary meta */
+  --hair: #E5E7EB;        /* neutral-200 — borders, 1px dividers */
+  --hair-2: #D1D5DB;      /* stronger borders */
 
-  /* Brand */
-  --accent: #E04E1F;      /* DTW coral */
-  --accent-ink: #B83D14;
+  /* Brand (guideline §4.1) */
+  --brand: #1E3A8A;       /* primary-900 — brand chính, header/nav identity */
+  --accent: #2563EB;      /* primary-600 — links, CTA, eyebrow (5.2:1 AA on white) */
+  --accent-surface: #2563EB; /* filled-CTA surface — stays primary-600 in BOTH
+                                themes so a white label keeps 5.2:1 (§4.1) */
+  --accent-ink: #1D4ED8;  /* hover / pressed state of accent */
+  --amber: #F59E0B;       /* accent-500 — pulse dot, awards, badges ONLY */
   --sponsored: #FEF3C7;   /* spec invariant */
-  --up: #10B981;          /* spec invariant */
-  --down: #EF4444;        /* spec invariant */
+  --up: #10B981;          /* market data only (guideline §4.3) */
+  --down: #EF4444;        /* market data + breaking flag only */
 
-  /* Pillars */
-  --ai: #7C3AED;
+  /* Logo parts (guideline §2, §6.2) — monogram solid navy, never gradient */
+  --logo-block: #1E3A8A;
+  --logo-text: #1E3A8A;
+  --logo-pulse: #1E3A8A;
+
+  /* Pillars — CMS-configurable (invariant #8). Asia is mandated #DC2626
+     (asia-accent, guideline §4.2) and AI=blue (§9.4); others unchanged. */
+  --ai: #2563EB;
   --startups: #0EA5E9;
-  --asia: #E04E1F;
+  --asia: #DC2626;
   --dev: #16A34A;
   --products: #D97706;
   --policy: #475569;
 
   --shadow:
-    0 1px 0 rgba(17, 17, 17, 0.04),
-    0 12px 32px -16px rgba(17, 17, 17, 0.12);
+    0 1px 0 rgba(15, 23, 42, 0.04),
+    0 12px 32px -16px rgba(15, 23, 42, 0.12);
 
   --font-serif: var(--font-serif-loaded, "Source Serif 4"), "Iowan Old Style", "Charter", Georgia, serif;
   --font-sans: var(--font-sans-loaded, "IBM Plex Sans"), system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -43,16 +57,30 @@
 }
 
 html[data-theme="dark"] {
-  --paper: #0F172A;
+  --paper: #0F172A;       /* neutral-900 — never pure black (guideline §4.3) */
   --surface: #111C30;
   --surface-2: #15223A;
-  --ink: #E2E8F0;
+  --ink: #E2E8F0;         /* neutral-100 — never pure white text (guideline §11) */
   --ink-2: #CBD5E1;
   --muted: #94A3B8;
   --muted-2: #64748B;
   --hair: #1E2B45;
   --hair-2: #243453;
   --sponsored: #3B2E0A;
+
+  /* primary-600 only hits ~3:1 on #0F172A — lift link/eyebrow TEXT to
+     blue-400 to keep WCAG AA (guideline §7.2 #5). Filled-CTA surfaces keep
+     --accent-surface at primary-600 (white label = 5.2:1, §4.1) — never put
+     white text on blue-400. Brand surfaces use primary-600. */
+  --accent: #60A5FA;
+  --accent-ink: #93C5FD;
+  --brand: #2563EB;
+
+  /* Inverted logo (guideline §2.2): monogram primary-600 for contrast on
+     dark; pulse dots white, wordmark neutral-100. */
+  --logo-block: #2563EB;
+  --logo-text: #E2E8F0;
+  --logo-pulse: #FFFFFF;
 }
 
 /* ---------------------------------------------------------------------------
@@ -70,8 +98,11 @@ html[data-theme="dark"] {
   --color-muted-2: var(--muted-2);
   --color-hair: var(--hair);
   --color-hair-2: var(--hair-2);
+  --color-brand: var(--brand);
   --color-accent: var(--accent);
+  --color-accent-surface: var(--accent-surface);
   --color-accent-ink: var(--accent-ink);
+  --color-amber: var(--amber);
   --color-sponsored: var(--sponsored);
   --color-up: var(--up);
   --color-down: var(--down);
@@ -427,9 +458,11 @@ body {
   outline-offset: 2px;
   border-radius: 2px;
 }
+/* Brand-navy selection: #E2E8F0 on #1E3A8A = 9.0:1 light; on the dark-mode
+   --brand (#2563EB) = 4.4:1. Never pure white text (guideline §11). */
 ::selection {
-  background: var(--accent);
-  color: #fff;
+  background: var(--brand);
+  color: #E2E8F0;
 }
 ::-webkit-scrollbar {
   height: 10px;
@@ -481,8 +514,8 @@ button {
 }
 button[data-glow="1"]:hover {
   box-shadow:
-    0 0 0 1px rgba(224, 78, 31, 0.4),
-    0 8px 28px -6px rgba(224, 78, 31, 0.45);
+    0 0 0 1px rgba(37, 99, 235, 0.4),
+    0 8px 28px -6px rgba(37, 99, 235, 0.45);
 }
 
 @media (prefers-reduced-motion: reduce) {

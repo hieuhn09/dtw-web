@@ -19,16 +19,16 @@ type Palette = [string, string, string, string];
 
 const ART_PALETTES: Record<PillarId | "policy", ReadonlyArray<Palette>> = {
   ai: [
-    ["#1E1B4B", "#7C3AED", "#C4B5FD", "#FEF3C7"],
-    ["#0F172A", "#A78BFA", "#FBBF24", "#FFFFFF"],
+    ["#1E3A8A", "#2563EB", "#93C5FD", "#FEF3C7"],
+    ["#0F172A", "#60A5FA", "#FBBF24", "#FFFFFF"],
   ],
   startups: [
     ["#0C4A6E", "#0EA5E9", "#FED7AA", "#FFFFFF"],
-    ["#082F49", "#38BDF8", "#F97316", "#FAFAF7"],
+    ["#082F49", "#38BDF8", "#F97316", "#F9FAFB"],
   ],
   asia: [
-    ["#7C2D12", "#E04E1F", "#FDE68A", "#FFFFFF"],
-    ["#431407", "#F97316", "#FCD34D", "#1F2937"],
+    ["#7C2D12", "#DC2626", "#FDE68A", "#FFFFFF"],
+    ["#431407", "#B91C1C", "#FCD34D", "#1F2937"],
   ],
   dev: [
     ["#052E16", "#16A34A", "#86EFAC", "#FFFFFF"],
@@ -36,7 +36,7 @@ const ART_PALETTES: Record<PillarId | "policy", ReadonlyArray<Palette>> = {
   ],
   products: [
     ["#451A03", "#D97706", "#FCD34D", "#FFFFFF"],
-    ["#1F2937", "#F59E0B", "#FDE68A", "#FAFAF7"],
+    ["#1F2937", "#F59E0B", "#FDE68A", "#F9FAFB"],
   ],
   policy: [
     ["#0F172A", "#475569", "#94A3B8", "#F1F5F9"],
@@ -75,7 +75,7 @@ function CoverLabel({ label }: { label?: string }) {
         fontSize: 10,
         letterSpacing: ".1em",
         background: "rgba(255,255,255,.85)",
-        color: "#111",
+        color: "#0F172A",
         border: "1px solid rgba(0,0,0,.08)",
         borderRadius: 3,
         textTransform: "uppercase",
@@ -322,7 +322,7 @@ export interface AvatarProps {
 
 export function Avatar({ name, size = 36, color }: AvatarProps) {
   const initials = name.split(" ").map((s) => s[0] ?? "").slice(0, 2).join("").toUpperCase();
-  const palette = ["#E04E1F", "#0EA5E9", "#7C3AED", "#16A34A", "#D97706", "#475569"];
+  const palette = ["#1E3A8A", "#0EA5E9", "#2563EB", "#16A34A", "#D97706", "#475569"];
   const h = hashStr(name);
   const bg = color ?? palette[h % palette.length];
   return (
@@ -401,9 +401,14 @@ export function BrandMark({
 // CityChip – typographic 2-letter city marker
 // ============================================================================
 
+// NOTE: Asia accent red #DC2626 is reserved for Asia-PILLAR surfaces only
+// (Brand Guideline §4.3/§11) — never for generic geography markers, which
+// would also collide with the market-down red #EF4444. Singapore (DTW HQ)
+// therefore carries brand navy via var(--brand), which the token system
+// lifts to primary-600 in dark mode so the dot stays visible.
 const CITY_COLOR: Record<string, string> = {
-  Singapore: "#E04E1F",
-  Seoul: "#7C3AED",
+  Singapore: "var(--brand)",
+  Seoul: "#2563EB",
   Jakarta: "#0EA5E9",
   Hanoi: "#16A34A",
   "Ho Chi Minh City": "#16A34A",
@@ -413,7 +418,7 @@ const CITY_COLOR: Record<string, string> = {
   Shenzhen: "#7C2D12",
   Manila: "#D97706",
   "Hong Kong": "#475569",
-  Bangkok: "#7C3AED",
+  Bangkok: "#1E3A8A",
 };
 
 export interface CityChipProps {

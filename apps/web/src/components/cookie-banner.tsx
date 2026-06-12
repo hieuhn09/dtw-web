@@ -33,6 +33,10 @@ export function CookieBanner() {
   if (!open) return null;
 
   return (
+    /* Banner is PINNED to a fixed dark surface (#0F172A) in both themes —
+       using var(--ink) flipped it light in dark mode, stranding the blue
+       accents below 3:1 (Brand Guideline §4.4). Inner colors are therefore
+       fixed against-dark values (#E2E8F0 text, blue-400 icon at 6.0:1). */
     <div
       style={{
         position: "fixed",
@@ -42,12 +46,12 @@ export function CookieBanner() {
         zIndex: 50,
         maxWidth: 920,
         margin: "0 auto",
-        background: "var(--ink)",
-        color: "var(--paper)",
+        background: "#0F172A",
+        color: "#E2E8F0",
         padding: "14px 18px 14px 22px",
         borderRadius: 10,
-        boxShadow: "0 18px 48px -16px rgba(17,17,17,.5)",
-        border: "1px solid color-mix(in oklab, var(--paper) 8%, transparent)",
+        boxShadow: "0 18px 48px -16px rgba(15,23,42,.5)",
+        border: "1px solid color-mix(in oklab, #E2E8F0 8%, transparent)",
         display: "flex",
         alignItems: "center",
         gap: 20,
@@ -60,7 +64,7 @@ export function CookieBanner() {
           alignItems: "center",
           gap: 12,
           paddingRight: 16,
-          borderRight: "1px solid color-mix(in oklab, var(--paper) 14%, transparent)",
+          borderRight: "1px solid color-mix(in oklab, #E2E8F0 14%, transparent)",
           flexShrink: 0,
         }}
       >
@@ -69,14 +73,14 @@ export function CookieBanner() {
             width: 32,
             height: 32,
             borderRadius: 6,
-            background: "rgba(224,78,31,.15)",
-            color: "var(--accent)",
+            background: "rgba(96,165,250,.16)",
+            color: "#60A5FA",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
           }}
         >
-          <Icon name="info" size={16} color="var(--accent)" stroke={2.2} />
+          <Icon name="info" size={16} color="#60A5FA" stroke={2.2} />
         </div>
         <div
           className="upper"
@@ -84,7 +88,7 @@ export function CookieBanner() {
             fontSize: 11,
             fontWeight: 600,
             letterSpacing: ".14em",
-            color: "var(--accent)",
+            color: "#E2E8F0",
             whiteSpace: "nowrap",
             textTransform: "uppercase",
           }}
@@ -98,7 +102,7 @@ export function CookieBanner() {
           margin: 0,
           fontSize: 13,
           lineHeight: 1.5,
-          color: "color-mix(in oklab, var(--paper) 85%, transparent)",
+          color: "color-mix(in oklab, #E2E8F0 85%, transparent)",
           flex: 1,
           minWidth: 240,
         }}
@@ -115,8 +119,8 @@ export function CookieBanner() {
           onClick={dismiss}
           style={{
             background: "transparent",
-            border: "1px solid color-mix(in oklab, var(--paper) 28%, transparent)",
-            color: "var(--paper)",
+            border: "1px solid color-mix(in oklab, #E2E8F0 28%, transparent)",
+            color: "#E2E8F0",
             padding: "8px 14px",
             borderRadius: 5,
             fontSize: 12,

@@ -90,7 +90,7 @@ export function DisclosureBox({
   const containerStyle: CSSProperties = {
     ...containerBase,
     background: isAI ? "var(--surface-2)" : "var(--sponsored)",
-    border: `1px solid ${isAI ? "var(--hair-2)" : "#E0B900"}`,
+    border: `1px solid ${isAI ? "var(--hair-2)" : "var(--amber)"}`,
   };
 
   const iconLabel = isAI ? "AI" : "$";

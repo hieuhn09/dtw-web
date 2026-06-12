@@ -101,12 +101,12 @@ export function ArticleContent({ article, body, related }: ArticleContentProps) 
               style={{
                 fontSize: 10,
                 padding: "2px 8px",
-                background: "#FEF3C7",
-                color: "#7A5800",
+                background: "var(--sponsored)",
+                color: "var(--ink)",
                 borderRadius: 3,
                 fontWeight: 600,
                 letterSpacing: ".08em",
-                border: "1px solid #E0B900",
+                border: "1px solid var(--amber)",
               }}
             >
               PAID PARTNER · {article.sponsor}

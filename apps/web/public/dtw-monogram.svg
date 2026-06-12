@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60" role="img" aria-label="DailyTechWire monogram">
   <title>DailyTechWire — Monogram (DTW)</title>
-  <desc>Square monogram with DTW initials in white on coral background. For favicon, app icon, and social avatar use.</desc>
+  <desc>Square monogram with DTW initials in white on navy primary-900 background. For favicon, app icon, and social avatar use. Brand Guideline v1.0 §2.4.</desc>
 
-  <rect x="0" y="0" width="60" height="60" rx="8" fill="#E04E1F"/>
+  <rect x="0" y="0" width="60" height="60" rx="8" fill="#1E3A8A"/>
   <text x="30" y="39" text-anchor="middle"
         font-family="'JetBrains Mono', 'SF Mono', Menlo, monospace"
         font-weight="600" font-size="22" letter-spacing="0.02em"

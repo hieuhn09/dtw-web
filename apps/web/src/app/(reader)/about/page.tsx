@@ -31,10 +31,10 @@ const OWNERSHIP: ReadonlyArray<{ k: string; v: number }> = [
 ];
 
 const REVENUE: ReadonlyArray<{ k: string; v: number; color: string }> = [
-  { k: "Reader subscriptions (Pro & individual)", v: 68, color: "#E04E1F" },
+  { k: "Reader subscriptions (Pro & individual)", v: 68, color: "var(--brand)" },
   { k: "Newsletter & event sponsorship", v: 14, color: "#0EA5E9" },
   { k: "DTW Studio (labelled sponsored work)", v: 10, color: "#D97706" },
-  { k: "Research subscriptions (institutional)", v: 6, color: "#7C3AED" },
+  { k: "Research subscriptions (institutional)", v: 6, color: "#475569" },
   { k: "Affiliate (disclosed product reviews)", v: 2, color: "#16A34A" },
 ];
 

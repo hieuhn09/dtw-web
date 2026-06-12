@@ -12,15 +12,19 @@ export default function AwardsPage() {
       className="container"
       style={{ paddingTop: 35, paddingBottom: 80 }}
     >
+      {/* Hero is PINNED to a fixed dark stage (#0F172A) in both themes —
+          amber text/shimmer is only allowed on dark/navy surfaces (Brand
+          Guideline §4.4: accent-500 on white FAILS; amber on #0F172A = 8.3:1).
+          All inner tints use fixed #E2E8F0/#2563EB, not theme vars. */}
       <section
         style={{
           position: "relative",
           overflow: "hidden",
-          background: "var(--ink)",
-          color: "var(--paper)",
+          background: "#0F172A",
+          color: "#E2E8F0",
           borderRadius: 16,
           textAlign: "center",
-          border: "1px solid color-mix(in oklab, var(--paper) 8%, transparent)",
+          border: "1px solid color-mix(in oklab, #E2E8F0 8%, transparent)",
           padding: "85px 56px",
         }}
       >
@@ -33,7 +37,7 @@ export default function AwardsPage() {
             width: 380,
             height: 380,
             borderRadius: "50%",
-            background: "var(--accent)",
+            background: "#2563EB",
             opacity: 0.22,
             filter: "blur(100px)",
             pointerEvents: "none",
@@ -61,7 +65,7 @@ export default function AwardsPage() {
             width: 520,
             height: 320,
             borderRadius: "50%",
-            background: "var(--accent)",
+            background: "#2563EB",
             opacity: 0.15,
             filter: "blur(110px)",
             transform: "translateX(-50%)",
@@ -81,7 +85,7 @@ export default function AwardsPage() {
             fontSize: "clamp(110px, 40vw, 440px)",
             lineHeight: 1,
             letterSpacing: "-0.05em",
-            color: "color-mix(in oklab, var(--paper) 4%, transparent)",
+            color: "color-mix(in oklab, #E2E8F0 4%, transparent)",
             pointerEvents: "none",
             userSelect: "none",
             whiteSpace: "nowrap",
@@ -104,30 +108,30 @@ export default function AwardsPage() {
               style={{
                 height: 1,
                 background:
-                  "linear-gradient(to right, transparent, color-mix(in oklab, var(--paper) 35%, transparent))",
+                  "linear-gradient(to right, transparent, color-mix(in oklab, #E2E8F0 35%, transparent))",
                 flex: 1,
                 maxWidth: 200,
               }}
             />
-            <span style={{ color: "var(--accent)", fontSize: 10 }}>◆</span>
+            <span style={{ color: "var(--amber)", fontSize: 10 }}>◆</span>
             <span
               className="mono upper"
               style={{
                 fontSize: 11,
                 letterSpacing: ".28em",
                 fontWeight: 600,
-                color: "var(--accent)",
+                color: "var(--amber)",
                 textTransform: "uppercase",
               }}
             >
               Est · MMXXVI
             </span>
-            <span style={{ color: "var(--accent)", fontSize: 10 }}>◆</span>
+            <span style={{ color: "var(--amber)", fontSize: 10 }}>◆</span>
             <div
               style={{
                 height: 1,
                 background:
-                  "linear-gradient(to left, transparent, color-mix(in oklab, var(--paper) 35%, transparent))",
+                  "linear-gradient(to left, transparent, color-mix(in oklab, #E2E8F0 35%, transparent))",
                 flex: 1,
                 maxWidth: 200,
               }}
@@ -148,7 +152,7 @@ export default function AwardsPage() {
             <span
               style={{
                 background:
-                  "linear-gradient(120deg, #FCD34D 0%, #E04E1F 40%, #FCD34D 60%, #E04E1F 100%)",
+                  "linear-gradient(120deg, #FCD34D 0%, #F59E0B 40%, #FCD34D 60%, #F59E0B 100%)",
                 backgroundSize: "300% 100%",
                 WebkitBackgroundClip: "text",
                 backgroundClip: "text",
@@ -165,7 +169,7 @@ export default function AwardsPage() {
             style={{
               fontSize: 18,
               fontStyle: "italic",
-              color: "color-mix(in oklab, var(--paper) 65%, transparent)",
+              color: "color-mix(in oklab, #E2E8F0 65%, transparent)",
               marginBottom: 32,
               letterSpacing: ".01em",
             }}
@@ -183,7 +187,7 @@ export default function AwardsPage() {
               margin: "0 auto 36px",
               fontSize: 18,
               lineHeight: 1.55,
-              color: "color-mix(in oklab, var(--paper) 75%, transparent)",
+              color: "color-mix(in oklab, #E2E8F0 75%, transparent)",
               maxWidth: 580,
             }}
           >
@@ -200,7 +204,7 @@ export default function AwardsPage() {
               height: 2,
               margin: "0 auto 32px",
               background:
-                "linear-gradient(to right, transparent, var(--accent), transparent)",
+                "linear-gradient(to right, transparent, var(--amber), transparent)",
             }}
           />
 
@@ -210,15 +214,15 @@ export default function AwardsPage() {
               alignItems: "center",
               gap: 12,
               padding: "10px 18px",
-              background: "color-mix(in oklab, var(--paper) 6%, transparent)",
-              border: "1px solid color-mix(in oklab, var(--paper) 15%, transparent)",
+              background: "color-mix(in oklab, #E2E8F0 6%, transparent)",
+              border: "1px solid color-mix(in oklab, #E2E8F0 15%, transparent)",
               borderRadius: 99,
               fontSize: 13,
-              color: "color-mix(in oklab, var(--paper) 85%, transparent)",
+              color: "color-mix(in oklab, #E2E8F0 85%, transparent)",
               marginBottom: 28,
             }}
           >
-            <Icon name="mail" size={14} color="var(--accent)" stroke={2.2} />
+            <Icon name="mail" size={14} color="var(--amber)" stroke={2.2} />
             <span>
               {t(
                 "Be the first to know when nominations open — straight to your inbox",
@@ -248,9 +252,9 @@ export default function AwardsPage() {
               variant="ghost"
               size="lg"
               style={{
-                color: "var(--paper)",
+                color: "#E2E8F0",
                 border:
-                  "1px solid color-mix(in oklab, var(--paper) 20%, transparent)",
+                  "1px solid color-mix(in oklab, #E2E8F0 20%, transparent)",
               }}
             >
               {t("Back to homepage", "Về trang chủ", "Kembali ke beranda")}

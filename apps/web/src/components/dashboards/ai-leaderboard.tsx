@@ -243,7 +243,9 @@ export function AILeaderboard() {
                     padding: "14px 12px",
                     textAlign: "right",
                     fontSize: 13,
-                    color: m.price === 0 ? "var(--up)" : "var(--ink)",
+                    /* --up is reserved for market movement (guideline §4.3);
+                       "free" is a price tier, so highlight with the accent. */
+                    color: m.price === 0 ? "var(--accent)" : "var(--ink)",
                   }}
                 >
                   {m.price === 0 ? "free" : "$" + m.price.toFixed(1)}

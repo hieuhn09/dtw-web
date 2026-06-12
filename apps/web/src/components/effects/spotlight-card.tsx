@@ -6,7 +6,7 @@ import type { CSSProperties, ReactNode } from "react";
 export interface SpotlightCardProps {
   children: ReactNode;
   style?: CSSProperties;
-  /** Spotlight color (CSS color or var(...)). Defaults to coral with .18 alpha. */
+  /** Spotlight color (CSS color or var(...)). Defaults to brand blue (Brand Guideline v1.0 §4) with .18 alpha. */
   color?: string;
 }
 
@@ -14,7 +14,7 @@ export interface SpotlightCardProps {
 export function SpotlightCard({
   children,
   style = {},
-  color = "rgba(224,78,31,.18)",
+  color = "rgba(37,99,235,.18)",
 }: SpotlightCardProps) {
   const ref = useRef<HTMLDivElement | null>(null);
 

@@ -16,7 +16,7 @@ export function SponsoredStrip({ article: s }: SponsoredStripProps) {
       <div
         style={{
           background: "var(--sponsored)",
-          border: "1px solid #E0B900",
+          border: "1px solid var(--amber)",
           borderRadius: 8,
           padding: "24px 28px",
         }}

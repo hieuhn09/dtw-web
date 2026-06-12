@@ -17,7 +17,7 @@ export function AsiaSpotlight({ articles }: AsiaSpotlightProps) {
 
   return (
     <SpotlightCard
-      color="rgba(224,78,31,.22)"
+      color="rgba(220,38,38,.22)"
       style={{
         background: "var(--ink)",
         color: "var(--paper)",
@@ -35,7 +35,7 @@ export function AsiaSpotlight({ articles }: AsiaSpotlightProps) {
           width: 240,
           height: 240,
           borderRadius: "50%",
-          background: "var(--accent)",
+          background: "var(--asia)",
           opacity: 0.18,
           filter: "blur(60px)",
           pointerEvents: "none",
@@ -53,13 +53,22 @@ export function AsiaSpotlight({ articles }: AsiaSpotlightProps) {
         }}
       >
         <div>
-          <div className="kicker" style={{ color: "var(--accent)", marginBottom: 6 }}>
+          {/* Asia-pillar accent (Brand Guideline §4.2). This card inverts with
+              the theme (bg = var(--ink)), where raw var(--asia) text only hits
+              ~3.7:1 — mixing toward var(--paper) keeps it ≥ 4.5:1 (§4.4). */}
+          <div
+            className="kicker"
+            style={{
+              color: "color-mix(in oklab, var(--asia) 65%, var(--paper))",
+              marginBottom: 6,
+            }}
+          >
             <span
               style={{
                 display: "inline-block",
                 width: 8,
                 height: 8,
-                background: "var(--accent)",
+                background: "var(--asia)",
                 marginRight: 8,
                 verticalAlign: "middle",
               }}
@@ -124,7 +133,7 @@ export function AsiaSpotlight({ articles }: AsiaSpotlightProps) {
                   fontSize: 10,
                   fontWeight: 600,
                   letterSpacing: ".14em",
-                  color: "var(--accent)",
+                  color: "color-mix(in oklab, var(--asia) 65%, var(--paper))",
                   marginBottom: 6,
                   textTransform: "uppercase",
                 }}

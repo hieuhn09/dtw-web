@@ -28,7 +28,7 @@ export function AwardsBanner() {
             top: 0,
             bottom: 0,
             width: 4,
-            background: "linear-gradient(to bottom, var(--accent), #FCD34D)",
+            background: "linear-gradient(to bottom, var(--brand), var(--amber))",
           }}
         />
 
@@ -37,8 +37,10 @@ export function AwardsBanner() {
             width: 76,
             height: 76,
             borderRadius: "50%",
-            background: "var(--ink)",
-            color: "var(--paper)",
+            // Fixed brand-navy emblem in both themes so amber tints stay on
+            // navy (Brand Guideline v1.0 §4.3 — amber never sits on light bg)
+            background: "#1E3A8A",
+            color: "#fff",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -46,10 +48,10 @@ export function AwardsBanner() {
             fontFamily: "var(--font-serif)",
             fontWeight: 700,
             marginLeft: 8,
-            border: "1px solid rgba(224,78,31,.4)",
+            border: "1px solid rgba(245,158,11,.4)",
           }}
         >
-          <span style={{ fontSize: 10, letterSpacing: ".18em", color: "var(--accent)" }}>
+          <span style={{ fontSize: 10, letterSpacing: ".18em", color: "#FDE68A" }}>
             EST
           </span>
           <span style={{ fontSize: 22, lineHeight: 1, marginTop: 2 }}>2026</span>

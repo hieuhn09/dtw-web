@@ -51,7 +51,14 @@ const sizes: Record<ButtonSize, CSSProperties> = {
 
 const variants: Record<ButtonVariant, CSSProperties> = {
   primary: { background: "var(--ink)", color: "var(--paper)", borderColor: "var(--ink)" },
-  accent: { background: "var(--accent)", color: "#fff", borderColor: "var(--accent)" },
+  // Filled CTA sits on --accent-surface (primary-600 #2563EB in BOTH themes,
+  // white label = 5.2:1, Brand Guideline §4.1) — NOT --accent, which lifts to
+  // blue-400 in dark mode for text/links and would fail AA under white.
+  accent: {
+    background: "var(--accent-surface, #2563EB)",
+    color: "#fff",
+    borderColor: "var(--accent-surface, #2563EB)",
+  },
   outline: { background: "transparent", color: "var(--ink)", borderColor: "var(--hair-2)" },
   ghost: { background: "transparent", color: "var(--ink)" },
 };

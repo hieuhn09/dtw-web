@@ -15,8 +15,8 @@ export default function manifest(): MetadataRoute.Manifest {
     description: "Tech Intelligence, Wired Daily.",
     start_url: "/",
     display: "standalone",
-    background_color: "#0F172A", // dark paper (spec invariant)
-    theme_color: "#E04E1F", // DTW coral accent (invariant #7)
+    background_color: "#0F172A", // neutral-900 dark bg (Brand Guideline §4.1)
+    theme_color: "#1E3A8A", // primary-900 brand navy (Brand Guideline §4.1)
     icons: [
       {
         src: "/dtw-monogram.svg",

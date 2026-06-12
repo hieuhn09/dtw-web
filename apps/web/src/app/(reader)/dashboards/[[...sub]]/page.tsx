@@ -144,7 +144,7 @@ export default function DashboardsPage({
           style={{
             padding: 24,
             background: "var(--sponsored)",
-            border: "1px solid #E0B900",
+            border: "1px solid var(--amber)",
             borderRadius: 8,
           }}
         >
