@@ -15,7 +15,7 @@ The `design/` directory at the repo root is the **canonical visual reference**. 
 - Dark mode rules + the `color-mix` discipline that prevents broken dark-mode contrast
 - Typography (Source Serif 4 / IBM Plex Sans / IBM Plex Mono)
 - Cover-art system (editorial geometry per pillar — no fake photography)
-- The brand identity (header logo: inline `DtwLogo` / `DtwLogoCompact`, coral monogram + wordmark, theme-adaptive; "Tech Intelligence, Wired Daily" sentence-case tagline)
+- The brand identity (header logo: inline `DtwLogo` / `DtwLogoCompact`, navy monogram + wordmark + gold-dot pulse, theme-adaptive; "Tech Intelligence, Wired Daily" sentence-case tagline)
 - i18n chrome translation strategy (`useT()` and pillar/nav translation tables)
 - Component primitives from the design prototype (canonical shape, not canonical code)
 
@@ -57,52 +57,70 @@ The prototype uses React 18 + Babel standalone in-browser. **Do not port that st
 
 ## Design Tokens (CSS variables)
 
-These live in the design's `index.html`. The production Tailwind v4 config should expose them via `@theme` so utilities like `bg-paper`, `text-ink`, `border-hair` work.
+Canonical source: `apps/web/src/app/globals.css`, which implements **DTW-Brand-Guideline-v1.0.pdf §4** (repo root). The old cream/coral palette from the design prototype's `index.html` is RETIRED as of 2026-06-12 — the prototype remains a layout/UX reference only, not a color reference. Tailwind v4 exposes tokens via `@theme` so utilities like `bg-paper`, `text-ink`, `border-hair`, `text-accent`, `bg-brand`, `text-amber` work.
+
+Golden ratio (guideline §4.3): 70% neutral + 20% primary navy/blue + 10% amber. Amber is badge/icon/pulse-dot only — never a large background, never text on white (2.3:1, FAILS WCAG — §4.4).
 
 ### Light theme (default)
 
 ```css
---paper:        #FAF8F2;   /* page background */
+--paper:        #FFFFFF;   /* page background, article body (guideline: white) */
 --surface:      #FFFFFF;   /* card / panel */
---surface-2:    #F2EFE5;   /* nested surface */
---ink:          #111111;   /* primary text */
---ink-2:        #2A2A28;   /* secondary text */
---muted:        #5B5B58;   /* tertiary text, byline, dates */
---muted-2:      #8C8B85;   /* faintest text */
---hair:         #E5E2D8;   /* 1px dividers */
---hair-2:       #D8D4C6;   /* 1px dividers (slightly stronger) */
---accent:       #E04E1F;   /* DTW coral — accent everywhere */
---accent-ink:   #B83D14;   /* coral on hover/active */
+--surface-2:    #F9FAFB;   /* neutral-50 — section backgrounds */
+--ink:          #0F172A;   /* neutral-900 — body text */
+--ink-2:        #1E293B;   /* strong secondary text */
+--muted:        #475569;   /* neutral-600 — secondary text, byline, dates */
+--muted-2:      #64748B;   /* faintest text */
+--hair:         #E5E7EB;   /* neutral-200 — 1px dividers */
+--hair-2:       #D1D5DB;   /* stronger borders */
+--brand:        #1E3A8A;   /* primary-900 — brand chính, header/nav identity */
+--accent:       #2563EB;   /* primary-600 — links, CTA, eyebrows (5.2:1 AA on white) */
+--accent-surface: #2563EB; /* filled-CTA surface — SAME in both themes (white label 5.2:1) */
+--accent-ink:   #1D4ED8;   /* accent hover/active */
+--amber:        #F59E0B;   /* accent-500 — badges, pulse dot, awards ONLY */
 --sponsored:    #FEF3C7;   /* sponsored content bg (spec invariant) */
---up:           #10B981;   /* up / positive (spec invariant) */
---down:         #EF4444;   /* down / negative (spec invariant) */
+--up:           #10B981;   /* market up ONLY (guideline §4.3) */
+--down:         #EF4444;   /* market down / breaking flag ONLY */
+--logo-block:   #1E3A8A;   /* monogram (solid navy, never gradient) */
+--logo-text:    #1E3A8A;   /* wordmark */
+--logo-pulse:   #1E3A8A;   /* pulse dots/lines (gold dot #F59E0B fixed, position 2) */
 ```
 
 ### Dark theme (`html[data-theme="dark"]`)
 
 ```css
---paper:        #0F172A;   /* spec invariant */
+--paper:        #0F172A;   /* neutral-900 — never pure black (guideline §4.3) */
 --surface:      #111C30;
 --surface-2:    #15223A;
---ink:          #E2E8F0;   /* spec invariant */
+--ink:          #E2E8F0;   /* neutral-100 — never pure-white text (guideline §11) */
 --ink-2:        #CBD5E1;
 --muted:        #94A3B8;
 --muted-2:      #64748B;
 --hair:         #1E2B45;
 --hair-2:       #243453;
 --sponsored:    #3B2E0A;   /* deep amber for dark-mode sponsored bg */
+--accent:       #60A5FA;   /* blue-400 — primary-600 fails 4.5:1 on #0F172A for text */
+--accent-ink:   #93C5FD;
+--brand:        #2563EB;   /* inverted brand (guideline §2.2) */
+--logo-block:   #2563EB;   /* inverted monogram */
+--logo-text:    #E2E8F0;
+--logo-pulse:   #FFFFFF;   /* dots white on dark (guideline §6.2) */
 ```
+
+**`--accent` vs `--accent-surface`:** `--accent` is for TEXT (links, kickers) and lifts to blue-400 in dark mode for contrast; `--accent-surface` stays primary-600 in both themes so filled buttons keep a white label at 5.2:1. Never put white text on the dark-mode `--accent`.
 
 ### Pillar colors
 
 ```css
---ai:           #7C3AED;
+--ai:           #2563EB;   /* AI=blue (guideline §9.4) */
 --startups:     #0EA5E9;
---asia:         #E04E1F;   /* shares the accent — Asia is the brand pillar */
+--asia:         #DC2626;   /* asia-accent, MANDATED (guideline §4.2) — Asia pillar ONLY */
 --dev:          #16A34A;
 --products:     #D97706;
 --policy:       #475569;
 ```
+
+`#DC2626` must never appear outside Asia-pillar surfaces (guideline §11) — e.g. the Singapore city chip uses `var(--brand)`, not Asia red.
 
 ### Type scale
 
@@ -115,7 +133,7 @@ Body: 15px / line-height 1.5. Article body: 17px / 1.6 (16px on mobile). Source 
 ### Other
 
 - `--maxw: 1280px;` — container max width
-- `--shadow: 0 1px 0 rgba(17,17,17,.04), 0 12px 32px -16px rgba(17,17,17,.12);` — only on `.card-hover:hover`
+- `--shadow: 0 1px 0 rgba(15,23,42,.04), 0 12px 32px -16px rgba(15,23,42,.12);` — only on `.card-hover:hover`
 
 ---
 
@@ -140,10 +158,10 @@ Theme persisted in `localStorage["dtw-theme"]` (key shape from prototype). Toggl
 | Element | State | Notes |
 |---|---|---|
 | Site name | **DailyTechWire** | "DTW" is the short form (breadcrumbs, Studio, Pro). Earlier iterations used "Daily Tech Wire" with spaces or "Down To the Wire" — both rejected. |
-| Header identity | `DtwLogo` (desktop) / `DtwLogoCompact` (mobile) in `apps/web/src/components/dtw-logo.tsx` | Coral monogram block + "dailytechwire" wordmark + pulse line, recolored to `#E04E1F`. Theme-adaptive via CSS vars. Supersedes earlier text-only-wordmark design decision. Added 2026-06-12. |
-| Favicon / PWA icon | `dtw-monogram.svg` (coral monogram) | SVG favicon + PWA `manifest.ts` wired as of 2026-06-12. |
+| Header identity | `DtwLogo` (desktop) / `DtwLogoCompact` (mobile) in `apps/web/src/components/dtw-logo.tsx` | Navy `#1E3A8A` monogram block + "dailytechwire" wordmark + 7-dot pulse line with gold `#F59E0B` dot fixed at position 2 (guideline §2.1/§6.2). Inverted on dark: monogram `#2563EB`, white pulse. Theme-adaptive via `--logo-*` vars. Wordmark renders in Inter Bold, monogram in JetBrains Mono (logo-only fonts loaded in `layout.tsx`) — never the body Plex families (§11). Recolored from coral to navy per Brand Guideline v1.0 on 2026-06-12. |
+| Favicon / PWA icon | `dtw-monogram.svg` (navy monogram) | SVG favicon + PWA `manifest.ts` (`theme_color #1E3A8A`) wired as of 2026-06-12. |
 | Tagline | "Tech Intelligence, Wired Daily" | Sentence case (NOT all-caps). Earlier all-caps version rejected. Monospace caps style for the small label. |
-| Coral accent | `#E04E1F` | Brand accent used for monogram, all accent buttons, Awards shimmer gradient, pillar nav active states. |
+| Brand palette | navy `#1E3A8A` / blue `#2563EB` / amber `#F59E0B` | Per DTW-Brand-Guideline-v1.0.pdf §4 (repo root). Replaced the prototype-era coral `#E04E1F` everywhere on 2026-06-12. Awards highlights = amber family on dark/navy surfaces only. |
 | Pillar nav (header) | 6 items: AI, Startups, Asia, Dev, Products, Policy | Font 14px, icon 15px (settled after several iterations). |
 
 ---
@@ -183,7 +201,7 @@ When implementing in Next.js + shadcn/ui, match the API + visual behavior of the
 - 12×14 padding, 6px border radius, 20px vertical margin
 
 ### `Button`
-- Variants: `primary` (ink bg) | `accent` (coral) | `outline` | `ghost`
+- Variants: `primary` (ink bg) | `accent` (blue `--accent-surface`, white label) | `outline` | `ghost`
 - Sizes: `sm` (12px) | `md` (13px) | `lg` (14px)
 - Accent variant adds an `:hover` glow via `data-glow="1"` and the CSS rule in `index.html`
 
@@ -214,7 +232,7 @@ Six visual templates, one per pillar (see `design/project/src/art.jsx`):
 
 1. AI — tilted bars over a halftone dot grid (purple)
 2. Startups — concentric circles, off-center (sky)
-3. Asia — asymmetric grid blocks (coral)
+3. Asia — asymmetric grid blocks (asia-red `#DC2626` family)
 4. Dev — data-viz line composition (green)
 5. Products — big typographic letter mark (amber)
 6. Policy — concentric squares + slab (slate)
@@ -261,7 +279,7 @@ const t = useT();
 From `design/project/src/effects.jsx`. These are part of the brand — keep them in production but make them **opt-out friendly** (`prefers-reduced-motion`):
 
 - **Live ticker tape** at the very top — TSMC, GoTo, FX, BTC tickers, scrolling with `▲▼` deltas. Pauses on hover.
-- **Cursor spotlight** on the Asia Spotlight dark band — coral glow follows the mouse.
+- **Cursor spotlight** on the Asia Spotlight dark band — blue `rgba(37,99,235,…)` glow follows the mouse.
 - **Dot-grid backdrops** on dark sections — faint white grid that fades to edges.
 - **Sparkline draw-in animation** on the Funding dashboard teaser.
 - **Count-up** on dashboard stats (deals, average round size).
