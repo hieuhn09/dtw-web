@@ -1,6 +1,6 @@
 # dtw-web - All UX/UI
 
-Last updated: 2026-05-28
+Last updated: 2026-06-12
 
 Attach this file when the task touches design tokens, theme behavior, component primitives, dark mode, i18n chrome, or any decision that affects visible surface area.
 
@@ -15,7 +15,7 @@ The `design/` directory at the repo root is the **canonical visual reference**. 
 - Dark mode rules + the `color-mix` discipline that prevents broken dark-mode contrast
 - Typography (Source Serif 4 / IBM Plex Sans / IBM Plex Mono)
 - Cover-art system (editorial geometry per pillar — no fake photography)
-- The brand evolution (DailyTechWire wordmark, no logo badge, "Tech Intelligence, Wired Daily" sentence-case tagline)
+- The brand identity (header logo: inline `DtwLogo` / `DtwLogoCompact`, coral monogram + wordmark, theme-adaptive; "Tech Intelligence, Wired Daily" sentence-case tagline)
 - i18n chrome translation strategy (`useT()` and pillar/nav translation tables)
 - Component primitives from the design prototype (canonical shape, not canonical code)
 
@@ -140,9 +140,10 @@ Theme persisted in `localStorage["dtw-theme"]` (key shape from prototype). Toggl
 | Element | State | Notes |
 |---|---|---|
 | Site name | **DailyTechWire** | "DTW" is the short form (breadcrumbs, Studio, Pro). Earlier iterations used "Daily Tech Wire" with spaces or "Down To the Wire" — both rejected. |
-| Wordmark | Serif "DailyTechWire" at 30px in header | No logo badge. Earlier badge designs were removed. |
+| Header identity | `DtwLogo` (desktop) / `DtwLogoCompact` (mobile) in `apps/web/src/components/dtw-logo.tsx` | Coral monogram block + "dailytechwire" wordmark + pulse line, recolored to `#E04E1F`. Theme-adaptive via CSS vars. Supersedes earlier text-only-wordmark design decision. Added 2026-06-12. |
+| Favicon / PWA icon | `dtw-monogram.svg` (coral monogram) | SVG favicon + PWA `manifest.ts` wired as of 2026-06-12. |
 | Tagline | "Tech Intelligence, Wired Daily" | Sentence case (NOT all-caps). Earlier all-caps version rejected. Monospace caps style for the small label. |
-| Coral accent | `#E04E1F` | Used for "Tech" highlighting in earlier wordmark (now removed), all accent buttons, Awards shimmer gradient, pillar nav active states. |
+| Coral accent | `#E04E1F` | Brand accent used for monogram, all accent buttons, Awards shimmer gradient, pillar nav active states. |
 | Pillar nav (header) | 6 items: AI, Startups, Asia, Dev, Products, Policy | Font 14px, icon 15px (settled after several iterations). |
 
 ---

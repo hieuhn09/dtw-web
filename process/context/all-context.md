@@ -1,6 +1,6 @@
 # dtw-web - All Context
 
-Last updated: 2026-05-28
+Last updated: 2026-06-12
 
 This file is the root context entrypoint for the repo.
 
@@ -132,8 +132,8 @@ Numbered, terse, load-bearing. Each one ties to a feature folder or context grou
 8. **Pillar/Sub-section/Tag are CMS entities** — adding a new pillar is a CMS write, not a code deploy. Routes (`/[pillar]/[subsection]/[slug]`), sitemap, and RSS regenerate automatically within 5 minutes.
 9. **i18n year 1 = `en` / `id` / `vi`** with subpath routing `/en /id /vi`, `hreflang`, CSS logical properties (RTL-ready). Indonesian must work from day one — SEA tech market matters. CN/JP/KO planned for Year 3. Don't hardcode locale lists.
 10. **Body of articles stays in the source language** — only the chrome (nav, byline, paywall meter, section headers) is translated. Editorial copy belongs to the writer.
-11. **Tech stack veto list:** no Lucia (deprecated), no Bun runtime (Payload 3 ↔ Bun is unstable), no logo badge in the header (removed in design iteration — only the wordmark "DailyTechWire" + tagline "Tech Intelligence, Wired Daily").
-12. **Reader-data residency / compliance:** GDPR + PDPA (Singapore) + Nghị định 13 (Vietnam). PostHog is **self-hosted** specifically for first-party analytics.
+11. **Tech stack veto list:** no Lucia (deprecated), no Bun runtime (Payload 3 ↔ Bun is unstable). Header identity: as of 2026-06-12 the header carries the inline `DtwLogo` / `DtwLogoCompact` components (`apps/web/src/components/dtw-logo.tsx`) — coral monogram block + "dailytechwire" wordmark + pulse line, theme-adaptive via CSS vars. This supersedes the earlier text-only-wordmark design decision recorded in `design/chats/chat1.md`.
+12. **Reader-data residency / compliance:** GDPR + PDPA (Singapore). PostHog is **self-hosted** specifically for first-party analytics. Nghị định 13 (Vietnam) was removed from Y1 data-residency compliance scope on 2026-06-12 per user decision. Vietnam REMAINS in i18n scope (invariant #9, locale `vi`) and as a target market (VNPay / Momo, Phase 2 payments) — this change narrows *data-residency compliance* only.
 13. **Awards page (year-one state):** no medallion, no "see previous winners", no specific categories. Just "Coming this year" with the shimmer hero. Year 1 = inaugural.
 
 If a change appears to violate one of these, surface it explicitly and ask before proceeding.

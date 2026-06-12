@@ -11,7 +11,7 @@ Does NOT include: the article reader page (`articles/`), pillar listing pages (`
 ## Composition (top → bottom)
 
 1. **Ticker tape** (top strip) — TSMC, GoTo, FX, BTC, scrolling with `▲▼` deltas. Pauses on hover.
-2. **Header** — wordmark "DailyTechWire" (30px serif), tagline "Tech Intelligence, Wired Daily", search ⌘K, dark-mode toggle, sign-in button, pillar nav (AI / Startups / Asia / Dev / Products / Policy, 14px font / 15px icon).
+2. **Header** — inline coral DTW logo (`DtwLogo` desktop / `DtwLogoCompact` mobile, theme-adaptive via CSS vars; coral monogram + "dailytechwire" wordmark + pulse line — replaced the 30px serif text wordmark on 2026-06-12), tagline "Tech Intelligence, Wired Daily", search ⌘K, dark-mode toggle, sign-in button, pillar nav (AI / Startups / Asia / Dev / Products / Policy, 14px font / 15px icon).
 3. **Sign-in nudge banner** — conditional: shows after ≥ 3 article reads when not authenticated. Dismissible (×). In-flow (pushes content down, NOT floating). Localised.
 4. **Hero band** — 1 main story with LQIP cover (~440px height after iteration) + 4 aside stories. Section uses `clamp()` for fluid scaling.
 5. **The Brief** — 4-column band: 200px label / 1fr / 1fr / 150px button. Vertical dividers run only 22%–78% (not full-height — design decision). AM Brief + PM Brief preview.

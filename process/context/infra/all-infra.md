@@ -1,6 +1,6 @@
 # dtw-web - All Infrastructure
 
-Last updated: 2026-05-28
+Last updated: 2026-06-12
 
 Attach this file when the task touches deployment, hosting, CDN, ISR, image / video pipelines, analytics, email delivery, or compliance.
 
@@ -14,7 +14,7 @@ Attach this file when the task touches deployment, hosting, CDN, ISR, image / vi
 - Email (Resend + React Email + double opt-in)
 - Analytics (PostHog self-host)
 - Performance targets + how we measure them
-- Compliance (GDPR + PDPA Singapore + Vietnam Nghị định 13)
+- Compliance (GDPR + PDPA Singapore; Nghị định 13 removed from Y1 scope 2026-06-12)
 - Environment variable layout
 
 Does NOT cover the Content Engine's own infra (separate repo) or Stripe billing infra (Phase 2 — see `integrations/`).
@@ -172,7 +172,7 @@ These ship in CI as a regression gate:
 |---|---|
 | **GDPR** | EU readers. Cookie banner. Right-to-erase from `users` + `bookmarks` + `reading_history`. |
 | **PDPA Singapore** | Default jurisdiction (Asia Press Corporation is registered in Singapore). |
-| **Nghị định 13 (Vietnam)** | Vietnamese readers. Data minimisation + consent. |
+| ~~**Nghị định 13 (Vietnam)**~~ | Removed from Y1 data-residency compliance scope 2026-06-12. Vietnam remains an i18n target (locale `vi`) and Phase 2 payments market — compliance scope only narrowed. |
 
 **Cookie banner** wording (current, from design): "We use cookies to remember your login and improve the site. No ads, no tracking, no data sale." Horizontal layout (920px), single line, three sections separated by hairlines: icon + COOKIES label / message / Decline + Accept buttons. EN / VI / ID. **No dark patterns** — Decline must be visually equal in weight to Accept.
 
