@@ -10,8 +10,8 @@ import type { MetadataRoute } from "next";
 // padding). iOS reads app/apple-icon.png (180×180), NOT this manifest.
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "DailyTechWire",
-    short_name: "DTW",
+    name: "Dailytechwire",
+    short_name: "Dailytechwire",
     description: "Tech Intelligence, Wired Daily.",
     start_url: "/",
     display: "standalone",
