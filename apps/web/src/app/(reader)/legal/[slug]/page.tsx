@@ -272,6 +272,7 @@ export default function LegalPage() {
             <Link
               key={k}
               href={`/legal/${k}`}
+              aria-current={slug === k ? "page" : undefined}
               style={{
                 display: "block",
                 width: "100%",

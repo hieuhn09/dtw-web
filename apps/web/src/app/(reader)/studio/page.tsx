@@ -89,7 +89,7 @@ export default function StudioPage() {
         <GridBackdrop color="rgba(255,255,255,.05)" size={40} fadeRadius="85%" />
         <div style={{ position: "relative", maxWidth: 680 }}>
           <div className="kicker" style={{ color: "var(--accent)", marginBottom: 14 }}>
-            DTW Studio
+            {t("DTW Studio", "DTW Studio", "DTW Studio")}
           </div>
           <h1
             className="serif"

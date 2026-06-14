@@ -135,6 +135,13 @@ img {
   font-family: var(--font-serif);
   font-feature-settings: normal;
 }
+/* Accent hover ring for prominent CTA anchors (design refresh). */
+.accent-glow {
+  transition: box-shadow 0.2s ease;
+}
+.accent-glow:hover {
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 30%, transparent);
+}
 /* Headings must wrap long tokens instead of overflowing on narrow screens. */
 h1,
 h2,

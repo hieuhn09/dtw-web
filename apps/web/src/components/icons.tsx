@@ -53,6 +53,11 @@ export function Icon({
   stroke = 1.75,
   ...rest
 }: IconProps) {
+  // Icons are decorative by default (paired with a text label, or inside an
+  // already-labelled button). Hide them from AT unless the caller gives the
+  // icon its own accessible name.
+  const labelled =
+    "aria-label" in rest || "aria-labelledby" in rest || rest.role === "img";
   const common: SVGProps<SVGSVGElement> = {
     width: size,
     height: size,
@@ -62,6 +67,7 @@ export function Icon({
     strokeWidth: stroke,
     strokeLinecap: "round",
     strokeLinejoin: "round",
+    "aria-hidden": labelled ? undefined : true,
     ...rest,
   };
 

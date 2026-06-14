@@ -138,6 +138,7 @@ export default function PressPage() {
           <a
             key={label}
             href={`mailto:${PRESS_EMAIL}`}
+            aria-label={`${label} — ${t("email", "gửi email", "email")} ${PRESS_EMAIL}`}
             className="card-hover"
             style={{
               display: "flex",

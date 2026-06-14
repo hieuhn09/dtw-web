@@ -142,10 +142,10 @@ export default function ContactPage() {
                 borderTop: "1px solid var(--hair)",
               }}
             >
-              <Icon name="mail" size={14} color="var(--accent)" />
+              <Icon name="mail" size={14} color="var(--accent-ink)" />
               <span
                 className="mono"
-                style={{ fontSize: 12.5, fontWeight: 600, color: "var(--accent)" }}
+                style={{ fontSize: 12.5, fontWeight: 600, color: "var(--accent-ink)" }}
               >
                 {c.email}
               </span>
