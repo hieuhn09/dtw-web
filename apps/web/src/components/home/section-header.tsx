@@ -20,7 +20,7 @@ export function SectionHeader({ title, kicker, right, liveDot }: SectionHeaderPr
         justifyContent: "space-between",
         marginBottom: 18,
         paddingBottom: 10,
-        borderBottom: "2px solid var(--ink)",
+        borderBottom: "2px solid var(--brand-navy)",
       }}
     >
       <div>
@@ -43,7 +43,7 @@ export function SectionHeader({ title, kicker, right, liveDot }: SectionHeaderPr
           style={{
             margin: 0,
             fontSize: 28,
-            fontWeight: 700,
+            fontWeight: 650,
             letterSpacing: "-0.02em",
           }}
         >

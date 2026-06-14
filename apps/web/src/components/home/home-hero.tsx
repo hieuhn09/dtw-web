@@ -42,8 +42,8 @@ export function HomeHero({ lead, aside }: HomeHeroProps) {
         <h2
           className="serif"
           style={{
-            fontSize: "clamp(28px, 6vw, 46px)",
-            fontWeight: 700,
+            fontSize: "clamp(28px, 6vw, 44px)",
+            fontWeight: 650,
             lineHeight: 1.05,
             letterSpacing: "-0.025em",
             margin: "5px 0 10px",

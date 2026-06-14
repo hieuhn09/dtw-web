@@ -79,9 +79,11 @@ export default async function HomePage() {
       <Reveal>
         <AwardsBanner />
       </Reveal>
-      <Reveal>
-        <SponsoredStrip article={sponsoredView} />
-      </Reveal>
+      {sponsoredView && (
+        <Reveal>
+          <SponsoredStrip article={sponsoredView} />
+        </Reveal>
+      )}
       <Reveal>
         <BestOfReviews />
       </Reveal>

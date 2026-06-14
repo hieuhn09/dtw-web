@@ -10,8 +10,8 @@ export function NewsletterCta() {
     <section style={{ marginBottom: 32 }}>
       <div
         style={{
-          background: "var(--ink)",
-          color: "var(--paper)",
+          background: "var(--banner)",
+          color: "#FFFFFF",
           borderRadius: 8,
           padding: "48px",
           display: "grid",
@@ -40,9 +40,9 @@ export function NewsletterCta() {
         <div style={{ position: "relative" }}>
           <div className="kicker" style={{ color: "var(--accent)", marginBottom: 8 }}>
             {t(
-              "Six newsletters · pick what you read",
-              "Sáu bản tin · chọn theo sở thích",
-              "Enam newsletter · pilih yang Anda baca"
+              "Eight newsletters · pick what you read",
+              "Tám bản tin · chọn theo sở thích",
+              "Delapan newsletter · pilih yang Anda baca"
             )}
           </div>
           <h2
@@ -50,9 +50,9 @@ export function NewsletterCta() {
             style={{
               margin: "0 0 10px",
               fontSize: 34,
-              fontWeight: 700,
+              fontWeight: 650,
               letterSpacing: "-0.02em",
-              color: "var(--paper)",
+              color: "#FFFFFF",
             }}
           >
             {t(
@@ -66,14 +66,14 @@ export function NewsletterCta() {
               margin: 0,
               fontSize: 14,
               lineHeight: 1.55,
-              color: "color-mix(in oklab, var(--paper) 70%, transparent)",
+              color: "rgba(232,237,247,0.70)",
               maxWidth: 540,
             }}
           >
             {t(
-              "AM Brief, PM Brief, AI Weekly, Asia Funding, Dev Digest, Products & Deals. Double opt-in. Unsubscribe with one click. We will never sell or share your email.",
-              "AM Brief, PM Brief, AI Weekly, Asia Funding, Dev Digest, Products & Deals. Xác nhận kép. Hủy chỉ bằng một cú nhấp. Không bán hay chia sẻ email của bạn.",
-              "AM Brief, PM Brief, AI Weekly, Asia Funding, Dev Digest, Products & Deals. Konfirmasi ganda. Berhenti dengan satu klik. Kami tak akan menjual atau membagikan email Anda."
+              "AM Brief, PM Brief, AI Weekly, Asia Funding, Dev Digest, Products & Deals, Deep Dive, DTW Awards. Double opt-in. Unsubscribe with one click. We will never sell or share your email.",
+              "AM Brief, PM Brief, AI Weekly, Asia Funding, Dev Digest, Products & Deals, Deep Dive, DTW Awards. Xác nhận kép. Hủy chỉ bằng một cú nhấp. Không bán hay chia sẻ email của bạn.",
+              "AM Brief, PM Brief, AI Weekly, Asia Funding, Dev Digest, Products & Deals, Deep Dive, DTW Awards. Konfirmasi ganda. Berhenti dengan satu klik. Kami tak akan menjual atau membagikan email Anda."
             )}
           </p>
         </div>
@@ -95,11 +95,11 @@ export function NewsletterCta() {
             placeholder="you@company.com"
             style={{
               padding: "14px 16px",
-              border: "1px solid color-mix(in oklab, var(--paper) 20%, transparent)",
+              border: "1px solid rgba(232,237,247,0.20)",
               borderRadius: 5,
               fontSize: 14,
-              background: "color-mix(in oklab, var(--paper) 6%, transparent)",
-              color: "var(--paper)",
+              background: "rgba(232,237,247,0.06)",
+              color: "#FFFFFF",
               fontFamily: "var(--font-sans)",
             }}
           />
@@ -116,8 +116,8 @@ export function NewsletterCta() {
               variant="ghost"
               size="lg"
               style={{
-                color: "var(--paper)",
-                border: "1px solid color-mix(in oklab, var(--paper) 20%, transparent)",
+                color: "#FFFFFF",
+                border: "1px solid rgba(232,237,247,0.20)",
               }}
             >
               {t("Choose more", "Chọn thêm", "Pilih lainnya")}

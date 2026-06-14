@@ -320,7 +320,7 @@ body {
   grid-template-columns: 1fr 2fr auto;
 }
 .r-awards {
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: 1fr auto;
 }
 @media (max-width: 720px) {
   .r-strip-3 {

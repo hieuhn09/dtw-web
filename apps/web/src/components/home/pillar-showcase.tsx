@@ -54,7 +54,7 @@ export function PillarShowcase({ byPillar }: PillarShowcaseProps) {
                   className="upper"
                   style={{
                     fontSize: 12,
-                    fontWeight: 700,
+                    fontWeight: 650,
                     letterSpacing: ".14em",
                     color: p.color,
                     display: "flex",
