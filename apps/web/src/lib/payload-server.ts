@@ -3,6 +3,7 @@ import { unstable_cache } from "next/cache";
 import { getPayload } from "payload";
 import config from "../../payload.config";
 import type { Article, Pillar, Author, WireDrop, Tag, Correction } from "../payload/payload-types";
+import type { NavPillar } from "./data";
 
 /**
  * Server-side Payload client + cached query helpers.
@@ -51,6 +52,37 @@ export const getPillars = unstable_cache(
     return r.docs;
   },
   ["pillars:all"],
+  { tags: ["pillars:all"], revalidate: 300 }
+);
+
+/**
+ * Lean, client-serializable pillar list for the header nav + homepage Pillar
+ * Showcase, ordered by the CMS `order` field. This is the surface that makes an
+ * editor's /admin reorder actually move the nav (invariant #8). Shares the
+ * `pillars:all` cache tag, so the same afterChange hook busts it.
+ */
+export const getNavPillars = unstable_cache(
+  async (): Promise<NavPillar[]> => {
+    const p = await payload();
+    const r = await p.find({
+      collection: "pillars",
+      sort: "order",
+      limit: 24,
+      depth: 0,
+    });
+    return r.docs.map((d) => ({
+      slug: d.slug,
+      title: {
+        en: d.title?.en ?? d.slug,
+        vi: d.title?.vi || d.title?.en || d.slug,
+        id: d.title?.id || d.title?.en || d.slug,
+      },
+      color: d.color,
+      icon: d.icon,
+      order: d.order ?? 0,
+    }));
+  },
+  ["nav-pillars"],
   { tags: ["pillars:all"], revalidate: 300 }
 );
 

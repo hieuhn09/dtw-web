@@ -12,6 +12,25 @@ export interface Pillar {
   slug: string;
 }
 
+/**
+ * CMS-driven pillar shape used by the header nav + homepage Pillar Showcase.
+ * Built server-side from the Payload `pillars` collection (see `getNavPillars()`
+ * in lib/payload-server.ts) and passed down as props, so the order an editor
+ * sets in /admin actually drives the rendered nav. `slug` is a plain string
+ * (not the static `PillarId` union) so adding a pillar in the CMS needs no code
+ * change — invariant #8.
+ */
+export interface NavPillar {
+  slug: string;
+  /** Localized short labels (en always present; vi/id fall back to en). */
+  title: { en: string; vi: string; id: string };
+  /** CSS var() reference, e.g. "var(--ai)". */
+  color: string;
+  /** Icon name from components/icons.tsx. */
+  icon: string;
+  order: number;
+}
+
 export const PILLARS: ReadonlyArray<Pillar> = [
   { id: "ai", label: "AI", color: "var(--ai)", slug: "/ai" },
   { id: "startups", label: "Startups", color: "var(--startups)", slug: "/startups" },

@@ -3,22 +3,21 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { Icon } from "@/components/icons";
+import { Icon, type IconName } from "@/components/icons";
 import { Wordmark } from "@/components/wordmark";
 import { useTheme } from "@/components/theme-provider";
 import {
   fmtFullDate,
   localizedNavLabel,
-  localizedPillarLabel,
   useLang,
   useT,
 } from "@/lib/i18n";
-import { NAV_EXTRA, PILLARS, PILLAR_ICONS } from "@/lib/data";
+import { NAV_EXTRA, type NavPillar } from "@/lib/data";
 import { useShell } from "@/lib/shell";
 
 const NUDGE_KEY = "dtw-nudge-dismissed";
 
-export function Header() {
+export function Header({ pillars }: { pillars: NavPillar[] }) {
   const router = useRouter();
   const pathname = usePathname() || "/";
   const { theme, setTheme } = useTheme();
@@ -499,12 +498,13 @@ export function Header() {
           }}
         >
           <nav style={{ display: "flex", alignItems: "stretch" }}>
-            {PILLARS.map((p) => {
-              const active = pathname.startsWith(p.slug);
+            {pillars.map((p) => {
+              const href = `/${p.slug}`;
+              const active = pathname.startsWith(href);
               return (
                 <Link
-                  key={p.id}
-                  href={p.slug}
+                  key={p.slug}
+                  href={href}
                   style={{
                     display: "flex",
                     alignItems: "center",
@@ -521,8 +521,8 @@ export function Header() {
                     textDecoration: "none",
                   }}
                 >
-                  <Icon name={PILLAR_ICONS[p.id]} size={15} color={p.color} />
-                  {localizedPillarLabel(p.id, lang)}
+                  <Icon name={p.icon as IconName} size={15} color={p.color} />
+                  {p.title[lang] ?? p.title.en}
                 </Link>
               );
             })}
@@ -712,12 +712,13 @@ export function Header() {
             </div>
 
             <nav style={{ padding: "10px 8px", display: "flex", flexDirection: "column" }}>
-              {PILLARS.map((p) => {
-                const active = pathname.startsWith(p.slug);
+              {pillars.map((p) => {
+                const href = `/${p.slug}`;
+                const active = pathname.startsWith(href);
                 return (
                   <Link
-                    key={p.id}
-                    href={p.slug}
+                    key={p.slug}
+                    href={href}
                     onClick={() => setMenuOpen(false)}
                     style={{
                       display: "flex",
@@ -731,8 +732,8 @@ export function Header() {
                       textDecoration: "none",
                     }}
                   >
-                    <Icon name={PILLAR_ICONS[p.id]} size={17} color={p.color} />
-                    {localizedPillarLabel(p.id, lang)}
+                    <Icon name={p.icon as IconName} size={17} color={p.color} />
+                    {p.title[lang] ?? p.title.en}
                   </Link>
                 );
               })}
