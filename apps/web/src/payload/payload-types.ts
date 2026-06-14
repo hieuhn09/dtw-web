@@ -226,7 +226,7 @@ export interface Media {
 export interface Pillar {
   id: number;
   /**
-   * URL slug, matches frontend pillar ids (ai|startups|asia|dev|products|policy).
+   * URL slug, matches frontend pillar ids (ai|startups|latest|dev|products|policy).
    */
   slug: string;
   /**
@@ -246,7 +246,7 @@ export interface Pillar {
    */
   color: string;
   /**
-   * Icon name from apps/web/src/components/icons.tsx (spark | trend-up | asia | code | product | policy).
+   * Icon name from apps/web/src/components/icons.tsx (spark | trend-up | clock | code | product | policy).
    */
   icon: string;
   /**
