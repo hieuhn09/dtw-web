@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { Icon } from "@/components/icons";
-import { TickerTape } from "@/components/effects";
+import { Wordmark } from "@/components/wordmark";
 import { useTheme } from "@/components/theme-provider";
 import {
   fmtFullDate,
@@ -117,8 +117,6 @@ export function Header() {
         transition: "border-color .2s",
       }}
     >
-      <TickerTape />
-
       {/* Top utility strip */}
       <div style={{ borderBottom: "1px solid var(--hair)", background: "var(--surface)" }}>
         <div
@@ -201,26 +199,10 @@ export function Header() {
           style={{ display: "flex", alignItems: "center", gap: 12, cursor: "pointer" }}
         >
           <div>
-            <span
-              aria-label="DailyTechWire"
-              className="serif"
-              style={{
-                display: "inline-flex",
-                alignItems: "baseline",
-                gap: 0,
-                fontWeight: 700,
-                letterSpacing: "-0.025em",
-                lineHeight: 1,
-                color: "var(--ink)",
-              }}
-            >
-              <span style={{ fontSize: 32 }}>Daily</span>
-              <span style={{ fontSize: 32, color: "var(--accent)" }}>Tech</span>
-              <span style={{ fontSize: 32 }}>Wire</span>
-            </span>
+            <Wordmark size={32} />
             <div
               className="mono text-mute"
-              style={{ letterSpacing: ".08em", margin: "4px 0 0", fontSize: 11 }}
+              style={{ letterSpacing: ".08em", margin: "2px 0 0", fontSize: 11 }}
             >
               {t(
                 "Tech Intelligence, Wired Daily",
@@ -503,7 +485,7 @@ export function Header() {
       {/* Pillar + extras nav */}
       <div
         className="pillar-nav-row"
-        style={{ borderTop: "1px solid var(--hair)", borderBottom: "3px solid var(--ink)" }}
+        style={{ borderTop: "1px solid var(--hair)", borderBottom: "3px solid var(--brand-navy)" }}
       >
         <div
           className="container"
@@ -534,7 +516,6 @@ export function Header() {
                       : "3px solid transparent",
                     marginBottom: -3,
                     color: active ? p.color : "var(--ink)",
-                    transition: "color .15s",
                     fontWeight: 500,
                     fontSize: 14,
                     textDecoration: "none",
@@ -568,7 +549,7 @@ export function Header() {
                     color: active ? "var(--accent)" : "var(--muted)",
                     textTransform: "uppercase",
                     letterSpacing: ".08em",
-                    padding: "0 21px 0 19px",
+                    padding: "0 19px",
                     textDecoration: "none",
                   }}
                 >
@@ -709,12 +690,7 @@ export function Header() {
                 borderBottom: "1px solid var(--hair)",
               }}
             >
-              <span
-                className="serif"
-                style={{ fontWeight: 700, letterSpacing: "-0.02em", fontSize: 20 }}
-              >
-                Daily<span style={{ color: "var(--accent)" }}>Tech</span>Wire
-              </span>
+              <Wordmark size={22} />
               <button
                 onClick={() => setMenuOpen(false)}
                 aria-label={t("Close", "Đóng", "Tutup")}
