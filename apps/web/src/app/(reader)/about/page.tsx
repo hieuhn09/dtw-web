@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Avatar, CoverArt } from "@/components/cover-art";
-import { CountUp, GridBackdrop, Reveal } from "@/components/effects";
+import { GridBackdrop, Reveal } from "@/components/effects";
 import { Icon, type IconName } from "@/components/icons";
 import { useLang, useT } from "@/lib/i18n";
 
@@ -22,36 +22,6 @@ const MASTHEAD: ReadonlyArray<{
   { name: "Joshua Lim", role: "Head of Data Desk", city: "Singapore", years: "11" },
 ];
 
-const OWNERSHIP: ReadonlyArray<{ k: string; v: number }> = [
-  { k: "Founding partners", v: 42 },
-  { k: "Employee share scheme", v: 18 },
-  { k: "Independent endowment trust", v: 22 },
-  { k: "Patient-capital partners", v: 16 },
-  { k: "Treasury", v: 2 },
-];
-
-const REVENUE: ReadonlyArray<{ k: string; v: number; color: string }> = [
-  { k: "Reader subscriptions (Pro & individual)", v: 68, color: "#E04E1F" },
-  { k: "Newsletter & event sponsorship", v: 14, color: "#0EA5E9" },
-  { k: "DTW Studio (labelled sponsored work)", v: 10, color: "#D97706" },
-  { k: "Research subscriptions (institutional)", v: 6, color: "#7C3AED" },
-  { k: "Affiliate (disclosed product reviews)", v: 2, color: "#16A34A" },
-];
-
-interface StatTile {
-  n: string;
-  l: string;
-  kind?: "year";
-}
-
-const STATS: ReadonlyArray<StatTile> = [
-  { n: "2023", l: "Founded in Singapore", kind: "year" },
-  { n: "8", l: "Independent publications" },
-  { n: "210+", l: "Journalists & contributors" },
-  { n: "68%", l: "Reader-funded revenue" },
-  { n: "100%", l: "Editorially independent" },
-];
-
 const VALUES: ReadonlyArray<{ k: string; v: string }> = [
   {
     k: "Accuracy first",
@@ -63,7 +33,7 @@ const VALUES: ReadonlyArray<{ k: string; v: string }> = [
   },
   {
     k: "Transparency",
-    v: "Our ownership, revenue mix, and editorial leadership are public – and updated quarterly. Source documents are linked wherever lawful.",
+    v: "Our editorial leadership and standards are public, and we link source documents wherever lawful. No silent edits.",
   },
   {
     k: "Service to readers",
@@ -82,7 +52,6 @@ const TRUST_LINKS: ReadonlyArray<readonly [slug: string, title: string, desc: st
   ["editorial", "Editorial Standards", "How we report. What we will and won't publish."],
   ["ai", "AI Disclosure", "What 'AI-assisted' means in our newsroom."],
   ["corrections", "Corrections Log", "Public record. Most recent first."],
-  ["transparency", "Transparency Report", "Headcount, revenue, requests, removals."],
   ["sponsored", "Sponsored & Affiliate", "DTW Studio rules + commission disclosure."],
 ];
 
@@ -96,10 +65,10 @@ const TIP_LINES: ReadonlyArray<readonly [icon: IconName, line: string, sub: stri
 const BIZ_INFO: ReadonlyArray<readonly [k: string, v: string]> = [
   [
     "Registered office",
-    "Asia Press Centre Group (APCG) Pte. Ltd.\n61 Robinson Road, #12-01\nSingapore 068893",
+    "Asia Press Centre Group (APCG)\nBugis Cube\nSingapore 188735",
   ],
-  ["Press inquiries", "press@asiapress.com\nMedia kit (PDF, 4MB) →"],
-  ["Investor relations", "ir@asiapress.com\nAnnual report 2025 →"],
+  ["Press inquiries", "media@dailytechwire.asia"],
+  ["Partnerships", "partnership@dailytechwire.asia\nasiapresscentre.com"],
 ];
 
 export default function AboutPage() {
@@ -109,31 +78,58 @@ export default function AboutPage() {
   const heroIntro =
     lang === "vi" ? (
       <>
-        DailyTechWire được xuất bản bởi{" "}
-        <strong style={{ color: "var(--paper)" }}>Asia Press Centre Group (APCG) Pte. Ltd.</strong>, một
-        tập đoàn truyền thông độc lập đặt trụ sở tại Singapore và có bạn đọc ở 138 quốc gia.
+        DailyTechWire là ấn phẩm công nghệ của{" "}
+        <strong style={{ color: "#FFFFFF" }}>Asia Press Centre Group (APCG)</strong>, mạng lưới
+        truyền thông có trụ sở tại Singapore, làm báo chí uy tín.
       </>
     ) : lang === "id" ? (
       <>
-        DailyTechWire diterbitkan oleh{" "}
-        <strong style={{ color: "var(--paper)" }}>Asia Press Centre Group (APCG) Pte. Ltd.</strong>, grup
-        media independen yang berkantor pusat di Singapura dan dibaca di 138 negara.
+        DailyTechWire adalah publikasi teknologi dari{" "}
+        <strong style={{ color: "#FFFFFF" }}>Asia Press Centre Group (APCG)</strong>, jaringan media
+        yang berbasis di Singapura dengan jurnalisme tepercaya.
       </>
     ) : (
       <>
-        DailyTechWire is published by{" "}
-        <strong style={{ color: "var(--paper)" }}>Asia Press Centre Group (APCG) Pte. Ltd.</strong>, an
-        independent media group headquartered in Singapore and read in 138 countries.
+        DailyTechWire is the technology title of{" "}
+        <strong style={{ color: "#FFFFFF" }}>Asia Press Centre Group (APCG)</strong>, a Singapore-based
+        media network of trusted journalism.
       </>
     );
+
+  const heroPillars: ReadonlyArray<readonly [h: string, d: string]> = [
+    [
+      t("A trusted environment", "Môi trường uy tín", "Lingkungan tepercaya"),
+      t(
+        "Independent journalism our readers rely on.",
+        "Báo chí độc lập mà độc giả tin cậy.",
+        "Jurnalisme independen yang diandalkan pembaca."
+      ),
+    ],
+    [
+      t("Asia and the world", "Châu Á và thế giới", "Asia dan dunia"),
+      t(
+        "Regional authority, read across languages.",
+        "Tầm vóc khu vực, đọc bằng nhiều ngôn ngữ.",
+        "Otoritas regional, dibaca lintas bahasa."
+      ),
+    ],
+    [
+      t("One network", "Một mạng lưới", "Satu jaringan"),
+      t(
+        "Business, finance, travel, luxury and technology.",
+        "Kinh doanh, tài chính, du lịch, xa xỉ và công nghệ.",
+        "Bisnis, keuangan, perjalanan, kemewahan dan teknologi."
+      ),
+    ],
+  ];
 
   return (
     <div>
       {/* Hero */}
       <section
         style={{
-          background: "var(--ink)",
-          color: "var(--paper)",
+          background: "var(--banner)",
+          color: "#E8EDF7",
           position: "relative",
           overflow: "hidden",
         }}
@@ -179,16 +175,18 @@ export default function AboutPage() {
             style={{
               margin: "0 0 18px",
               fontSize: "clamp(34px, 9vw, 64px)",
-              fontWeight: 700,
+              fontWeight: 650,
               letterSpacing: "-0.03em",
               lineHeight: 1.02,
               maxWidth: 900,
+              color: "#FFFFFF",
+              textWrap: "balance",
             }}
           >
             {t(
-              "Independent journalism from Singapore – covering the most consequential tech, financial, and policy stories in Asia.",
-              "Báo chí độc lập từ Singapore – đưa tin về những câu chuyện công nghệ, tài chính và chính sách quan trọng nhất ở châu Á.",
-              "Jurnalisme independen dari Singapura – meliput kisah teknologi, keuangan, dan kebijakan terpenting di Asia."
+              "The trusted voice of Asia, read in your language",
+              "Tiếng nói đáng tin cậy của châu Á, đọc bằng ngôn ngữ của bạn",
+              "Suara tepercaya Asia, dibaca dalam bahasa Anda"
             )}
           </h1>
           <p
@@ -197,8 +195,9 @@ export default function AboutPage() {
               margin: "0 0 28px",
               fontSize: 21,
               lineHeight: 1.45,
-              color: "color-mix(in oklab, var(--paper) 75%, transparent)",
+              color: "rgba(232,237,247,.75)",
               maxWidth: 780,
+              textWrap: "pretty",
             }}
           >
             {heroIntro}
@@ -206,45 +205,37 @@ export default function AboutPage() {
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 240px), 1fr))",
+              gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 220px), 1fr))",
               gap: 32,
               marginTop: 36,
               paddingTop: 28,
-              borderTop:
-                "1px solid color-mix(in oklab, var(--paper) 12%, transparent)",
-              maxWidth: 780,
+              borderTop: "1px solid rgba(232,237,247,.12)",
+              maxWidth: 820,
             }}
           >
-            {STATS.map((s) => (
-              <div key={s.l}>
+            {heroPillars.map(([h, d]) => (
+              <div key={h}>
                 <div
                   className="serif"
                   style={{
-                    fontSize: 30,
-                    fontWeight: 700,
-                    letterSpacing: "-0.02em",
-                    color: "var(--paper)",
+                    fontSize: 19,
+                    fontWeight: 650,
+                    letterSpacing: "-0.01em",
+                    color: "#FFFFFF",
+                    lineHeight: 1.2,
                   }}
                 >
-                  {s.kind === "year" ? (
-                    <span className="tnum">{s.n}</span>
-                  ) : (
-                    <CountUp
-                      to={parseFloat(s.n.replace(/[^0-9.]/g, ""))}
-                      suffix={s.n.replace(/[0-9.]/g, "")}
-                    />
-                  )}
+                  {h}
                 </div>
                 <div
                   style={{
-                    fontSize: 11,
-                    color: "color-mix(in oklab, var(--paper) 60%, transparent)",
-                    marginTop: 4,
-                    textTransform: "uppercase",
-                    letterSpacing: ".1em",
+                    fontSize: 12.5,
+                    color: "rgba(232,237,247,.62)",
+                    marginTop: 7,
+                    lineHeight: 1.5,
                   }}
                 >
-                  {s.l}
+                  {d}
                 </div>
               </div>
             ))}
@@ -272,15 +263,16 @@ export default function AboutPage() {
                 style={{
                   margin: 0,
                   fontSize: 34,
-                  fontWeight: 700,
+                  fontWeight: 650,
                   letterSpacing: "-0.02em",
                   lineHeight: 1.1,
+                  textWrap: "balance",
                 }}
               >
                 {t(
-                  "An independent publishing house covering Asia in eight specialist titles.",
-                  "Một nhà xuất bản độc lập đưa tin về châu Á qua tám ấn phẩm chuyên sâu.",
-                  "Penerbit independen yang meliput Asia melalui delapan publikasi spesialis."
+                  "An independent network publishing trusted journalism across Asia and the world",
+                  "Một mạng lưới độc lập làm báo chí uy tín khắp châu Á và thế giới",
+                  "Jaringan independen yang menerbitkan jurnalisme tepercaya di Asia dan dunia"
                 )}
               </h2>
             </div>
@@ -293,34 +285,22 @@ export default function AboutPage() {
               }}
             >
               <p style={{ margin: "0 0 18px" }}>
-                <strong style={{ color: "var(--ink)" }}>Asia Press Centre Group (APCG)</strong> was
-                founded in 2023 in Singapore by a group of veteran correspondents and editors who
-                shared a single conviction: the most important business, technology, and policy
-                stories of this decade would be reported from Asia, by reporters who live in it,
-                and they deserved a publisher built for that work from the first day.
+                <strong style={{ color: "var(--ink)" }}>Asia Press Centre Group (APCG)</strong> is a
+                Singapore-headquartered media network, a family of trusted multilingual titles
+                spanning business, finance, geopolitics, technology, travel, lifestyle and design.
+                DailyTechWire is its technology title.
               </p>
               <p style={{ margin: "0 0 18px" }}>
-                Today the group operates{" "}
-                <strong style={{ color: "var(--ink)" }}>eight independent publications</strong>{" "}
-                across technology, finance, geopolitics, climate, healthcare, industry, consumer
-                affairs, and research. Each title runs under its own editor; the corporation
-                provides infrastructure, legal protection, and a single set of editorial
-                standards that every title signs.
+                The conviction behind the network is a simple one: the most consequential business,
+                technology, and policy stories of this decade are made in Asia, and they deserve to
+                be reported from inside the region, by people who live in it, in the languages their
+                readers actually speak.
               </p>
               <p style={{ margin: "0 0 18px" }}>
-                We are{" "}
-                <strong style={{ color: "var(--ink)" }}>privately and employee-held</strong> – no
-                advertising network owns us, no platform pays for placement, and no state has a
-                stake. Our complete revenue breakdown, governance structure, and ownership chart
-                are published every quarter in our{" "}
-                <Link
-                  href="/trust/transparency"
-                  className="linkish"
-                  style={{ color: "var(--accent)" }}
-                >
-                  Transparency Report
-                </Link>
-                .
+                Each title runs under its own editor; the group provides the infrastructure, legal
+                protection, and a single set of editorial standards that every title signs. We are{" "}
+                <strong style={{ color: "var(--ink)" }}>editorially independent</strong> – no
+                advertiser, platform, or state directs what we cover.
               </p>
               <p style={{ margin: 0 }}>
                 We hold ourselves to the principles set out in our{" "}
@@ -389,9 +369,10 @@ export default function AboutPage() {
                   style={{
                     margin: 0,
                     fontSize: 32,
-                    fontWeight: 700,
+                    fontWeight: 650,
                     letterSpacing: "-0.02em",
                     lineHeight: 1.1,
+                    textWrap: "balance",
                   }}
                 >
                   {t(
@@ -402,26 +383,11 @@ export default function AboutPage() {
                 </h2>
               </div>
               <div>
-                <p
-                  className="serif"
-                  style={{
-                    margin: "0 0 24px",
-                    fontSize: 18,
-                    lineHeight: 1.6,
-                    color: "var(--ink-2)",
-                  }}
-                >
-                  The decisions made in Singapore, Seoul, Jakarta, Tokyo, Bengaluru, and Hanoi
-                  already shape the rest of the global economy. The reporting that informs those
-                  decisions should be made in the same rooms – not summarised at distance. We are
-                  here to do that work, in public, every day, on the record.
-                </p>
                 <div
                   style={{
                     display: "grid",
                     gridTemplateColumns: "1fr 1fr",
                     gap: 24,
-                    marginTop: 32,
                   }}
                 >
                   {VALUES.map((v) => (
@@ -453,7 +419,7 @@ export default function AboutPage() {
           <section style={{ marginBottom: 80 }}>
             <div
               style={{
-                borderTop: "3px solid var(--ink)",
+                borderTop: "3px solid var(--brand-navy)",
                 paddingTop: 24,
                 marginBottom: 36,
               }}
@@ -466,7 +432,7 @@ export default function AboutPage() {
                 style={{
                   margin: 0,
                   fontSize: 32,
-                  fontWeight: 700,
+                  fontWeight: 650,
                   letterSpacing: "-0.02em",
                 }}
               >
@@ -491,7 +457,7 @@ export default function AboutPage() {
             >
               <div>
                 <CoverArt
-                  pillar="asia"
+                  pillar="latest"
                   seed="eic-cheryl-tan"
                   variant={5}
                   height={420}
@@ -523,7 +489,7 @@ export default function AboutPage() {
                   style={{
                     margin: "0 0 8px",
                     fontSize: "clamp(28px, 6vw, 42px)",
-                    fontWeight: 700,
+                    fontWeight: 650,
                     letterSpacing: "-0.025em",
                     lineHeight: 1.05,
                   }}
@@ -625,7 +591,7 @@ export default function AboutPage() {
           <section style={{ marginBottom: 80 }}>
             <div
               style={{
-                borderTop: "3px solid var(--ink)",
+                borderTop: "3px solid var(--brand-navy)",
                 paddingTop: 24,
                 marginBottom: 32,
               }}
@@ -638,7 +604,7 @@ export default function AboutPage() {
                 style={{
                   margin: 0,
                   fontSize: 32,
-                  fontWeight: 700,
+                  fontWeight: 650,
                   letterSpacing: "-0.02em",
                 }}
               >
@@ -667,7 +633,7 @@ export default function AboutPage() {
                     className="serif"
                     style={{
                       fontSize: 17,
-                      fontWeight: 700,
+                      fontWeight: 650,
                       marginTop: 12,
                       letterSpacing: "-0.01em",
                     }}
@@ -692,195 +658,6 @@ export default function AboutPage() {
                   </div>
                 </div>
               ))}
-            </div>
-          </section>
-        </Reveal>
-
-        {/* Ownership */}
-        <Reveal>
-          <section style={{ marginBottom: 80 }}>
-            <div
-              style={{
-                borderTop: "3px solid var(--ink)",
-                paddingTop: 24,
-                marginBottom: 32,
-              }}
-            >
-              <div className="kicker" style={{ marginBottom: 6 }}>
-                {t("Ownership & funding", "Sở hữu & tài chính", "Kepemilikan & pendanaan")}
-              </div>
-              <h2
-                className="serif"
-                style={{
-                  margin: 0,
-                  fontSize: 32,
-                  fontWeight: 700,
-                  letterSpacing: "-0.02em",
-                }}
-              >
-                {t(
-                  "Who owns this newsroom, and where its money comes from.",
-                  "Ai sở hữu toà soạn này, và tiền của nó từ đâu.",
-                  "Siapa pemilik redaksi ini, dan dari mana uangnya berasal."
-                )}
-              </h2>
-            </div>
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr",
-                gap: 32,
-              }}
-            >
-              <div
-                style={{
-                  padding: 28,
-                  background: "var(--surface)",
-                  border: "1px solid var(--hair)",
-                  borderRadius: 8,
-                }}
-              >
-                <div
-                  className="upper"
-                  style={{
-                    fontSize: 11,
-                    fontWeight: 600,
-                    letterSpacing: ".14em",
-                    color: "var(--muted)",
-                    marginBottom: 14,
-                    textTransform: "uppercase",
-                  }}
-                >
-                  Ownership structure
-                </div>
-                {OWNERSHIP.map((o) => (
-                  <div
-                    key={o.k}
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      padding: "10px 0",
-                      borderBottom: "1px solid var(--hair)",
-                      alignItems: "center",
-                    }}
-                  >
-                    <span style={{ fontSize: 13 }}>{o.k}</span>
-                    <span className="mono" style={{ fontSize: 14, fontWeight: 600 }}>
-                      {o.v}%
-                    </span>
-                  </div>
-                ))}
-                <p
-                  className="text-mute"
-                  style={{
-                    margin: "16px 0 0",
-                    fontSize: 11,
-                    lineHeight: 1.5,
-                    fontStyle: "italic",
-                  }}
-                >
-                  No single shareholder controls more than 18% of voting equity. No state, foreign
-                  or domestic, holds a stake. Full cap table available on request to regulators
-                  and accredited researchers.
-                </p>
-              </div>
-              <div
-                style={{
-                  padding: 28,
-                  background: "var(--surface)",
-                  border: "1px solid var(--hair)",
-                  borderRadius: 8,
-                }}
-              >
-                <div
-                  className="upper"
-                  style={{
-                    fontSize: 11,
-                    fontWeight: 600,
-                    letterSpacing: ".14em",
-                    color: "var(--muted)",
-                    marginBottom: 14,
-                    textTransform: "uppercase",
-                  }}
-                >
-                  Revenue mix · FY2025
-                </div>
-                <div
-                  style={{
-                    display: "flex",
-                    height: 18,
-                    borderRadius: 4,
-                    overflow: "hidden",
-                    marginBottom: 18,
-                    border: "1px solid var(--hair)",
-                  }}
-                >
-                  {REVENUE.map((r) => (
-                    <div
-                      key={r.k}
-                      style={{
-                        width: `${r.v}%`,
-                        background: r.color,
-                      }}
-                      title={`${r.k}: ${r.v}%`}
-                    />
-                  ))}
-                </div>
-                {REVENUE.map((r) => (
-                  <div
-                    key={r.k}
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      padding: "8px 0",
-                      borderBottom: "1px solid var(--hair)",
-                      alignItems: "center",
-                    }}
-                  >
-                    <span
-                      style={{
-                        fontSize: 13,
-                        display: "flex",
-                        alignItems: "center",
-                        gap: 8,
-                      }}
-                    >
-                      <span
-                        style={{
-                          width: 10,
-                          height: 10,
-                          background: r.color,
-                          display: "inline-block",
-                          borderRadius: 2,
-                        }}
-                      />
-                      {r.k}
-                    </span>
-                    <span className="mono" style={{ fontSize: 14, fontWeight: 600 }}>
-                      {r.v}%
-                    </span>
-                  </div>
-                ))}
-                <p
-                  className="text-mute"
-                  style={{
-                    margin: "16px 0 0",
-                    fontSize: 11,
-                    lineHeight: 1.5,
-                    fontStyle: "italic",
-                  }}
-                >
-                  We do not accept programmatic advertising, sell reader data, or run sponsored
-                  content without a top/middle/bottom disclosure that cannot be turned off.{" "}
-                  <Link
-                    href="/trust/sponsored"
-                    className="linkish"
-                    style={{ color: "var(--accent)" }}
-                  >
-                    Read the full policy →
-                  </Link>
-                </p>
-              </div>
             </div>
           </section>
         </Reveal>
@@ -913,9 +690,10 @@ export default function AboutPage() {
                   style={{
                     margin: 0,
                     fontSize: 28,
-                    fontWeight: 700,
+                    fontWeight: 650,
                     letterSpacing: "-0.02em",
                     lineHeight: 1.15,
+                    textWrap: "balance",
                   }}
                 >
                   Our editorial framework, in your own words.
@@ -973,8 +751,8 @@ export default function AboutPage() {
           <section style={{ marginBottom: 40 }}>
             <div
               style={{
-                background: "var(--ink)",
-                color: "var(--paper)",
+                background: "var(--banner)",
+                color: "#E8EDF7",
                 borderRadius: 12,
                 padding: "48px",
                 display: "grid",
@@ -1017,9 +795,9 @@ export default function AboutPage() {
                   style={{
                     margin: "0 0 14px",
                     fontSize: 30,
-                    fontWeight: 700,
+                    fontWeight: 650,
                     letterSpacing: "-0.02em",
-                    color: "var(--paper)",
+                    color: "#FFFFFF",
                     lineHeight: 1.15,
                   }}
                 >
@@ -1030,7 +808,7 @@ export default function AboutPage() {
                     margin: 0,
                     fontSize: 14,
                     lineHeight: 1.6,
-                    color: "color-mix(in oklab, var(--paper) 75%, transparent)",
+                    color: "rgba(232,237,247,.75)",
                     maxWidth: 600,
                   }}
                 >
@@ -1054,9 +832,8 @@ export default function AboutPage() {
                     key={line}
                     style={{
                       padding: "12px 14px",
-                      background: "color-mix(in oklab, var(--paper) 6%, transparent)",
-                      border:
-                        "1px solid color-mix(in oklab, var(--paper) 12%, transparent)",
+                      background: "rgba(232,237,247,.06)",
+                      border: "1px solid rgba(232,237,247,.12)",
                       borderRadius: 6,
                       display: "flex",
                       gap: 12,
@@ -1070,7 +847,7 @@ export default function AboutPage() {
                         style={{
                           fontSize: 12,
                           fontWeight: 500,
-                          color: "var(--paper)",
+                          color: "#E8EDF7",
                         }}
                       >
                         {line}
@@ -1078,7 +855,7 @@ export default function AboutPage() {
                       <div
                         style={{
                           fontSize: 10,
-                          color: "color-mix(in oklab, var(--paper) 55%, transparent)",
+                          color: "rgba(232,237,247,.55)",
                           marginTop: 2,
                         }}
                       >
