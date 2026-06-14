@@ -1,20 +1,22 @@
 "use client";
 
 import Link from "next/link";
-import { Icon } from "@/components/icons";
+import { Icon, type IconName } from "@/components/icons";
 import { CoverArt } from "@/components/cover-art";
 import { SectionHeader } from "./section-header";
 import { TimeAgo } from "@/components/time-ago";
-import { PILLARS, PILLAR_ICONS, type PillarId } from "@/lib/data";
+import { type NavPillar, type PillarId } from "@/lib/data";
 import type { ArticleView } from "@/lib/article-view";
-import { localizedPillarLabel, useLang, useT } from "@/lib/i18n";
+import { useLang, useT } from "@/lib/i18n";
 
 export interface PillarShowcaseProps {
-  /** Articles grouped by pillar id, sorted newest first. Up to 4 per pillar. */
+  /** CMS pillars, ordered by `order`. Drives which bands show and their order. */
+  pillars: NavPillar[];
+  /** Articles grouped by pillar slug, sorted newest first. Up to 4 per pillar. */
   byPillar: Partial<Record<PillarId, ReadonlyArray<ArticleView>>>;
 }
 
-export function PillarShowcase({ byPillar }: PillarShowcaseProps) {
+export function PillarShowcase({ pillars, byPillar }: PillarShowcaseProps) {
   const t = useT();
   const { lang } = useLang();
 
@@ -31,13 +33,13 @@ export function PillarShowcase({ byPillar }: PillarShowcaseProps) {
           gap: 32,
         }}
       >
-        {PILLARS.map((p) => {
-          const items = (byPillar[p.id] ?? []).slice(0, 4);
+        {pillars.map((p) => {
+          const items = (byPillar[p.slug as PillarId] ?? []).slice(0, 4);
           if (items.length === 0) return null;
           return (
-            <div key={p.id}>
+            <div key={p.slug}>
               <Link
-                href={p.slug}
+                href={`/${p.slug}`}
                 style={{
                   display: "flex",
                   alignItems: "center",
@@ -63,8 +65,8 @@ export function PillarShowcase({ byPillar }: PillarShowcaseProps) {
                     textTransform: "uppercase",
                   }}
                 >
-                  <Icon name={PILLAR_ICONS[p.id]} size={14} color={p.color} />
-                  {localizedPillarLabel(p.id, lang)}
+                  <Icon name={p.icon as IconName} size={14} color={p.color} />
+                  {p.title[lang] ?? p.title.en}
                 </div>
                 <span className="text-mute-2" style={{ fontSize: 11 }}>
                   {t("See all →", "Xem tất cả →", "Lihat semua →")}

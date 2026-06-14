@@ -13,6 +13,7 @@ import { NewsletterCta } from "@/components/home/newsletter-cta";
 import { toArticleView, type ArticleView } from "@/lib/article-view";
 import {
   getDeepDive,
+  getNavPillars,
   getRecentArticles,
   getWireDrops,
 } from "@/lib/payload-server";
@@ -21,10 +22,11 @@ import type { PillarId } from "@/lib/data";
 export const revalidate = 60;
 
 export default async function HomePage() {
-  const [recent, deepDive, wireDrops] = await Promise.all([
+  const [recent, deepDive, wireDrops, pillars] = await Promise.all([
     getRecentArticles(40),
     getDeepDive(),
     getWireDrops(12),
+    getNavPillars(),
   ]);
 
   const articles = recent.map(toArticleView);
@@ -61,7 +63,7 @@ export default async function HomePage() {
         <WireDrops initial={wireDropsInitial} />
       </Reveal>
       <Reveal>
-        <PillarShowcase byPillar={byPillar} />
+        <PillarShowcase pillars={pillars} byPillar={byPillar} />
       </Reveal>
       <Reveal>
         <AsiaSpotlight articles={spotlightItems} />
