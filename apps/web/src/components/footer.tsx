@@ -242,7 +242,7 @@ export function Footer() {
             © 2026 DailyTechWire · Singapore · Member, Trust Project
           </div>
           <div style={{ display: "flex", gap: 14, fontSize: 11 }}>
-            <span className="text-mute">Compliant with GDPR · PDPA (SG) · Nghị định 13 (VN)</span>
+            <span className="text-mute">Compliant with GDPR · PDPA (SG)</span>
           </div>
         </div>
       </div>
