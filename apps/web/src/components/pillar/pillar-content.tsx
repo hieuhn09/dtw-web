@@ -77,7 +77,7 @@ export function PillarContent({
             className="upper"
             style={{
               fontSize: 12,
-              fontWeight: 700,
+              fontWeight: 650,
               letterSpacing: ".18em",
               color: pillarColor,
               textTransform: "uppercase",
@@ -91,7 +91,7 @@ export function PillarContent({
           style={{
             margin: "0 0 12px",
             fontSize: "clamp(32px, 9vw, 64px)",
-            fontWeight: 700,
+            fontWeight: 650,
             letterSpacing: "-0.03em",
             lineHeight: 1,
             color: "var(--ink)",
@@ -205,9 +205,10 @@ export function PillarContent({
                 style={{
                   margin: "0 0 14px",
                   fontSize: "clamp(26px, 6vw, 42px)",
-                  fontWeight: 700,
+                  fontWeight: 650,
                   letterSpacing: "-0.025em",
                   lineHeight: 1.05,
+                  textWrap: "balance",
                 }}
               >
                 {featured.title}
@@ -264,7 +265,12 @@ export function PillarContent({
 
       {hasMore && (
         <div style={{ textAlign: "center", marginTop: 48 }}>
-          <Button variant="outline" size="lg" onClick={() => setShown((s) => s + PAGE_SIZE)}>
+          <Button
+            variant="outline"
+            size="lg"
+            onClick={() => setShown((s) => s + PAGE_SIZE)}
+            style={{ padding: "18px 36px", fontSize: 15, letterSpacing: ".02em" }}
+          >
             {t("Load more", "Tải thêm", "Muat lagi")}
           </Button>
         </div>
@@ -279,7 +285,11 @@ export function PillarContent({
             fontSize: 13,
           }}
         >
-          {t("End of feed.", "Hết bài.", "Akhir feed.")}
+          {t(
+            `End of feed — ${visible.length} stories shown.`,
+            `Hết bài — đã hiển thị ${visible.length} bài.`,
+            `Akhir feed — ${visible.length} artikel ditampilkan.`
+          )}
         </div>
       )}
 

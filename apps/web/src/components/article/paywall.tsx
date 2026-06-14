@@ -44,11 +44,11 @@ export function Paywall({ onLogin }: PaywallProps) {
         style={{
           margin: "0 0 10px",
           fontSize: 30,
-          fontWeight: 700,
+          fontWeight: 650,
           letterSpacing: "-0.02em",
         }}
       >
-        Keep reading the reporting that matters in Asia tech.
+        Keep reading the reporting that matters in tech, across Asia and the world
       </h3>
       <p
         className="text-mute"

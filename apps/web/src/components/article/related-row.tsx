@@ -28,7 +28,7 @@ export function RelatedRow({ articles }: RelatedRowProps) {
       style={{
         marginTop: 64,
         paddingTop: 32,
-        borderTop: "3px solid var(--ink)",
+        borderTop: "3px solid var(--brand-navy)",
       }}
     >
       <div className="kicker" style={{ marginBottom: 18 }}>
@@ -65,6 +65,7 @@ export function RelatedRow({ articles }: RelatedRowProps) {
                   fontWeight: 600,
                   lineHeight: 1.3,
                   letterSpacing: "-0.01em",
+                  textWrap: "balance",
                 }}
               >
                 {a.title}

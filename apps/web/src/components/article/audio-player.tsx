@@ -2,9 +2,11 @@
 
 import { useState } from "react";
 import { Icon } from "@/components/icons";
+import { useT } from "@/lib/i18n";
 
 export function AudioPlayerBar() {
   const [playing, setPlaying] = useState(false);
+  const t = useT();
   return (
     <div
       style={{
@@ -48,7 +50,8 @@ export function AudioPlayerBar() {
             gap: 6,
           }}
         >
-          <Icon name="headphone" size={13} /> Listen to this article
+          <Icon name="headphone" size={13} />{" "}
+          {t("Listen to this article", "Nghe bài này", "Dengarkan artikel ini")}
         </div>
         <div
           style={{

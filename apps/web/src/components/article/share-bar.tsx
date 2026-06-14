@@ -2,6 +2,7 @@
 
 import { useState, type MouseEventHandler } from "react";
 import { Icon, type IconName } from "@/components/icons";
+import { useT } from "@/lib/i18n";
 
 interface BtnProps {
   label: string;
@@ -34,6 +35,7 @@ function Btn({ label, icon, onClick, active }: BtnProps) {
 
 export function ShareBar() {
   const [saved, setSaved] = useState(false);
+  const t = useT();
   return (
     <div
       style={{
@@ -46,14 +48,14 @@ export function ShareBar() {
       }}
     >
       <Btn
-        label={saved ? "Saved" : "Save"}
+        label={saved ? t("Saved", "Đã lưu", "Tersimpan") : t("Save", "Lưu", "Simpan")}
         icon="bookmark"
         onClick={() => setSaved(!saved)}
         active={saved}
       />
-      <Btn label="Share" icon="share" />
-      <Btn label="Copy link" icon="external" />
-      <Btn label="Email" icon="mail" />
+      <Btn label={t("Share", "Chia sẻ", "Bagikan")} icon="share" />
+      <Btn label={t("Copy link", "Sao chép liên kết", "Salin tautan")} icon="external" />
+      <Btn label={t("Email", "Email", "Email")} icon="mail" />
     </div>
   );
 }
