@@ -79,22 +79,6 @@ export function ArticleContent({ article, body, related }: ArticleContentProps) 
               DEEP DIVE
             </span>
           )}
-          {article.aiAssisted && (
-            <span
-              className="mono"
-              style={{
-                fontSize: 10,
-                padding: "2px 8px",
-                border: "1px solid var(--hair-2)",
-                borderRadius: 3,
-                fontWeight: 600,
-                letterSpacing: ".08em",
-                color: "var(--muted)",
-              }}
-            >
-              AI-ASSISTED
-            </span>
-          )}
           {article.sponsored && (
             <span
               className="mono"

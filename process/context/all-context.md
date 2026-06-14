@@ -23,7 +23,7 @@ Start here before loading deeper context files.
 
 The three share `packages/db`. Engine writes go through the **Payload API only** (never directly to Postgres) so editorial hooks (ISR revalidation, search indexing, OG image generation) always fire.
 
-**Editorial integrity is the product.** Clear separation between newsroom reporting, sponsored content (`Paid Partner`, mustard `#FEF3C7` background), and affiliate links (icon + disclosure tooltip). No popups. No in-article advertising. Disclosure boxes on sponsored / AI-assisted articles cannot be dismissed.
+**Editorial integrity is the product.** Clear separation between newsroom reporting, sponsored content (`Paid Partner`, mustard `#FEF3C7` background), and affiliate links (icon + disclosure tooltip). No popups. No in-article advertising. Disclosure boxes on sponsored articles cannot be dismissed. (AI-assisted inline disclosure removed 2026-06-05 — see invariant #5.)
 
 ### Audience (priority order)
 
@@ -126,7 +126,7 @@ Numbered, terse, load-bearing. Each one ties to a feature folder or context grou
 2. **Conflict resolution = `lockedFields` + `editedByHuman` + optimistic lock** (compare `version` or `updatedAt`). Engine never overwrites a field that has been locked or that a human has edited. Human always wins on the same field. See `database/`.
 3. **`origin: 'engine' | 'manual'`** is a required column on every article. Marks provenance.
 4. **Paywall = soft block.** Meter (cookie for guests, DB for users) — never block mid-article. Phase 1 has no payment, only a sign-in nudge after ≥ 3 reads. The "3" must be configurable in CMS, never hardcoded. See `process/features/articles/_GUIDE.md`.
-5. **Disclosure boxes (sponsored, AI-assisted)** appear at top + middle + bottom of article and cannot be dismissed.
+5. **Disclosure boxes (sponsored)** appear at top + middle + bottom of article and cannot be dismissed. **AI-assisted inline disclosure was removed by product decision 2026-06-05** (the header "AI-ASSISTED" badge + the 3 `kind="ai"` `DisclosureBox`es). The `aiAssisted` field still exists on Articles and the Engine still sets it `true` — it is just no longer surfaced inline. KNOWN GAP: the `/trust/ai` page still describes AI disclosure; reconcile that copy if/when the policy is finalised.
 6. **No popups. No mid-article ads.** Period.
 7. **Brand colors fixed:** sponsored bg `#FEF3C7` (dark `#3B2E0A`), up `#10B981`, down `#EF4444`, dark bg `#0F172A` / text `#E2E8F0`, DTW coral accent `#E04E1F`. See `uxui/`.
 8. **Pillar/Sub-section/Tag are CMS entities** — adding a new pillar is a CMS write, not a code deploy. Routes (`/[pillar]/[subsection]/[slug]`), sitemap, and RSS regenerate automatically within 5 minutes.
