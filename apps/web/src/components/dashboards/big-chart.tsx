@@ -37,7 +37,7 @@ export function BigChart() {
           <stop offset="100%" stopColor="var(--up)" stopOpacity="0" />
         </linearGradient>
       </defs>
-      {[0, 0.25, 0.5, 0.75, 1].map((p, i) => (
+      {[0.25, 0.5, 0.75, 1].map((p, i) => (
         <line
           key={i}
           x1={PAD}
