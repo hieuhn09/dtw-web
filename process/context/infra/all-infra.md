@@ -103,7 +103,7 @@ Pages must call `unstable_cache` / `fetch` with the matching `next.tags` array t
 - **Magic link emails:** see `auth/all-auth.md`. Sent through the same Resend domain.
 - **Transactional:** correction notifications (Phase 2), purchase receipts (Phase 2).
 
-DKIM + SPF + DMARC on `dailytechwire.asia` before any send.
+DKIM + SPF + DMARC on `dailytechwire.com` before any send.
 
 ---
 
@@ -211,7 +211,7 @@ Names only — never commit values. Grouped logically.
 
 ### Email
 - `RESEND_API_KEY`
-- `RESEND_FROM_DOMAIN` (`dailytechwire.asia`)
+- `RESEND_FROM_DOMAIN` (`dailytechwire.com`)
 
 ### Realtime
 - `SOKETI_HOST`, `SOKETI_PORT`, `SOKETI_KEY`, `SOKETI_SECRET` (or `PUSHER_APP_ID` / `PUSHER_KEY` / `PUSHER_SECRET` / `PUSHER_CLUSTER`)

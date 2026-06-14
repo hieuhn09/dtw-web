@@ -7,7 +7,7 @@ import { GridBackdrop, Reveal } from "@/components/effects";
 import { Icon, type IconName } from "@/components/icons";
 import { useT } from "@/lib/i18n";
 
-const EMAIL = "advertising@dailytechwire.asia";
+const EMAIL = "advertising@dailytechwire.com";
 const MAILTO = `mailto:${EMAIL}?subject=DTW%20media%20inquiry`;
 
 // Markets are proper nouns — not localized.
@@ -231,9 +231,9 @@ export default function AdvertisePage() {
             }}
           >
             {t(
-              "Founders, engineers, investors, and policymakers read dailytechwire to understand what is actually happening in technology. Put your brand in front of them, in a place built for attention, not impressions.",
-              "Nhà sáng lập, kỹ sư, nhà đầu tư và nhà hoạch định chính sách đọc dailytechwire để hiểu điều thực sự đang diễn ra trong công nghệ. Đưa thương hiệu của bạn đến trước họ, ở một nơi được tạo ra cho sự chú tâm, không phải lượt hiển thị.",
-              "Founder, engineer, investor, dan pembuat kebijakan membaca dailytechwire untuk memahami apa yang benar-benar terjadi di teknologi. Tempatkan merek Anda di depan mereka, di tempat yang dibangun untuk perhatian, bukan impresi."
+              "Founders, engineers, investors, and policymakers read Dailytechwire to understand what is actually happening in technology. Put your brand in front of them, in a place built for attention, not impressions.",
+              "Nhà sáng lập, kỹ sư, nhà đầu tư và nhà hoạch định chính sách đọc Dailytechwire để hiểu điều thực sự đang diễn ra trong công nghệ. Đưa thương hiệu của bạn đến trước họ, ở một nơi được tạo ra cho sự chú tâm, không phải lượt hiển thị.",
+              "Founder, engineer, investor, dan pembuat kebijakan membaca Dailytechwire untuk memahami apa yang benar-benar terjadi di teknologi. Tempatkan merek Anda di depan mereka, di tempat yang dibangun untuk perhatian, bukan impresi."
             )}
           </p>
           <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>

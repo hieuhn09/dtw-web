@@ -1,4 +1,4 @@
-// dailytechwire logomark, monogram "DTW" with an accent wire-cut through the W,
+// Dailytechwire logomark, monogram "DTW" with an accent wire-cut through the W,
 // set in a tight slab style. Single-color (works on light + dark).
 // Compact DTW monogram block, matches uploads/dtw-logo-primary.svg.
 function Logo({ size = 44, navy = "var(--brand-navy)" }) {

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 380 100" role="img" aria-label="DailyTechWire primary logo">
-  <title>DailyTechWire — Primary logo (horizontal)</title>
-  <desc>Navy DTW monogram block, the dailytechwire wordmark, and a pulse signature with a terracotta accent dot. Colours match the production brand tokens.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 380 100" role="img" aria-label="Dailytechwire primary logo">
+  <title>Dailytechwire — Primary logo (horizontal)</title>
+  <desc>Navy DTW monogram block, the Dailytechwire wordmark, and a pulse signature with a terracotta accent dot. Colours match the production brand tokens.</desc>
 
   <!-- Monogram block -->
   <rect x="0" y="20" width="60" height="60" rx="8" fill="#1B2A52"/>

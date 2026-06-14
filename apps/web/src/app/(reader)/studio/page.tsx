@@ -7,7 +7,7 @@ import { GridBackdrop } from "@/components/effects";
 import { Icon, type IconName } from "@/components/icons";
 import { useT } from "@/lib/i18n";
 
-const EMAIL = "partnership@dailytechwire.asia";
+const EMAIL = "partnership@dailytechwire.com";
 const MAILTO = `mailto:${EMAIL}?subject=DTW%20Studio%20inquiry`;
 
 export default function StudioPage() {

@@ -30,7 +30,7 @@ const plexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "DailyTechWire — Asia Tech",
+  title: "Dailytechwire",
   description: "Tech Intelligence, Wired Daily.",
 };
 

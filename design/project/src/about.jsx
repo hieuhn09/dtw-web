@@ -212,7 +212,7 @@ function AboutPage({ navigate, variant = "trust" }) {
                 Cheryl Tan
               </h3>
               <div className="text-mute" style={{ fontSize: 15, marginBottom: 24, fontFamily: "var(--font-serif)" }}>
-                Editor-in-Chief, dailytechwire · Asia Press Centre Group
+                Editor-in-Chief, Dailytechwire · Asia Press Centre Group
               </div>
 
               <p style={{ margin: "0 0 14px", fontSize: 16, lineHeight: 1.65, fontFamily: "var(--font-serif)", color: "var(--ink)" }}>
@@ -427,7 +427,7 @@ const BEATS = [
 
 
 const MASTHEAD = [
-{ name: "Cheryl Tan", role: "Editor-in-Chief, dailytechwire / Group Editor", city: "Singapore", years: "20+" },
+{ name: "Cheryl Tan", role: "Editor-in-Chief, Dailytechwire / Group Editor", city: "Singapore", years: "20+" },
 { name: "Aravind Subramanian", role: "Managing Editor", city: "Bengaluru", years: "18" },
 { name: "Hiroko Yamamoto", role: "Executive Editor, Newsroom", city: "Tokyo", years: "19" },
 { name: "Daniel Park", role: "Standards Editor & Ombudsperson", city: "Seoul", years: "16" },

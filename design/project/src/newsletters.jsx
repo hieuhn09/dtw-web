@@ -16,7 +16,7 @@ function NewslettersPage({ navigate }) {
       <header style={{ borderBottom: "2px solid var(--hair-2)", paddingBottom: 20, marginBottom: 32 }}>
         <div className="kicker" style={{ marginBottom: 6 }}>{t("Newsletters · 8 picks · all free","Bản tin · 8 lựa chọn · miễn phí","Newsletter · 8 pilihan · gratis")}</div>
         <h1 className="serif" style={{ margin: "0 0 10px", fontSize: 48, fontWeight: 650, letterSpacing: "-0.025em", lineHeight: 1 }}>
-          {t("Read dailytechwire the way you read","Đọc dailytechwire theo cách của bạn","Baca dailytechwire dengan cara Anda")}
+          {t("Read Dailytechwire the way you read","Đọc Dailytechwire theo cách của bạn","Baca Dailytechwire dengan cara Anda")}
         </h1>
         <p className="serif text-mute" style={{ margin: 0, fontSize: 18, lineHeight: 1.45, maxWidth: 760 }}>
           {t("Daily briefs, weekly digests, one bi-weekly. Double opt-in. No tracking pixels. One-click unsubscribe.","Bản tin hàng ngày, tổng hợp hàng tuần, một bản hai tuần. Xác nhận kép. Không pixel theo dõi. Hủy chỉ một cú nhấp.","Brief harian, ringkasan mingguan, satu dwi-mingguan. Konfirmasi ganda. Tanpa piksel pelacak. Berhenti satu klik.")}

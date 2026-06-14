@@ -247,7 +247,7 @@ export function ArticleContent({ article, body, related }: ArticleContentProps) 
           {t("Spot something wrong?", "Phát hiện sai sót?", "Menemukan kesalahan?")}
         </strong>{" "}
         {t("Email", "Email", "Email")}{" "}
-        <span className="mono">corrections@dailytechwire.asia</span>.{" "}
+        <span className="mono">corrections@dailytechwire.com</span>.{" "}
         {t(
           "We log every correction publicly.",
           "Chúng tôi ghi lại mọi đính chính công khai.",

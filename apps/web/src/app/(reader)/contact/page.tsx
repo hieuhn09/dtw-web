@@ -19,7 +19,7 @@ export default function ContactPage() {
     {
       icon: "mail",
       label: t("General & editorial", "Chung & biên tập", "Umum & editorial"),
-      email: "info@dailytechwire.asia",
+      email: "info@dailytechwire.com",
       desc: t(
         "Questions about a story, a correction, your account, or anything that doesn't fit elsewhere. A person replies, usually within a business day.",
         "Câu hỏi về một bài viết, đính chính, tài khoản, hay bất cứ điều gì không thuộc mục khác. Một con người sẽ trả lời, thường trong một ngày làm việc.",
@@ -29,7 +29,7 @@ export default function ContactPage() {
     {
       icon: "feather",
       label: t("Press & media", "Báo chí & truyền thông", "Pers & media"),
-      email: "media@dailytechwire.asia",
+      email: "media@dailytechwire.com",
       desc: t(
         "Interview requests, press credentials, story tips, and confidential sources. We protect our sources and read every tip carefully.",
         "Yêu cầu phỏng vấn, thẻ báo chí, mật báo và nguồn tin bảo mật. Chúng tôi bảo vệ nguồn tin và đọc kỹ từng mật báo.",
@@ -39,7 +39,7 @@ export default function ContactPage() {
     {
       icon: "trend-up",
       label: t("Partnerships & business", "Hợp tác & kinh doanh", "Kemitraan & bisnis"),
-      email: "partnership@dailytechwire.asia",
+      email: "partnership@dailytechwire.com",
       desc: t(
         "Advertising, content licensing, events, syndication, and investor relations. Tell us what you have in mind and we'll route it to the right team.",
         "Quảng cáo, cấp phép nội dung, sự kiện, đăng lại, và quan hệ nhà đầu tư. Hãy cho chúng tôi biết ý định của bạn và chúng tôi sẽ chuyển tới đúng bộ phận.",

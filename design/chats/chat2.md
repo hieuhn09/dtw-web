@@ -492,7 +492,7 @@ _[tool: update_todos]_
 _[tool: delete_file]_
 
 All updates are in and rendering cleanly:
-- **Footer**: "The technology title of Asia Press Centre Group (APCG)…", copyright now "© 2026 DailyTechWire · a title of Asia Press Centre Group (APCG) · Singapore · Member, Trust Project" (UEN/ISSN numbers removed), subscriber count dropped.
+- **Footer**: "The technology title of Asia Press Centre Group (APCG)…", copyright now "© 2026 Dailytechwire · a title of Asia Press Centre Group (APCG) · Singapore · Member, Trust Project" (UEN/ISSN numbers removed), subscriber count dropped.
 - **Contact**: Publisher = "Asia Press Centre Group (APCG)" · Bugis Cube · Singapore 188735.
 
 Let me finalize.
@@ -503,7 +503,7 @@ _[tool: fork_verifier_agent]_
 
 Đã áp dụng thông tin **Asia Press Centre Group (APCG)** vào site, đúng các nguyên tắc bạn đặt ra:
 
-**Đổi thương hiệu (mọi nơi):** "Asia Press Corporation" → "Asia Press Centre Group (APCG)" trên About, Newsroom, Contact, Footer, và trang Legal/Terms. DailyTechWire được định vị là **ấn phẩm công nghệ của APCG**.
+**Đổi thương hiệu (mọi nơi):** "Asia Press Corporation" → "Asia Press Centre Group (APCG)" trên About, Newsroom, Contact, Footer, và trang Legal/Terms. Dailytechwire được định vị là **ấn phẩm công nghệ của APCG**.
 
 **Bỏ hết số liệu hư cấu (thay bằng mô tả định tính):**
 - Hero About/Newsroom: thay lưới số (210+ nhà báo, 68% doanh thu, 8 ấn phẩm, 6 văn phòng, 128 phóng viên…) bằng 3 trụ cột định tính lấy từ kit (Trusted environment / Asia and the world / One network).

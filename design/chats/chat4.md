@@ -229,7 +229,7 @@ All single-sentence titles are now period-free. Let me verify the build loads cl
 - **Studio**: tiêu đề hero + "Sponsored, and never hidden"
 - **Advertise**: "Reach the people building tech across Asia and the world"
 - **Contact**: "We'd like to hear from you" / "Reach the newsroom directly"
-- **Newsletters**: "Read DailyTechWire the way you read"
+- **Newsletters**: "Read Dailytechwire the way you read"
 - **Account**: "Log in to view your account"
 - **Pro / 404 / Auth / Paywall**: các tiêu đề tương ứng
 
@@ -758,7 +758,7 @@ _[tool: str_replace_edit]_
 
 ## User
 
-đổi hết dailytechwire thành không viết hoa các chữ cái đầu cho tôi
+đổi hết Dailytechwire thành không viết hoa các chữ cái đầu cho tôi
 
 ## Assistant
 

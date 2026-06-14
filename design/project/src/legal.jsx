@@ -9,9 +9,9 @@ function LegalPage({ navigate, slug }){
       title: P("Privacy Policy", "Chính sách quyền riêng tư", "Kebijakan Privasi"),
       kicker: P("Last updated · 1 June 2026", "Cập nhật lần cuối · 01/06/2026", "Diperbarui · 1 Juni 2026"),
       intro: P(
-        "We built dailytechwire to be read, not to be mined. This policy explains, in plain language, what we collect, why, and the control you keep over it. If anything here is unclear, write to info@dailytechwire.com and a person, not a bot, will answer.",
-        "Chúng tôi xây dailytechwire để được đọc, không phải để khai thác dữ liệu. Chính sách này giải thích bằng ngôn ngữ rõ ràng: chúng tôi thu thập gì, vì sao, và quyền kiểm soát bạn giữ. Nếu có gì chưa rõ, hãy viết tới info@dailytechwire.com, một con người, không phải bot, sẽ trả lời.",
-        "Kami membangun dailytechwire untuk dibaca, bukan untuk ditambang. Kebijakan ini menjelaskan dengan bahasa sederhana: apa yang kami kumpulkan, mengapa, dan kendali yang Anda pegang. Jika ada yang kurang jelas, tulis ke info@dailytechwire.com, manusia, bukan bot, yang akan menjawab."
+        "We built Dailytechwire to be read, not to be mined. This policy explains, in plain language, what we collect, why, and the control you keep over it. If anything here is unclear, write to info@dailytechwire.com and a person, not a bot, will answer.",
+        "Chúng tôi xây Dailytechwire để được đọc, không phải để khai thác dữ liệu. Chính sách này giải thích bằng ngôn ngữ rõ ràng: chúng tôi thu thập gì, vì sao, và quyền kiểm soát bạn giữ. Nếu có gì chưa rõ, hãy viết tới info@dailytechwire.com, một con người, không phải bot, sẽ trả lời.",
+        "Kami membangun Dailytechwire untuk dibaca, bukan untuk ditambang. Kebijakan ini menjelaskan dengan bahasa sederhana: apa yang kami kumpulkan, mengapa, dan kendali yang Anda pegang. Jika ada yang kurang jelas, tulis ke info@dailytechwire.com, manusia, bukan bot, yang akan menjawab."
       ),
       body: [
         [P("What we collect", "Những gì chúng tôi thu thập", "Apa yang kami kumpulkan"),
@@ -54,9 +54,9 @@ function LegalPage({ navigate, slug }){
            "Bạn chịu trách nhiệm cho hoạt động dưới tài khoản của mình và giữ an toàn thông tin đăng nhập. Hãy báo ngay nếu nghi ngờ bị truy cập trái phép. Tài khoản dành cho cá nhân; truy cập theo nhóm và tổ chức có gói riêng.",
            "Anda bertanggung jawab atas aktivitas di akun Anda dan menjaga keamanan login. Beri tahu kami segera jika curiga ada akses tak sah. Akun untuk individu; akses tim dan institusi tersedia terpisah.")],
         [P("Our content", "Nội dung của chúng tôi", "Konten kami"),
-         P("The journalism, data visualisations, and design on dailytechwire are owned by Asia Press Centre Group (APCG) or used under licence. Trademarks and the masthead remain ours. We license selected content for syndication, write to partnership@dailytechwire.com.",
-           "Nội dung báo chí, đồ hoạ dữ liệu và thiết kế trên dailytechwire thuộc sở hữu của Asia Press Centre Group (APCG) hoặc dùng theo giấy phép. Thương hiệu và măng-sét vẫn thuộc về chúng tôi. Chúng tôi cấp phép một số nội dung để đăng lại, viết tới partnership@dailytechwire.com.",
-           "Jurnalisme, visualisasi data, dan desain di dailytechwire dimiliki Asia Press Centre Group (APCG) atau dipakai berdasarkan lisensi. Merek dagang dan masthead tetap milik kami. Kami melisensikan konten tertentu untuk sindikasi, tulis ke partnership@dailytechwire.com.")],
+         P("The journalism, data visualisations, and design on Dailytechwire are owned by Asia Press Centre Group (APCG) or used under licence. Trademarks and the masthead remain ours. We license selected content for syndication, write to partnership@dailytechwire.com.",
+           "Nội dung báo chí, đồ hoạ dữ liệu và thiết kế trên Dailytechwire thuộc sở hữu của Asia Press Centre Group (APCG) hoặc dùng theo giấy phép. Thương hiệu và măng-sét vẫn thuộc về chúng tôi. Chúng tôi cấp phép một số nội dung để đăng lại, viết tới partnership@dailytechwire.com.",
+           "Jurnalisme, visualisasi data, dan desain di Dailytechwire dimiliki Asia Press Centre Group (APCG) atau dipakai berdasarkan lisensi. Merek dagang dan masthead tetap milik kami. Kami melisensikan konten tertentu untuk sindikasi, tulis ke partnership@dailytechwire.com.")],
         [P("Accuracy & corrections", "Độ chính xác & đính chính", "Akurasi & koreksi"),
          P("We work hard to be accurate and we correct mistakes openly. The site is provided in good faith but without warranty that it is error-free or always available. Nothing we publish is investment, legal, or professional advice.",
            "Chúng tôi nỗ lực để chính xác và đính chính sai sót một cách công khai. Trang được cung cấp với thiện chí nhưng không bảo đảm hoàn toàn không lỗi hay luôn sẵn sàng. Không nội dung nào chúng tôi đăng là tư vấn đầu tư, pháp lý hay chuyên môn.",
@@ -85,9 +85,9 @@ function LegalPage({ navigate, slug }){
            "Một cookie first-party duy nhất giúp chúng tôi đếm lượt đọc và xem bài nào được đón nhận, ở mức tổng hợp. Nó tự lưu trữ, không bao giờ chia sẻ, và bạn có thể từ chối từ thanh cookie mà không mất tính năng nào.",
            "Satu cookie first-party membantu kami menghitung pembacaan dan melihat artikel mana yang diterima, secara agregat. Self-hosted, tak pernah dibagikan, dan Anda bisa menolaknya dari bilah cookie tanpa kehilangan fitur.")],
         [P("What we don't set", "Những gì chúng tôi không đặt", "Yang tak kami pasang"),
-         P("No advertising cookies. No third-party trackers. No cross-site pixels from social networks. If you ever find a cookie on dailytechwire that does not fit the two categories above, tell us, it is a bug, not a policy.",
-           "Không cookie quảng cáo. Không trình theo dõi bên thứ ba. Không pixel xuyên trang từ mạng xã hội. Nếu bạn từng thấy một cookie trên dailytechwire không thuộc hai nhóm trên, hãy báo chúng tôi, đó là lỗi, không phải chính sách.",
-           "Tanpa cookie iklan. Tanpa pelacak pihak ketiga. Tanpa piksel lintas situs dari media sosial. Jika Anda menemukan cookie di dailytechwire yang tak masuk dua kategori di atas, beri tahu kami, itu bug, bukan kebijakan.")],
+         P("No advertising cookies. No third-party trackers. No cross-site pixels from social networks. If you ever find a cookie on Dailytechwire that does not fit the two categories above, tell us, it is a bug, not a policy.",
+           "Không cookie quảng cáo. Không trình theo dõi bên thứ ba. Không pixel xuyên trang từ mạng xã hội. Nếu bạn từng thấy một cookie trên Dailytechwire không thuộc hai nhóm trên, hãy báo chúng tôi, đó là lỗi, không phải chính sách.",
+           "Tanpa cookie iklan. Tanpa pelacak pihak ketiga. Tanpa piksel lintas situs dari media sosial. Jika Anda menemukan cookie di Dailytechwire yang tak masuk dua kategori di atas, beri tahu kami, itu bug, bukan kebijakan.")],
         [P("Managing cookies", "Quản lý cookie", "Mengelola cookie"),
          P("You can accept or decline analytics from the bar at the bottom of the screen, change your mind any time in account settings, or clear everything from your browser. Declining never paywalls a feature.",
            "Bạn có thể chấp nhận hoặc từ chối phân tích từ thanh ở cuối màn hình, đổi ý bất cứ lúc nào trong cài đặt tài khoản, hoặc xoá tất cả từ trình duyệt. Từ chối không bao giờ khoá một tính năng sau tường phí.",

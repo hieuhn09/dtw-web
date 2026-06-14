@@ -237,7 +237,7 @@ const ARTICLES: ReadonlyArray<ArticleFixture> = [
     publishedAt: "2026-05-22T10:00:00+08:00",
     aiAssisted: true,
     bodyBlocks: [
-      ["p", "Every article on DailyTechWire that used an AI tool carries a disclosure box. This piece explains exactly what that box does and does not mean."],
+      ["p", "Every article on Dailytechwire that used an AI tool carries a disclosure box. This piece explains exactly what that box does and does not mean."],
       ["p", "We use machine assistance for three things: translating source documents, transcribing interviews, and summarising long filings for a reporter to verify. We do not use it to generate published prose."],
       ["h3", "The checklist"],
       ["p", "Before an AI-assisted tag goes on, an editor confirms a human wrote the article, a human verified every translated quote against the source, and no generated text reached the page unedited."],

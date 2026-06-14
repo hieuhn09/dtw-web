@@ -32,10 +32,10 @@ const TRUST_LINKS: ReadonlyArray<readonly [slug: string, title: string, desc: st
 ];
 
 const TIP_LINES: ReadonlyArray<readonly [icon: IconName, line: string, sub: string]> = [
-  ["mail", "tips@dailytechwire.asia", "PGP key on request"],
+  ["mail", "tips@dailytechwire.com", "PGP key on request"],
   ["lock", "Signal · +65 8XXX XXXX", "End-to-end encrypted"],
   ["globe", "SecureDrop · onion link", "Tor-only, anonymous"],
-  ["mail", "corrections@dailytechwire.asia", "Spotted an error?"],
+  ["mail", "corrections@dailytechwire.com", "Spotted an error?"],
 ];
 
 const BIZ_INFO: ReadonlyArray<readonly [k: string, v: string]> = [
@@ -43,8 +43,8 @@ const BIZ_INFO: ReadonlyArray<readonly [k: string, v: string]> = [
     "Registered office",
     "Asia Press Centre Group (APCG)\nBugis Cube\nSingapore 188735",
   ],
-  ["Press inquiries", "media@dailytechwire.asia"],
-  ["Partnerships", "partnership@dailytechwire.asia\nasiapresscentre.com"],
+  ["Press inquiries", "media@dailytechwire.com"],
+  ["Partnerships", "partnership@dailytechwire.com\nasiapresscentre.com"],
 ];
 
 export default function AboutPage() {
@@ -54,19 +54,19 @@ export default function AboutPage() {
   const heroIntro =
     lang === "vi" ? (
       <>
-        DailyTechWire là ấn phẩm công nghệ của{" "}
+        Dailytechwire là ấn phẩm công nghệ của{" "}
         <strong style={{ color: "#FFFFFF" }}>Asia Press Centre Group (APCG)</strong>, mạng lưới
         truyền thông có trụ sở tại Singapore, làm báo chí uy tín.
       </>
     ) : lang === "id" ? (
       <>
-        DailyTechWire adalah publikasi teknologi dari{" "}
+        Dailytechwire adalah publikasi teknologi dari{" "}
         <strong style={{ color: "#FFFFFF" }}>Asia Press Centre Group (APCG)</strong>, jaringan media
         yang berbasis di Singapura dengan jurnalisme tepercaya.
       </>
     ) : (
       <>
-        DailyTechWire is the technology title of{" "}
+        Dailytechwire is the technology title of{" "}
         <strong style={{ color: "#FFFFFF" }}>Asia Press Centre Group (APCG)</strong>, a Singapore-based
         media network of trusted journalism.
       </>
@@ -264,7 +264,7 @@ export default function AboutPage() {
                 <strong style={{ color: "var(--ink)" }}>Asia Press Centre Group (APCG)</strong> is a
                 Singapore-headquartered media network, a family of trusted multilingual titles
                 spanning business, finance, geopolitics, technology, travel, lifestyle and design.
-                DailyTechWire is its technology title.
+                Dailytechwire is its technology title.
               </p>
               <p style={{ margin: "0 0 18px" }}>
                 The conviction behind the network is a simple one: the most consequential business,

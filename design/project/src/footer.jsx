@@ -107,7 +107,7 @@ function Footer({ navigate }) {
       <div style={{ borderTop: "1px solid var(--hair)", background: "var(--paper)" }}>
         <div className="container" style={{ padding: "18px 24px", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 12 }}>
           <div className="mono text-mute" style={{ fontSize: 11 }}>
-            © 2026 dailytechwire · a title of Asia Press Centre Group (APCG) · Singapore · Member, Trust Project
+            © 2026 Dailytechwire · a title of Asia Press Centre Group (APCG) · Singapore · Member, Trust Project
           </div>
           <div style={{ display: "flex", gap: 14, fontSize: 11 }}>
             <span className="text-mute">Compliant with GDPR · PDPA (SG)</span>

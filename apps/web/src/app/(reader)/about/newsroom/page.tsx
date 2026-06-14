@@ -91,7 +91,7 @@ const CREDENTIALS: ReadonlyArray<{ k: string; v: string }> = [
 ];
 
 const MASTHEAD: ReadonlyArray<{ name: string; role: string; city: string }> = [
-  { name: "Cheryl Tan", role: "Editor-in-Chief, dailytechwire / Group Editor", city: "Singapore" },
+  { name: "Cheryl Tan", role: "Editor-in-Chief, Dailytechwire / Group Editor", city: "Singapore" },
   { name: "Aravind Subramanian", role: "Managing Editor", city: "Bengaluru" },
   { name: "Hiroko Yamamoto", role: "Executive Editor, Newsroom", city: "Tokyo" },
   { name: "Daniel Park", role: "Standards Editor & Ombudsperson", city: "Seoul" },
@@ -111,16 +111,16 @@ const BUREAUS: ReadonlyArray<{ city: string; role: string; tz: string; chief: st
 ];
 
 const TIP_LINES: ReadonlyArray<readonly [icon: IconName, line: string, sub: string]> = [
-  ["mail", "media@dailytechwire.asia", "PGP key on request"],
+  ["mail", "media@dailytechwire.com", "PGP key on request"],
   ["lock", "Signal · +65 8XXX XXXX", "End-to-end encrypted"],
   ["globe", "SecureDrop · onion link", "Tor-only, anonymous"],
-  ["mail", "corrections@dailytechwire.asia", "Spotted an error?"],
+  ["mail", "corrections@dailytechwire.com", "Spotted an error?"],
 ];
 
 const BIZ_INFO: ReadonlyArray<readonly [k: string, v: string]> = [
   ["Registered office", "Asia Press Centre Group (APCG)\nBugis Cube\nSingapore 188735"],
-  ["Press inquiries", "media@dailytechwire.asia"],
-  ["Partnerships", "partnership@dailytechwire.asia\ndailytechwire.asia"],
+  ["Press inquiries", "media@dailytechwire.com"],
+  ["Partnerships", "partnership@dailytechwire.com\ndailytechwire.com"],
 ];
 
 // Fixed light values for text on the navy --banner surface (banner is navy
@@ -441,7 +441,7 @@ export default function NewsroomAboutPage() {
                 className="text-mute"
                 style={{ fontSize: 15, marginBottom: 24, fontFamily: "var(--font-serif)" }}
               >
-                Editor-in-Chief, dailytechwire · Asia Press Centre Group
+                Editor-in-Chief, Dailytechwire · Asia Press Centre Group
               </div>
 
               <p

@@ -7,7 +7,7 @@ import { GridBackdrop } from "@/components/effects";
 import { Icon, type IconName } from "@/components/icons";
 import { useT } from "@/lib/i18n";
 
-const PRESS_EMAIL = "media@dailytechwire.asia";
+const PRESS_EMAIL = "media@dailytechwire.com";
 
 export default function PressPage() {
   const t = useT();

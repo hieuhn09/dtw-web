@@ -45,9 +45,9 @@ export default function NewslettersPage() {
           }}
         >
           {t(
-            "Read DailyTechWire the way you read.",
-            "Đọc DailyTechWire theo cách của bạn.",
-            "Baca DailyTechWire sesuai keinginan."
+            "Read Dailytechwire the way you read.",
+            "Đọc Dailytechwire theo cách của bạn.",
+            "Baca Dailytechwire sesuai keinginan."
           )}
         </h1>
         <p

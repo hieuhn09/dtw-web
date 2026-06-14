@@ -42,7 +42,7 @@ The About page went through extensive iteration in `design/chats/chat1.md`. The 
 
 ### Editor-in-Chief
 
-- **Cheryl Tan Hwee-Min** — name chosen as a placeholder
+- **Cheryl Tan** — name chosen as a placeholder
 - Brief role description ONLY — **do NOT reintroduce fabricated career history**. Earlier drafts had Reuters / Pulitzer / Nieman / LSE / NUS claims that the user explicitly rejected as "fake / verifiable" — keep them removed
 - No contact line, no Signal availability, no author-page link (those were removed per user instruction)
 
@@ -64,10 +64,10 @@ The About page went through extensive iteration in `design/chats/chat1.md`. The 
 
 ### Tip line (dark)
 
-- `tips@dailytechwire.asia`
+- `tips@dailytechwire.com`
 - Signal: available on request
 - SecureDrop
-- Corrections: `corrections@dailytechwire.asia`
+- Corrections: `corrections@dailytechwire.com`
 
 ### What's NOT on the page (removed during iteration — keep removed)
 

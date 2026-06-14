@@ -37,9 +37,9 @@ export default function LegalPage() {
       title: t("Privacy Policy", "Chính sách quyền riêng tư", "Kebijakan Privasi"),
       kicker: updated,
       intro: t(
-        "We built dailytechwire to be read, not to be mined. This policy explains, in plain language, what we collect, why, and the control you keep over it. If anything here is unclear, write to info@dailytechwire.asia and a person, not a bot, will answer.",
-        "Chúng tôi xây dailytechwire để được đọc, không phải để khai thác dữ liệu. Chính sách này giải thích bằng ngôn ngữ rõ ràng: chúng tôi thu thập gì, vì sao, và quyền kiểm soát bạn giữ. Nếu có gì chưa rõ, hãy viết tới info@dailytechwire.asia, một con người, không phải bot, sẽ trả lời.",
-        "Kami membangun dailytechwire untuk dibaca, bukan untuk ditambang. Kebijakan ini menjelaskan dengan bahasa sederhana: apa yang kami kumpulkan, mengapa, dan kendali yang Anda pegang. Jika ada yang kurang jelas, tulis ke info@dailytechwire.asia, manusia, bukan bot, yang akan menjawab."
+        "We built Dailytechwire to be read, not to be mined. This policy explains, in plain language, what we collect, why, and the control you keep over it. If anything here is unclear, write to info@dailytechwire.com and a person, not a bot, will answer.",
+        "Chúng tôi xây Dailytechwire để được đọc, không phải để khai thác dữ liệu. Chính sách này giải thích bằng ngôn ngữ rõ ràng: chúng tôi thu thập gì, vì sao, và quyền kiểm soát bạn giữ. Nếu có gì chưa rõ, hãy viết tới info@dailytechwire.com, một con người, không phải bot, sẽ trả lời.",
+        "Kami membangun Dailytechwire untuk dibaca, bukan untuk ditambang. Kebijakan ini menjelaskan dengan bahasa sederhana: apa yang kami kumpulkan, mengapa, dan kendali yang Anda pegang. Jika ada yang kurang jelas, tulis ke info@dailytechwire.com, manusia, bukan bot, yang akan menjawab."
       ),
       body: [
         [
@@ -77,9 +77,9 @@ export default function LegalPage() {
         [
           t("Where your data lives", "Dữ liệu của bạn được lưu ở đâu", "Di mana data Anda berada"),
           t(
-            "On servers in Singapore, operated under our control. When the law of your country gives you stronger protections than ours, we apply the stronger standard. Questions about a specific jurisdiction go to info@dailytechwire.asia.",
-            "Trên máy chủ tại Singapore, do chúng tôi vận hành. Khi luật nước bạn cho bạn mức bảo vệ mạnh hơn của chúng tôi, chúng tôi áp dụng chuẩn cao hơn. Câu hỏi về một khu vực pháp lý cụ thể, gửi tới info@dailytechwire.asia.",
-            "Di server di Singapura, dioperasikan di bawah kendali kami. Bila hukum negara Anda memberi perlindungan lebih kuat dari kami, kami menerapkan standar yang lebih kuat. Pertanyaan tentang yurisdiksi tertentu kirim ke info@dailytechwire.asia."
+            "On servers in Singapore, operated under our control. When the law of your country gives you stronger protections than ours, we apply the stronger standard. Questions about a specific jurisdiction go to info@dailytechwire.com.",
+            "Trên máy chủ tại Singapore, do chúng tôi vận hành. Khi luật nước bạn cho bạn mức bảo vệ mạnh hơn của chúng tôi, chúng tôi áp dụng chuẩn cao hơn. Câu hỏi về một khu vực pháp lý cụ thể, gửi tới info@dailytechwire.com.",
+            "Di server di Singapura, dioperasikan di bawah kendali kami. Bila hukum negara Anda memberi perlindungan lebih kuat dari kami, kami menerapkan standar yang lebih kuat. Pertanyaan tentang yurisdiksi tertentu kirim ke info@dailytechwire.com."
           ),
         ],
       ],
@@ -112,9 +112,9 @@ export default function LegalPage() {
         [
           t("Our content", "Nội dung của chúng tôi", "Konten kami"),
           t(
-            "The journalism, data visualisations, and design on dailytechwire are owned by Asia Press Centre Group (APCG) or used under licence. Trademarks and the masthead remain ours. We license selected content for syndication, write to partnership@dailytechwire.asia.",
-            "Nội dung báo chí, đồ hoạ dữ liệu và thiết kế trên dailytechwire thuộc sở hữu của Asia Press Centre Group (APCG) hoặc dùng theo giấy phép. Thương hiệu và măng-sét vẫn thuộc về chúng tôi. Chúng tôi cấp phép một số nội dung để đăng lại, viết tới partnership@dailytechwire.asia.",
-            "Jurnalisme, visualisasi data, dan desain di dailytechwire dimiliki Asia Press Centre Group (APCG) atau dipakai berdasarkan lisensi. Merek dagang dan masthead tetap milik kami. Kami melisensikan konten tertentu untuk sindikasi, tulis ke partnership@dailytechwire.asia."
+            "The journalism, data visualisations, and design on Dailytechwire are owned by Asia Press Centre Group (APCG) or used under licence. Trademarks and the masthead remain ours. We license selected content for syndication, write to partnership@dailytechwire.com.",
+            "Nội dung báo chí, đồ hoạ dữ liệu và thiết kế trên Dailytechwire thuộc sở hữu của Asia Press Centre Group (APCG) hoặc dùng theo giấy phép. Thương hiệu và măng-sét vẫn thuộc về chúng tôi. Chúng tôi cấp phép một số nội dung để đăng lại, viết tới partnership@dailytechwire.com.",
+            "Jurnalisme, visualisasi data, dan desain di Dailytechwire dimiliki Asia Press Centre Group (APCG) atau dipakai berdasarkan lisensi. Merek dagang dan masthead tetap milik kami. Kami melisensikan konten tertentu untuk sindikasi, tulis ke partnership@dailytechwire.com."
           ),
         ],
         [
@@ -128,9 +128,9 @@ export default function LegalPage() {
         [
           t("Changes & contact", "Thay đổi & liên hệ", "Perubahan & kontak"),
           t(
-            "If we change these terms materially, we will say so on this page and, for account holders, by email. Continued use after a change means acceptance. Governing law is Singapore. Questions: info@dailytechwire.asia.",
-            "Nếu chúng tôi thay đổi các điều khoản này một cách đáng kể, chúng tôi sẽ thông báo trên trang này và, với chủ tài khoản, qua email. Tiếp tục sử dụng sau thay đổi nghĩa là chấp nhận. Luật điều chỉnh là Singapore. Câu hỏi: info@dailytechwire.asia.",
-            "Jika kami mengubah ketentuan ini secara material, kami akan menyampaikannya di halaman ini dan, bagi pemilik akun, lewat email. Penggunaan berlanjut setelah perubahan berarti penerimaan. Hukum yang berlaku adalah Singapura. Pertanyaan: info@dailytechwire.asia."
+            "If we change these terms materially, we will say so on this page and, for account holders, by email. Continued use after a change means acceptance. Governing law is Singapore. Questions: info@dailytechwire.com.",
+            "Nếu chúng tôi thay đổi các điều khoản này một cách đáng kể, chúng tôi sẽ thông báo trên trang này và, với chủ tài khoản, qua email. Tiếp tục sử dụng sau thay đổi nghĩa là chấp nhận. Luật điều chỉnh là Singapore. Câu hỏi: info@dailytechwire.com.",
+            "Jika kami mengubah ketentuan ini secara material, kami akan menyampaikannya di halaman ini dan, bagi pemilik akun, lewat email. Penggunaan berlanjut setelah perubahan berarti penerimaan. Hukum yang berlaku adalah Singapura. Pertanyaan: info@dailytechwire.com."
           ),
         ],
       ],
@@ -163,9 +163,9 @@ export default function LegalPage() {
         [
           t("What we don't set", "Những gì chúng tôi không đặt", "Yang tak kami pasang"),
           t(
-            "No advertising cookies. No third-party trackers. No cross-site pixels from social networks. If you ever find a cookie on dailytechwire that does not fit the two categories above, tell us, it is a bug, not a policy.",
-            "Không cookie quảng cáo. Không trình theo dõi bên thứ ba. Không pixel xuyên trang từ mạng xã hội. Nếu bạn từng thấy một cookie trên dailytechwire không thuộc hai nhóm trên, hãy báo chúng tôi, đó là lỗi, không phải chính sách.",
-            "Tanpa cookie iklan. Tanpa pelacak pihak ketiga. Tanpa piksel lintas situs dari media sosial. Jika Anda menemukan cookie di dailytechwire yang tak masuk dua kategori di atas, beri tahu kami, itu bug, bukan kebijakan."
+            "No advertising cookies. No third-party trackers. No cross-site pixels from social networks. If you ever find a cookie on Dailytechwire that does not fit the two categories above, tell us, it is a bug, not a policy.",
+            "Không cookie quảng cáo. Không trình theo dõi bên thứ ba. Không pixel xuyên trang từ mạng xã hội. Nếu bạn từng thấy một cookie trên Dailytechwire không thuộc hai nhóm trên, hãy báo chúng tôi, đó là lỗi, không phải chính sách.",
+            "Tanpa cookie iklan. Tanpa pelacak pihak ketiga. Tanpa piksel lintas situs dari media sosial. Jika Anda menemukan cookie di Dailytechwire yang tak masuk dua kategori di atas, beri tahu kami, itu bug, bukan kebijakan."
           ),
         ],
         [
@@ -218,9 +218,9 @@ export default function LegalPage() {
         [
           t("Making a request", "Gửi yêu cầu", "Mengajukan permintaan"),
           t(
-            "Email info@dailytechwire.asia or use the export and deletion tools in your account. We respond within 30 days, usually far sooner, and we never charge for a reasonable request. We will verify your identity first, to protect you.",
-            "Gửi email tới info@dailytechwire.asia hoặc dùng công cụ xuất và xoá trong tài khoản. Chúng tôi phản hồi trong 30 ngày, thường nhanh hơn nhiều, và không bao giờ tính phí cho yêu cầu hợp lý. Chúng tôi sẽ xác minh danh tính trước, để bảo vệ bạn.",
-            "Email info@dailytechwire.asia atau gunakan alat ekspor dan penghapusan di akun Anda. Kami merespons dalam 30 hari, biasanya jauh lebih cepat, dan tak pernah memungut biaya untuk permintaan yang wajar. Kami akan memverifikasi identitas Anda dulu, demi melindungi Anda."
+            "Email info@dailytechwire.com or use the export and deletion tools in your account. We respond within 30 days, usually far sooner, and we never charge for a reasonable request. We will verify your identity first, to protect you.",
+            "Gửi email tới info@dailytechwire.com hoặc dùng công cụ xuất và xoá trong tài khoản. Chúng tôi phản hồi trong 30 ngày, thường nhanh hơn nhiều, và không bao giờ tính phí cho yêu cầu hợp lý. Chúng tôi sẽ xác minh danh tính trước, để bảo vệ bạn.",
+            "Email info@dailytechwire.com atau gunakan alat ekspor dan penghapusan di akun Anda. Kami merespons dalam 30 hari, biasanya jauh lebih cepat, dan tak pernah memungut biaya untuk permintaan yang wajar. Kami akan memverifikasi identitas Anda dulu, demi melindungi Anda."
           ),
         ],
         [
@@ -234,9 +234,9 @@ export default function LegalPage() {
         [
           t("Our Data Protection Officer", "Cán bộ bảo vệ dữ liệu", "Petugas Perlindungan Data"),
           t(
-            "A named DPO oversees how we handle personal data and is your direct line for anything on this page. Reach them at info@dailytechwire.asia.",
-            "Một DPO được chỉ định giám sát cách chúng tôi xử lý dữ liệu cá nhân và là đầu mối trực tiếp của bạn cho mọi điều trên trang này. Liên hệ tại info@dailytechwire.asia.",
-            "Seorang DPO mengawasi cara kami menangani data pribadi dan menjadi saluran langsung Anda untuk apa pun di halaman ini. Hubungi di info@dailytechwire.asia."
+            "A named DPO oversees how we handle personal data and is your direct line for anything on this page. Reach them at info@dailytechwire.com.",
+            "Một DPO được chỉ định giám sát cách chúng tôi xử lý dữ liệu cá nhân và là đầu mối trực tiếp của bạn cho mọi điều trên trang này. Liên hệ tại info@dailytechwire.com.",
+            "Seorang DPO mengawasi cara kami menangani data pribadi dan menjadi saluran langsung Anda untuk apa pun di halaman ini. Hubungi di info@dailytechwire.com."
           ),
         ],
       ],
@@ -308,7 +308,7 @@ export default function LegalPage() {
               )}
             </div>
             <a
-              href="mailto:info@dailytechwire.asia"
+              href="mailto:info@dailytechwire.com"
               className="linkish mono"
               style={{
                 fontSize: 12,
@@ -317,7 +317,7 @@ export default function LegalPage() {
                 marginTop: 6,
               }}
             >
-              info@dailytechwire.asia
+              info@dailytechwire.com
             </a>
           </div>
         </nav>

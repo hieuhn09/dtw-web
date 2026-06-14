@@ -54,7 +54,7 @@ export function Footer() {
     ["X", "external"],
     ["LinkedIn", "external"],
     ["Instagram", "external"],
-    ["Email", "mail", "mailto:info@dailytechwire.asia"],
+    ["Email", "mail", "mailto:info@dailytechwire.com"],
     ["RSS", "rss", "/rss.xml"],
   ];
 
@@ -239,7 +239,7 @@ export function Footer() {
           }}
         >
           <div className="mono text-mute" style={{ fontSize: 11 }}>
-            © 2026 DailyTechWire · Singapore · Member, Trust Project
+            © 2026 Dailytechwire · Singapore · Member, Trust Project
           </div>
           <div style={{ display: "flex", gap: 14, fontSize: 11 }}>
             <span className="text-mute">Compliant with GDPR · PDPA (SG)</span>

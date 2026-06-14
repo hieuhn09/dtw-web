@@ -15,7 +15,7 @@ Start here before loading deeper context files.
 
 ## Project Description
 
-**DailyTechWire (DTW)** — a digital-native technology publication with an Asia-tech focus: regional funding and tech-stock coverage, AI benchmarks and rankings, and deep-dive editorial. The web app (`dtw-web`) is the **reading and presentation layer** of a three-service system:
+**Dailytechwire (DTW)** — a digital-native technology publication with an Asia-tech focus: regional funding and tech-stock coverage, AI benchmarks and rankings, and deep-dive editorial. The web app (`dtw-web`) is the **reading and presentation layer** of a three-service system:
 
 - `dtw-web` (this repo) — Next.js reader site + Payload CMS for editorial review
 - `dtw-engine` — the Content Engine that drafts and pre-approves articles (independent service, separate repo)
@@ -35,7 +35,7 @@ The web is NOT where articles are written — the Engine handles drafting. Edito
 
 ### Parent organisation
 
-DailyTechWire is published by **Asia Press Centre Group (APCG)** (independent newsroom, Singapore, founded **2023**; renamed from "Asia Press Corporation" in the 2026-06-14 design refresh). APCG operates several publications across Asian beats; do **not** invent or list other publication names in code or copy. Editor-in-Chief is Cheryl Tan Hwee-Min (no specific career claims — earlier drafts were rejected for invented Reuters / Pulitzer history; do not reintroduce them). See `process/features/about-trust/_GUIDE.md`.
+Dailytechwire is published by **Asia Press Centre Group (APCG)** (independent newsroom, Singapore, founded **2023**; renamed from "Asia Press Corporation" in the 2026-06-14 design refresh). APCG operates several publications across Asian beats; do **not** invent or list other publication names in code or copy. Editor-in-Chief is Cheryl Tan (no specific career claims — earlier drafts were rejected for invented Reuters / Pulitzer history; do not reintroduce them). See `process/features/about-trust/_GUIDE.md`.
 
 ---
 

@@ -100,9 +100,9 @@ function AdvertisePage({ navigate }) {
                "Jangkau orang-orang yang membangun teknologi di Asia dan dunia")}
           </h1>
           <p className="serif" style={{ margin: "0 0 30px", fontSize: 19, lineHeight: 1.55, color: "rgba(232, 237, 247, .82)", textWrap: "pretty", maxWidth: 600 }}>
-            {t("Founders, engineers, investors, and policymakers read dailytechwire to understand what is actually happening in technology. Put your brand in front of them, in a place built for attention, not impressions.",
-               "Nhà sáng lập, kỹ sư, nhà đầu tư và nhà hoạch định chính sách đọc dailytechwire để hiểu điều thực sự đang diễn ra trong công nghệ. Đưa thương hiệu của bạn đến trước họ, ở một nơi được tạo ra cho sự chú tâm, không phải lượt hiển thị.",
-               "Founder, engineer, investor, dan pembuat kebijakan membaca dailytechwire untuk memahami apa yang benar-benar terjadi di teknologi. Tempatkan merek Anda di depan mereka, di tempat yang dibangun untuk perhatian, bukan impresi.")}
+            {t("Founders, engineers, investors, and policymakers read Dailytechwire to understand what is actually happening in technology. Put your brand in front of them, in a place built for attention, not impressions.",
+               "Nhà sáng lập, kỹ sư, nhà đầu tư và nhà hoạch định chính sách đọc Dailytechwire để hiểu điều thực sự đang diễn ra trong công nghệ. Đưa thương hiệu của bạn đến trước họ, ở một nơi được tạo ra cho sự chú tâm, không phải lượt hiển thị.",
+               "Founder, engineer, investor, dan pembuat kebijakan membaca Dailytechwire untuk memahami apa yang benar-benar terjadi di teknologi. Tempatkan merek Anda di depan mereka, di tempat yang dibangun untuk perhatian, bukan impresi.")}
           </p>
           <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
             <a href={mailto} className="accent-glow" style={{
@@ -173,7 +173,6 @@ function AdvertisePage({ navigate }) {
             {t("Six ways to reach our readers", "Sáu cách tiếp cận độc giả", "Enam cara menjangkau pembaca")}
           </h2>
         </div>
-        <span className="mono text-mute-2" style={{ fontSize: 11 }}>{t("Rates indicative · full card on request", "Giá tham khảo · bảng đầy đủ theo yêu cầu", "Tarif indikatif · kartu lengkap atas permintaan")}</span>
       </div>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20, marginBottom: 48 }}>
         {formats.map((f) =>

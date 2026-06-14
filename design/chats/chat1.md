@@ -290,7 +290,7 @@ _[tool: fork_verifier_agent]_
 
 - **Tên trang** giờ là **DailyTechWire** — wordmark hiển thị "Daily**Tech**Wire" với chữ "Tech" màu coral, đặt trong serif chặt; xuất hiện ở header, footer, tiêu đề tab, auth modal, newsletters
 - **Logo mới** — một badge ink-on-paper hình vuông bo nhẹ với chữ "DTW" serif làm monogram, một đường wire mảnh màu coral có một dấu zigzag (tín hiệu data) ở giữa, và một góc cắt nhỏ phía trên bên phải tạo cảm giác tech. Sạch, đơn sắc, in tốt cả size nhỏ
-- Vẫn giữ **DTW** làm chữ viết tắt nội bộ (breadcrumb, Studio, Pro, etc.) vì đó là khớp đúng với DailyTechWire — không cần đổi hàng loạt
+- Vẫn giữ **DTW** làm chữ viết tắt nội bộ (breadcrumb, Studio, Pro, etc.) vì đó là khớp đúng với Dailytechwire — không cần đổi hàng loạt
 
 Logo có cả biến thể outline (mark="outline") cho trường hợp dùng inline trên nền sáng nếu cần sau này.
 
@@ -360,11 +360,11 @@ Trang **About** đã sẵn sàng tại `#/about`. Bố cục bao gồm:
 
 **Who we are** — Asia Press Corporation thành lập tại Singapore năm 2011 bởi nhóm phóng viên kỳ cựu. Sở hữu 5 ấn phẩm độc lập về **công nghệ, tài chính, khí hậu, y tế, và đối ngoại khu vực**; 6 văn phòng và 12 phóng viên cộng tác. Sở hữu tư nhân + nhân viên, không nhà nước hay nền tảng nào nắm giữ cổ phần. Thành viên của **Trust Project, IPI, GIJN**.
 
-**Our publications** — lưới 6 thẻ: DailyTechWire (đánh dấu "YOU ARE HERE"), Capital Currents Asia, The Mekong Brief, Greenwire Asia, Pulse Health Asia, Asia Press Research. Mỗi thẻ có ngày thành lập, lượng độc giả, beat.
+**Our publications** — lưới 6 thẻ: Dailytechwire (đánh dấu "YOU ARE HERE"), Capital Currents Asia, The Mekong Brief, Greenwire Asia, Pulse Health Asia, Asia Press Research. Mỗi thẻ có ngày thành lập, lượng độc giả, beat.
 
 **Mission & values** — "Explain Asia to itself, and to the world that depends on it." + 4 giá trị: Accuracy first / Independence / Transparency / Service to readers.
 
-**Editor-in-Chief** — **Cheryl Tan Hwee-Min**, EIC kiêm Group Editor. 23 năm trên Asia beat. Trước đó: 13 năm tại **Reuters** (Southeast Asia Bureau Chief 2016–21, Tokyo Correspondent 2011–16); khởi nghiệp tại **The Straits Times** 2003. Phần của nhóm finalist Pulitzer International 2019 (điều tra 1MDB). Bằng MSc LSE, BA NUS. Nieman Fellow Harvard 2019. Hội đồng IPI Asia + Singapore Press Freedom Project. Sống tại Singapore.
+**Editor-in-Chief** — **Cheryl Tan**, EIC kiêm Group Editor. 23 năm trên Asia beat. Trước đó: 13 năm tại **Reuters** (Southeast Asia Bureau Chief 2016–21, Tokyo Correspondent 2011–16); khởi nghiệp tại **The Straits Times** 2003. Phần của nhóm finalist Pulitzer International 2019 (điều tra 1MDB). Bằng MSc LSE, BA NUS. Nieman Fellow Harvard 2019. Hội đồng IPI Asia + Singapore Press Freedom Project. Sống tại Singapore.
 
 **Editorial leadership** — masthead 8 người (Managing Editor, Executive Editor, Standards/Ombuds, từng desk editor), với chỗ làm việc cũ ở Bloomberg / Nikkei / FT / Wired / Reuters Graphics, etc.
 
@@ -378,7 +378,7 @@ Trang **About** đã sẵn sàng tại `#/about`. Bố cục bao gồm:
 
 **Editorial framework** — 5 thẻ link sang Trust Standards / AI / Corrections / Transparency / Sponsored.
 
-**Tip line tối** — `tips@dailytechwire.asia` + Signal + SecureDrop + corrections email, với cam kết bảo vệ nguồn tin.
+**Tip line tối** — `tips@dailytechwire.com` + Signal + SecureDrop + corrections email, với cam kết bảo vệ nguồn tin.
 
 **Footer business info** — văn phòng đăng ký Robinson Road Singapore, UEN, GST, MICA permit, press & IR contacts.
 
@@ -474,7 +474,7 @@ _[tool: done]_
 
 ## User
 
-bỏ dòng này chỗ mục của cheryl tan đi cheryl.tan@dailytechwire.asia
+bỏ dòng này chỗ mục của cheryl tan đi cheryl.tan@dailytechwire.com
 ·
 Author page
 ·
@@ -1179,7 +1179,7 @@ _[tool: done]_
 
 ## User
 
-cho chữ dailytechwire ở đầu to hơn chút
+cho chữ Dailytechwire ở đầu to hơn chút
 
 ## Assistant
 
@@ -1375,7 +1375,7 @@ _[tool: snip]_
 
 ## User
 
-sửa line ở dưới mục read dailytechwire the way you read trong newsletters mỏng đi một chút, mỏng bằng line của các box ở dưới thôi
+sửa line ở dưới mục read Dailytechwire the way you read trong newsletters mỏng đi một chút, mỏng bằng line của các box ở dưới thôi
 
 ## Assistant
 
@@ -1389,7 +1389,7 @@ _[tool: done]_
 
 _[tool: snip]_
 
-Đã sửa — đường line dưới "Read DailyTechWire the way you read" từ `3px solid var(--ink)` (đậm đen) → `1px solid var(--hair)` (mỏng nhẹ giống các thẻ box phía dưới).
+Đã sửa — đường line dưới "Read Dailytechwire the way you read" từ `3px solid var(--ink)` (đậm đen) → `1px solid var(--hair)` (mỏng nhẹ giống các thẻ box phía dưới).
 
 ## User
 
@@ -1440,7 +1440,7 @@ _[tool: done]_
 
 _[tool: snip]_
 
-Đã hoàn tác — xoá `fontWeight: "700"` mà bạn vừa thêm vào `<header>` trên trang newsletters. Giờ tiêu đề "Read DailyTechWire the way you read." dùng lại weight serif gốc (700 từ class `serif`) thay vì cả khối header được set bold.
+Đã hoàn tác — xoá `fontWeight: "700"` mà bạn vừa thêm vào `<header>` trên trang newsletters. Giờ tiêu đề "Read Dailytechwire the way you read." dùng lại weight serif gốc (700 từ class `serif`) thay vì cả khối header được set bold.
 
 _[tool: str_replace_edit]_
 

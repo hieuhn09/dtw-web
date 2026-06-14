@@ -15,7 +15,7 @@ The `design/` directory at the repo root is the **canonical visual reference**. 
 - Dark mode rules + the `color-mix` discipline that prevents broken dark-mode contrast
 - Typography (Schibsted Grotesk / IBM Plex Sans / IBM Plex Mono — editorial face swapped from Source Serif 4 on 2026-06-14)
 - Cover-art system (editorial geometry per pillar — no fake photography)
-- The brand evolution (DailyTechWire wordmark + reintroduced navy DTW monogram logo 2026-06-14, "Tech Intelligence, Wired Daily" sentence-case tagline)
+- The brand evolution (Dailytechwire wordmark + reintroduced navy DTW monogram logo 2026-06-14, "Tech Intelligence, Wired Daily" sentence-case tagline)
 - i18n chrome translation strategy (`useT()` and pillar/nav translation tables)
 - Component primitives from the design prototype (canonical shape, not canonical code)
 
