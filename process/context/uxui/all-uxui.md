@@ -13,9 +13,9 @@ The `design/` directory at the repo root is the **canonical visual reference**. 
 - Design tokens (CSS variables) — single source of truth
 - Pillar colors and the 6-pillar identity system
 - Dark mode rules + the `color-mix` discipline that prevents broken dark-mode contrast
-- Typography (Source Serif 4 / IBM Plex Sans / IBM Plex Mono)
+- Typography (Schibsted Grotesk / IBM Plex Sans / IBM Plex Mono — editorial face swapped from Source Serif 4 on 2026-06-14)
 - Cover-art system (editorial geometry per pillar — no fake photography)
-- The brand evolution (DailyTechWire wordmark, no logo badge, "Tech Intelligence, Wired Daily" sentence-case tagline)
+- The brand evolution (DailyTechWire wordmark + reintroduced navy DTW monogram logo 2026-06-14, "Tech Intelligence, Wired Daily" sentence-case tagline)
 - i18n chrome translation strategy (`useT()` and pillar/nav translation tables)
 - Component primitives from the design prototype (canonical shape, not canonical code)
 
@@ -62,7 +62,7 @@ These live in the design's `index.html`. The production Tailwind v4 config shoul
 ### Light theme (default)
 
 ```css
---paper:        #FAF8F2;   /* page background */
+--paper:        #FDFCF8;   /* page background (refreshed 2026-06-14, was #FAF8F2) */
 --surface:      #FFFFFF;   /* card / panel */
 --surface-2:    #F2EFE5;   /* nested surface */
 --ink:          #111111;   /* primary text */
@@ -71,12 +71,18 @@ These live in the design's `index.html`. The production Tailwind v4 config shoul
 --muted-2:      #8C8B85;   /* faintest text */
 --hair:         #E5E2D8;   /* 1px dividers */
 --hair-2:       #D8D4C6;   /* 1px dividers (slightly stronger) */
---accent:       #E04E1F;   /* DTW coral — accent everywhere */
---accent-ink:   #B83D14;   /* coral on hover/active */
+--accent:       #D4623C;   /* DTW coral, softened 2026-06-14 (was #E04E1F) */
+--accent-ink:   #B14A28;   /* coral on hover/active (was #B83D14) */
+--amber:        #F59E0B;   /* warm highlight */
+--brand-navy:   #1B2A52;   /* logo monogram / structural rules (dark: #E2E8F0) */
+--brand-amber:  #D4623C;   /* logo pulse dot, matches accent */
+--banner:       #1B2A52;   /* large navy banners — DARK IN BOTH THEMES (dark: #16223C) */
 --sponsored:    #FEF3C7;   /* sponsored content bg (spec invariant) */
 --up:           #10B981;   /* up / positive (spec invariant) */
 --down:         #EF4444;   /* down / negative (spec invariant) */
 ```
+
+> **Banner text rule:** `--banner` is navy in BOTH themes, so text on banner surfaces must use FIXED cream values (`#FFFFFF` / `rgba(232,237,247,…)`), never `--paper`/`--ink`-derived `color-mix`, or it inverts to invisible dark text in dark mode.
 
 ### Dark theme (`html[data-theme="dark"]`)
 
@@ -91,26 +97,30 @@ These live in the design's `index.html`. The production Tailwind v4 config shoul
 --hair:         #1E2B45;
 --hair-2:       #243453;
 --sponsored:    #3B2E0A;   /* deep amber for dark-mode sponsored bg */
+--brand-navy:   #E2E8F0;   /* lightened for dark mode */
+--banner:       #16223C;   /* softer banner for dark mode */
 ```
 
 ### Pillar colors
 
+Re-toned to a muted earthy set in the 2026-06-14 refresh (was a brighter rainbow).
+
 ```css
---ai:           #7C3AED;
---startups:     #0EA5E9;
---asia:         #E04E1F;   /* shares the accent — Asia is the brand pillar */
---dev:          #16A34A;
---products:     #D97706;
---policy:       #475569;
+--ai:           #3A4E8C;   /* was #7C3AED */
+--startups:     #3E6E80;   /* was #0EA5E9 */
+--asia:         #B0512E;   /* was #E04E1F */
+--dev:          #46735C;   /* was #16A34A */
+--products:     #8F7238;   /* was #D97706 */
+--policy:       #5A6577;   /* was #475569 */
 ```
 
 ### Type scale
 
-- `--font-serif: "Source Serif 4", "Iowan Old Style", "Charter", Georgia, serif;` (body text, headlines)
+- `--font-serif: "Schibsted Grotesk", "IBM Plex Sans", system-ui, …, sans-serif;` (headlines, byline, article body — **changed 2026-06-14 from Source Serif 4**; the token name is kept though the face is now a variable sans). Loaded via `next/font/google` (`Schibsted_Grotesk`, variable axis, no explicit weight).
 - `--font-sans: "IBM Plex Sans", system-ui, ...;` (UI, nav, buttons)
 - `--font-mono: "IBM Plex Mono", ui-monospace, ...;` (numbers, dates, kbd, tickers)
 
-Body: 15px / line-height 1.5. Article body: 17px / 1.6 (16px on mobile). Source Serif 4 with `font-feature-settings: "ss01","ss02"`.
+Body: 15px / line-height 1.5. Article body: 17px / 1.6 (16px on mobile). `.serif` now uses `font-feature-settings: normal` (the old `"ss01","ss02"` Source-Serif features were dropped with the typeface swap).
 
 ### Other
 
@@ -140,9 +150,9 @@ Theme persisted in `localStorage["dtw-theme"]` (key shape from prototype). Toggl
 | Element | State | Notes |
 |---|---|---|
 | Site name | **DailyTechWire** | "DTW" is the short form (breadcrumbs, Studio, Pro). Earlier iterations used "Daily Tech Wire" with spaces or "Down To the Wire" — both rejected. |
-| Wordmark | Serif "DailyTechWire" at 30px in header | No logo badge. Earlier badge designs were removed. |
-| Tagline | "Tech Intelligence, Wired Daily" | Sentence case (NOT all-caps). Earlier all-caps version rejected. Monospace caps style for the small label. |
-| Coral accent | `#E04E1F` | Used for "Tech" highlighting in earlier wordmark (now removed), all accent buttons, Awards shimmer gradient, pillar nav active states. |
+| Wordmark + logo | Navy `DTW` monogram + lowercase "dailytechwire" + terracotta pulse-dot (2026-06-14) | Logo badge **reintroduced** in the 2026-06-14 refresh (asset `design/project/uploads/dtw-logo-primary.svg`), superseding the earlier wordmark-only rule. Monogram `--brand-navy` (dark `#E2E8F0`), dot `--brand-amber #D4623C`. |
+| Tagline | "Tech Intelligence, Wired Daily" | Sentence case (NOT all-caps). Earlier all-caps version rejected. |
+| Coral accent | `#D4623C` (softened 2026-06-14, was `#E04E1F`) | All accent buttons, emphasis links, logo pulse-dot, pillar nav active states. |
 | Pillar nav (header) | 6 items: AI, Startups, Asia, Dev, Products, Policy | Font 14px, icon 15px (settled after several iterations). |
 
 ---

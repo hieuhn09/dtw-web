@@ -6,7 +6,7 @@
    --------------------------------------------------------------------------- */
 
 :root {
-  --paper: #FAF8F2;
+  --paper: #FDFCF8;
   --surface: #FFFFFF;
   --surface-2: #F2EFE5;
   --ink: #111111;
@@ -17,25 +17,29 @@
   --hair-2: #D8D4C6;
 
   /* Brand */
-  --accent: #E04E1F;      /* DTW coral */
-  --accent-ink: #B83D14;
+  --accent: #D4623C;      /* DTW coral, softened (design refresh 2026-06-14) */
+  --accent-ink: #B14A28;
+  --amber: #F59E0B;
+  --brand-navy: #1B2A52;  /* logo monogram, matches banner */
+  --brand-amber: #D4623C; /* logo pulse dot, matches accent */
+  --banner: #1B2A52;      /* deep navy for large banners (dark in both themes) */
   --sponsored: #FEF3C7;   /* spec invariant */
   --up: #10B981;          /* spec invariant */
   --down: #EF4444;        /* spec invariant */
 
-  /* Pillars */
-  --ai: #7C3AED;
-  --startups: #0EA5E9;
-  --asia: #E04E1F;
-  --dev: #16A34A;
-  --products: #D97706;
-  --policy: #475569;
+  /* Pillars — muted earthy set (design refresh 2026-06-14) */
+  --ai: #3A4E8C;
+  --startups: #3E6E80;
+  --asia: #B0512E;
+  --dev: #46735C;
+  --products: #8F7238;
+  --policy: #5A6577;
 
   --shadow:
     0 1px 0 rgba(17, 17, 17, 0.04),
     0 12px 32px -16px rgba(17, 17, 17, 0.12);
 
-  --font-serif: var(--font-serif-loaded, "Source Serif 4"), "Iowan Old Style", "Charter", Georgia, serif;
+  --font-serif: var(--font-serif-loaded, "Schibsted Grotesk"), "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-sans: var(--font-sans-loaded, "IBM Plex Sans"), system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-mono: var(--font-mono-loaded, "IBM Plex Mono"), ui-monospace, "SF Mono", Menlo, monospace;
 
@@ -53,6 +57,8 @@ html[data-theme="dark"] {
   --hair: #1E2B45;
   --hair-2: #243453;
   --sponsored: #3B2E0A;
+  --brand-navy: #E2E8F0;  /* lightened for dark mode */
+  --banner: #16223C;      /* softer banner for dark mode */
 }
 
 /* ---------------------------------------------------------------------------
@@ -75,6 +81,10 @@ html[data-theme="dark"] {
   --color-sponsored: var(--sponsored);
   --color-up: var(--up);
   --color-down: var(--down);
+  --color-banner: var(--banner);
+  --color-brand-navy: var(--brand-navy);
+  --color-amber: var(--amber);
+  --color-brand-amber: var(--brand-amber);
 
   --color-ai: var(--ai);
   --color-startups: var(--startups);
@@ -123,7 +133,7 @@ img {
 }
 .serif {
   font-family: var(--font-serif);
-  font-feature-settings: "ss01", "ss02";
+  font-feature-settings: normal;
 }
 /* Headings must wrap long tokens instead of overflowing on narrow screens. */
 h1,

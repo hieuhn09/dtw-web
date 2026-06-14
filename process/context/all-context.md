@@ -1,6 +1,6 @@
 # dtw-web - All Context
 
-Last updated: 2026-05-28
+Last updated: 2026-06-14
 
 This file is the root context entrypoint for the repo.
 
@@ -23,7 +23,7 @@ Start here before loading deeper context files.
 
 The three share `packages/db`. Engine writes go through the **Payload API only** (never directly to Postgres) so editorial hooks (ISR revalidation, search indexing, OG image generation) always fire.
 
-**Editorial integrity is the product.** Clear separation between newsroom reporting, sponsored content (`Paid Partner`, mustard `#FEF3C7` background), and affiliate links (icon + disclosure tooltip). No popups. No in-article advertising. Disclosure boxes on sponsored / AI-assisted articles cannot be dismissed.
+**Editorial integrity is the product.** Clear separation between newsroom reporting, sponsored content (`Paid Partner`, mustard `#FEF3C7` background), and affiliate links (icon + disclosure tooltip). No popups. No in-article advertising. Disclosure boxes on sponsored articles cannot be dismissed. (AI-assisted inline disclosure removed 2026-06-05 — see invariant #5.)
 
 ### Audience (priority order)
 
@@ -126,13 +126,13 @@ Numbered, terse, load-bearing. Each one ties to a feature folder or context grou
 2. **Conflict resolution = `lockedFields` + `editedByHuman` + optimistic lock** (compare `version` or `updatedAt`). Engine never overwrites a field that has been locked or that a human has edited. Human always wins on the same field. See `database/`.
 3. **`origin: 'engine' | 'manual'`** is a required column on every article. Marks provenance.
 4. **Paywall = soft block.** Meter (cookie for guests, DB for users) — never block mid-article. Phase 1 has no payment, only a sign-in nudge after ≥ 3 reads. The "3" must be configurable in CMS, never hardcoded. See `process/features/articles/_GUIDE.md`.
-5. **Disclosure boxes (sponsored, AI-assisted)** appear at top + middle + bottom of article and cannot be dismissed.
+5. **Disclosure boxes (sponsored)** appear at top + middle + bottom of article and cannot be dismissed. **AI-assisted inline disclosure was removed by product decision 2026-06-05** (the header "AI-ASSISTED" badge + the 3 `kind="ai"` `DisclosureBox`es). The `aiAssisted` field still exists on Articles and the Engine still sets it `true` — it is just no longer surfaced inline. KNOWN GAP: the `/trust/ai` page still describes AI disclosure; reconcile that copy if/when the policy is finalised.
 6. **No popups. No mid-article ads.** Period.
-7. **Brand colors fixed:** sponsored bg `#FEF3C7` (dark `#3B2E0A`), up `#10B981`, down `#EF4444`, dark bg `#0F172A` / text `#E2E8F0`, DTW coral accent `#E04E1F`. See `uxui/`.
+7. **Brand colors.** Pinned: sponsored bg `#FEF3C7` (dark `#3B2E0A`), up `#10B981`, down `#EF4444`, dark bg `#0F172A` / text `#E2E8F0`. **2026-06-14 design refresh:** DTW coral accent softened `#E04E1F` → `#D4623C` (terracotta), `--accent-ink` → `#B14A28`. New brand tokens `--banner`/`--brand-navy` deep navy `#1B2A52` (dark `#16223C` for `--banner`, `#E2E8F0` for `--brand-navy`), `--brand-amber` `#D4623C`, `--amber` `#F59E0B`. Six pillar colors re-toned to a muted earthy set (`--ai #3A4E8C`, `--startups #3E6E80`, `--asia #B0512E`, `--dev #46735C`, `--products #8F7238`, `--policy #5A6577`). See `uxui/`.
 8. **Pillar/Sub-section/Tag are CMS entities** — adding a new pillar is a CMS write, not a code deploy. Routes (`/[pillar]/[subsection]/[slug]`), sitemap, and RSS regenerate automatically within 5 minutes.
 9. **i18n year 1 = `en` / `id` / `vi`** with subpath routing `/en /id /vi`, `hreflang`, CSS logical properties (RTL-ready). Indonesian must work from day one — SEA tech market matters. CN/JP/KO planned for Year 3. Don't hardcode locale lists.
 10. **Body of articles stays in the source language** — only the chrome (nav, byline, paywall meter, section headers) is translated. Editorial copy belongs to the writer.
-11. **Tech stack veto list:** no Lucia (deprecated), no Bun runtime (Payload 3 ↔ Bun is unstable), no logo badge in the header (removed in design iteration — only the wordmark "DailyTechWire" + tagline "Tech Intelligence, Wired Daily").
+11. **Tech stack veto list:** no Lucia (deprecated), no Bun runtime (Payload 3 ↔ Bun is unstable). **Header logo (changed 2026-06-14):** the design refresh reintroduced a brand mark — a navy `DTW` monogram + lowercase `dailytechwire` wordmark + terracotta pulse-dot (source asset `design/project/uploads/dtw-logo-primary.svg`), superseding the earlier wordmark-only rule. Tagline stays "Tech Intelligence, Wired Daily".
 12. **Reader-data residency / compliance:** GDPR + PDPA (Singapore) + Nghị định 13 (Vietnam). PostHog is **self-hosted** specifically for first-party analytics.
 13. **Awards page (year-one state):** no medallion, no "see previous winners", no specific categories. Just "Coming this year" with the shimmer hero. Year 1 = inaugural.
 

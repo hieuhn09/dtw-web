@@ -1,16 +1,18 @@
 import type { Metadata } from "next";
-import { Source_Serif_4, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
+import { Schibsted_Grotesk, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 
 // Reader chrome (header, footer, providers, modals) lives in (reader)/layout.tsx
 // so /admin (Payload) renders without it. The root layout owns html, body, and
 // font preloads only.
 
-const sourceSerif = Source_Serif_4({
+// Editorial display face (design refresh 2026-06-14: Source Serif 4 -> Schibsted
+// Grotesk). Variable font — weight axis 400..900 loads without an explicit list.
+// The --font-serif token name is kept even though the face is now a sans.
+const sourceSerif = Schibsted_Grotesk({
   subsets: ["latin"],
   variable: "--font-serif-loaded",
   display: "swap",
-  weight: ["300", "400", "500", "600", "700", "800"],
 });
 
 const plexSans = IBM_Plex_Sans({
