@@ -2,6 +2,7 @@
 
 import { useMemo, useState, type ReactNode } from "react";
 import { AI_LEADERBOARD, type AiLeaderboardRow } from "@/lib/data";
+import { useT } from "@/lib/i18n";
 
 type SortKey = keyof AiLeaderboardRow;
 type SortDir = "asc" | "desc";
@@ -61,7 +62,7 @@ function Bar({ v, color = "var(--ink)" }: { v: number; color?: string }) {
           overflow: "hidden",
         }}
       >
-        <div style={{ width: `${v}%`, height: "100%", background: color }} />
+        <div style={{ width: `${Math.min(Math.max(v, 0), 100)}%`, height: "100%", background: color }} />
       </div>
       <span
         className="mono tnum"
@@ -81,8 +82,17 @@ const OPTIMIZE: ReadonlyArray<readonly [SortKey, string]> = [
 ];
 
 export function AILeaderboard() {
+  const t = useT();
   const [sortKey, setSortKey] = useState<SortKey>("reasoning");
   const [sortDir, setSortDir] = useState<SortDir>("desc");
+  const optimizeLabel = (k: SortKey): string =>
+    k === "reasoning"
+      ? t("Reasoning", "Suy luận", "Penalaran")
+      : k === "coding"
+        ? t("Coding", "Lập trình", "Pemrograman")
+        : k === "speed"
+          ? t("Speed", "Tốc độ", "Kecepatan")
+          : t("Price (low)", "Giá (thấp)", "Harga (rendah)");
 
   const rows = useMemo(() => {
     return [...AI_LEADERBOARD].sort((a, b) => {
@@ -123,21 +133,25 @@ export function AILeaderboard() {
             style={{
               margin: "0 0 4px",
               fontSize: 30,
-              fontWeight: 700,
+              fontWeight: 650,
               letterSpacing: "-0.02em",
             }}
           >
-            AI Leaderboard
+            {t("AI Leaderboard", "Bảng xếp hạng AI", "Papan Peringkat AI")}
           </h2>
           <div className="text-mute mono" style={{ fontSize: 11 }}>
-            Sort by what you actually use the model for · sample data, preview
+            {t(
+              "Sort by what you actually use the model for · sample data, preview",
+              "Sắp xếp theo nhu cầu thực tế của bạn · dữ liệu mẫu, xem trước",
+              "Urutkan sesuai kebutuhan Anda · data sampel, pratinjau"
+            )}
           </div>
         </div>
         <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
           <span className="text-mute" style={{ fontSize: 12, marginRight: 4 }}>
-            Optimize for:
+            {t("Optimize for:", "Tối ưu cho:", "Optimalkan untuk:")}
           </span>
-          {OPTIMIZE.map(([k, l]) => (
+          {OPTIMIZE.map(([k]) => (
             <button
               key={k}
               onClick={() => {
@@ -155,7 +169,7 @@ export function AILeaderboard() {
                 cursor: "pointer",
               }}
             >
-              {l}
+              {optimizeLabel(k)}
             </button>
           ))}
         </div>
@@ -177,25 +191,25 @@ export function AILeaderboard() {
                 #
               </Th>
               <Th k="model" sortKey={sortKey} sortDir={sortDir} onSort={onSort}>
-                Model
+                {t("Model", "Mô hình", "Model")}
               </Th>
               <Th k="maker" sortKey={sortKey} sortDir={sortDir} onSort={onSort}>
-                Maker
+                {t("Maker", "Nhà sản xuất", "Pembuat")}
               </Th>
               <Th k="reasoning" num sortKey={sortKey} sortDir={sortDir} onSort={onSort}>
-                Reasoning
+                {t("Reasoning", "Suy luận", "Penalaran")}
               </Th>
               <Th k="coding" num sortKey={sortKey} sortDir={sortDir} onSort={onSort}>
-                Coding
+                {t("Coding", "Lập trình", "Pemrograman")}
               </Th>
               <Th k="speed" num sortKey={sortKey} sortDir={sortDir} onSort={onSort}>
-                Speed
+                {t("Speed", "Tốc độ", "Kecepatan")}
               </Th>
               <Th k="price" num sortKey={sortKey} sortDir={sortDir} onSort={onSort}>
-                $/M tok
+                {t("$/M tok", "$/triệu token", "$/J token")}
               </Th>
               <Th k="ctx" num sortKey={sortKey} sortDir={sortDir} onSort={onSort}>
-                Context
+                {t("Context", "Ngữ cảnh", "Konteks")}
               </Th>
             </tr>
           </thead>

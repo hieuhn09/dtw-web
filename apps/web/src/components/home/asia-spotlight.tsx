@@ -19,8 +19,8 @@ export function AsiaSpotlight({ articles }: AsiaSpotlightProps) {
     <SpotlightCard
       color="rgba(224,78,31,.22)"
       style={{
-        background: "var(--ink)",
-        color: "var(--paper)",
+        background: "var(--banner)",
+        color: "#FFFFFF",
         padding: "40px 32px",
         borderRadius: 8,
         marginBottom: 48,
@@ -75,9 +75,9 @@ export function AsiaSpotlight({ articles }: AsiaSpotlightProps) {
             style={{
               margin: 0,
               fontSize: 30,
-              fontWeight: 700,
+              fontWeight: 650,
               letterSpacing: "-0.02em",
-              color: "var(--paper)",
+              color: "#FFFFFF",
             }}
           >
             {t(
@@ -87,11 +87,11 @@ export function AsiaSpotlight({ articles }: AsiaSpotlightProps) {
             )}
           </h2>
         </div>
-        <Button href="/asia" variant="accent">
+        <Button href="/latest" variant="accent">
           {t(
-            "See all Asia coverage →",
-            "Xem tất cả tin Châu Á →",
-            "Lihat semua liputan Asia →"
+            "See all latest →",
+            "Xem tất cả mới nhất →",
+            "Lihat semua terbaru →"
           )}
         </Button>
       </div>
@@ -138,7 +138,7 @@ export function AsiaSpotlight({ articles }: AsiaSpotlightProps) {
                   fontSize: 16,
                   fontWeight: 600,
                   lineHeight: 1.3,
-                  color: "var(--paper)",
+                  color: "#FFFFFF",
                 }}
               >
                 {a.title}
@@ -146,7 +146,7 @@ export function AsiaSpotlight({ articles }: AsiaSpotlightProps) {
               <div
                 style={{
                   fontSize: 11,
-                  color: "color-mix(in oklab, var(--paper) 60%, transparent)",
+                  color: "rgba(232,237,247,0.60)",
                 }}
               >
                 {a.authorCity} · {a.readMin} min

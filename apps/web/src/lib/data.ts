@@ -2,7 +2,7 @@
 // This is reference / fixture data for the static site. It will be replaced by
 // Payload CMS reads in Phase 2.
 
-export type PillarId = "ai" | "startups" | "asia" | "dev" | "products" | "policy";
+export type PillarId = "ai" | "startups" | "latest" | "dev" | "products" | "policy";
 
 export interface Pillar {
   id: PillarId;
@@ -15,7 +15,7 @@ export interface Pillar {
 export const PILLARS: ReadonlyArray<Pillar> = [
   { id: "ai", label: "AI", color: "var(--ai)", slug: "/ai" },
   { id: "startups", label: "Startups", color: "var(--startups)", slug: "/startups" },
-  { id: "asia", label: "Asia", color: "var(--asia)", slug: "/asia" },
+  { id: "latest", label: "Latest", color: "var(--asia)", slug: "/latest" },
   { id: "dev", label: "Dev", color: "var(--dev)", slug: "/dev" },
   { id: "products", label: "Products", color: "var(--products)", slug: "/products" },
   { id: "policy", label: "Policy", color: "var(--policy)", slug: "/policy" },
@@ -44,7 +44,7 @@ export const NAV_EXTRA: ReadonlyArray<NavItem> = [
 export const PILLAR_ICONS: Record<PillarId, string> = {
   ai: "spark",
   startups: "trend-up",
-  asia: "asia",
+  latest: "clock",
   dev: "code",
   products: "product",
   policy: "policy",
@@ -190,7 +190,7 @@ export const ARTICLES: ReadonlyArray<Article> = [
   {
     id: "a8",
     slug: "dtw-studio-aws-asean",
-    pillar: "asia",
+    pillar: "latest",
     section: "Sponsored",
     title: "How an ASEAN insurer rebuilt its claims pipeline on serverless in 18 weeks",
     dek:
@@ -217,7 +217,7 @@ export const ARTICLES: ReadonlyArray<Article> = [
   {
     id: "a10",
     slug: "deep-dive-asia-capex",
-    pillar: "asia",
+    pillar: "latest",
     section: "Deep Dive",
     title:
       "The $84B build-out: every datacenter announced across ASEAN in the last 12 months, mapped",
@@ -280,7 +280,7 @@ export const ARTICLES: ReadonlyArray<Article> = [
   {
     id: "a15",
     slug: "jakarta-data-residency",
-    pillar: "asia",
+    pillar: "latest",
     section: "Policy",
     title:
       "Jakarta's new data-residency rules begin biting — and the cloud bills are starting to show it",
@@ -292,7 +292,7 @@ export const ARTICLES: ReadonlyArray<Article> = [
   {
     id: "a16",
     slug: "asean-cross-border-payments",
-    pillar: "asia",
+    pillar: "latest",
     section: "Fintech",
     title: "What the five-country ASEAN payments corridor actually feels like, six months in",
     dek: "The technology works. The economics do not yet. The regulators are watching the gap.",
@@ -511,12 +511,14 @@ export interface Newsletter {
 }
 
 export const NEWSLETTERS: ReadonlyArray<Newsletter> = [
-  { id: "am", name: "AM Brief", cadence: "Daily · 07:00", desc: "What broke overnight across Asia tech, in 5 minutes.", subs: "48,200", pillar: "asia" },
-  { id: "pm", name: "PM Brief", cadence: "Daily · 18:00", desc: "The day in three stories, plus what to read tonight.", subs: "41,700", pillar: "asia" },
+  { id: "am", name: "AM Brief", cadence: "Daily · 07:00", desc: "What broke overnight across Asia tech, in 5 minutes.", subs: "48,200", pillar: "latest" },
+  { id: "pm", name: "PM Brief", cadence: "Daily · 18:00", desc: "The day in three stories, plus what to read tonight.", subs: "41,700", pillar: "latest" },
   { id: "ai", name: "AI Weekly", cadence: "Weekly · Tue", desc: "Models, papers, and the geopolitics underneath them.", subs: "36,400", pillar: "ai" },
   { id: "fund", name: "Asia Funding Weekly", cadence: "Weekly · Thu", desc: "Every term sheet that closed in ASEAN this week.", subs: "22,900", pillar: "startups" },
   { id: "dev", name: "Dev Digest", cadence: "Weekly · Fri", desc: "What practitioners are actually shipping.", subs: "19,300", pillar: "dev" },
   { id: "prod", name: "Products & Deals", cadence: "Bi-weekly", desc: "Reviews and buy-or-skip calls. Affiliate-disclosed.", subs: "14,100", pillar: "products" },
+  { id: "deep", name: "Deep Dive", cadence: "Weekly · Sun", desc: "One long-form investigation or data story, in full, every weekend.", subs: "17,600", pillar: "policy" },
+  { id: "awards", name: "DTW Awards", cadence: "Occasional", desc: "Updates on the upcoming DTW Awards, plus nominations and winners when they land.", subs: "3,100", pillar: "latest" },
 ];
 
 export interface Podcast {

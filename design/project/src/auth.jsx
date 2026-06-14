@@ -3,12 +3,12 @@ function AuthModal({ open, onClose, mode="login", onLogin }){
   const [email, setEmail] = useState("");
   const [sent, setSent] = useState(false);
 
-  useEffect(()=>{ if(open){ setM(mode); setSent(false); }},[open, mode]);
+  useEffect(()=>{ if(open){ setM(mode); setSent(false); }}, [open, mode]);
   useEffect(()=>{
     const onKey = (e)=>{ if(e.key==="Escape") onClose(); };
     if(open) window.addEventListener("keydown", onKey);
     return ()=> window.removeEventListener("keydown", onKey);
-  },[open, onClose]);
+  }, [open, onClose]);
 
   if(!open) return null;
 
@@ -24,14 +24,14 @@ function AuthModal({ open, onClose, mode="login", onLogin }){
 
   return (
     <div onClick={onClose} style={{
-      position:"fixed", inset:0, background:"rgba(17,17,17,.55)",
+      position:"fixed", inset:0, background:"rgba(17, 17, 17, .55)",
       backdropFilter:"blur(2px)", zIndex:100,
       display:"flex", alignItems:"center", justifyContent:"center", padding:20
     }}>
       <div onClick={e=>e.stopPropagation()} className="fade-up" style={{
         background:"var(--surface)", border:"1px solid var(--hair)",
         borderRadius:8, width:"100%", maxWidth:440, padding:32,
-        boxShadow:"0 24px 64px -16px rgba(17,17,17,.4)"
+        boxShadow:"0 24px 64px -16px rgba(17, 17, 17, .4)"
       }}>
         <div style={{display:"flex", justifyContent:"space-between", alignItems:"flex-start"}}>
           <Wordmark size={22}/>
@@ -41,7 +41,7 @@ function AuthModal({ open, onClose, mode="login", onLogin }){
           }}>✕</button>
         </div>
         <h2 className="serif" style={{margin:"18px 0 6px", fontSize:26, fontWeight:600, letterSpacing:"-0.01em"}}>
-          {m==="login" ? "Welcome back." : "Read what matters in Asia tech."}
+          {m==="login" ? "Welcome back" : "Read what matters in tech, across Asia and the world"}
         </h2>
         <p className="text-mute" style={{margin:"0 0 24px", fontSize:13}}>
           {m==="login"
@@ -80,8 +80,8 @@ function AuthModal({ open, onClose, mode="login", onLogin }){
             </div>
 
             <div style={{display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:8}}>
-              {["Google","Apple","GitHub"].map(p=>(
-                <button key={p} onClick={()=>{setEmail(`reader@${p.toLowerCase()}.com`); setTimeout(()=>handleSubmit({preventDefault(){}}),0);}} style={{
+              {["Google", "Apple", "GitHub"].map(p=>(
+                <button key={p} onClick={()=>{setEmail(`reader@${p.toLowerCase()}.com`); setTimeout(()=>handleSubmit({preventDefault(){}}), 0);}} style={{
                   padding:"10px 8px", border:"1px solid var(--hair-2)",
                   background:"var(--paper)", borderRadius:5, fontSize:12,
                   cursor:"pointer", color:"var(--ink)", fontWeight:500
@@ -90,7 +90,7 @@ function AuthModal({ open, onClose, mode="login", onLogin }){
             </div>
 
             <div style={{marginTop:24, fontSize:12, textAlign:"center"}} className="text-mute">
-              {m==="login" ? "New to DailyTechWire? " : "Already have an account? "}
+              {m==="login" ? "New to dailytechwire? " : "Already have an account? "}
               <a onClick={()=>setM(m==="login"?"signup":"login")} style={{cursor:"pointer", color:"var(--accent)", fontWeight:500}}>
                 {m==="login" ? "Create an account" : "Log in"}
               </a>
@@ -114,7 +114,7 @@ function SearchOverlay({ open, onClose, navigate }){
     const onKey = (e)=>{ if(e.key==="Escape") onClose(); };
     if(open) window.addEventListener("keydown", onKey);
     return ()=> window.removeEventListener("keydown", onKey);
-  },[open, onClose]);
+  }, [open, onClose]);
 
   const results = useMemo(()=>{
     if(!q.trim()) return [];
@@ -123,21 +123,21 @@ function SearchOverlay({ open, onClose, navigate }){
       a.title.toLowerCase().includes(Q) ||
       a.dek?.toLowerCase().includes(Q) ||
       a.pillar.toLowerCase().includes(Q)
-    ).slice(0,6);
-  },[q]);
+    ).slice(0, 6);
+  }, [q]);
 
   if(!open) return null;
 
   return (
     <div onClick={onClose} style={{
-      position:"fixed", inset:0, background:"rgba(17,17,17,.55)",
+      position:"fixed", inset:0, background:"rgba(17, 17, 17, .55)",
       zIndex:100, padding:"80px 20px 20px",
       display:"flex", justifyContent:"center", alignItems:"flex-start"
     }}>
       <div onClick={e=>e.stopPropagation()} className="fade-up" style={{
         background:"var(--surface)", border:"1px solid var(--hair)",
         borderRadius:10, width:"100%", maxWidth:680,
-        boxShadow:"0 24px 64px -16px rgba(17,17,17,.4)", overflow:"hidden"
+        boxShadow:"0 24px 64px -16px rgba(17, 17, 17, .4)", overflow:"hidden"
       }}>
         <div style={{display:"flex", alignItems:"center", gap:14, padding:"18px 22px", borderBottom:"1px solid var(--hair)"}}>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{color:"var(--muted)"}}>
@@ -171,13 +171,13 @@ function SearchOverlay({ open, onClose, navigate }){
               ))}
               <div style={{padding:"10px 14px", borderTop:"1px solid var(--hair)", marginTop:4}}>
                 <button onClick={()=>{onClose(); navigate("/search?q="+encodeURIComponent(q));}} className="linkish" style={{
-                  background:"transparent",border:"none",fontSize:12,color:"var(--accent)",cursor:"pointer",fontWeight:600
+                  background:"transparent", border:"none", fontSize:12, color:"var(--accent)", cursor:"pointer", fontWeight:600
                 }}>View all results for "{q}" →</button>
               </div>
             </div>
           ) : (
             <div style={{padding:"30px 22px", color:"var(--muted)", fontSize:13}}>
-              No matches. Try a pillar (AI, Asia, Dev), an author, or a company name.
+              No matches. Try a pillar (AI, Latest, Dev), an author, or a company name.
             </div>
           )
         ) : (
@@ -185,9 +185,9 @@ function SearchOverlay({ open, onClose, navigate }){
             <div className="upper text-mute" style={{fontSize:10, fontWeight:600, letterSpacing:".14em", padding:"6px 8px"}}>Trending</div>
             {["sovereign AI", "TSMC packaging", "VNG IPO", "UPI Vietnam", "AI Leaderboard"].map(t=>(
               <button key={t} onClick={()=>setQ(t)} style={{
-                display:"block",width:"100%",textAlign:"left",
-                padding:"10px 12px",background:"transparent",border:"none",
-                borderRadius:6,cursor:"pointer", fontSize:13, color:"var(--ink)"
+                display:"block", width:"100%", textAlign:"left",
+                padding:"10px 12px", background:"transparent", border:"none",
+                borderRadius:6, cursor:"pointer", fontSize:13, color:"var(--ink)"
               }} onMouseEnter={e=>e.currentTarget.style.background="color-mix(in oklab, var(--ink) 8%, transparent)"}
                  onMouseLeave={e=>e.currentTarget.style.background="transparent"}>
                 <span className="text-mute mono" style={{fontSize:11, marginRight:10}}>↗</span>{t}

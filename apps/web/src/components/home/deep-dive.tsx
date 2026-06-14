@@ -56,7 +56,7 @@ export function DeepDive({ article }: DeepDiveProps) {
               style={{
                 margin: "0 0 14px",
                 fontSize: 36,
-                fontWeight: 700,
+                fontWeight: 650,
                 letterSpacing: "-0.025em",
                 lineHeight: 1.1,
               }}

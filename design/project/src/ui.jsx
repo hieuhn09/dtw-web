@@ -87,13 +87,20 @@ function ArrowUpDown({ chg }) {
 
 function DisclosureBox({ kind = "sponsored", sponsor, position = "top" }) {
   const isAI = kind === "ai";
+  const t = useT();
   const bg = isAI ? "var(--surface-2)" : "var(--sponsored)";
   const border = isAI ? "var(--hair-2)" : "#E0B900";
   const icon = isAI ? "AI" : "$";
-  const title = isAI ? "AI-assisted reporting" : `Paid Partner${sponsor ? ` · ${sponsor}` : ""}`;
+  const title = isAI
+    ? t("AI-assisted reporting", "Đưa tin có hỗ trợ AI", "Pelaporan dibantu AI")
+    : `${t("Paid Partner", "Đối tác trả phí", "Mitra Berbayar")}${sponsor ? ` · ${sponsor}` : ""}`;
   const body = isAI ?
-  "This article uses AI tools for translation or transcription. All facts were verified, and all writing was done by a human reporter." :
-  "This is a sponsored feature produced by DTW Studio for the partner above. The DTW newsroom was not involved in writing or editing.";
+  t("This article uses AI tools for translation or transcription. All facts were verified, and all writing was done by a human reporter.",
+    "Bài viết này dùng công cụ AI để dịch hoặc gỡ băng. Mọi dữ kiện đã được kiểm chứng, và toàn bộ phần viết do phóng viên là người thật thực hiện.",
+    "Artikel ini menggunakan alat AI untuk terjemahan atau transkripsi. Semua fakta diverifikasi, dan seluruh tulisan dikerjakan oleh reporter manusia.") :
+  t("This is a sponsored feature produced by DTW Studio for the partner above. The DTW newsroom was not involved in writing or editing.",
+    "Đây là bài tài trợ do DTW Studio sản xuất cho đối tác phía trên. Toà soạn DTW không tham gia viết hay biên tập.",
+    "Ini adalah fitur bersponsor yang diproduksi DTW Studio untuk mitra di atas. Ruang redaksi DTW tidak terlibat dalam penulisan atau penyuntingan.");
   return (
     <div style={{
       background: bg, border: `1px solid ${border}`,
@@ -130,7 +137,7 @@ function Button({ children, variant = "primary", size = "md", onClick, style = {
     lg: { fontSize: 14, padding: "12px 18px", borderRadius: 6 }
   };
   const variants = {
-    primary: { background: "var(--ink)", color: "var(--paper)", borderColor: "var(--ink)" },
+    primary: { background: "var(--brand-navy)", color: "var(--paper)", borderColor: "var(--brand-navy)" },
     accent: { background: "var(--accent)", color: "#fff", borderColor: "var(--accent)" },
     outline: { background: "transparent", color: "var(--ink)", borderColor: "var(--hair-2)" },
     ghost: { background: "transparent", color: "var(--ink)" }

@@ -39,7 +39,7 @@ Double opt-in is mandatory — single opt-in is a deliverability + compliance ri
 
 - 6 newsletter cards with sample subject line, cadence, "subscribe" toggle each
 - Single email input at top — toggles multiple cards then a single confirm send
-- Hero: "Read DailyTechWire the way you read." (line under it is 1px `var(--hair)` — earlier iteration used 3px which the user flagged as too heavy)
+- Hero: "Read Dailytechwire the way you read." (line under it is 1px `var(--hair)` — earlier iteration used 3px which the user flagged as too heavy)
 
 ## Sending pipeline
 

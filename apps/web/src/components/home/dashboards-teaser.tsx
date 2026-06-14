@@ -33,11 +33,11 @@ export function DashboardsTeaser() {
           </Button>
         }
       />
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 320px), 1fr))", gap: 24 }}>
+      <div className="r-grid-2" style={{ display: "grid", gap: 24, alignItems: "stretch" }}>
         {/* Asia Funding teaser */}
         <Link
           href="/dashboards/funding"
-          style={{ color: "inherit", textDecoration: "none" }}
+          style={{ color: "inherit", textDecoration: "none", display: "block", height: "100%" }}
         >
           <div
             className="card-hover"
@@ -47,6 +47,9 @@ export function DashboardsTeaser() {
               borderRadius: 8,
               padding: 24,
               cursor: "pointer",
+              height: "100%",
+              display: "flex",
+              flexDirection: "column",
             }}
           >
             <div
@@ -156,9 +159,13 @@ export function DashboardsTeaser() {
             </div>
             <div
               className="text-mute-2"
-              style={{ fontSize: 11, marginTop: 14, fontStyle: "italic" }}
+              style={{ fontSize: 11, marginTop: "auto", paddingTop: 14, fontStyle: "italic" }}
             >
-              For informational purposes only · not investment advice
+              {t(
+                "For informational purposes only · not investment advice",
+                "Chỉ nhằm mục đích thông tin · không phải tư vấn đầu tư",
+                "Hanya untuk tujuan informasi · bukan saran investasi"
+              )}
             </div>
           </div>
         </Link>
@@ -166,7 +173,7 @@ export function DashboardsTeaser() {
         {/* AI Leaderboard teaser */}
         <Link
           href="/dashboards/ai"
-          style={{ color: "inherit", textDecoration: "none" }}
+          style={{ color: "inherit", textDecoration: "none", display: "block", height: "100%" }}
         >
           <div
             className="card-hover"
@@ -176,6 +183,9 @@ export function DashboardsTeaser() {
               borderRadius: 8,
               padding: 24,
               cursor: "pointer",
+              height: "100%",
+              display: "flex",
+              flexDirection: "column",
             }}
           >
             <div

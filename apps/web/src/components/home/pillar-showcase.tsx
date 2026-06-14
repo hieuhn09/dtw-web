@@ -25,9 +25,9 @@ export function PillarShowcase({ byPillar }: PillarShowcaseProps) {
         kicker={t("Fresh in each section", "Mới nhất ở mỗi mục", "Terbaru di tiap rubrik")}
       />
       <div
+        className="r-grid-3"
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 260px), 1fr))",
           gap: 32,
         }}
       >
@@ -54,7 +54,7 @@ export function PillarShowcase({ byPillar }: PillarShowcaseProps) {
                   className="upper"
                   style={{
                     fontSize: 12,
-                    fontWeight: 700,
+                    fontWeight: 650,
                     letterSpacing: ".14em",
                     color: p.color,
                     display: "flex",

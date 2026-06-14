@@ -1,6 +1,6 @@
 # dtw-web - All Context
 
-Last updated: 2026-05-28
+Last updated: 2026-06-14
 
 This file is the root context entrypoint for the repo.
 
@@ -15,7 +15,7 @@ Start here before loading deeper context files.
 
 ## Project Description
 
-**DailyTechWire (DTW)** — a digital-native technology publication with an Asia-tech focus: regional funding and tech-stock coverage, AI benchmarks and rankings, and deep-dive editorial. The web app (`dtw-web`) is the **reading and presentation layer** of a three-service system:
+**Dailytechwire (DTW)** — a digital-native technology publication with an Asia-tech focus: regional funding and tech-stock coverage, AI benchmarks and rankings, and deep-dive editorial. The web app (`dtw-web`) is the **reading and presentation layer** of a three-service system:
 
 - `dtw-web` (this repo) — Next.js reader site + Payload CMS for editorial review
 - `dtw-engine` — the Content Engine that drafts and pre-approves articles (independent service, separate repo)
@@ -35,7 +35,7 @@ The web is NOT where articles are written — the Engine handles drafting. Edito
 
 ### Parent organisation
 
-DailyTechWire is published by **Asia Press Corporation** (independent newsroom, Singapore, founded **2023**). Asia Press operates several publications across Asian beats; do **not** invent or list other publication names in code or copy. Editor-in-Chief is Cheryl Tan Hwee-Min (no specific career claims — earlier drafts were rejected for invented Reuters / Pulitzer history; do not reintroduce them). See `process/features/about-trust/_GUIDE.md`.
+Dailytechwire is published by **Asia Press Centre Group (APCG)** (independent newsroom, Singapore, founded **2023**; renamed from "Asia Press Corporation" in the 2026-06-14 design refresh). APCG operates several publications across Asian beats; do **not** invent or list other publication names in code or copy. Editor-in-Chief is Cheryl Tan (no specific career claims — earlier drafts were rejected for invented Reuters / Pulitzer history; do not reintroduce them). See `process/features/about-trust/_GUIDE.md`.
 
 ---
 
@@ -128,11 +128,11 @@ Numbered, terse, load-bearing. Each one ties to a feature folder or context grou
 4. **Paywall = soft block.** Meter (cookie for guests, DB for users) — never block mid-article. Phase 1 has no payment, only a sign-in nudge after ≥ 3 reads. The "3" must be configurable in CMS, never hardcoded. See `process/features/articles/_GUIDE.md`.
 5. **Disclosure boxes (sponsored)** appear at top + middle + bottom of article and cannot be dismissed. **AI-assisted inline disclosure was removed by product decision 2026-06-05** (the header "AI-ASSISTED" badge + the 3 `kind="ai"` `DisclosureBox`es). The `aiAssisted` field still exists on Articles and the Engine still sets it `true` — it is just no longer surfaced inline. KNOWN GAP: the `/trust/ai` page still describes AI disclosure; reconcile that copy if/when the policy is finalised.
 6. **No popups. No mid-article ads.** Period.
-7. **Brand colors fixed:** sponsored bg `#FEF3C7` (dark `#3B2E0A`), up `#10B981`, down `#EF4444`, dark bg `#0F172A` / text `#E2E8F0`, DTW coral accent `#E04E1F`. See `uxui/`.
+7. **Brand colors.** Pinned: sponsored bg `#FEF3C7` (dark `#3B2E0A`), up `#10B981`, down `#EF4444`, dark bg `#0F172A` / text `#E2E8F0`. **2026-06-14 design refresh:** DTW coral accent softened `#E04E1F` → `#D4623C` (terracotta), `--accent-ink` → `#B14A28`. New brand tokens `--banner`/`--brand-navy` deep navy `#1B2A52` (dark `#16223C` for `--banner`, `#E2E8F0` for `--brand-navy`), `--brand-amber` `#D4623C`, `--amber` `#F59E0B`. Six pillar colors re-toned to a muted earthy set (`--ai #3A4E8C`, `--startups #3E6E80`, `--asia #B0512E`, `--dev #46735C`, `--products #8F7238`, `--policy #5A6577`). See `uxui/`.
 8. **Pillar/Sub-section/Tag are CMS entities** — adding a new pillar is a CMS write, not a code deploy. Routes (`/[pillar]/[subsection]/[slug]`), sitemap, and RSS regenerate automatically within 5 minutes.
 9. **i18n year 1 = `en` / `id` / `vi`** with subpath routing `/en /id /vi`, `hreflang`, CSS logical properties (RTL-ready). Indonesian must work from day one — SEA tech market matters. CN/JP/KO planned for Year 3. Don't hardcode locale lists.
 10. **Body of articles stays in the source language** — only the chrome (nav, byline, paywall meter, section headers) is translated. Editorial copy belongs to the writer.
-11. **Tech stack veto list:** no Lucia (deprecated), no Bun runtime (Payload 3 ↔ Bun is unstable), no logo badge in the header (removed in design iteration — only the wordmark "DailyTechWire" + tagline "Tech Intelligence, Wired Daily").
+11. **Tech stack veto list:** no Lucia (deprecated), no Bun runtime (Payload 3 ↔ Bun is unstable). **Header logo (changed 2026-06-14):** the design refresh reintroduced a brand mark — a navy `DTW` monogram + lowercase `dailytechwire` wordmark + terracotta pulse-dot (source asset `design/project/uploads/dtw-logo-primary.svg`), superseding the earlier wordmark-only rule. Tagline stays "Tech Intelligence, Wired Daily".
 12. **Reader-data residency / compliance:** GDPR + PDPA (Singapore) + Nghị định 13 (Vietnam). PostHog is **self-hosted** specifically for first-party analytics.
 13. **Awards page (year-one state):** no medallion, no "see previous winners", no specific categories. Just "Coming this year" with the shimmer hero. Year 1 = inaugural.
 
@@ -280,7 +280,7 @@ dtw-web/
 | `newsletters/` | 6 newsletters (AM Brief, PM Brief, AI Weekly, Asia Funding Weekly, Dev Digest, Products Deals), Resend, double opt-in, segment-by-pillar |
 | `account/` | Saved / Reading queue / History / Following pillars / Settings, IndexedDB ↔ DB sync, PWA offline cache rules. Auth flows live here (modal, magic link, OAuth callback) |
 | `engine-integration/` | Content Engine ↔ Payload API contract, `lockedFields` / `editedByHuman` / `origin` model, optimistic lock, `afterChange` hook (revalidate + Meilisearch index + OG generation) |
-| `about-trust/` | About page (Asia Press Corporation, Cheryl Tan EIC, no fake history), Editorial Standards, AI Disclosure, Corrections (public log), Transparency Report (auto-generated, Phase 2), Sponsored / Affiliate Policy |
+| `about-trust/` | About page (Asia Press Centre Group / APCG, Cheryl Tan EIC, no fake history), Editorial Standards, AI Disclosure, Corrections (public log), Transparency Report (auto-generated, Phase 2), Sponsored / Affiliate Policy |
 
 ---
 

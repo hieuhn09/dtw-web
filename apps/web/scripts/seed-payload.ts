@@ -45,7 +45,7 @@ const PILLARS: ReadonlyArray<{
 }> = [
   { slug: "ai", titleEn: "AI", titleVi: "AI", titleId: "AI", heading: "Artificial Intelligence", color: "var(--ai)", icon: "spark", order: 1, description: "Frontier models, infrastructure, and the policy that shapes them. Reported across Seoul, Singapore, Bengaluru, and Hangzhou." },
   { slug: "startups", titleEn: "Startups", titleVi: "Khởi nghiệp", titleId: "Startup", heading: "Startups & Capital", color: "var(--startups)", icon: "trend-up", order: 2, description: "Term sheets, IPOs, layoffs, and the operators building the next wave across ASEAN, India, and Greater China." },
-  { slug: "asia", titleEn: "Asia", titleVi: "Châu Á", titleId: "Asia", heading: "Asia", color: "var(--asia)", icon: "asia", order: 3, description: "Our flagship beat. Geopolitics, capital flows, and product launches across the most consequential tech region of the decade." },
+  { slug: "latest", titleEn: "Latest", titleVi: "Mới nhất", titleId: "Terbaru", heading: "Latest", color: "var(--asia)", icon: "clock", order: 3, description: "The newest reporting across every beat — AI, startups, policy, developers, and products, freshest first, with a sharp eye on Asia's tech economy." },
   { slug: "dev", titleEn: "Dev", titleVi: "Lập trình", titleId: "Pengembang", heading: "Developers", color: "var(--dev)", icon: "code", order: 4, description: "Engineering practice. Tools, frameworks, and the trade-offs teams are actually making in production." },
   { slug: "products", titleEn: "Products", titleVi: "Sản phẩm", titleId: "Produk", heading: "Products & Reviews", color: "var(--products)", icon: "product", order: 5, description: "Independent reviews of phones, laptops, audio, and wearables. Affiliate-disclosed. Manufacturers do not approve our copy." },
   { slug: "policy", titleEn: "Policy", titleVi: "Chính sách", titleId: "Kebijakan", heading: "Policy & Regulation", color: "var(--policy)", icon: "policy", order: 6, description: "Trade rules, export controls, central-bank decisions, and the regulators who write them — covered as the technology beat they have become." },
@@ -190,7 +190,7 @@ const ARTICLES: ReadonlyArray<ArticleFixture> = [
   },
   {
     slug: "dtw-studio-aws-asean",
-    pillarSlug: "asia",
+    pillarSlug: "latest",
     authorName: "Mei Lin",
     title: "How an ASEAN insurer rebuilt its claims pipeline on serverless in 18 weeks",
     dek:
@@ -208,7 +208,7 @@ const ARTICLES: ReadonlyArray<ArticleFixture> = [
   },
   {
     slug: "deep-dive-asia-capex",
-    pillarSlug: "asia",
+    pillarSlug: "latest",
     authorName: "Mei Lin",
     coAuthorNames: ["Jordan Chen", "Arif Rahman"],
     title: "The $84B build-out: every datacenter announced across ASEAN in the last 12 months, mapped",
@@ -237,7 +237,7 @@ const ARTICLES: ReadonlyArray<ArticleFixture> = [
     publishedAt: "2026-05-22T10:00:00+08:00",
     aiAssisted: true,
     bodyBlocks: [
-      ["p", "Every article on DailyTechWire that used an AI tool carries a disclosure box. This piece explains exactly what that box does and does not mean."],
+      ["p", "Every article on Dailytechwire that used an AI tool carries a disclosure box. This piece explains exactly what that box does and does not mean."],
       ["p", "We use machine assistance for three things: translating source documents, transcribing interviews, and summarising long filings for a reporter to verify. We do not use it to generate published prose."],
       ["h3", "The checklist"],
       ["p", "Before an AI-assisted tag goes on, an editor confirms a human wrote the article, a human verified every translated quote against the source, and no generated text reached the page unedited."],

@@ -28,7 +28,7 @@ function useT(){
 const PILLAR_I18N = {
   ai:       { vi: "AI",            id: "AI"          },
   startups: { vi: "Khởi nghiệp",   id: "Startup"     },
-  asia:     { vi: "Châu Á",        id: "Asia"        },
+  latest:   { vi: "Mới nhất",      id: "Terbaru"     },
   dev:      { vi: "Lập trình",     id: "Pengembang"  },
   products: { vi: "Sản phẩm",      id: "Produk"      },
   policy:   { vi: "Chính sách",    id: "Kebijakan"   },

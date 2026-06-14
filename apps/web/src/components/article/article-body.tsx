@@ -3,6 +3,7 @@
 import { RichText } from "@payloadcms/richtext-lexical/react";
 import { DisclosureBox } from "@dtw/ui";
 import type { ArticleBodyState, ArticleView } from "@/lib/article-view";
+import { useT } from "@/lib/i18n";
 
 type EditorState = NonNullable<ArticleBodyState>;
 
@@ -10,8 +11,8 @@ type EditorState = NonNullable<ArticleBodyState>;
  * Split the Lexical root children in half so a middle disclosure box can be
  * injected between the two halves (invariant #5: sponsored boxes appear at
  * top + middle + bottom). Each half is itself a valid editor state that
- * RichText can render independently. (AI-assisted disclosure was removed by
- * product decision 2026-06-05 — see all-context.md invariant #5.)
+ * RichText can render independently. (AI-assisted inline disclosure was removed
+ * by product decision 2026-06-05 — see all-context.md invariant #5.)
  */
 function splitBody(body: EditorState): [EditorState, EditorState] {
   const children = body.root.children ?? [];
@@ -32,14 +33,33 @@ const proseStyle: React.CSSProperties = {
   margin: "0 auto",
 };
 
-function TopBoxes({ article }: { article: ArticleView }) {
+/**
+ * Localized sponsored disclosure (invariant #10: chrome is translated). Passes
+ * title/body overrides to the @dtw/ui DisclosureBox primitive (which is i18n-free).
+ */
+function SponsoredBox({
+  article,
+  position,
+}: {
+  article: ArticleView;
+  position: "top" | "middle" | "bottom";
+}) {
+  const t = useT();
   if (!article.sponsored) return null;
-  return <DisclosureBox kind="sponsored" sponsor={article.sponsor} position="top" />;
-}
-
-function BottomBoxes({ article }: { article: ArticleView }) {
-  if (!article.sponsored) return null;
-  return <DisclosureBox kind="sponsored" sponsor={article.sponsor} position="bottom" />;
+  const label = t("Paid Partner", "Đối tác trả phí", "Mitra Berbayar");
+  return (
+    <DisclosureBox
+      kind="sponsored"
+      sponsor={article.sponsor}
+      position={position}
+      title={`${label}${article.sponsor ? ` · ${article.sponsor}` : ""}`}
+      body={t(
+        "This is a sponsored feature produced by DTW Studio for the partner above. The DTW newsroom was not involved in writing or editing.",
+        "Đây là nội dung tài trợ do DTW Studio sản xuất cho đối tác nêu trên. Toà soạn DTW không tham gia viết hay biên tập.",
+        "Ini adalah konten bersponsor yang diproduksi oleh DTW Studio untuk mitra di atas. Ruang redaksi DTW tidak terlibat dalam penulisan atau penyuntingan."
+      )}
+    />
+  );
 }
 
 export function ArticleBody({
@@ -54,11 +74,11 @@ export function ArticleBody({
   if (!hasBody || !body) {
     return (
       <div style={proseStyle} className="article-prose">
-        <TopBoxes article={article} />
+        <SponsoredBox article={article} position="top" />
         <p className="text-mute" style={{ fontStyle: "italic" }}>
           This article has no body content yet.
         </p>
-        <BottomBoxes article={article} />
+        <SponsoredBox article={article} position="bottom" />
       </div>
     );
   }
@@ -67,17 +87,15 @@ export function ArticleBody({
 
   return (
     <div style={proseStyle} className="article-prose">
-      <TopBoxes article={article} />
+      <SponsoredBox article={article} position="top" />
 
       <RichText data={first} />
 
-      {article.sponsored && (
-        <DisclosureBox kind="sponsored" sponsor={article.sponsor} position="middle" />
-      )}
+      <SponsoredBox article={article} position="middle" />
 
       <RichText data={second} />
 
-      <BottomBoxes article={article} />
+      <SponsoredBox article={article} position="bottom" />
     </div>
   );
 }

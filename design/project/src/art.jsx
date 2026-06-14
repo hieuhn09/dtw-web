@@ -6,7 +6,7 @@ function hashStr(s) {
   let h = 0;for (let i = 0; i < s.length; i++) {h = h * 31 + s.charCodeAt(i) | 0;}return Math.abs(h);
 }
 
-// Palettes per pillar – quiet, editorial
+// Palettes per pillar, quiet, editorial
 const ART_PALETTES = {
   ai: [["#1E1B4B", "#7C3AED", "#C4B5FD", "#FEF3C7"], ["#0F172A", "#A78BFA", "#FBBF24", "#FFFFFF"]],
   startups: [["#0C4A6E", "#0EA5E9", "#FED7AA", "#FFFFFF"], ["#082F49", "#38BDF8", "#F97316", "#FAFAF7"]],
@@ -27,7 +27,7 @@ function CoverArt({ pillar = "asia", seed = "x", label, height = 240, variant, s
   const pal = pickPalette(pillar, h);
   const [c1, c2, c3, c4] = pal;
 
-  const w = 800,hh = 480;
+  const w = 800, hh = 480;
   let body = null;
 
   if (v === 0) {
@@ -92,7 +92,7 @@ function CoverArt({ pillar = "asia", seed = "x", label, height = 240, variant, s
     // Number / data viz feel
     const seriesA = Array.from({ length: 24 }).map((_, i) => 30 + Math.sin(i * 0.7 + h * 0.01) * 60 + i * 8);
     const seriesB = Array.from({ length: 24 }).map((_, i) => 60 + Math.cos(i * 0.5 + h * 0.02) * 40 + i * 6);
-    const toPath = (s) => "M " + s.map((y, i) => `${i * 32 + 30},${hh - 80 - y}`).join(" L ");
+    const toPath = (s) => "M " + s.map((y, i) => `${i * 32 + 30}, ${hh - 80 - y}`).join(" L ");
     body =
     <>
         <rect x="0" y="0" width={w} height={hh} fill={c4} />
@@ -133,23 +133,15 @@ function CoverArt({ pillar = "asia", seed = "x", label, height = 240, variant, s
         {/* grain */}
         <rect x="0" y="0" width={w} height={hh} fill="url(#grain)" opacity=".0" />
       </svg>
-      {label &&
-      <div className="mono" style={{
-        position: "absolute", left: 10, bottom: 10,
-        padding: "4px 8px", fontSize: 10, letterSpacing: ".1em",
-        background: "rgba(255,255,255,.85)", color: "#111",
-        border: "1px solid rgba(0,0,0,.08)", borderRadius: 3,
-        textTransform: "uppercase", fontWeight: 600
-      }}>{label}</div>
-      }
+      {/* image label intentionally hidden */}
     </div>);
 
 }
 
-// Author avatar – monogram on tinted bg
+// Author avatar, monogram on tinted bg
 function Avatar({ name, size = 36, color }) {
   const initials = name.split(" ").map((s) => s[0]).slice(0, 2).join("").toUpperCase();
-  const palette = ["#E04E1F", "#0EA5E9", "#7C3AED", "#16A34A", "#D97706", "#475569"];
+  const palette = ["#B0512E", "#3E6E80", "#3A4E8C", "#46735C", "#8F7238", "#475569"];
   const h = hashStr(name);
   const bg = color || palette[h % palette.length];
   return (
@@ -157,13 +149,13 @@ function Avatar({ name, size = 36, color }) {
       width: size, height: size, borderRadius: "50%",
       background: bg, color: "#fff",
       display: "flex", alignItems: "center", justifyContent: "center",
-      fontFamily: "var(--font-serif)", fontWeight: 700, fontSize: size * 0.4,
+      fontFamily: "var(--font-serif)", fontWeight: 650, fontSize: size * 0.4,
       flexShrink: 0, letterSpacing: "-0.02em"
     }}>{initials}</div>);
 
 }
 
-// Sponsor / company "logo" – typographic mark
+// Sponsor / company "logo", typographic mark
 function BrandMark({ name, size = 18, monospace = true, bg, fg }) {
   return (
     <span style={{
@@ -182,11 +174,11 @@ function BrandMark({ name, size = 18, monospace = true, bg, fg }) {
 
 // Country / city flag chip (typographic 2-letter)
 const CITY_COLOR = {
-  Singapore: "#E04E1F", Seoul: "#7C3AED", Jakarta: "#0EA5E9",
-  "Hanoi": "#16A34A", Hanoi: "#16A34A", "Ho Chi Minh City": "#16A34A",
-  Tokyo: "#475569", Taipei: "#D97706", Bengaluru: "#0EA5E9",
-  Shenzhen: "#7C2D12", Manila: "#D97706", "Hong Kong": "#475569",
-  Bangkok: "#7C3AED"
+  Singapore: "#B0512E", Seoul: "#3A4E8C", Jakarta: "#3E6E80",
+  "Hanoi": "#46735C", Hanoi: "#46735C", "Ho Chi Minh City": "#46735C",
+  Tokyo: "#475569", Taipei: "#8F7238", Bengaluru: "#3E6E80",
+  Shenzhen: "#7C2D12", Manila: "#8F7238", "Hong Kong": "#475569",
+  Bangkok: "#3A4E8C"
 };
 function CityChip({ city, size = 11 }) {
   const c = CITY_COLOR[city] || "var(--muted)";

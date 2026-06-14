@@ -13,6 +13,13 @@ const config: NextConfig = {
   // `@eslint/eslintrc` as a direct devDep to resolve under pnpm; add it when
   // wiring CI lint.)
   eslint: { ignoreDuringBuilds: true },
+  // The "asia" pillar was renamed to "latest" (2026-06-14). Preserve old links.
+  async redirects() {
+    return [
+      { source: "/asia", destination: "/latest", permanent: true },
+      { source: "/asia/:path*", destination: "/latest/:path*", permanent: true },
+    ];
+  },
   webpack: (webpackConfig) => {
     webpackConfig.resolve.alias = {
       ...(webpackConfig.resolve.alias ?? {}),

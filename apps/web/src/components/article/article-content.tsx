@@ -76,7 +76,7 @@ export function ArticleContent({ article, body, related }: ArticleContentProps) 
                 letterSpacing: ".08em",
               }}
             >
-              DEEP DIVE
+              {t("DEEP DIVE", "PHÂN TÍCH SÂU", "ANALISIS MENDALAM")}
             </span>
           )}
           {article.sponsored && (
@@ -93,7 +93,7 @@ export function ArticleContent({ article, body, related }: ArticleContentProps) 
                 border: "1px solid #E0B900",
               }}
             >
-              PAID PARTNER · {article.sponsor}
+              {t("PAID PARTNER", "ĐỐI TÁC TRẢ PHÍ", "MITRA BERBAYAR")} · {article.sponsor}
             </span>
           )}
         </div>
@@ -105,6 +105,7 @@ export function ArticleContent({ article, body, related }: ArticleContentProps) 
             fontWeight: 700,
             letterSpacing: "-0.028em",
             lineHeight: 1.05,
+            textWrap: "balance",
           }}
         >
           {article.title}
@@ -216,9 +217,14 @@ export function ArticleContent({ article, body, related }: ArticleContentProps) 
             $
           </span>
           <span>
-            <strong style={{ color: "var(--ink)" }}>Affiliate disclosure:</strong> Some links in this
-            review earn DTW a commission. Manufacturers do not approve our reviews, and we do not
-            accept review units in exchange for coverage.
+            <strong style={{ color: "var(--ink)" }}>
+              {t("Affiliate disclosure:", "Công bố affiliate:", "Pengungkapan afiliasi:")}
+            </strong>{" "}
+            {t(
+              "Some links in this review earn DTW a commission. Manufacturers do not approve our reviews, and we do not accept review units in exchange for coverage.",
+              "Một số liên kết trong bài đánh giá này mang lại hoa hồng cho DTW. Nhà sản xuất không duyệt bài đánh giá của chúng tôi, và chúng tôi không nhận sản phẩm dùng thử để đổi lấy bài viết.",
+              "Beberapa tautan dalam ulasan ini menghasilkan komisi untuk DTW. Produsen tidak menyetujui ulasan kami, dan kami tidak menerima unit ulasan sebagai imbalan liputan."
+            )}
           </span>
         </div>
       )}
@@ -237,8 +243,16 @@ export function ArticleContent({ article, body, related }: ArticleContentProps) 
           color: "var(--muted)",
         }}
       >
-        <strong style={{ color: "var(--ink)" }}>Spot something wrong?</strong> Email{" "}
-        <span className="mono">corrections@dailytechwire.asia</span>. We log every correction publicly.
+        <strong style={{ color: "var(--ink)" }}>
+          {t("Spot something wrong?", "Phát hiện sai sót?", "Menemukan kesalahan?")}
+        </strong>{" "}
+        {t("Email", "Email", "Email")}{" "}
+        <span className="mono">corrections@dailytechwire.com</span>.{" "}
+        {t(
+          "We log every correction publicly.",
+          "Chúng tôi ghi lại mọi đính chính công khai.",
+          "Kami mencatat setiap koreksi secara publik."
+        )}
       </div>
     </article>
   );

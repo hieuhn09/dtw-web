@@ -3,6 +3,7 @@
 import { useMemo, useState, type ReactNode } from "react";
 import { ArrowUpDown, Button } from "@dtw/ui";
 import { FUNDING_ROWS, type FundingRow } from "@/lib/data";
+import { useT } from "@/lib/i18n";
 import { BigChart } from "./big-chart";
 
 type SortKey = keyof FundingRow;
@@ -52,6 +53,7 @@ const TOP_MOVERS: ReadonlyArray<{ name: string; chg: number }> = [
 ];
 
 export function FundingTracker() {
+  const t = useT();
   const [sortKey, setSortKey] = useState<SortKey>("chg");
   const [sortDir, setSortDir] = useState<SortDir>("desc");
   const [country, setCountry] = useState<string>("All");
@@ -102,19 +104,23 @@ export function FundingTracker() {
             style={{
               margin: "0 0 4px",
               fontSize: 30,
-              fontWeight: 700,
+              fontWeight: 650,
               letterSpacing: "-0.02em",
             }}
           >
-            Asia Funding Tracker
+            {t("Asia Funding Tracker", "Theo dõi gọi vốn châu Á", "Pelacak Pendanaan Asia")}
           </h2>
           <div className="text-mute mono" style={{ fontSize: 11 }}>
-            Sample data — live market feed coming soon
+            {t(
+              "Sample data — live market feed coming soon",
+              "Dữ liệu mẫu — nguồn thị trường trực tiếp sắp có",
+              "Data sampel — feed pasar langsung segera hadir"
+            )}
           </div>
         </div>
         <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
           <span className="text-mute" style={{ fontSize: 12 }}>
-            Country:
+            {t("Country:", "Quốc gia:", "Negara:")}
           </span>
           <div
             style={{
@@ -164,28 +170,28 @@ export function FundingTracker() {
           <thead>
             <tr>
               <Th k="ticker" sortKey={sortKey} sortDir={sortDir} onSort={onSort}>
-                Ticker
+                {t("Ticker", "Mã", "Ticker")}
               </Th>
               <Th k="name" sortKey={sortKey} sortDir={sortDir} onSort={onSort}>
-                Company
+                {t("Company", "Công ty", "Perusahaan")}
               </Th>
               <Th k="country" sortKey={sortKey} sortDir={sortDir} onSort={onSort}>
-                Country
+                {t("Country", "Quốc gia", "Negara")}
               </Th>
               <Th k="sector" sortKey={sortKey} sortDir={sortDir} onSort={onSort}>
-                Sector
+                {t("Sector", "Lĩnh vực", "Sektor")}
               </Th>
               <Th k="px" num sortKey={sortKey} sortDir={sortDir} onSort={onSort}>
-                Price
+                {t("Price", "Giá", "Harga")}
               </Th>
               <Th k="chg" num sortKey={sortKey} sortDir={sortDir} onSort={onSort}>
-                Day Δ
+                {t("Day Δ", "Δ ngày", "Δ Hari")}
               </Th>
               <Th k="mcap" num sortKey={sortKey} sortDir={sortDir} onSort={onSort}>
-                Mkt Cap
+                {t("Mkt Cap", "Vốn hoá", "Kap. Pasar")}
               </Th>
               <Th k="funding" num sortKey={sortKey} sortDir={sortDir} onSort={onSort}>
-                Recent Round
+                {t("Recent Round", "Vòng gần đây", "Putaran Terbaru")}
               </Th>
             </tr>
           </thead>
@@ -274,7 +280,7 @@ export function FundingTracker() {
               textTransform: "uppercase",
             }}
           >
-            ASEAN tech index – 30 days
+            {t("ASEAN tech index – 30 days", "Chỉ số công nghệ ASEAN – 30 ngày", "Indeks teknologi ASEAN – 30 hari")}
           </div>
           <BigChart />
         </div>
@@ -297,7 +303,7 @@ export function FundingTracker() {
               textTransform: "uppercase",
             }}
           >
-            Top movers · today
+            {t("Top movers · today", "Biến động mạnh · hôm nay", "Penggerak utama · hari ini")}
           </div>
           {TOP_MOVERS.map((m) => (
             <div

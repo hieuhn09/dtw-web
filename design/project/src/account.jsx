@@ -1,22 +1,24 @@
 // ============ ACCOUNT ============
 function AccountPage({ navigate, user, tab }){
   const [active, setActive] = useState(tab || "saved");
+  const t = useT();
+  const { lang } = useLang();
   useEffect(()=>{ if(tab) setActive(tab); }, [tab]);
 
   if(!user){
     return (
       <div className="container" style={{paddingTop:48, paddingBottom:48, textAlign:"center"}}>
-        <h2 className="serif" style={{fontSize:30, fontWeight:600}}>Log in to view your account.</h2>
+        <h2 className="serif" style={{fontSize:30, fontWeight:600}}>{t("Log in to view your account","Đăng nhập để xem tài khoản","Masuk untuk melihat akun Anda")}</h2>
       </div>
     );
   }
 
   const tabs = [
-    ["saved", "Saved"],
-    ["history", "Reading history"],
-    ["following", "Following"],
-    ["newsletters", "Newsletters"],
-    ["settings", "Settings"],
+    ["saved", t("Saved","Đã lưu","Tersimpan")],
+    ["history", t("Reading history","Lịch sử đọc","Riwayat baca")],
+    ["following", t("Following","Đang theo dõi","Mengikuti")],
+    ["newsletters", t("Newsletters","Bản tin","Newsletter")],
+    ["settings", t("Settings","Cài đặt","Pengaturan")],
   ];
 
   return (
@@ -26,17 +28,14 @@ function AccountPage({ navigate, user, tab }){
           width:72, height:72, borderRadius:"50%",
           background:"var(--accent)", color:"#fff",
           display:"flex",alignItems:"center",justifyContent:"center",
-          fontSize:28, fontWeight:700, fontFamily:"var(--font-serif)"
+          fontSize:28, fontWeight:650, fontFamily:"var(--font-serif)"
         }}>{user.name[0]}</div>
         <div style={{flex:1}}>
-          <h1 className="serif" style={{margin:"0 0 4px", fontSize:32, fontWeight:700, letterSpacing:"-0.02em"}}>{user.name}</h1>
+          <h1 className="serif" style={{margin:"0 0 4px", fontSize:32, fontWeight:650, letterSpacing:"-0.02em"}}>{user.name}</h1>
           <div className="text-mute" style={{fontSize:13}}>
-            <span className="mono">{user.email}</span> · joined May 2026 · <span style={{padding:"2px 8px", background:"var(--surface-2)", borderRadius:3, fontSize:11, fontWeight:600}}>{user.role}</span>
+            <span className="mono">{user.email}</span> · {t("joined May 2026","tham gia tháng 5/2026","bergabung Mei 2026")} · <span style={{padding:"2px 8px", background:"var(--surface-2)", borderRadius:3, fontSize:11, fontWeight:600}}>{user.role}</span>
           </div>
         </div>
-        <Button variant={user.pro?"primary":"accent"}>
-          {user.pro ? "DTW Pro · active" : "Upgrade to Pro · $12/mo"}
-        </Button>
       </header>
 
       <div style={{display:"grid", gridTemplateColumns:"220px 1fr", gap:36}}>
@@ -65,11 +64,12 @@ function AccountPage({ navigate, user, tab }){
 
 function AccountSaved({ navigate }){
   const saved = ARTICLES.slice(2, 7);
+  const t = useT();
   return (
     <section>
       <div style={{display:"flex", justifyContent:"space-between", alignItems:"flex-end", marginBottom:18}}>
-        <h2 className="serif" style={{margin:0, fontSize:24, fontWeight:700, letterSpacing:"-0.015em"}}>Saved articles</h2>
-        <span className="text-mute mono" style={{fontSize:11}}>{saved.length} saved · synced across 3 devices</span>
+        <h2 className="serif" style={{margin:0, fontSize:24, fontWeight:650, letterSpacing:"-0.015em"}}>{t("Saved articles","Bài đã lưu","Artikel tersimpan")}</h2>
+        <span className="text-mute mono" style={{fontSize:11}}>{saved.length} {t("saved · synced across 3 devices","đã lưu · đồng bộ trên 3 thiết bị","tersimpan · tersinkron di 3 perangkat")}</span>
       </div>
       <div style={{display:"grid", gap:0}}>
         {saved.map((a,i)=>(
@@ -81,9 +81,9 @@ function AccountSaved({ navigate }){
             <div>
               <PillarTag id={a.pillar}/>
               <div className="serif" style={{fontSize:16, fontWeight:600, marginTop:4, lineHeight:1.3}}>{a.title}</div>
-              <div className="text-mute" style={{fontSize:11, marginTop:4}}>Saved {fmtTimeAgo(a.published)} · {a.readMin} min</div>
+              <div className="text-mute" style={{fontSize:11, marginTop:4}}>{t("Saved","Đã lưu","Disimpan")} {fmtTimeAgo(a.published)} · {a.readMin} {t("min","phút","menit")}</div>
             </div>
-            <Button variant="ghost" size="sm"><Icon name="bookmark" size={12}/> Remove</Button>
+            <Button variant="ghost" size="sm"><Icon name="bookmark" size={12}/> {t("Remove","Xóa","Hapus")}</Button>
           </article>
         ))}
       </div>
@@ -93,11 +93,12 @@ function AccountSaved({ navigate }){
 
 function AccountHistory({ navigate }){
   const hist = ARTICLES.slice(0,6);
+  const t = useT();
   return (
     <section>
-      <h2 className="serif" style={{margin:"0 0 18px", fontSize:24, fontWeight:700, letterSpacing:"-0.015em"}}>Reading history</h2>
+      <h2 className="serif" style={{margin:"0 0 18px", fontSize:24, fontWeight:650, letterSpacing:"-0.015em"}}>{t("Reading history","Lịch sử đọc","Riwayat baca")}</h2>
       <div className="mono text-mute-2" style={{fontSize:11, marginBottom:14}}>
-        We use this to recommend, and to reset your free-article meter. Clear any time.
+        {t("We use this to recommend, and to reset your free-article meter. Clear any time.","Chúng tôi dùng để gợi ý và đặt lại bộ đếm bài miễn phí. Xóa bất kỳ lúc nào.","Kami pakai ini untuk rekomendasi dan reset penghitung artikel gratis. Hapus kapan saja.")}
       </div>
       {hist.map((a,i)=>(
         <div key={a.id} onClick={()=>navigate(`/article/${a.slug}`)} style={{
@@ -117,14 +118,16 @@ function AccountHistory({ navigate }){
 
 function AccountFollowing(){
   const [following, setFollowing] = useState(new Set(["ai","asia"]));
+  const t = useT();
+  const { lang } = useLang();
   const toggle = (id)=>{
     const s = new Set(following); s.has(id)?s.delete(id):s.add(id); setFollowing(s);
   };
   return (
     <section>
-      <h2 className="serif" style={{margin:"0 0 8px", fontSize:24, fontWeight:700, letterSpacing:"-0.015em"}}>Following</h2>
+      <h2 className="serif" style={{margin:"0 0 8px", fontSize:24, fontWeight:650, letterSpacing:"-0.015em"}}>{t("Following","Đang theo dõi","Mengikuti")}</h2>
       <div className="text-mute" style={{fontSize:13, marginBottom:18}}>
-        Followed pillars sync to your home tab and your offline cache (20 recent stories each).
+        {t("Followed pillars sync to your home tab and your offline cache (20 recent stories each).","Chuyên mục theo dõi đồng bộ về tab chính và bộ nhớ ngoại tuyến (20 bài gần nhất mỗi mục).","Pilar yang diikuti tersinkron ke tab beranda dan cache offline (20 artikel terbaru tiap pilar).")}
       </div>
       <div style={{display:"grid", gridTemplateColumns:"repeat(2, 1fr)", gap:12}}>
         {PILLARS.map(p=>{
@@ -137,10 +140,10 @@ function AccountFollowing(){
             }}>
               <div style={{display:"flex", alignItems:"center", gap:10}}>
                 <span style={{width:10, height:10, background:p.color, display:"inline-block"}}/>
-                <span style={{fontSize:14, fontWeight:600}}>{p.label}</span>
+                <span style={{fontSize:14, fontWeight:600}}>{localizedPillarLabel(p.id, lang)}</span>
               </div>
               <Button variant={on?"primary":"outline"} size="sm" onClick={()=>toggle(p.id)}>
-                {on?"Following":"Follow"}
+                {on?t("Following","Đang theo dõi","Diikuti"):t("Follow","Theo dõi","Ikuti")}
               </Button>
             </div>
           );
@@ -151,9 +154,10 @@ function AccountFollowing(){
 }
 
 function AccountNewsletters(){
+  const t = useT();
   return (
     <section>
-      <h2 className="serif" style={{margin:"0 0 18px", fontSize:24, fontWeight:700, letterSpacing:"-0.015em"}}>Your newsletters</h2>
+      <h2 className="serif" style={{margin:"0 0 18px", fontSize:24, fontWeight:650, letterSpacing:"-0.015em"}}>{t("Your newsletters","Bản tin của bạn","Newsletter Anda")}</h2>
       {NEWSLETTERS.slice(0,3).map((n,i)=>(
         <div key={n.id} style={{
           display:"flex", justifyContent:"space-between", alignItems:"center",
@@ -164,8 +168,8 @@ function AccountNewsletters(){
             <div className="text-mute mono" style={{fontSize:11}}>{n.cadence}</div>
           </div>
           <div style={{display:"flex", gap:8}}>
-            <Button variant="outline" size="sm">Pause</Button>
-            <Button variant="ghost" size="sm" style={{color:"var(--down)"}}>Unsubscribe</Button>
+            <Button variant="outline" size="sm">{t("Pause","Tạm dừng","Jeda")}</Button>
+            <Button variant="ghost" size="sm" style={{color:"var(--down)"}}>{t("Unsubscribe","Hủy đăng ký","Berhenti")}</Button>
           </div>
         </div>
       ))}
@@ -174,18 +178,19 @@ function AccountNewsletters(){
 }
 
 function AccountSettings(){
+  const t = useT();
   return (
     <section>
-      <h2 className="serif" style={{margin:"0 0 18px", fontSize:24, fontWeight:700, letterSpacing:"-0.015em"}}>Preferences</h2>
+      <h2 className="serif" style={{margin:"0 0 18px", fontSize:24, fontWeight:650, letterSpacing:"-0.015em"}}>{t("Preferences","Tùy chọn","Preferensi")}</h2>
       {[
-        ["Appearance",  "Light / Dark / System",         "Light"],
-        ["Language",    "Site, newsletters, dashboards", "English"],
-        ["Region",      "Date / currency / number",      "Singapore"],
-        ["Email",       "Where we send your magic links","reader@gmail.com"],
-        ["Two-factor",  "Required for editor/admin",     "Off"],
-        ["Data export", "Download your data (GDPR/PDPA)","Request export"],
+        [t("Appearance","Giao diện","Tampilan"),  t("Light / Dark / System","Sáng / Tối / Hệ thống","Terang / Gelap / Sistem"),         t("Light","Sáng","Terang")],
+        [t("Language","Ngôn ngữ","Bahasa"),    t("Site, newsletters, dashboards","Trang, bản tin, bảng dữ liệu","Situs, newsletter, dasbor"), t("English","Tiếng Việt","Bahasa Indonesia")],
+        [t("Region","Khu vực","Wilayah"),      t("Date / currency / number","Ngày / tiền tệ / số","Tanggal / mata uang / angka"),      "Singapore"],
+        [t("Email","Email","Email"),       t("Where we send your magic links","Nơi gửi liên kết đăng nhập","Tempat kami kirim tautan masuk"),"reader@gmail.com"],
+        [t("Two-factor","Xác thực 2 lớp","Dua faktor"),  t("Required for editor/admin","Bắt buộc với biên tập/quản trị","Wajib untuk editor/admin"),     t("Off","Tắt","Mati")],
+        [t("Data export","Xuất dữ liệu","Ekspor data"), t("Download your data (GDPR/PDPA)","Tải dữ liệu của bạn (GDPR/PDPA)","Unduh data Anda (GDPR/PDPA)"),t("Request export","Yêu cầu xuất","Minta ekspor")],
       ].map(([k,desc,v],i)=>(
-        <div key={k} style={{
+        <div key={i} style={{
           display:"grid", gridTemplateColumns:"180px 1fr auto", gap:14,
           padding:"16px 0", borderBottom:"1px solid var(--hair)", alignItems:"center"
         }}>

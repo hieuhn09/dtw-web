@@ -1,8 +1,8 @@
 // DTW sample data
 const PILLARS = [
+  { id: "latest",    label: "Latest",    color: "var(--asia)",      slug: "/latest" },
   { id: "ai",        label: "AI",        color: "var(--ai)",        slug: "/ai" },
   { id: "startups",  label: "Startups",  color: "var(--startups)",  slug: "/startups" },
-  { id: "asia",      label: "Asia",      color: "var(--asia)",      slug: "/asia" },
   { id: "dev",       label: "Dev",       color: "var(--dev)",       slug: "/dev" },
   { id: "products",  label: "Products",  color: "var(--products)",  slug: "/products" },
   { id: "policy",    label: "Policy",    color: "var(--policy)",    slug: "/policy" },
@@ -13,7 +13,7 @@ const NAV_EXTRA = [
   { id:"studio", label:"Studio", slug:"/studio" },
   { id:"dashboards", label:"Dashboards", slug:"/dashboards" },
   { id:"newsletters", label:"Newsletters", slug:"/newsletters" },
-  // Pro membership is hidden for now — restore when paid tier launches:
+  // Pro membership is hidden for now, restore when paid tier launches:
   // { id:"pro", label:"Pro", slug:"/pro", badge:true },
 ];
 
@@ -23,41 +23,41 @@ const AUTHORS = {
   pthao:  { id:"pthao", name:"Thao Nguyen",     role:"Senior Reporter",   city:"Hanoi" },
   jchen:  { id:"jchen", name:"Jordan Chen",     role:"Markets Editor",    city:"Hong Kong" },
   arif:   { id:"arif",  name:"Arif Rahman",     role:"Startups Reporter", city:"Jakarta" },
-  ananya: { id:"ananya",name:"Ananya Iyer",     role:"Policy Reporter",   city:"Bengaluru" },
+  ananya: { id:"ananya", name:"Ananya Iyer",     role:"Policy Reporter",   city:"Bengaluru" },
 };
 
 const ARTICLES = [
   {
     id:"a1", slug:"sea-ai-cluster-singapore",
     pillar:"ai", section:"Frontier",
-    title:"Singapore quietly built Southeast Asia's largest sovereign AI cluster – and Jakarta wants in",
+    title:"Singapore quietly built Southeast Asia's largest sovereign AI cluster, and Jakarta wants in",
     dek:"Inside a 220-megawatt build-out that has rewired regional capital flows, ministerial visits, and the careers of a dozen researchers nobody had heard of six months ago.",
     author:"mlin", coAuthors:["rkim"],
     published:"2026-05-26T08:12:00+08:00",
     readMin:14,
-    tags:["sovereign-AI","datacenters","ASEAN"],
+    tags:["sovereign-AI", "datacenters", "ASEAN"],
     aiAssisted:false, sponsored:false,
-    image:{label:"HERO – rack hall, low blue light"},
+    image:{label:"HERO, rack hall, low blue light"},
   },
   {
     id:"a2", slug:"baidu-open-weights",
     pillar:"ai", section:"Models",
     title:"Baidu releases open-weights model that beats GPT-class on Chinese-language reasoning",
-    dek:"ERNIE-X 350B is the first frontier-tier Chinese model with permissive commercial terms – and it's already inside three Vietnamese banks.",
+    dek:"ERNIE-X 350B is the first frontier-tier Chinese model with permissive commercial terms, and it's already inside three Vietnamese banks.",
     author:"rkim",
     published:"2026-05-27T07:40:00+07:00",
     readMin:8,
-    tags:["open-weights","china","reasoning"],
+    tags:["open-weights", "china", "reasoning"],
   },
   {
     id:"a3", slug:"vng-cloud-listing",
     pillar:"startups", section:"Markets",
     title:"VNG cloud arm files for a Singapore listing as Vietnam's tech IPO window cracks open",
-    dek:"The carve-out values infrastructure ahead of consumer – a deliberate signal to the next ten founders watching from HCMC.",
+    dek:"The carve-out values infrastructure ahead of consumer, a deliberate signal to the next ten founders watching from HCMC.",
     author:"pthao",
     published:"2026-05-27T05:55:00+07:00",
     readMin:6,
-    tags:["IPO","vietnam","cloud"],
+    tags:["IPO", "vietnam", "cloud"],
   },
   {
     id:"a4", slug:"tokopedia-grab-merger-fallout",
@@ -90,7 +90,7 @@ const ARTICLES = [
     id:"a7", slug:"oppo-find-x9-review",
     pillar:"products", section:"Review",
     title:"Oppo Find X9 Pro review: a camera-first flagship that finally trusts its own sensors",
-    dek:"The 1-inch main is doing real work. The compute is doing less work – and that's the point.",
+    dek:"The 1-inch main is doing real work. The compute is doing less work, and that's the point.",
     author:"jchen",
     published:"2026-05-25T16:20:00+08:00",
     readMin:10,
@@ -98,7 +98,7 @@ const ARTICLES = [
   },
   {
     id:"a8", slug:"dtw-studio-aws-asean",
-    pillar:"asia", section:"Sponsored",
+    pillar:"dev", section:"Sponsored",
     title:"How an ASEAN insurer rebuilt its claims pipeline on serverless in 18 weeks",
     dek:"A DTW Studio Presents feature, produced for AWS ASEAN. The DTW newsroom was not involved in writing or editing.",
     author:"mlin", // listed but it's the studio team
@@ -109,7 +109,7 @@ const ARTICLES = [
   {
     id:"a9", slug:"india-upi-cross-border",
     pillar:"policy", section:"Fintech",
-    title:"UPI's cross-border push lands in Vietnam – and the central bank is watching the FX flow, not the apps",
+    title:"UPI's cross-border push lands in Vietnam, and the central bank is watching the FX flow, not the apps",
     dek:"Bilateral rails are now live with four ASEAN countries. The economics underneath are weirder than they look.",
     author:"ananya",
     published:"2026-05-25T20:00:00+05:30",
@@ -117,10 +117,10 @@ const ARTICLES = [
   },
   {
     id:"a10", slug:"deep-dive-asia-capex",
-    pillar:"asia", section:"Deep Dive",
+    pillar:"ai", section:"Deep Dive",
     title:"The $84B build-out: every datacenter announced across ASEAN in the last 12 months, mapped",
     dek:"We pulled filings, planning permits, and grid-connection requests from seven jurisdictions. Here is what the spreadsheet actually says.",
-    author:"mlin", coAuthors:["jchen","arif"],
+    author:"mlin", coAuthors:["jchen", "arif"],
     published:"2026-05-23T07:00:00+08:00",
     readMin:22,
     deepDive:true,
@@ -128,7 +128,7 @@ const ARTICLES = [
   {
     id:"a11", slug:"ai-assisted-translation-note",
     pillar:"ai", section:"Tools",
-    title:"What 'AI-assisted' actually means in our newsroom – a worked example",
+    title:"What 'AI-assisted' actually means in our newsroom, a worked example",
     dek:"Translation, transcription, summarisation. Not generation. Here's our checklist.",
     author:"rkim",
     published:"2026-05-22T10:00:00+08:00",
@@ -138,7 +138,7 @@ const ARTICLES = [
   {
     id:"a12", slug:"sea-fintech-quiet-quarter",
     pillar:"startups", section:"Funding",
-    title:"Southeast Asia fintech had its quietest funding quarter since 2019 – but the deals that closed are revealing",
+    title:"Southeast Asia fintech had its quietest funding quarter since 2019, but the deals that closed are revealing",
     dek:"Late-stage is dead. Seed is loud. Series A is doing something interesting.",
     author:"arif",
     published:"2026-05-21T14:00:00+07:00",
@@ -157,22 +157,22 @@ const ARTICLES = [
   {
     id:"a14", slug:"korea-ai-chip-startups",
     pillar:"startups", section:"Hardware",
-    title:"Three Seoul AI-chip startups just closed inside a week — and the same fund led two of them",
+    title:"Three Seoul AI-chip startups just closed inside a week, and the same fund led two of them",
     dek:"The pattern is harder to read than the dollar amounts suggest.",
     author:"rkim",
     published:"2026-05-20T18:40:00+09:00", readMin:8,
   },
   {
     id:"a15", slug:"jakarta-data-residency",
-    pillar:"asia", section:"Policy",
-    title:"Jakarta's new data-residency rules begin biting — and the cloud bills are starting to show it",
+    pillar:"policy", section:"Policy",
+    title:"Jakarta's new data-residency rules begin biting, and the cloud bills are starting to show it",
     dek:"Procurement teams quietly rerouting workloads. Hyperscalers quietly rerouting capacity.",
     author:"arif",
     published:"2026-05-21T11:15:00+07:00", readMin:9,
   },
   {
     id:"a16", slug:"asean-cross-border-payments",
-    pillar:"asia", section:"Fintech",
+    pillar:"startups", section:"Fintech",
     title:"What the five-country ASEAN payments corridor actually feels like, six months in",
     dek:"The technology works. The economics do not yet. The regulators are watching the gap.",
     author:"mlin",
@@ -181,7 +181,7 @@ const ARTICLES = [
   {
     id:"a17", slug:"go-1-24-async-iterators",
     pillar:"dev", section:"Languages",
-    title:"Go 1.24's range-over-func is finally landing — here's what changes in production",
+    title:"Go 1.24's range-over-func is finally landing, here's what changes in production",
     dek:"The iterator protocol is short, but the migration paths are not.",
     author:"jchen",
     published:"2026-05-20T14:30:00+08:00", readMin:10,
@@ -189,7 +189,7 @@ const ARTICLES = [
   {
     id:"a18", slug:"vercel-asia-edge",
     pillar:"dev", section:"Infra",
-    title:"Asia got new edge regions this month — we ran them through a real workload to see what changed",
+    title:"Asia got new edge regions this month, we ran them through a real workload to see what changed",
     dek:"Cold starts halved. Cross-region writes did not. Mileage varies.",
     author:"jchen",
     published:"2026-05-19T10:00:00+08:00", readMin:8,
@@ -197,7 +197,7 @@ const ARTICLES = [
   {
     id:"a19", slug:"kubernetes-1-32-pod-resize",
     pillar:"dev", section:"Engineering",
-    title:"In-place pod resize is GA — what three platform teams learned migrating to it",
+    title:"In-place pod resize is GA, what three platform teams learned migrating to it",
     dek:"It is not a free lunch. But it is a real one.",
     author:"jchen",
     published:"2026-05-18T11:00:00+08:00", readMin:9,
@@ -232,7 +232,7 @@ const ARTICLES = [
   {
     id:"a23", slug:"japan-cyber-law-2026",
     pillar:"policy", section:"Cyber",
-    title:"Tokyo's new active-cyber-defence law just passed — and three CISOs we talked to are nervous",
+    title:"Tokyo's new active-cyber-defence law just passed, and three CISOs we talked to are nervous",
     dek:"The law sets a precedent regional regulators are already studying.",
     author:"ananya",
     published:"2026-05-19T09:00:00+09:00", readMin:9,
@@ -240,7 +240,7 @@ const ARTICLES = [
   {
     id:"a24", slug:"india-dpdp-enforcement",
     pillar:"policy", section:"Privacy",
-    title:"India's DPDP enforcement kicks in next month — and most ASEAN-headquartered apps are not ready",
+    title:"India's DPDP enforcement kicks in next month, and most ASEAN-headquartered apps are not ready",
     dek:"Five law firms we surveyed agree on the timeline. They do not agree on what to do.",
     author:"ananya",
     published:"2026-05-18T07:30:00+05:30", readMin:10,
@@ -248,7 +248,7 @@ const ARTICLES = [
 ];
 
 const WIRE_DROPS = [
-  { id:"w1", time:"08:42", city:"Singapore", text:"MAS approves digital asset custody licence for DBS – first major bank to clear the revised framework." },
+  { id:"w1", time:"08:42", city:"Singapore", text:"MAS approves digital asset custody licence for DBS, first major bank to clear the revised framework." },
   { id:"w2", time:"08:31", city:"Seoul",     text:"SK Hynix says HBM4 sampling to top customers begins June; volume in Q4." },
   { id:"w3", time:"08:14", city:"Jakarta",   text:"GoTo posts adjusted EBITDA positive for second straight quarter; on-demand take-rate ticks up 40bps." },
   { id:"w4", time:"07:58", city:"Hanoi",     text:"VNG Cloud confirms Singapore listing filing; Q4 revenue grew 31% YoY per draft prospectus." },
@@ -260,22 +260,22 @@ const WIRE_DROPS = [
 
 const FUNDING_ROWS = [
   { ticker:"9988.HK", name:"Alibaba",         country:"CN", sector:"Cloud/AI",     px:81.20,  chg:+2.41, mcap:"$201B", funding:"–" },
-  { ticker:"005930.KS",name:"Samsung Elec.",  country:"KR", sector:"Semis",        px:78900,  chg:-0.82, mcap:"$420B", funding:"–" },
+  { ticker:"005930.KS", name:"Samsung Elec.",  country:"KR", sector:"Semis",        px:78900,  chg:-0.82, mcap:"$420B", funding:"–" },
   { ticker:"2330.TW", name:"TSMC",            country:"TW", sector:"Foundry",      px:932.0,  chg:+1.55, mcap:"$780B", funding:"–" },
   { ticker:"3690.HK", name:"Meituan",         country:"CN", sector:"Consumer",     px:114.6,  chg:-1.20, mcap:"$74B",  funding:"–" },
   { ticker:"GOTO.JK", name:"GoTo Group",      country:"ID", sector:"Super-app",    px:73,     chg:+3.10, mcap:"$5.4B", funding:"–" },
-  { ticker:"GRAB",    name:"Grab Holdings",   country:"SG", sector:"Super-app",    px:4.18,   chg:+0.61, mcap:"$16.1B",funding:"–" },
+  { ticker:"GRAB",    name:"Grab Holdings",   country:"SG", sector:"Super-app",    px:4.18,   chg:+0.61, mcap:"$16.1B", funding:"–" },
   { ticker:"SE",      name:"Sea Limited",     country:"SG", sector:"E-commerce",   px:88.40,  chg:-2.05, mcap:"$48B",  funding:"–" },
-  { ticker:"VNG",     name:"VNG (private)",   country:"VN", sector:"Internet",     px:null,   chg:null,  mcap:"$2.2B*",funding:"$150M (D)" },
+  { ticker:"VNG",     name:"VNG (private)",   country:"VN", sector:"Internet",     px:null,   chg:null,  mcap:"$2.2B*", funding:"$150M (D)" },
   { ticker:"KKDY",    name:"Kakao Pay",       country:"KR", sector:"Fintech",      px:34250,  chg:+0.41, mcap:"$3.2B", funding:"–" },
   { ticker:"BKKM",    name:"Bukalapak",       country:"ID", sector:"E-commerce",   px:118,    chg:-0.84, mcap:"$1.1B", funding:"–" },
   { ticker:"PYTM.NS", name:"Paytm",           country:"IN", sector:"Fintech",      px:412,    chg:+1.81, mcap:"$3.0B", funding:"–" },
-  { ticker:"OFLA",    name:"Ola Krutrim",     country:"IN", sector:"AI",           px:null,   chg:null,  mcap:"$1.0B*",funding:"$50M (C)" },
+  { ticker:"OFLA",    name:"Ola Krutrim",     country:"IN", sector:"AI",           px:null,   chg:null,  mcap:"$1.0B*", funding:"$50M (C)" },
 ];
 
 const AI_LEADERBOARD = [
   { rank:1, model:"GPT-5.1",          maker:"OpenAI",     reasoning:92, coding:88, speed:84, price:9.0,  ctx:"512k" },
-  { rank:2, model:"Claude Sonnet 4.5",maker:"Anthropic",  reasoning:91, coding:90, speed:79, price:8.4,  ctx:"1M"   },
+  { rank:2, model:"Claude Sonnet 4.5", maker:"Anthropic",  reasoning:91, coding:90, speed:79, price:8.4,  ctx:"1M"   },
   { rank:3, model:"Gemini 2.5 Pro",   maker:"Google",     reasoning:88, coding:84, speed:88, price:6.5,  ctx:"2M"   },
   { rank:4, model:"ERNIE-X 350B",     maker:"Baidu",      reasoning:84, coding:80, speed:82, price:2.1,  ctx:"256k" },
   { rank:5, model:"Qwen3-Max",        maker:"Alibaba",    reasoning:83, coding:85, speed:80, price:1.8,  ctx:"256k" },
@@ -285,18 +285,20 @@ const AI_LEADERBOARD = [
 ];
 
 const NEWSLETTERS = [
-  { id:"am",       name:"AM Brief",            cadence:"Daily · 07:00",        desc:"What broke overnight across Asia tech, in 5 minutes.", subs:"48,200", pillar:"asia" },
-  { id:"pm",       name:"PM Brief",            cadence:"Daily · 18:00",        desc:"The day in three stories, plus what to read tonight.", subs:"41,700", pillar:"asia" },
+  { id:"am",       name:"AM Brief",            cadence:"Daily · 07:00",        desc:"What broke overnight in tech across Asia and the world, in 5 minutes.", subs:"48,200", pillar:"latest" },
+  { id:"pm",       name:"PM Brief",            cadence:"Daily · 18:00",        desc:"The day in three stories, plus what to read tonight.", subs:"41,700", pillar:"latest" },
   { id:"ai",       name:"AI Weekly",           cadence:"Weekly · Tue",         desc:"Models, papers, and the geopolitics underneath them.", subs:"36,400", pillar:"ai" },
   { id:"fund",     name:"Asia Funding Weekly", cadence:"Weekly · Thu",         desc:"Every term sheet that closed in ASEAN this week.",     subs:"22,900", pillar:"startups" },
   { id:"dev",      name:"Dev Digest",          cadence:"Weekly · Fri",         desc:"What practitioners are actually shipping.",            subs:"19,300", pillar:"dev" },
   { id:"prod",     name:"Products & Deals",    cadence:"Bi-weekly",            desc:"Reviews and buy-or-skip calls. Affiliate-disclosed.",  subs:"14,100", pillar:"products" },
+  { id:"deep",     name:"Deep Dive",           cadence:"Weekly · Sun",         desc:"One long-form investigation or data story, in full, every weekend.", subs:"17,600", pillar:"policy" },
+  { id:"awards",   name:"DTW Awards",          cadence:"Occasional",           desc:"Updates on the upcoming DTW Awards, plus nominations and winners when they land.", subs:"3,100", pillar:"latest" },
 ];
 
 const PODCASTS = [
   { id:"daily", title:"DTW Daily Brief",       len:"6:42", date:"Today",      host:"Mei Lin" },
-  { id:"asia",  title:"Asia, Decoded",         len:"38:11",date:"Yesterday",  host:"Mei Lin & Ravi Kim" },
-  { id:"build", title:"Building in Public, EM",len:"44:50",date:"2 days ago", host:"Arif Rahman" },
+  { id:"asia",  title:"Asia, Decoded",         len:"38:11", date:"Yesterday",  host:"Mei Lin & Ravi Kim" },
+  { id:"build", title:"Building in Public, EM", len:"44:50", date:"2 days ago", host:"Arif Rahman" },
 ];
 
 // expose globally

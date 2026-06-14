@@ -61,13 +61,16 @@ function asPillarId(slug: string | undefined): PillarId {
   switch (slug) {
     case "ai":
     case "startups":
-    case "asia":
+    case "latest":
     case "dev":
     case "products":
     case "policy":
       return slug;
+    // Backward-compat: the "asia" pillar was renamed to "latest" (2026-06-14).
+    // Resolve legacy data/slugs until the CMS pillar doc is renamed.
+    case "asia":
     default:
-      return "asia";
+      return "latest";
   }
 }
 
@@ -98,7 +101,7 @@ export function toArticleView(a: Article): ArticleView {
     slug: a.slug,
     pillar: asPillarId(pillar?.slug),
     pillarColor: pillar?.color ?? "var(--asia)",
-    pillarLabel: pillar?.title?.en ?? pillar?.slug ?? "Asia",
+    pillarLabel: pillar?.title?.en ?? pillar?.slug ?? "Latest",
     author: author?.name ?? "Staff",
     authorCity: author?.city ?? "",
     authorRole: author?.role ?? "",

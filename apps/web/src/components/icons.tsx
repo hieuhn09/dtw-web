@@ -32,7 +32,8 @@ export type IconName =
   | "asia"
   | "policy"
   | "product"
-  | "wire";
+  | "wire"
+  | "clock";
 
 export interface IconProps extends Omit<SVGProps<SVGSVGElement>, "name" | "stroke" | "color"> {
   name: IconName | string;
@@ -52,6 +53,11 @@ export function Icon({
   stroke = 1.75,
   ...rest
 }: IconProps) {
+  // Icons are decorative by default (paired with a text label, or inside an
+  // already-labelled button). Hide them from AT unless the caller gives the
+  // icon its own accessible name.
+  const labelled =
+    "aria-label" in rest || "aria-labelledby" in rest || rest.role === "img";
   const common: SVGProps<SVGSVGElement> = {
     width: size,
     height: size,
@@ -61,6 +67,7 @@ export function Icon({
     strokeWidth: stroke,
     strokeLinecap: "round",
     strokeLinejoin: "round",
+    "aria-hidden": labelled ? undefined : true,
     ...rest,
   };
 
@@ -219,6 +226,13 @@ export function Icon({
       return (
         <svg {...common}>
           <polygon points="12 2 15 9 22 9.5 17 14.5 18.5 22 12 18 5.5 22 7 14.5 2 9.5 9 9 12 2" />
+        </svg>
+      );
+    case "clock":
+      return (
+        <svg {...common}>
+          <circle cx="12" cy="12" r="9" />
+          <polyline points="12 7 12 12 15 14" />
         </svg>
       );
     case "headphone":

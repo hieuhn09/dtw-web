@@ -6,7 +6,7 @@
 
 The trust-and-transparency surface — six static pages that exist because editorial integrity is the product, not a footnote.
 
-- `/about` — Asia Press Corporation (parent organisation), Editor-in-Chief, mission & values, ownership & funding
+- `/about` — Asia Press Centre Group (APCG) (parent organisation), Editor-in-Chief, mission & values, ownership & funding
 - `/trust/editorial-standards`
 - `/trust/ai-disclosure`
 - `/trust/corrections` — public log of every correction
@@ -23,14 +23,14 @@ The About page went through extensive iteration in `design/chats/chat1.md`. The 
 
 ### Hero (dark)
 
-- Kicker: "About · Asia Press Corporation"
+- Kicker: "About · Asia Press Centre Group (APCG)"
 - Big serif title + dek
 - Stats grid (count-up): **2023** (founded), **8** (publications), **210+** (journalists across the group), **68%** (revenue from readers), **100%** (independent)
 - Note: "2023" must render without a comma (`toLocaleString` off for that one stat — design fix)
 
 ### Who we are
 
-- Asia Press Corporation, **independent newsroom from Singapore**, founded **2023**
+- Asia Press Centre Group (APCG), **independent newsroom from Singapore**, founded **2023**
 - Operates **8 publications** across Asian beats (intentionally **not named** — the design iteration removed the specific publication titles per user instruction; do not reintroduce names)
 - Sole / private ownership + employees; **no state or platform ownership**
 - No fake / unverifiable claims (no "210 staff" specifics in text, no fake awards, no fake memberships)
@@ -42,7 +42,7 @@ The About page went through extensive iteration in `design/chats/chat1.md`. The 
 
 ### Editor-in-Chief
 
-- **Cheryl Tan Hwee-Min** — name chosen as a placeholder
+- **Cheryl Tan** — name chosen as a placeholder
 - Brief role description ONLY — **do NOT reintroduce fabricated career history**. Earlier drafts had Reuters / Pulitzer / Nieman / LSE / NUS claims that the user explicitly rejected as "fake / verifiable" — keep them removed
 - No contact line, no Signal availability, no author-page link (those were removed per user instruction)
 
@@ -64,10 +64,10 @@ The About page went through extensive iteration in `design/chats/chat1.md`. The 
 
 ### Tip line (dark)
 
-- `tips@dailytechwire.asia`
+- `tips@dailytechwire.com`
 - Signal: available on request
 - SecureDrop
-- Corrections: `corrections@dailytechwire.asia`
+- Corrections: `corrections@dailytechwire.com`
 
 ### What's NOT on the page (removed during iteration — keep removed)
 

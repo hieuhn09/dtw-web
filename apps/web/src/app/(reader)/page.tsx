@@ -7,7 +7,6 @@ import { AsiaSpotlight } from "@/components/home/asia-spotlight";
 import { DashboardsTeaser } from "@/components/home/dashboards-teaser";
 import { DeepDive } from "@/components/home/deep-dive";
 import { AwardsBanner } from "@/components/home/awards-banner";
-import { SponsoredStrip } from "@/components/home/sponsored-strip";
 import { BestOfReviews } from "@/components/home/best-of-reviews";
 import { PodcastStrip } from "@/components/home/podcast-strip";
 import { NewsletterCta } from "@/components/home/newsletter-cta";
@@ -15,7 +14,6 @@ import { toArticleView, type ArticleView } from "@/lib/article-view";
 import {
   getDeepDive,
   getRecentArticles,
-  getSponsoredArticle,
   getWireDrops,
 } from "@/lib/payload-server";
 import type { PillarId } from "@/lib/data";
@@ -23,10 +21,9 @@ import type { PillarId } from "@/lib/data";
 export const revalidate = 60;
 
 export default async function HomePage() {
-  const [recent, deepDive, sponsored, wireDrops] = await Promise.all([
+  const [recent, deepDive, wireDrops] = await Promise.all([
     getRecentArticles(40),
     getDeepDive(),
-    getSponsoredArticle(),
     getWireDrops(12),
   ]);
 
@@ -44,11 +41,10 @@ export default async function HomePage() {
   }
 
   const spotlightItems = articles
-    .filter((a) => (["asia", "policy", "startups"] as PillarId[]).includes(a.pillar))
+    .filter((a) => (["latest", "policy", "startups"] as PillarId[]).includes(a.pillar))
     .slice(0, 4);
 
   const deepDiveView = deepDive ? toArticleView(deepDive) : null;
-  const sponsoredView = sponsored ? toArticleView(sponsored) : null;
 
   const wireDropsInitial = wireDrops.map((w) => ({
     id: String(w.id),
@@ -78,9 +74,6 @@ export default async function HomePage() {
       </Reveal>
       <Reveal>
         <AwardsBanner />
-      </Reveal>
-      <Reveal>
-        <SponsoredStrip article={sponsoredView} />
       </Reveal>
       <Reveal>
         <BestOfReviews />

@@ -2,7 +2,7 @@
 
 **Created:** 2026-05-30
 **Owner phase context:** pre-E4 (before AI Content Engine integration)
-**Goal:** A complete, usable DailyTechWire site a **human editorial team** can operate end-to-end — author + publish real articles with images, manage taxonomy, run a public corrections log, be discoverable (SEO/RSS) — **without** the AI Content Engine.
+**Goal:** A complete, usable Dailytechwire site a **human editorial team** can operate end-to-end — author + publish real articles with images, manage taxonomy, run a public corrections log, be discoverable (SEO/RSS) — **without** the AI Content Engine.
 **Source:** multi-agent readiness audit (workflow `dtw-human-ops-readiness`, 2026-05-30). Readiness at audit time: **42%**.
 
 ---

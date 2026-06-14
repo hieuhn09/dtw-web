@@ -2,7 +2,7 @@ import type { CollectionConfig } from "payload";
 import { revalidatePillar, revalidatePillarDelete } from "../hooks/revalidate";
 
 /**
- * Pillars — top-level taxonomy. Year 1 = 6 fixed pillars (AI, Startups, Asia,
+ * Pillars — top-level taxonomy. Year 1 = 6 fixed pillars (AI, Startups, Latest,
  * Dev, Products, Policy) but the schema supports adding more without a deploy
  * (invariant #8 in process/context/all-context.md).
  *
@@ -32,7 +32,7 @@ export const Pillars: CollectionConfig = {
       unique: true,
       admin: {
         description:
-          "URL slug, matches frontend pillar ids (ai|startups|asia|dev|products|policy).",
+          "URL slug, matches frontend pillar ids (ai|startups|latest|dev|products|policy).",
       },
     },
     {
@@ -67,7 +67,7 @@ export const Pillars: CollectionConfig = {
       required: true,
       admin: {
         description:
-          "Icon name from apps/web/src/components/icons.tsx (spark | trend-up | asia | code | product | policy).",
+          "Icon name from apps/web/src/components/icons.tsx (spark | trend-up | clock | code | product | policy).",
       },
     },
     {

@@ -41,10 +41,11 @@ export function AnimatedSpark({
 
   return (
     <svg
-      width={width}
+      width="100%"
       height={height + 8}
       viewBox={`0 0 ${width} ${height + 8}`}
-      style={{ display: "block" }}
+      preserveAspectRatio="none"
+      style={{ display: "block", width: "100%" }}
     >
       <defs>
         <linearGradient id="spk" x1="0" x2="0" y1="0" y2="1">

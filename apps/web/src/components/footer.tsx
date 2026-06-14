@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Button } from "@dtw/ui";
 import { Icon, type IconName } from "@/components/icons";
+import { Wordmark } from "@/components/wordmark";
 import { useT } from "@/lib/i18n";
 
 type FooterLink = readonly [label: string, href: string];
@@ -16,7 +17,6 @@ export function Footer() {
       links: [
         [t("About", "Giới thiệu", "Tentang"), "/about"],
         [t("Newsroom", "Toà soạn", "Redaksi"), "/about/newsroom"],
-        [t("Careers", "Tuyển dụng", "Karier"), "/careers"],
         [t("Contact", "Liên hệ", "Kontak"), "/contact"],
         [t("Press inquiries", "Hỏi báo chí", "Pertanyaan pers"), "/press"],
       ],
@@ -27,7 +27,6 @@ export function Footer() {
         [t("Editorial Standards", "Tiêu chuẩn biên tập", "Standar Editorial"), "/trust/editorial"],
         [t("AI Disclosure", "Công bố AI", "Pengungkapan AI"), "/trust/ai"],
         [t("Corrections", "Đính chính", "Koreksi"), "/trust/corrections"],
-        [t("Transparency Report", "Báo cáo minh bạch", "Laporan Transparansi"), "/trust/transparency"],
         [t("Sponsored & Affiliate Policy", "Chính sách tài trợ & affiliate", "Kebijakan Sponsor & Afiliasi"), "/trust/sponsored"],
       ],
     },
@@ -51,19 +50,19 @@ export function Footer() {
     },
   ];
 
-  const socials: ReadonlyArray<readonly [label: string, icon: IconName]> = [
+  const socials: ReadonlyArray<readonly [label: string, icon: IconName, href?: string]> = [
     ["X", "external"],
     ["LinkedIn", "external"],
     ["Instagram", "external"],
-    ["Threads", "mail"],
-    ["RSS", "rss"],
+    ["Email", "mail", "mailto:info@dailytechwire.com"],
+    ["RSS", "rss", "/rss.xml"],
   ];
 
   return (
     <footer
       style={{
         background: "var(--surface)",
-        borderTop: "3px solid var(--ink)",
+        borderTop: "3px solid var(--brand-navy)",
         marginTop: 60,
       }}
     >
@@ -87,21 +86,22 @@ export function Footer() {
               style={{
                 margin: "0 0 6px",
                 fontSize: 24,
-                fontWeight: 600,
+                fontWeight: 650,
                 letterSpacing: "-0.01em",
+                lineHeight: 1.2,
               }}
             >
               {t(
-                "The 5-minute briefing on Asia's tech morning.",
-                "Bản tin 5 phút về công nghệ châu Á mỗi sáng.",
-                "Ringkasan 5 menit teknologi Asia setiap pagi."
+                "The 5-minute briefing on the tech morning, Asia and the world",
+                "Bản tin 5 phút về công nghệ mỗi sáng, châu Á và thế giới.",
+                "Ringkasan 5 menit teknologi setiap pagi, Asia dan dunia."
               )}
             </h3>
             <p className="text-mute" style={{ margin: 0, fontSize: 13 }}>
               {t(
-                "48,200 founders, operators, and policy people read it before 09:00. Double opt-in. No tracking pixels. Unsubscribe with one click.",
-                "48.200 nhà sáng lập, quản lý và người làm chính sách đọc trước 09:00. Xác nhận kép. Không pixel theo dõi. Hủy đăng ký chỉ một cú nhấp.",
-                "48.200 founder, operator, dan pembuat kebijakan membacanya sebelum pukul 09.00. Konfirmasi ganda. Tanpa piksel pelacak. Berhenti berlangganan dengan satu klik."
+                "Founders, operators, and policy people across Asia read it before the day starts. Double opt-in. No tracking pixels. Unsubscribe with one click.",
+                "Các nhà sáng lập, quản lý và người làm chính sách khắp châu Á đọc trước khi ngày mới bắt đầu. Xác nhận kép. Không pixel theo dõi. Hủy đăng ký chỉ một cú nhấp.",
+                "Para founder, operator, dan pembuat kebijakan di Asia membacanya sebelum hari dimulai. Konfirmasi ganda. Tanpa piksel pelacak. Berhenti berlangganan dengan satu klik."
               )}
             </p>
           </div>
@@ -144,24 +144,7 @@ export function Footer() {
         }}
       >
         <div>
-          <span
-            aria-label="DailyTechWire"
-            className="serif"
-            style={{
-              display: "inline-flex",
-              alignItems: "baseline",
-              gap: 0,
-              fontWeight: 700,
-              letterSpacing: "-0.025em",
-              lineHeight: 1,
-              color: "var(--ink)",
-              fontSize: 26,
-            }}
-          >
-            <span>Daily</span>
-            <span style={{ color: "var(--accent)" }}>Tech</span>
-            <span>Wire</span>
-          </span>
+          <Wordmark size={26} />
           <div
             className="mono text-mute"
             style={{ fontSize: 11, letterSpacing: ".08em", marginTop: 6, lineHeight: 1.5 }}
@@ -179,10 +162,11 @@ export function Footer() {
             )}
           </p>
           <div style={{ display: "flex", gap: 8, marginTop: 16 }}>
-            {socials.map(([k, ic]) => (
+            {socials.map(([k, ic, href]) => (
               <a
                 key={k}
                 title={k}
+                href={href ?? "#"}
                 style={{
                   width: 32,
                   height: 32,
@@ -255,10 +239,10 @@ export function Footer() {
           }}
         >
           <div className="mono text-mute" style={{ fontSize: 11 }}>
-            © 2026 DailyTechWire Pte. Ltd. · Singapore (UEN 202612345A) · Member, Trust Project · ISSN 2811-7XXX
+            © 2026 Dailytechwire · Singapore · Member, Trust Project
           </div>
           <div style={{ display: "flex", gap: 14, fontSize: 11 }}>
-            <span className="text-mute">Compliant with GDPR · PDPA (SG) · Nghị định 13 (VN)</span>
+            <span className="text-mute">Compliant with GDPR · PDPA (SG)</span>
           </div>
         </div>
       </div>

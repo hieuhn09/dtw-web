@@ -42,12 +42,12 @@ export function CookieBanner() {
         zIndex: 50,
         maxWidth: 920,
         margin: "0 auto",
-        background: "var(--ink)",
-        color: "var(--paper)",
+        background: "var(--banner)",
+        color: "#E8EDF7",
         padding: "14px 18px 14px 22px",
         borderRadius: 10,
         boxShadow: "0 18px 48px -16px rgba(17,17,17,.5)",
-        border: "1px solid color-mix(in oklab, var(--paper) 8%, transparent)",
+        border: "1px solid rgba(232,237,247,0.10)",
         display: "flex",
         alignItems: "center",
         gap: 20,
@@ -60,7 +60,7 @@ export function CookieBanner() {
           alignItems: "center",
           gap: 12,
           paddingRight: 16,
-          borderRight: "1px solid color-mix(in oklab, var(--paper) 14%, transparent)",
+          borderRight: "1px solid rgba(232,237,247,0.16)",
           flexShrink: 0,
         }}
       >
@@ -69,7 +69,7 @@ export function CookieBanner() {
             width: 32,
             height: 32,
             borderRadius: 6,
-            background: "rgba(224,78,31,.15)",
+            background: "color-mix(in oklab, var(--accent) 16%, transparent)",
             color: "var(--accent)",
             display: "flex",
             alignItems: "center",
@@ -98,7 +98,7 @@ export function CookieBanner() {
           margin: 0,
           fontSize: 13,
           lineHeight: 1.5,
-          color: "color-mix(in oklab, var(--paper) 85%, transparent)",
+          color: "rgba(232,237,247,0.85)",
           flex: 1,
           minWidth: 240,
         }}
@@ -115,8 +115,8 @@ export function CookieBanner() {
           onClick={dismiss}
           style={{
             background: "transparent",
-            border: "1px solid color-mix(in oklab, var(--paper) 28%, transparent)",
-            color: "var(--paper)",
+            border: "1px solid rgba(232,237,247,0.28)",
+            color: "#E8EDF7",
             padding: "8px 14px",
             borderRadius: 5,
             fontSize: 12,

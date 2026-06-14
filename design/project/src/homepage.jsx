@@ -15,9 +15,9 @@ function HomeHero({ navigate }) {
           <span className="mono text-mute-2" style={{ fontSize: 11 }}>{fmtTimeAgo(lead.published)}</span>
         </div>
         <h2 className="serif" style={{
-          fontSize: 46, fontWeight: 700,
+
           lineHeight: 1.05, letterSpacing: "-0.025em",
-          textWrap: "balance", margin: "5px 0px 10px"
+          textWrap: "balance", margin: "5px 0px 10px", fontWeight: "650", fontSize: "44px"
         }}>{lead.title}</h2>
         <p className="serif text-mute" style={{ margin: 0, fontSize: 18, lineHeight: 1.45, maxWidth: 680, textWrap: "pretty" }}>
           {lead.dek}
@@ -62,7 +62,7 @@ function BriefBand({ navigate }) {
   },
   {
     tag: "PM · 18:00 (yesterday)",
-    title: "What we got wrong about Tokopedia–Grab – one year in.",
+    title: "What we got wrong about Tokopedia–Grab, one year in.",
     txt: "The synergy thesis is finally producing real numbers. Some of them are layoffs."
   }];
 
@@ -146,7 +146,7 @@ function WireDrops({ navigate }) {
   useEffect(() => {
     const samples = [
     { city: "Hanoi", text: "SBV confirms UPI-VND corridor go-live at 09:00 local; first $50K test transfer cleared." },
-    { city: "Shenzhen", text: "BYD says LFP cell prices fall to $48/kWh – undercuts CATL's bulk quote." },
+    { city: "Shenzhen", text: "BYD says LFP cell prices fall to $48/kWh, undercuts CATL's bulk quote." },
     { city: "Bengaluru", text: "Zoho launches small-language-model API tier; pricing 80% under OpenAI equivalents." },
     { city: "Tokyo", text: "Rakuten Mobile breaks even on operating basis for first time since 2020 launch." },
     { city: "Manila", text: "BSP suspends two e-money licenses pending KYC audit." }];
@@ -199,14 +199,14 @@ function WireDrops({ navigate }) {
 
 function SectionHeader({ title, kicker, right, liveDot }) {
   return (
-    <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", marginBottom: 18, paddingBottom: 10, borderBottom: "2px solid var(--ink)" }}>
+    <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", marginBottom: 18, paddingBottom: 10, borderBottom: "2px solid var(--brand-navy)" }}>
       <div>
         {kicker &&
-        <div className="kicker" style={{ marginBottom: 4, display: "flex", alignItems: "center", gap: 8 }}>
+        <div className="kicker" style={{ marginBottom: 4, display: "flex", alignItems: "center", gap: 8, margin: "10px 0px 4px" }}>
             {liveDot && <span className="live-dot" />}{kicker}
           </div>
         }
-        <h2 className="serif" style={{ margin: 0, fontSize: 28, fontWeight: 700, letterSpacing: "-0.02em" }}>{title}</h2>
+        <h2 className="serif" style={{ margin: 0, fontSize: 28, fontWeight: 650, letterSpacing: "-0.02em" }}>{title}</h2>
       </div>
       {right}
     </div>);
@@ -228,7 +228,7 @@ function PillarShowcase({ navigate }) {
                 display: "flex", alignItems: "center", justifyContent: "space-between",
                 paddingBottom: 8, marginBottom: 14, borderBottom: `2px solid ${p.color}`, cursor: "pointer"
               }}>
-                <div className="upper" style={{ fontSize: 12, fontWeight: 700, letterSpacing: ".14em", color: p.color, display: "flex", alignItems: "center", gap: 8 }}>
+                <div className="upper" style={{ fontSize: 12, fontWeight: 650, letterSpacing: ".14em", color: p.color, display: "flex", alignItems: "center", gap: 8 }}>
                   <Icon name={PILLAR_ICONS[p.id]} size={14} color={p.color} />
                   {p.label}
                 </div>
@@ -265,11 +265,11 @@ function AsiaSpotlight({ navigate }) {
   const items = ARTICLES.filter((a) => ["asia", "policy", "startups"].includes(a.pillar)).slice(0, 4);
   const t = useT();
   return (
-    <SpotlightCard color="rgba(224,78,31,.22)" style={{
-      background: "var(--ink)", color: "var(--paper)",
+    <SpotlightCard color="rgba(224, 78, 31, .22)" style={{
+      background: "var(--banner)", color: "#E8EDF7",
       padding: "40px 32px", borderRadius: 8, marginBottom: 48
     }}>
-      <GridBackdrop color="rgba(255,255,255,.05)" size={48} fadeRadius="70%" />
+      <GridBackdrop color="rgba(255, 255, 255, .05)" size={48} fadeRadius="70%" />
       <div style={{ position: "absolute", right: -40, top: -40, width: 240, height: 240, borderRadius: "50%", background: "var(--accent)", opacity: .18, filter: "blur(60px)", pointerEvents: "none" }} />
       <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", marginBottom: 22, position: "relative" }}>
         <div>
@@ -277,15 +277,15 @@ function AsiaSpotlight({ navigate }) {
             <span style={{ display: "inline-block", width: 8, height: 8, background: "var(--accent)", marginRight: 8, verticalAlign: "middle" }} />
             {t("Asia Tech Spotlight", "Điểm sáng công nghệ châu Á", "Sorotan Teknologi Asia")}
           </div>
-          <h2 className="serif" style={{ margin: 0, fontSize: 30, fontWeight: 700, letterSpacing: "-0.02em", color: "var(--paper)" }}>
+          <h2 className="serif" style={{ margin: 0, fontSize: 30, fontWeight: 650, letterSpacing: "-0.02em", color: "#FFFFFF" }}>
             {t(
-              "What's moving from Singapore to Seoul this week.",
-              "Điều gì đang chuyển động từ Singapore đến Seoul tuần này.",
-              "Apa yang bergerak dari Singapura ke Seoul minggu ini."
+              "What's moving from Singapore to Seoul this week",
+              "Điều gì đang chuyển động từ Singapore đến Seoul tuần này",
+              "Apa yang bergerak dari Singapura ke Seoul minggu ini"
             )}
           </h2>
         </div>
-        <Button variant="accent" onClick={() => navigate("/asia")}>{t("See all Asia coverage →", "Xem tất cả tin Châu Á →", "Lihat semua liputan Asia →")}</Button>
+        <Button variant="accent" onClick={() => navigate("/latest")}>{t("See all latest →", "Xem tất cả mới nhất →", "Lihat semua terbaru →")}</Button>
       </div>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 24, position: "relative" }}>
         {items.map((a, i) =>
@@ -294,10 +294,10 @@ function AsiaSpotlight({ navigate }) {
             <div className="upper" style={{ fontSize: 10, fontWeight: 600, letterSpacing: ".14em", color: "var(--accent)", marginBottom: 6 }}>
               {pillarOf(a.pillar).label}
             </div>
-            <h4 className="serif" style={{ margin: "0 0 6px", fontSize: 16, fontWeight: 600, lineHeight: 1.3, color: "var(--paper)", textWrap: "balance" }}>
+            <h4 className="serif" style={{ margin: "0 0 6px", fontSize: 16, fontWeight: 600, lineHeight: 1.3, color: "#FFFFFF", textWrap: "balance" }}>
               {a.title}
             </h4>
-            <div style={{ fontSize: 11, color: "color-mix(in oklab, var(--paper) 60%, transparent)" }}>
+            <div style={{ fontSize: 11, color: "rgba(232, 237, 247, 0.60)" }}>
               {authorOf(a.author).city} · {a.readMin} min
             </div>
           </article>
@@ -332,7 +332,7 @@ function DashboardsTeaser({ navigate }) {
             <ArrowUpDown chg={fundChange} />
           </div>
           <AnimatedSpark values={fundSeries} color="var(--up)" width={420} height={56} />
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 12, marginTop: 18, paddingTop: 14, borderTop: "1px solid var(--hair)" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 12, marginTop: 18, paddingTop: 14, borderTop: "1px solid var(--hair)" }}>
             <div>
               <div className="text-mute-2" style={{ fontSize: 10, textTransform: "uppercase", letterSpacing: ".1em" }}>Deals</div>
               <div className="mono" style={{ fontSize: 20, fontWeight: 600, marginTop: 2 }}><CountUp to={127} /></div>
@@ -401,8 +401,8 @@ function DeepDive({ navigate }) {
     <section style={{ marginBottom: 48 }}>
       <SectionHeader title={t("Deep Dive of the Week", "Bài phân tích tuần", "Deep Dive Minggu Ini")} kicker={t("Long-form · data-driven", "Dài hai · dựa trên dữ liệu", "Panjang · berbasis data")} />
       <article onClick={() => navigate(`/article/${dd.slug}`)} style={{
-        display: "grid", gridTemplateColumns: "1.1fr 1fr", gap: 40, alignItems: "center", cursor: "pointer",
-        padding: "32px 0"
+        display: "grid", gridTemplateColumns: "1.1fr 1fr", gap: 40, alignItems: "center", cursor: "pointer", padding: "32px 0px 20px"
+
       }}>
         <CoverArt pillar={dd.pillar} seed={dd.id} variant={4} height={380} label="DATA · ASEAN CAPEX MAP" />
         <div>
@@ -412,7 +412,7 @@ function DeepDive({ navigate }) {
             <span className="text-mute" style={{ fontSize: 11 }}>·</span>
             <span className="mono" style={{ fontSize: 11, color: "var(--accent)" }}>{dd.readMin} min read</span>
           </div>
-          <h3 className="serif" style={{ margin: "0 0 14px", fontSize: 36, fontWeight: 700, letterSpacing: "-0.025em", lineHeight: 1.1, textWrap: "balance" }}>
+          <h3 className="serif" style={{ margin: "0 0 14px", fontSize: 36, fontWeight: 650, letterSpacing: "-0.025em", lineHeight: 1.1, textWrap: "balance" }}>
             {dd.title}
           </h3>
           <p className="serif text-mute" style={{ margin: "0 0 18px", fontSize: 17, lineHeight: 1.5 }}>{dd.dek}</p>
@@ -430,9 +430,9 @@ function AwardsBanner({ navigate }) {
       <div style={{
         background: "var(--paper)",
         border: "1px solid var(--ink)",
-        borderRadius: 10, padding: "28px 32px",
-        display: "grid", gridTemplateColumns: "auto 1fr auto", gap: 28, alignItems: "center",
-        position: "relative", overflow: "hidden"
+        borderRadius: 10,
+        display: "grid", gridTemplateColumns: "1fr auto", gap: 28, alignItems: "center",
+        position: "relative", overflow: "hidden", padding: "28px 32px"
       }}>
         {/* Coral accent stripe on the left */}
         <div style={{
@@ -440,43 +440,29 @@ function AwardsBanner({ navigate }) {
           background: "linear-gradient(to bottom, var(--accent), #FCD34D)"
         }} />
 
-        {/* Medallion */}
-        <div style={{
-          width: 76, height: 76, borderRadius: "50%",
-          background: "var(--ink)", color: "var(--paper)",
-          display: "flex", alignItems: "center", justifyContent: "center",
-          flexDirection: "column",
-          fontFamily: "var(--font-serif)", fontWeight: 700,
-          marginLeft: 8,
-          border: "1px solid rgba(224,78,31,.4)"
-        }}>
-          <span style={{ fontSize: 10, letterSpacing: ".18em", color: "var(--accent)" }}>EST</span>
-          <span style={{ fontSize: 22, lineHeight: 1, marginTop: 2 }}>2026</span>
-        </div>
-
         {/* Copy */}
         <div>
           <div className="kicker" style={{ marginBottom: 6, color: "var(--accent)" }}>
             {t("Awards · Coming soon", "Giải thưởng · Sắp ra mắt", "Penghargaan · Segera hadir")}
           </div>
-          <h3 className="serif" style={{ margin: "0 0 6px", fontSize: 24, fontWeight: 700, letterSpacing: "-0.015em", textWrap: "balance" }}>
+          <h3 className="serif" style={{ margin: "0 0 6px", fontSize: 24, fontWeight: 650, letterSpacing: "-0.015em", textWrap: "balance" }}>
             {t(
-              "The inaugural awards arrive in 2026",
-              "Giải thưởng đầu tiên ra mắt năm 2026",
-              "Penghargaan perdana hadir di 2026"
+              "The inaugural awards launch next year",
+              "Giải thưởng đầu tiên ra mắt năm sau",
+              "Penghargaan perdana diluncurkan tahun depan"
             )}
           </h3>
           <p className="text-mute" style={{ margin: 0, fontSize: 13, lineHeight: 1.55, maxWidth: 620 }}>
             {t(
-              "Recognising the founders, operators, and engineers quietly shaping Asia's technology decade. Categories, panel, and nominations all revealed later this year.",
-              "Tôn vinh những nhà sáng lập, lãnh đạo và kỹ sư đang lặng lẽ định hình thập kỷ công nghệ của châu Á. Hạng mục, ban giám khảo và đề cử sẽ được công bố trong năm nay.",
-              "Mengenali para founder, operator, dan engineer yang diam-diam membentuk dekade teknologi Asia. Kategori, juri, dan nominasi akan diumumkan tahun ini."
+              "Recognising the founders, operators, and engineers quietly shaping Asia's technology decade. Categories, panel, and nominations revealed closer to launch.",
+              "Tôn vinh những nhà sáng lập, lãnh đạo và kỹ sư đang lặng lẽ định hình thập kỷ công nghệ của châu Á. Hạng mục, ban giám khảo và đề cử sẽ được công bố gần ngày ra mắt.",
+              "Mengenali para founder, operator, dan engineer yang diam-diam membentuk dekade teknologi Asia. Kategori, juri, dan nominasi diumumkan menjelang peluncuran."
             )}
           </p>
         </div>
 
         {/* CTA */}
-        <Button variant="primary" onClick={() => navigate("/awards")}>
+        <Button variant="accent" onClick={() => navigate("/awards")}>
           {t("Learn more →", "Tìm hiểu thêm →", "Pelajari →")}
         </Button>
       </div>
@@ -493,7 +479,7 @@ function SponsoredStrip({ navigate }) {
       }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 18 }}>
           <div>
-            <div className="mono upper" style={{ fontSize: 10, fontWeight: 700, letterSpacing: ".14em", color: "var(--ink)", marginBottom: 4 }}>
+            <div className="mono upper" style={{ fontSize: 10, fontWeight: 650, letterSpacing: ".14em", color: "var(--ink)", marginBottom: 4 }}>
               ⬢ Paid Partner Content · DTW Studio Presents
             </div>
             <div className="serif" style={{ fontSize: 14, color: "color-mix(in oklab, var(--ink) 80%, transparent)" }}>
@@ -614,37 +600,37 @@ function NewsletterCTA({ navigate }) {
   return (
     <section style={{ marginBottom: 32 }}>
       <div style={{
-        background: "var(--ink)", color: "var(--paper)",
+        background: "var(--banner)", color: "#E8EDF7",
         borderRadius: 8, padding: "48px 48px",
         display: "grid", gridTemplateColumns: "1.4fr 1fr", gap: 48, alignItems: "center",
         position: "relative", overflow: "hidden"
       }}>
-        <GridBackdrop color="rgba(255,255,255,.05)" size={40} fadeRadius="80%" />
+        <GridBackdrop color="rgba(255, 255, 255, .05)" size={40} fadeRadius="80%" />
         <div style={{ position: "absolute", left: -60, bottom: -60, width: 260, height: 260, borderRadius: "50%", background: "var(--accent)", opacity: .16, filter: "blur(70px)", pointerEvents: "none" }} />
         <div style={{ position: "relative" }}>
-          <div className="kicker" style={{ color: "var(--accent)", marginBottom: 8 }}>{t("Six newsletters · pick what you read", "Sáu bản tin · chọn theo sở thích", "Enam newsletter · pilih yang Anda baca")}</div>
-          <h2 className="serif" style={{ margin: "0 0 10px", fontSize: 34, fontWeight: 700, letterSpacing: "-0.02em", color: "var(--paper)" }}>
+          <div className="kicker" style={{ color: "var(--accent)", marginBottom: 8 }}>{t("Eight newsletters · pick what you read", "Tám bản tin · chọn theo sở thích", "Delapan newsletter · pilih yang Anda baca")}</div>
+          <h2 className="serif" style={{ margin: "0 0 10px", fontSize: 34, fontWeight: 650, letterSpacing: "-0.02em", color: "#FFFFFF" }}>
             {t("Don't doom-scroll. Get the day in 5 minutes.", "Đừng trôi vô tận. Đọc xâu tóm cả ngày trong 5 phút.", "Jangan doom-scroll. Dapatkan hari ini dalam 5 menit.")}
           </h2>
-          <p style={{ margin: 0, fontSize: 14, lineHeight: 1.55, color: "color-mix(in oklab, var(--paper) 70%, transparent)", maxWidth: 540 }}>
+          <p style={{ margin: 0, fontSize: 14, lineHeight: 1.55, color: "rgba(232, 237, 247, 0.70)", maxWidth: 540 }}>
             {t(
-              "AM Brief, PM Brief, AI Weekly, Asia Funding, Dev Digest, Products & Deals. Double opt-in. Unsubscribe with one click. We will never sell or share your email.",
-              "AM Brief, PM Brief, AI Weekly, Asia Funding, Dev Digest, Products & Deals. Xác nhận kép. Hủy chỉ bằng một cú nhấp. Không bán hay chia sẻ email của bạn.",
-              "AM Brief, PM Brief, AI Weekly, Asia Funding, Dev Digest, Products & Deals. Konfirmasi ganda. Berhenti dengan satu klik. Kami tak akan menjual atau membagikan email Anda."
+              "AM Brief, PM Brief, AI Weekly, Asia Funding, Dev Digest, Products & Deals, Deep Dive, DTW Awards. Double opt-in. Unsubscribe with one click. We will never sell or share your email.",
+              "AM Brief, PM Brief, AI Weekly, Asia Funding, Dev Digest, Products & Deals, Deep Dive, DTW Awards. Xác nhận kép. Hủy chỉ bằng một cú nhấp. Không bán hay chia sẻ email của bạn.",
+              "AM Brief, PM Brief, AI Weekly, Asia Funding, Dev Digest, Products & Deals, Deep Dive, DTW Awards. Konfirmasi ganda. Berhenti dengan satu klik. Kami tak akan menjual atau membagikan email Anda."
             )}
           </p>
         </div>
         <form onSubmit={(e) => {e.preventDefault();alert("Confirmation email sent (demo)");}} style={{ display: "flex", flexDirection: "column", gap: 10, position: "relative" }}>
           <input type="email" required placeholder="you@company.com" style={{
             padding: "14px 16px",
-            border: "1px solid color-mix(in oklab, var(--paper) 20%, transparent)",
+            border: "1px solid rgba(232, 237, 247, 0.20)",
             borderRadius: 5, fontSize: 14,
-            background: "color-mix(in oklab, var(--paper) 6%, transparent)",
-            color: "var(--paper)", fontFamily: "var(--font-sans)"
+            background: "rgba(232, 237, 247, 0.06)",
+            color: "#E8EDF7", fontFamily: "var(--font-sans)"
           }} />
           <div style={{ display: "flex", gap: 8 }}>
             <Button variant="accent" size="lg" type="submit" style={{ flex: 1 }}>{t("Subscribe to AM Brief", "Đăng ký AM Brief", "Berlangganan AM Brief")}</Button>
-            <Button variant="ghost" size="lg" style={{ color: "var(--paper)", border: "1px solid color-mix(in oklab, var(--paper) 20%, transparent)" }} onClick={() => navigate("/newsletters")}>
+            <Button variant="ghost" size="lg" style={{ color: "#E8EDF7", border: "1px solid rgba(232, 237, 247, 0.20)" }} onClick={() => navigate("/newsletters")}>
               {t("Choose more", "Chọn thêm", "Pilih lainnya")}
             </Button>
           </div>
@@ -656,7 +642,7 @@ function NewsletterCTA({ navigate }) {
 
 function Homepage({ navigate }) {
   return (
-    <div className="container">
+    <div className="container" style={{ padding: "0px 24px 10px" }}>
       <HomeHero navigate={navigate} />
       <BriefBand navigate={navigate} />
       <Reveal><WireDrops navigate={navigate} /></Reveal>
@@ -665,7 +651,8 @@ function Homepage({ navigate }) {
       <Reveal><DashboardsTeaser navigate={navigate} /></Reveal>
       <Reveal><DeepDive navigate={navigate} /></Reveal>
       <Reveal><AwardsBanner navigate={navigate} /></Reveal>
-      <Reveal><SponsoredStrip navigate={navigate} /></Reveal>
+      {/* Paid Partner / Sponsored strip temporarily hidden */}
+      {/* <Reveal><SponsoredStrip navigate={navigate} /></Reveal> */}
       <Reveal><BestOfReviews navigate={navigate} /></Reveal>
       <Reveal><PodcastStrip navigate={navigate} /></Reveal>
       <Reveal><NewsletterCTA navigate={navigate} /></Reveal>

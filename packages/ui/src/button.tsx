@@ -50,7 +50,7 @@ const sizes: Record<ButtonSize, CSSProperties> = {
 };
 
 const variants: Record<ButtonVariant, CSSProperties> = {
-  primary: { background: "var(--ink)", color: "var(--paper)", borderColor: "var(--ink)" },
+  primary: { background: "var(--brand-navy)", color: "var(--paper)", borderColor: "var(--brand-navy)" },
   accent: { background: "var(--accent)", color: "#fff", borderColor: "var(--accent)" },
   outline: { background: "transparent", color: "var(--ink)", borderColor: "var(--hair-2)" },
   ghost: { background: "transparent", color: "var(--ink)" },
