@@ -8,9 +8,10 @@ type EditorState = NonNullable<ArticleBodyState>;
 
 /**
  * Split the Lexical root children in half so a middle disclosure box can be
- * injected between the two halves (invariant #5: sponsored / AI-assisted boxes
- * appear at top + middle + bottom). Each half is itself a valid editor state
- * that RichText can render independently.
+ * injected between the two halves (invariant #5: sponsored boxes appear at
+ * top + middle + bottom). Each half is itself a valid editor state that
+ * RichText can render independently. (AI-assisted inline disclosure was removed
+ * by product decision 2026-06-05 — see all-context.md invariant #5.)
  */
 function splitBody(body: EditorState): [EditorState, EditorState] {
   const children = body.root.children ?? [];
@@ -32,25 +33,13 @@ const proseStyle: React.CSSProperties = {
 };
 
 function TopBoxes({ article }: { article: ArticleView }) {
-  return (
-    <>
-      {article.aiAssisted && <DisclosureBox kind="ai" position="top" />}
-      {article.sponsored && (
-        <DisclosureBox kind="sponsored" sponsor={article.sponsor} position="top" />
-      )}
-    </>
-  );
+  if (!article.sponsored) return null;
+  return <DisclosureBox kind="sponsored" sponsor={article.sponsor} position="top" />;
 }
 
 function BottomBoxes({ article }: { article: ArticleView }) {
-  return (
-    <>
-      {article.aiAssisted && <DisclosureBox kind="ai" position="bottom" />}
-      {article.sponsored && (
-        <DisclosureBox kind="sponsored" sponsor={article.sponsor} position="bottom" />
-      )}
-    </>
-  );
+  if (!article.sponsored) return null;
+  return <DisclosureBox kind="sponsored" sponsor={article.sponsor} position="bottom" />;
 }
 
 export function ArticleBody({
@@ -61,7 +50,6 @@ export function ArticleBody({
   article: ArticleView;
 }) {
   const hasBody = Boolean(body && (body.root.children?.length ?? 0) > 0);
-  const disclosed = article.aiAssisted || article.sponsored;
 
   if (!hasBody || !body) {
     return (
@@ -83,13 +71,8 @@ export function ArticleBody({
 
       <RichText data={first} />
 
-      {disclosed && (
-        <>
-          {article.aiAssisted && <DisclosureBox kind="ai" position="middle" />}
-          {article.sponsored && (
-            <DisclosureBox kind="sponsored" sponsor={article.sponsor} position="middle" />
-          )}
-        </>
+      {article.sponsored && (
+        <DisclosureBox kind="sponsored" sponsor={article.sponsor} position="middle" />
       )}
 
       <RichText data={second} />
