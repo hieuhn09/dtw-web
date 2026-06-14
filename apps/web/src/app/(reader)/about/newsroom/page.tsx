@@ -258,9 +258,9 @@ export default function NewsroomAboutPage() {
             {heroSub}
           </p>
           <div
+            className="r-grid-3"
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 240px), 1fr))",
               gap: 32,
               marginTop: 36,
               paddingTop: 28,
@@ -319,9 +319,9 @@ export default function NewsroomAboutPage() {
               </h2>
             </div>
             <div
+              className="r-grid-4"
               style={{
                 display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 320px), 1fr))",
                 gap: 20,
               }}
             >
@@ -435,7 +435,7 @@ export default function NewsroomAboutPage() {
                   lineHeight: 1.05,
                 }}
               >
-                Cheryl Tan Hwee-Min
+                Cheryl Tan
               </h3>
               <div
                 className="text-mute"
@@ -488,9 +488,9 @@ export default function NewsroomAboutPage() {
 
               {/* Credentials grid */}
               <div
+                className="r-grid-2"
                 style={{
                   display: "grid",
-                  gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 240px), 1fr))",
                   gap: 16,
                   paddingTop: 20,
                   borderTop: "1px solid var(--hair)",
@@ -536,9 +536,9 @@ export default function NewsroomAboutPage() {
               </h2>
             </div>
             <div
+              className="r-grid-4"
               style={{
                 display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 200px), 1fr))",
                 gap: 20,
               }}
             >
@@ -608,9 +608,9 @@ export default function NewsroomAboutPage() {
               </h2>
             </div>
             <div
+              className="r-grid-3"
               style={{
                 display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 280px), 1fr))",
                 gap: 20,
               }}
             >
@@ -779,11 +779,11 @@ export default function NewsroomAboutPage() {
 
         {/* Footer-style business info */}
         <section
+          className="r-grid-3"
           style={{
             paddingTop: 32,
             borderTop: "1px solid var(--hair)",
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 200px), 1fr))",
             gap: 24,
           }}
         >

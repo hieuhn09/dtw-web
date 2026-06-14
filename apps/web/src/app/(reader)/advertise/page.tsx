@@ -8,7 +8,7 @@ import { Icon, type IconName } from "@/components/icons";
 import { useT } from "@/lib/i18n";
 
 const EMAIL = "advertising@dailytechwire.asia";
-const MAILTO = `mailto:${EMAIL}?subject=DTW%20advertising%20inquiry`;
+const MAILTO = `mailto:${EMAIL}?subject=DTW%20media%20inquiry`;
 
 // Markets are proper nouns — not localized.
 const MARKETS: ReadonlyArray<string> = [
@@ -401,13 +401,6 @@ export default function AdvertisePage() {
               )}
             </h2>
           </div>
-          <span className="mono text-mute-2" style={{ fontSize: 11 }}>
-            {t(
-              "Rates indicative · full card on request",
-              "Giá tham khảo · bảng đầy đủ theo yêu cầu",
-              "Tarif indikatif · kartu lengkap atas permintaan"
-            )}
-          </span>
         </div>
         <div
           style={{
@@ -440,22 +433,6 @@ export default function AdvertisePage() {
                   >
                     <Icon name={f.icon} size={18} color="var(--accent-ink)" stroke={2} />
                   </div>
-                  <span
-                    className="mono"
-                    style={{
-                      fontSize: 10.5,
-                      fontWeight: 600,
-                      letterSpacing: ".04em",
-                      color: f.to ? "var(--accent)" : "var(--muted)",
-                      padding: "4px 9px",
-                      borderRadius: 99,
-                      border: "1px solid var(--hair-2)",
-                      background: "var(--paper)",
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    {f.note}
-                  </span>
                 </div>
                 <div
                   className="serif"
