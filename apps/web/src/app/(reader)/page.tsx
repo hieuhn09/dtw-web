@@ -41,7 +41,7 @@ export default async function HomePage() {
   }
 
   const spotlightItems = articles
-    .filter((a) => (["asia", "policy", "startups"] as PillarId[]).includes(a.pillar))
+    .filter((a) => (["latest", "policy", "startups"] as PillarId[]).includes(a.pillar))
     .slice(0, 4);
 
   const deepDiveView = deepDive ? toArticleView(deepDive) : null;

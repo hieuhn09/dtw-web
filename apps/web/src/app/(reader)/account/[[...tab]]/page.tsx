@@ -160,7 +160,7 @@ function AccountFollowing() {
   const t = useT();
   const { lang } = useLang();
   const [following, setFollowing] = useState<Set<PillarId>>(
-    new Set<PillarId>(["ai", "asia"])
+    new Set<PillarId>(["ai", "latest"])
   );
   const toggle = (id: PillarId) => {
     const s = new Set(following);

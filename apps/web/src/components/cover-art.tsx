@@ -26,7 +26,7 @@ const ART_PALETTES: Record<PillarId | "policy", ReadonlyArray<Palette>> = {
     ["#0C4A6E", "#0EA5E9", "#FED7AA", "#FFFFFF"],
     ["#082F49", "#38BDF8", "#F97316", "#FAFAF7"],
   ],
-  asia: [
+  latest: [
     ["#7C2D12", "#E04E1F", "#FDE68A", "#FFFFFF"],
     ["#431407", "#F97316", "#FCD34D", "#1F2937"],
   ],
@@ -63,7 +63,7 @@ export interface CoverArtProps {
 }
 
 export function CoverArt({
-  pillar = "asia",
+  pillar = "latest",
   seed = "x",
   label,
   height = 240,

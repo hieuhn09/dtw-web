@@ -87,11 +87,11 @@ export function AsiaSpotlight({ articles }: AsiaSpotlightProps) {
             )}
           </h2>
         </div>
-        <Button href="/asia" variant="accent">
+        <Button href="/latest" variant="accent">
           {t(
-            "See all Asia coverage →",
-            "Xem tất cả tin Châu Á →",
-            "Lihat semua liputan Asia →"
+            "See all latest →",
+            "Xem tất cả mới nhất →",
+            "Lihat semua terbaru →"
           )}
         </Button>
       </div>

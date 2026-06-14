@@ -2,7 +2,7 @@
 // Adding a pillar in production is a CMS write (invariant #8) — this list is
 // the static fallback used during scaffold + tests + when CMS is unreachable.
 
-export type PillarId = "ai" | "startups" | "asia" | "dev" | "products" | "policy";
+export type PillarId = "ai" | "startups" | "latest" | "dev" | "products" | "policy";
 
 export interface Pillar {
   id: PillarId;
@@ -14,7 +14,7 @@ export interface Pillar {
 export const PILLARS: ReadonlyArray<Pillar> = [
   { id: "ai", label: "AI", cssVar: "--ai" },
   { id: "startups", label: "Startups", cssVar: "--startups" },
-  { id: "asia", label: "Asia", cssVar: "--asia" },
+  { id: "latest", label: "Latest", cssVar: "--asia" },
   { id: "dev", label: "Dev", cssVar: "--dev" },
   { id: "products", label: "Products", cssVar: "--products" },
   { id: "policy", label: "Policy", cssVar: "--policy" },
