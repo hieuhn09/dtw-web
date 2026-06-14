@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>DailyTechWire – Asia Tech</title>
+<title>Dailytechwire, Asia & Global Tech</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,500;8..60,600;8..60,700;8..60,800&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400..900&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
 <style>
 :root{
-  --paper:#FAF8F2;
+  --paper:#FDFCF8;
   --surface:#FFFFFF;
   --surface-2:#F2EFE5;
   --ink:#111111;
@@ -18,19 +18,23 @@
   --muted-2:#8C8B85;
   --hair:#E5E2D8;
   --hair-2:#D8D4C6;
-  --accent:#E04E1F;      /* DTW coral */
-  --accent-ink:#B83D14;
+  --accent:#D4623C;      /* DTW coral, softened */
+  --accent-ink:#B14A28;
+  --amber:#F59E0B;
+  --brand-navy:#1B2A52;  /* logo monogram, matches banner */
+  --brand-amber:#D4623C; /* logo pulse dot, matches accent */
+  --banner:#1B2A52;      /* softer deep navy for large banners */
   --sponsored:#FEF3C7;   /* spec */
   --up:#10B981;          /* spec */
   --down:#EF4444;        /* spec */
-  --ai:#7C3AED;
-  --startups:#0EA5E9;
-  --asia:#E04E1F;
-  --dev:#16A34A;
-  --products:#D97706;
-  --policy:#475569;
-  --shadow: 0 1px 0 rgba(17,17,17,.04), 0 12px 32px -16px rgba(17,17,17,.12);
-  --font-serif: "Source Serif 4", "Iowan Old Style", "Charter", Georgia, serif;
+  --ai:#3A4E8C;
+  --startups:#3E6E80;
+  --asia:#B0512E;
+  --dev:#46735C;
+  --products:#8F7238;
+  --policy:#5A6577;
+  --shadow: 0 1px 0 rgba(17, 17, 17, .04), 0 12px 32px -16px rgba(17, 17, 17, .12);
+  --font-serif: "Schibsted Grotesk", "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
   --maxw: 1280px;
@@ -46,14 +50,16 @@ html[data-theme="dark"]{
   --hair:#1E2B45;
   --hair-2:#243453;
   --sponsored:#3B2E0A;
+  --brand-navy:#E2E8F0;  /* lightened for dark mode */
+  --banner:#16223C;      /* softer banner for dark mode */
 }
 *{box-sizing:border-box}
-html,body{margin:0;padding:0;background:var(--paper);color:var(--ink);font-family:var(--font-sans);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+html, body{margin:0;padding:0;background:var(--paper);color:var(--ink);font-family:var(--font-sans);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
 body{font-size:15px;line-height:1.5}
 a{color:inherit;text-decoration:none}
 button{font-family:inherit;cursor:pointer}
 img{max-width:100%;display:block}
-.serif{font-family:var(--font-serif);font-feature-settings:"ss01","ss02"}
+.serif{font-family:var(--font-serif);font-feature-settings:normal}
 .mono{font-family:var(--font-mono)}
 .hair{border-color:var(--hair)}
 
@@ -67,9 +73,9 @@ img{max-width:100%;display:block}
 .rule-thick{height:3px;background:var(--ink);width:100%}
 
 /* placeholder image */
-.ph{position:relative;background:repeating-linear-gradient(135deg,var(--surface-2) 0 14px,var(--paper) 14px 28px);border:1px solid var(--hair);display:flex;align-items:flex-end;justify-content:flex-start;overflow:hidden}
+.ph{position:relative;background:repeating-linear-gradient(135deg, var(--surface-2) 0 14px, var(--paper) 14px 28px);border:1px solid var(--hair);display:flex;align-items:flex-end;justify-content:flex-start;overflow:hidden}
 .ph::after{content:attr(data-label);font:500 11px/1.2 var(--font-mono);color:var(--muted);background:var(--surface);padding:6px 8px;margin:8px;border:1px solid var(--hair);border-radius:4px}
-.ph.dark{background:repeating-linear-gradient(135deg,#0b1220 0 14px,#0f172a 14px 28px)}
+.ph.dark{background:repeating-linear-gradient(135deg, #0b1220 0 14px, #0f172a 14px 28px)}
 
 /* focus */
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:2px}
@@ -84,20 +90,20 @@ img{max-width:100%;display:block}
 /* anim */
 @keyframes fadeUp{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
 .fade-up{animation:fadeUp .4s ease both}
-@keyframes pulse-dot{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(239,68,68,.6)}50%{opacity:.55;box-shadow:0 0 0 6px rgba(239,68,68,0)}}
+@keyframes pulse-dot{0%, 100%{opacity:1;box-shadow:0 0 0 0 rgba(239, 68, 68, .6)}50%{opacity:.55;box-shadow:0 0 0 6px rgba(239, 68, 68, 0)}}
 .live-dot{width:8px;height:8px;border-radius:999px;background:var(--down);animation:pulse-dot 1.6s ease-in-out infinite;display:inline-block}
 
 /* Accent-glow button (overrides Button variant=accent on :hover) */
 button:hover{ transition: box-shadow .25s ease, transform .15s ease; }
-button[data-glow="1"]:hover, .accent-glow:hover{
-  box-shadow: 0 0 0 1px rgba(224,78,31,.4), 0 8px 28px -6px rgba(224,78,31,.45);
+button[data-glow="1"]:hover.accent-glow:hover{
+  box-shadow: 0 0 0 1px rgba(224, 78, 31, .4), 0 8px 28px -6px rgba(224, 78, 31, .45);
 }
 
 /* Cover-art hover micro-lift */
-.card-hover:hover .ph, .card-hover:hover svg{ transform: translateY(-1px); }
+.card-hover:hover .ph.card-hover:hover svg{ transform: translateY(-1px); }
 
 /* link underline (editorial) */
-.linkish{background-image:linear-gradient(to bottom,transparent calc(100% - 1px),currentColor 1px);background-repeat:no-repeat;background-size:0% 100%;transition:background-size .3s ease}
+.linkish{background-image:linear-gradient(to bottom, transparent calc(100% - 1px), currentColor 1px);background-repeat:no-repeat;background-size:0% 100%;transition:background-size .3s ease}
 .linkish:hover{background-size:100% 100%}
 
 /* card hover */
@@ -138,6 +144,10 @@ button[data-glow="1"]:hover, .accent-glow:hover{
 <script type="text/babel" src="src/newsletters.jsx"></script>
 <script type="text/babel" src="src/account.jsx"></script>
 <script type="text/babel" src="src/trust.jsx"></script>
+<script type="text/babel" src="src/studio.jsx"></script>
+<script type="text/babel" src="src/advertise.jsx"></script>
+<script type="text/babel" src="src/legal.jsx"></script>
+<script type="text/babel" src="src/contact.jsx"></script>
 <script type="text/babel" src="src/about.jsx"></script>
 <script type="text/babel" src="src/app.jsx"></script>
 </body>

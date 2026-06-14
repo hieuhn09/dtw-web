@@ -1,6 +1,6 @@
 // ============ TECH EFFECTS ============
 
-// Scrolling ticker tape – Bloomberg-style
+// Scrolling ticker tape, Bloomberg-style
 function TickerTape(){
   const items = [
     { sym:"TSMC",   v:932.0,  d:+1.55 },
@@ -30,14 +30,14 @@ function TickerTape(){
         animation:"ticker 60s linear infinite",
         willChange:"transform"
       }}>
-        {loop.map((it,i)=>(
+        {loop.map((it, i)=>(
           <span key={i} style={{
             display:"inline-flex", alignItems:"center", gap:8,
             padding:"0 18px", borderRight:"1px solid color-mix(in oklab, var(--paper) 12%, transparent)",
             fontFamily:"var(--font-mono)", fontSize:11
           }}>
             <span style={{fontWeight:600, color:"var(--paper)"}}>{it.sym}</span>
-            <span style={{color:"color-mix(in oklab, var(--paper) 70%, transparent)"}}>{it.v.toLocaleString(undefined,{maximumFractionDigits:2})}</span>
+            <span style={{color:"color-mix(in oklab, var(--paper) 70%, transparent)"}}>{it.v.toLocaleString(undefined, {maximumFractionDigits:2})}</span>
             <span style={{
               color: it.d>=0 ? "var(--up)" : "var(--down)",
               fontWeight:600
@@ -56,7 +56,7 @@ function TickerTape(){
 }
 
 // Cursor-following ambient spotlight
-function SpotlightCard({ children, style={}, color="rgba(224,78,31,.18)" }){
+function SpotlightCard({ children, style={}, color="rgba(224, 78, 31, .18)" }){
   const ref = useRef(null);
   useEffect(()=>{
     const el = ref.current;
@@ -69,12 +69,11 @@ function SpotlightCard({ children, style={}, color="rgba(224,78,31,.18)" }){
     };
     el.addEventListener("mousemove", onMove);
     return ()=> el.removeEventListener("mousemove", onMove);
-  },[]);
+  }, []);
   return (
     <div ref={ref} style={{
       position:"relative", overflow:"hidden",
-      "--mx":"50%", "--my":"50%",
-      ...style
+      "--mx":"50%", "--my":"50%", ...style
     }} className="spotlight">
       <div style={{
         position:"absolute", inset:0, pointerEvents:"none",
@@ -112,7 +111,7 @@ function CountUp({ to, suffix="", prefix="", duration=900, decimals=0 }){
     try {
       obs = new IntersectionObserver(entries=>{
         if(entries[0].isIntersecting) start();
-      },{threshold:.3});
+      }, {threshold:.3});
       if(ref.current) obs.observe(ref.current);
     } catch(e){}
     // Fallback 1: if already on screen at mount, start immediately
@@ -124,7 +123,7 @@ function CountUp({ to, suffix="", prefix="", duration=900, decimals=0 }){
     // Fallback 2: hard timeout safety net so values never stay at 0
     const t = setTimeout(start, 800);
     return ()=>{ obs && obs.disconnect(); clearTimeout(t); };
-  },[to, duration]);
+  }, [to, duration]);
   const fmt = v.toLocaleString(undefined, {minimumFractionDigits: decimals, maximumFractionDigits: decimals});
   return <span ref={ref} className="tnum">{prefix}{fmt}{suffix}</span>;
 }
@@ -134,7 +133,7 @@ function Reveal({ children, delay=0, y=12 }){
   const ref = useRef(null);
   const [visible, setVisible] = useState(false);
   useEffect(()=>{
-    // Mount-only effect – never re-runs, so cleanup can't accidentally cancel our safety timer.
+    // Mount-only effect, never re-runs, so cleanup can't accidentally cancel our safety timer.
     let cancelled = false;
     const show = ()=>{
       if(cancelled) return;
@@ -153,13 +152,13 @@ function Reveal({ children, delay=0, y=12 }){
     try {
       obs = new IntersectionObserver(entries=>{
         if(entries.some(e=>e.isIntersecting)) show();
-      },{threshold:.05});
+      }, {threshold:.05});
       obs.observe(ref.current);
     } catch(e){}
     // 3) scroll listener fallback
     const onScroll = ()=>{ if(checkInView()) show(); };
     window.addEventListener("scroll", onScroll, { passive:true });
-    // 4) hard safety net – never leave content hidden past 1.5s
+    // 4) hard safety net, never leave content hidden past 1.5s
     const t = setTimeout(show, 1500);
     return ()=>{
       obs && obs.disconnect();
@@ -185,17 +184,17 @@ function AnimatedSpark({ values, color="var(--up)", width=420, height=56 }){
     if(!ref.current) return;
     const total = ref.current.getTotalLength?.() || 0;
     setLen(total);
-  },[values]);
+  }, [values]);
 
   const min = Math.min(...values), max = Math.max(...values);
   const span = max - min || 1;
-  const pts = values.map((v,i)=>{
+  const pts = values.map((v, i)=>{
     const x = (i/(values.length-1))*width;
     const y = height - ((v-min)/span)*height;
-    return [x,y];
+    return [x, y];
   });
-  const path = "M " + pts.map(([x,y])=>`${x},${y}`).join(" L ");
-  const area = path + ` L ${pts[pts.length-1][0]},${height} L ${pts[0][0]},${height} Z`;
+  const path = "M " + pts.map(([x, y])=>`${x}, ${y}`).join(" L ");
+  const area = path + ` L ${pts[pts.length-1][0]}, ${height} L ${pts[0][0]}, ${height} Z`;
   const last = pts[pts.length-1];
 
   return (
@@ -215,14 +214,14 @@ function AnimatedSpark({ values, color="var(--up)", width=420, height=56 }){
       <circle cx={last[0]} cy={last[1]} r="4" fill={color} style={{animation:"pulse-r 1.6s ease infinite"}}/>
       <style>{`
         @keyframes dashDraw { to { stroke-dashoffset: 0; } }
-        @keyframes pulse-r { 0%,100%{opacity:1; r:4} 50%{opacity:.5; r:6} }
+        @keyframes pulse-r { 0%, 100%{opacity:1; r:4} 50%{opacity:.5; r:6} }
       `}</style>
     </svg>
   );
 }
 
 // Tech grid backdrop (used behind dashboards + dark sections)
-function GridBackdrop({ color="rgba(255,255,255,.05)", size=40, fadeRadius=null }){
+function GridBackdrop({ color="rgba(255, 255, 255, .05)", size=40, fadeRadius=null }){
   return (
     <div aria-hidden="true" style={{
       position:"absolute", inset:0, pointerEvents:"none",
@@ -247,7 +246,7 @@ function Marquee({ items, speed=40, style={} }){
         animation:`mq ${speed}s linear infinite`,
         willChange:"transform", whiteSpace:"nowrap"
       }}>
-        {dup.map((it,i)=>(
+        {dup.map((it, i)=>(
           <span key={i} style={{display:"inline-flex", alignItems:"center", gap:8, opacity:.7}}>
             {it}
           </span>

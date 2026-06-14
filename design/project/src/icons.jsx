@@ -30,6 +30,7 @@ function Icon({ name, size = 18, color = "currentColor", stroke = 1.75, ...rest 
     case "trend-dn": return <svg {...common}><polyline points="3 7 9 13 13 9 21 17"/><polyline points="14 17 21 17 21 10"/></svg>;
     case "check":    return <svg {...common}><polyline points="20 6 9 17 4 12"/></svg>;
     case "info":     return <svg {...common}><circle cx="12" cy="12" r="9"/><line x1="12" y1="11" x2="12" y2="16"/><circle cx="12" cy="8" r="0.5" fill={c}/></svg>;
+    case "clock":    return <svg {...common}><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg>;
     case "dollar":   return <svg {...common}><line x1="12" y1="2" x2="12" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>;
     case "star":     return <svg {...common}><polygon points="12 2 15 9 22 9.5 17 14.5 18.5 22 12 18 5.5 22 7 14.5 2 9.5 9 9 12 2"/></svg>;
     case "headphone":return <svg {...common}><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1v-7h3z"/><path d="M3 19a2 2 0 0 0 2 2h1v-7H3z"/></svg>;
@@ -47,7 +48,7 @@ function Icon({ name, size = 18, color = "currentColor", stroke = 1.75, ...rest 
 }
 
 const PILLAR_ICONS = {
-  ai: "spark", startups: "trend-up", asia: "asia",
+  ai: "spark", startups: "trend-up", latest: "clock",
   dev: "code", products: "product", policy: "policy"
 };
 

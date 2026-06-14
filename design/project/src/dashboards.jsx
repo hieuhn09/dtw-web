@@ -1,21 +1,22 @@
 // ============ DASHBOARDS ============
 function DashboardsLanding({ navigate, sub }){
   const [activeTab, setActiveTab] = useState(sub || "funding");
+  const t = useT();
   useEffect(()=>{ if(sub) setActiveTab(sub); }, [sub]);
 
   return (
     <div className="container" style={{paddingTop:24, paddingBottom:48}}>
-      <header style={{borderBottom:"3px solid var(--ink)", paddingBottom:20, marginBottom:24, position:"relative", overflow:"hidden"}}>
+      <header style={{borderBottom:"3px solid var(--brand-navy)", paddingBottom:20, marginBottom:24, position:"relative", overflow:"hidden"}}>
         <GridBackdrop color="color-mix(in oklab, var(--ink) 6%, transparent)" size={32} fadeRadius="60%"/>
         <div style={{position:"relative"}}>
           <div className="kicker" style={{marginBottom:6, display:"flex", alignItems:"center", gap:8}}>
-            <span className="live-dot"/> Data Desk · Live
+            <span className="live-dot"/> {t("Data Desk · Live", "Bàn dữ liệu · Trực tiếp", "Meja Data · Langsung")}
           </div>
-          <h1 className="serif" style={{margin:"0 0 10px", fontSize:48, fontWeight:700, letterSpacing:"-0.025em", lineHeight:1}}>
-            Live Dashboards
+          <h1 className="serif" style={{margin:"0 0 10px", fontSize:48, fontWeight:650, letterSpacing:"-0.025em", lineHeight:1}}>
+            {t("Live Dashboards", "Bảng dữ liệu trực tiếp", "Dasbor Langsung")}
           </h1>
           <p className="serif text-mute" style={{margin:0, fontSize:17, lineHeight:1.45, maxWidth:760}}>
-            Two trackers that move with the news. Built from filings, scraped tickers, and a handful of human checks. Updated every 15 minutes.
+            {t("Two trackers that move with the news. Built from filings, scraped tickers, and a handful of human checks. Updated every 15 minutes.", "Hai bộ theo dõi chuyển động cùng tin tức. Xây từ hồ sơ, mã chứng khoán và kiểm tra thủ công. Cập nhật mỗi 15 phút.", "Dua pelacak yang bergerak bersama berita. Dibangun dari laporan, ticker, dan pemeriksaan manual. Diperbarui tiap 15 menit.")}
           </p>
         </div>
       </header>
@@ -23,9 +24,9 @@ function DashboardsLanding({ navigate, sub }){
       {/* Tabs */}
       <div style={{display:"flex", gap:0, borderBottom:"1px solid var(--hair)", marginBottom:28}}>
         {[
-          ["funding", "Asia Funding Tracker"],
-          ["ai", "AI Leaderboard"],
-        ].map(([k,l])=>(
+          ["funding", t("Asia Funding Tracker", "Theo dõi vốn châu Á", "Pelacak Pendanaan Asia")],
+          ["ai", t("AI Leaderboard", "Bảng xếp hạng AI", "Peringkat AI")],
+        ].map(([k, l])=>(
           <button key={k} onClick={()=>{setActiveTab(k); navigate(`/dashboards/${k}`, true);}} style={{
             padding:"14px 22px", background:"transparent", border:"none",
             borderBottom: activeTab===k ? "3px solid var(--accent)" : "3px solid transparent",
@@ -36,32 +37,6 @@ function DashboardsLanding({ navigate, sub }){
       </div>
 
       {activeTab === "funding" ? <FundingTracker/> : <AILeaderboard/>}
-
-      {/* Methodology + sponsor slot */}
-      <section style={{marginTop:48, display:"grid", gridTemplateColumns:"2fr 1fr", gap:24}}>
-        <div style={{padding:24, background:"var(--surface)", border:"1px solid var(--hair)", borderRadius:8}}>
-          <div className="kicker" style={{marginBottom:8}}>Methodology</div>
-          <p style={{margin:"0 0 8px", fontSize:13, lineHeight:1.55, color:"var(--ink-2)"}}>
-            {activeTab==="funding"
-              ? "Funding data combines exchange tickers (Asian-listed tech) and announced private rounds (Series A and later) across ASEAN, India, Greater China, Korea, and Japan. We exclude SPAC mergers, secondaries, and bridge rounds &lt; $1M."
-              : "Scores aggregate three independent benchmark sources, normalised to a 0–100 scale per dimension. We disclose the source mix per model. Updated monthly; outliers flagged manually."}
-          </p>
-          <p className="mono text-mute-2" style={{margin:0, fontSize:11}}>
-            For informational purposes only · not investment or procurement advice
-          </p>
-        </div>
-        <div style={{padding:24, background:"var(--sponsored)", border:"1px solid #E0B900", borderRadius:8}}>
-          <div className="mono upper" style={{fontSize:10, fontWeight:700, letterSpacing:".14em", color:"var(--ink)", marginBottom:8}}>
-            Sponsor slot · this dashboard
-          </div>
-          <div className="serif" style={{fontSize:16, fontWeight:600, color:"var(--ink)", marginBottom:6}}>
-            Brought to you by [Partner Logo]
-          </div>
-          <p style={{fontSize:12, color:"color-mix(in oklab, var(--ink) 75%, transparent)", margin:0}}>
-            Sponsorship does not influence the data or methodology.
-          </p>
-        </div>
-      </section>
     </div>
   );
 }
@@ -70,18 +45,19 @@ function FundingTracker(){
   const [sortKey, setSortKey] = useState("chg");
   const [sortDir, setSortDir] = useState("desc");
   const [country, setCountry] = useState("All");
+  const t = useT();
 
   const filtered = useMemo(()=>{
     let rows = [...FUNDING_ROWS];
     if(country!=="All") rows = rows.filter(r=>r.country===country);
-    rows.sort((a,b)=>{
+    rows.sort((a, b)=>{
       const av = a[sortKey], bv = b[sortKey];
       if(av==null) return 1; if(bv==null) return -1;
       if(typeof av === "number") return sortDir==="asc" ? av-bv : bv-av;
       return sortDir==="asc" ? String(av).localeCompare(bv) : String(bv).localeCompare(av);
     });
     return rows;
-  },[sortKey, sortDir, country]);
+  }, [sortKey, sortDir, country]);
 
   const Th = ({k, children, num})=>(
     <th onClick={()=>{
@@ -104,15 +80,15 @@ function FundingTracker(){
     <section>
       <div style={{display:"flex", justifyContent:"space-between", alignItems:"flex-end", marginBottom:18, flexWrap:"wrap", gap:12}}>
         <div>
-          <h2 className="serif" style={{margin:"0 0 4px", fontSize:30, fontWeight:700, letterSpacing:"-0.02em"}}>
-            Asia Funding Tracker
+          <h2 className="serif" style={{margin:"0 0 4px", fontSize:30, fontWeight:650, letterSpacing:"-0.02em"}}>
+            {t("Asia Funding Tracker", "Theo dõi vốn châu Á", "Pelacak Pendanaan Asia")}
           </h2>
           <div className="text-mute mono" style={{fontSize:11}}>
-            <span className="live-dot" style={{marginRight:6}}/>Last update 12:42 SGT · next in 14 min · 138 instruments tracked
+            <span className="live-dot" style={{marginRight:6}}/>{t("Last update 12:42 SGT · next in 14 min · 138 instruments tracked", "Cập nhật 12:42 SGT · tiếp theo sau 14 phút · theo dõi 138 mã", "Pembaruan 12:42 SGT · berikutnya 14 mnt · 138 instrumen dilacak")}
           </div>
         </div>
         <div style={{display:"flex", gap:8, alignItems:"center"}}>
-          <span className="text-mute" style={{fontSize:12}}>Country:</span>
+          <span className="text-mute" style={{fontSize:12}}>{t("Country:", "Quốc gia:", "Negara:")}</span>
           <div style={{display:"flex", gap:0, border:"1px solid var(--hair-2)", borderRadius:5, overflow:"hidden"}}>
             {countries.map(c=>(
               <button key={c} onClick={()=>setCountry(c)} style={{
@@ -142,14 +118,14 @@ function FundingTracker(){
             </tr>
           </thead>
           <tbody>
-            {filtered.map((r,i)=>(
+            {filtered.map((r, i)=>(
               <tr key={r.ticker} style={{borderBottom:"1px solid var(--hair)", background: i%2===0?"transparent":"var(--paper)"}}>
                 <td className="mono" style={{padding:"12px", fontSize:12, fontWeight:600}}>{r.ticker}</td>
                 <td style={{padding:"12px", fontSize:13}}>{r.name}</td>
                 <td className="mono" style={{padding:"12px", fontSize:11, color:"var(--muted)"}}>{r.country}</td>
                 <td style={{padding:"12px", fontSize:12, color:"var(--muted)"}}>{r.sector}</td>
                 <td className="mono tnum" style={{padding:"12px", fontSize:13, textAlign:"right"}}>
-                  {r.px==null ? <span className="text-mute-2">–</span> : r.px.toLocaleString(undefined,{minimumFractionDigits:2, maximumFractionDigits:2})}
+                  {r.px==null ? <span className="text-mute-2">–</span> : r.px.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2})}
                 </td>
                 <td style={{padding:"12px", textAlign:"right"}}><ArrowUpDown chg={r.chg}/></td>
                 <td className="mono tnum" style={{padding:"12px", fontSize:12, textAlign:"right"}}>{r.mcap}</td>
@@ -166,13 +142,13 @@ function FundingTracker(){
       <div style={{display:"grid", gridTemplateColumns:"2fr 1fr", gap:24, marginTop:28}}>
         <div style={{padding:24, background:"var(--surface)", border:"1px solid var(--hair)", borderRadius:8}}>
           <div className="upper" style={{fontSize:10, fontWeight:600, letterSpacing:".12em", color:"var(--muted)", marginBottom:8}}>
-            ASEAN tech index – 30 days
+            {t("ASEAN tech index, 30 days", "Chỉ số công nghệ ASEAN, 30 ngày", "Indeks teknologi ASEAN, 30 hari")}
           </div>
           <BigChart/>
         </div>
         <div style={{padding:24, background:"var(--surface)", border:"1px solid var(--hair)", borderRadius:8}}>
           <div className="upper" style={{fontSize:10, fontWeight:600, letterSpacing:".12em", color:"var(--muted)", marginBottom:12}}>
-            Top movers · today
+            {t("Top movers · today", "Biến động mạnh · hôm nay", "Penggerak teratas · hari ini")}
           </div>
           {[
             { name:"GoTo Group",   chg:+3.10 },
@@ -193,17 +169,17 @@ function FundingTracker(){
 
 function BigChart(){
   // SVG line chart
-  const data = [100,102,98,103,108,105,110,108,112,115,109,114,118,116,120,118,122,124,121,125,127,124,128,131,129,132,135,133,138,140];
+  const data = [100, 102, 98, 103, 108, 105, 110, 108, 112, 115, 109, 114, 118, 116, 120, 118, 122, 124, 121, 125, 127, 124, 128, 131, 129, 132, 135, 133, 138, 140];
   const w = 720, h = 220, pad = 12;
   const min = Math.min(...data), max = Math.max(...data);
   const span = max - min || 1;
-  const pts = data.map((v,i)=>{
+  const pts = data.map((v, i)=>{
     const x = pad + (i/(data.length-1)) * (w - pad*2);
     const y = h - pad - ((v-min)/span) * (h - pad*2);
-    return [x,y];
+    return [x, y];
   });
-  const path = "M " + pts.map(([x,y])=>`${x},${y}`).join(" L ");
-  const area = path + ` L ${pts[pts.length-1][0]},${h-pad} L ${pts[0][0]},${h-pad} Z`;
+  const path = "M " + pts.map(([x, y])=>`${x}, ${y}`).join(" L ");
+  const area = path + ` L ${pts[pts.length-1][0]}, ${h-pad} L ${pts[0][0]}, ${h-pad} Z`;
 
   return (
     <svg viewBox={`0 0 ${w} ${h}`} width="100%" preserveAspectRatio="xMidYMid meet">
@@ -213,12 +189,12 @@ function BigChart(){
           <stop offset="100%" stopColor="var(--up)" stopOpacity="0"/>
         </linearGradient>
       </defs>
-      {[0,.25,.5,.75,1].map((p,i)=>(
+      {[0.25, .5, .75, 1].map((p, i)=>(
         <line key={i} x1={pad} x2={w-pad} y1={pad + p*(h-pad*2)} y2={pad + p*(h-pad*2)} stroke="var(--hair)" strokeWidth="1"/>
       ))}
       <path d={area} fill="url(#gFill)"/>
       <path d={path} fill="none" stroke="var(--up)" strokeWidth="2"/>
-      {pts.filter((_,i)=>i===pts.length-1).map(([x,y],i)=>(
+      {pts.filter((_, i)=>i===pts.length-1).map(([x, y], i)=>(
         <circle key={i} cx={x} cy={y} r="4" fill="var(--up)" stroke="var(--surface)" strokeWidth="2"/>
       ))}
     </svg>
@@ -228,14 +204,15 @@ function BigChart(){
 function AILeaderboard(){
   const [sortKey, setSortKey] = useState("reasoning");
   const [sortDir, setSortDir] = useState("desc");
+  const t = useT();
 
   const rows = useMemo(()=>{
-    return [...AI_LEADERBOARD].sort((a,b)=>{
+    return [...AI_LEADERBOARD].sort((a, b)=>{
       const av = a[sortKey], bv = b[sortKey];
       if(typeof av==="number") return sortDir==="asc" ? av-bv : bv-av;
       return sortDir==="asc" ? String(av).localeCompare(bv) : String(bv).localeCompare(av);
     });
-  },[sortKey, sortDir]);
+  }, [sortKey, sortDir]);
 
   const Th = ({k, children, num})=>(
     <th onClick={()=>{
@@ -264,18 +241,18 @@ function AILeaderboard(){
     <section>
       <div style={{display:"flex", justifyContent:"space-between", alignItems:"flex-end", marginBottom:18, flexWrap:"wrap", gap:12}}>
         <div>
-          <h2 className="serif" style={{margin:"0 0 4px", fontSize:30, fontWeight:700, letterSpacing:"-0.02em"}}>
-            AI Leaderboard
+          <h2 className="serif" style={{margin:"0 0 4px", fontSize:30, fontWeight:650, letterSpacing:"-0.02em"}}>
+            {t("AI Leaderboard", "Bảng xếp hạng AI", "Peringkat AI")}
           </h2>
           <div className="text-mute mono" style={{fontSize:11}}>
-            Sort by what you actually use the model for · 18 models tracked · methodology disclosed
+            {t("Sort by what you actually use the model for · 18 models tracked · methodology disclosed", "Sắp xếp theo mục đích sử dụng thực tế · theo dõi 18 mô hình · công bố phương pháp", "Urutkan sesuai penggunaan nyata · 18 model dilacak · metodologi diungkap")}
           </div>
         </div>
         <div style={{display:"flex", gap:6, alignItems:"center"}}>
-          <span className="text-mute" style={{fontSize:12, marginRight:4}}>Optimize for:</span>
+          <span className="text-mute" style={{fontSize:12, marginRight:4}}>{t("Optimize for:", "Tối ưu cho:", "Optimalkan untuk:")}</span>
           {[
-            ["reasoning","Reasoning"], ["coding","Coding"], ["speed","Speed"], ["price","Price (low)"]
-          ].map(([k,l])=>(
+            ["reasoning", t("Reasoning", "Suy luận", "Penalaran")], ["coding", t("Coding", "Lập trình", "Coding")], ["speed", t("Speed", "Tốc độ", "Kecepatan")], ["price", t("Price (low)", "Giá (thấp)", "Harga (rendah)")]
+          ].map(([k, l])=>(
             <button key={k} onClick={()=>{setSortKey(k); setSortDir(k==="price"?"asc":"desc");}} style={{
               padding:"6px 12px", fontSize:12, fontFamily:"var(--font-sans)",
               background: sortKey===k ? "var(--ink)" : "var(--surface)",
@@ -301,7 +278,7 @@ function AILeaderboard(){
             </tr>
           </thead>
           <tbody>
-            {rows.map((m,i)=>(
+            {rows.map((m, i)=>(
               <tr key={m.model} style={{borderBottom:"1px solid var(--hair)", background: i%2===0?"transparent":"var(--paper)"}}>
                 <td className="mono" style={{padding:"14px 12px", fontSize:12, color:"var(--muted)", textAlign:"right", width:48}}>{i+1}</td>
                 <td style={{padding:"14px 12px"}}>

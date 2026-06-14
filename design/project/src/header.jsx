@@ -1,53 +1,43 @@
-// DailyTechWire logomark – monogram "DTW" with an accent wire-cut through the W,
+// dailytechwire logomark, monogram "DTW" with an accent wire-cut through the W,
 // set in a tight slab style. Single-color (works on light + dark).
-function Logo({ size = 36, color = "var(--ink)", accent = "var(--accent)", mark = "square" }) {
+// Compact DTW monogram block, matches uploads/dtw-logo-primary.svg.
+function Logo({ size = 44, navy = "var(--brand-navy)" }) {
   const s = size;
-  // Two presentations:
-  //  "square"  – filled badge (paper-on-ink)        → used in header / footer
-  //  "outline" – transparent (ink-on-paper outline) → used inline
-  if (mark === "outline") {
-    return (
-      <svg width={s} height={s} viewBox="0 0 64 64" aria-label="DailyTechWire">
-        <rect x="1" y="1" width="62" height="62" rx="3" fill="none" stroke={color} strokeWidth="2" />
-        <text x="32" y="40" textAnchor="middle"
-        fontFamily="Source Serif 4, Georgia, serif" fontWeight="700"
-        fontSize="28" fill={color} letterSpacing="-1.5">DTW</text>
-        <rect x="6" y="49" width="52" height="3" fill={accent} />
-      </svg>);
-
-  }
   return (
-    <svg width={s} height={s} viewBox="0 0 64 64" aria-label="DailyTechWire">
-      {/* Solid badge */}
-      <rect x="0" y="0" width="64" height="64" rx="4" fill={color} />
-      {/* DTW wordmark – tight tracking, serif, slightly italicised D */}
-      <text x="32" y="38" textAnchor="middle"
-      fontFamily="Source Serif 4, Georgia, serif" fontWeight="700"
-      fontSize="22" fill="var(--paper)" letterSpacing="-1.2">DTW</text>
-      {/* "Wire" – single thin accent rule + a small tick (the data signal) */}
-      <line x1="10" y1="48" x2="42" y2="48" stroke={accent} strokeWidth="2" />
-      <line x1="42" y1="48" x2="46" y2="44" stroke={accent} strokeWidth="2" />
-      <line x1="46" y1="44" x2="50" y2="48" stroke={accent} strokeWidth="2" />
-      <line x1="50" y1="48" x2="54" y2="48" stroke={accent} strokeWidth="2" />
-      {/* Tiny corner cut – adds the "tech" feel */}
-      <path d="M 64 0 L 56 0 L 64 8 Z" fill={accent} />
+    <svg width={s} height={s} viewBox="0 0 60 60" aria-label="dailytechwire">
+      <rect x="0" y="0" width="60" height="60" rx="8" fill={navy} />
+      <text x="30" y="39" textAnchor="middle"
+      fontFamily="'IBM Plex Mono', 'SF Mono', Menlo, monospace" fontWeight="600"
+      fontSize="22" letterSpacing="0.02em" fill="var(--paper)">DTW</text>
     </svg>);
-
 }
 
-// Compact wordmark used beside the logo
-function Wordmark({ size = 22, color = "var(--ink)" }) {
+// Full horizontal lockup: monogram block + wordmark + pulse signature.
+function Wordmark({ size = 30 }) {
+  const h = size;
   return (
-    <span aria-label="DailyTechWire" style={{
-      display: "inline-flex", alignItems: "baseline", gap: 0,
-      fontFamily: "var(--font-serif)", fontWeight: 700,
-      letterSpacing: "-0.025em", lineHeight: 1, color
-    }}>
-      <span style={{ ...{ fontSize: size }, padding: "1px 0px 0px", fontSize: "32px" }}>Daily</span>
-      <span style={{ ...{ fontSize: size, color: "var(--accent)" }, fontSize: "32px" }}>Tech</span>
-      <span style={{ ...{ fontSize: size }, fontSize: "32px" }}>Wire</span>
-    </span>);
-
+    <svg height={h * 1.7} viewBox="0 18 234 64" aria-label="dailytechwire" role="img"
+    style={{ display: "block", overflow: "visible" }}>
+      <rect x="0" y="20" width="60" height="60" rx="8" fill="var(--brand-navy)" />
+      <text x="30" y="59" textAnchor="middle"
+      fontFamily="'IBM Plex Mono', 'SF Mono', Menlo, monospace" fontWeight="600"
+      fontSize="22" letterSpacing="0.02em" fill="var(--paper)">DTW</text>
+      <text x="76" y="51" fontFamily="'IBM Plex Sans', 'Helvetica Neue', sans-serif"
+      fontWeight="700" fontSize="26" letterSpacing="-0.02em" fill="var(--brand-navy)">dailytechwire</text>
+      <g transform="translate(76, 67)">
+        <circle cx="2" cy="0" r="2.5" fill="var(--brand-navy)" />
+        <line x1="7" y1="0" x2="26" y2="0" stroke="var(--brand-navy)" strokeWidth="1.8" strokeLinecap="round" />
+        <circle cx="31" cy="0" r="2.5" fill="var(--brand-amber)" />
+        <line x1="36" y1="0" x2="55" y2="0" stroke="var(--brand-navy)" strokeWidth="1.8" strokeLinecap="round" />
+        <circle cx="60" cy="0" r="2.5" fill="var(--brand-navy)" />
+        <line x1="65" y1="0" x2="84" y2="0" stroke="var(--brand-navy)" strokeWidth="1.8" strokeLinecap="round" />
+        <circle cx="89" cy="0" r="2.5" fill="var(--brand-navy)" />
+        <line x1="94" y1="0" x2="113" y2="0" stroke="var(--brand-navy)" strokeWidth="1.8" strokeLinecap="round" />
+        <circle cx="118" cy="0" r="2.5" fill="var(--brand-navy)" />
+        <line x1="123" y1="0" x2="142" y2="0" stroke="var(--brand-navy)" strokeWidth="1.8" strokeLinecap="round" />
+        <circle cx="147" cy="0" r="2.5" fill="var(--brand-navy)" />
+      </g>
+    </svg>);
 }
 
 function Header({ route, navigate, theme, setTheme, user, openAuth, openSearch, articlesRead }) {
@@ -95,9 +85,6 @@ function Header({ route, navigate, theme, setTheme, user, openAuth, openSearch, 
       borderBottom: `1px solid ${scrolled ? "var(--hair)" : "transparent"}`,
       transition: "border-color .2s"
     }}>
-      {/* Live ticker */}
-      <TickerTape />
-
       {/* Top utility strip */}
       <div style={{ borderBottom: "1px solid var(--hair)", background: "var(--surface)" }}>
         <div className="container" style={{
@@ -144,8 +131,8 @@ function Header({ route, navigate, theme, setTheme, user, openAuth, openSearch, 
         {/* Logo */}
         <div style={{ display: "flex", alignItems: "center", gap: 12, cursor: "pointer" }} onClick={() => navigate("/")}>
           <div style={{ padding: "0px" }}>
-            <Wordmark size={30} />
-            <div className="mono text-mute" style={{ letterSpacing: ".08em", marginTop: 5, margin: "4px 0px 0px", fontSize: "11px" }}>
+            <Wordmark size={32} />
+            <div className="mono text-mute" style={{ letterSpacing: ".08em", marginTop: 2, fontSize: "11px" }}>
               {t(
                 "Tech Intelligence, Wired Daily",
                 "Tin tức công nghệ, cập nhật hàng ngày",
@@ -258,7 +245,7 @@ function Header({ route, navigate, theme, setTheme, user, openAuth, openSearch, 
       </div>
 
       {/* Nav row */}
-      <div style={{ borderTop: "1px solid var(--hair)", borderBottom: "3px solid var(--ink)" }}>
+      <div style={{ borderTop: "1px solid var(--hair)", borderBottom: "3px solid var(--brand-navy)" }}>
         <div className="container" style={{
           display: "flex", alignItems: "stretch", justifyContent: "space-between",
           height: 46, overflow: "hidden", padding: "0px 24px 0px 26px"
@@ -267,21 +254,23 @@ function Header({ route, navigate, theme, setTheme, user, openAuth, openSearch, 
             {PILLARS.map((p) => {
               const active = route.startsWith(p.slug);
               return (
-                <a key={p.id} onClick={() => navigate(p.slug)} style={{
+                <a key={p.id} className={"pillar-link" + (active ? " active" : "")} onClick={() => navigate(p.slug)} style={{
+                  "--pc": p.color,
                   display: "flex", alignItems: "center", gap: 8,
                   padding: "0 18px", cursor: "pointer",
-
                   borderBottom: active ? `3px solid ${p.color}` : "3px solid transparent",
-                  marginBottom: -3, color: active ? p.color : "var(--ink)",
-                  transition: "color .15s", fontWeight: "500", fontSize: "14px"
-                }} onMouseEnter={(e) => e.currentTarget.style.color = p.color}
-                onMouseLeave={(e) => e.currentTarget.style.color = active ? p.color : "var(--ink)"}>
+                  marginBottom: -3, fontWeight: "500", fontSize: "14px"
+                }}>
                   <Icon name={PILLAR_ICONS[p.id]} size={15} color={p.color} />
                   {localizedPillarLabel(p.id, lang)}
                 </a>);
 
             })}
           </nav>
+          <style>{`
+            .pillar-link{ color: var(--ink); }
+            .pillar-link:hover.pillar-link.active{ color: var(--pc); }
+          `}</style>
           <nav style={{ display: "flex", alignItems: "stretch", gap: 0 }}>
             {NAV_EXTRA.map((n) => {
               const active = route.startsWith(n.slug);
@@ -294,7 +283,7 @@ function Header({ route, navigate, theme, setTheme, user, openAuth, openSearch, 
                   borderBottom: active ? "3px solid var(--accent)" : "3px solid transparent",
                   marginBottom: -3,
                   color: active ? "var(--accent)" : "var(--muted)",
-                  textTransform: "uppercase", letterSpacing: ".08em", padding: "0px 21px 0px 19px"
+                  textTransform: "uppercase", letterSpacing: ".08em", padding: "0px 19px"
                 }}>
                   {localizedNavLabel(n.id, lang)}
                   {n.badge && <span className="mono" style={{
@@ -308,7 +297,7 @@ function Header({ route, navigate, theme, setTheme, user, openAuth, openSearch, 
         </div>
       </div>
 
-      {/* Sign-in nudge — appears after 3 articles, pushes content down, dismissable */}
+      {/* Sign-in nudge, appears after 3 articles, pushes content down, dismissable */}
       {showNudge &&
       <div style={{
         background: "var(--surface-2)",
@@ -320,9 +309,9 @@ function Header({ route, navigate, theme, setTheme, user, openAuth, openSearch, 
           <div className="container" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 16, position: "relative" }}>
             <span>
               {t(
-              "Enjoying DailyTechWire? Sign in to save articles, follow topics, and pick up where you left off — across every device.",
-              "Bạn đang thích DailyTechWire? Đăng nhập để lưu bài, theo dõi chủ đề, và đọc tiếp ở bất kỳ thiết bị nào.",
-              "Suka DailyTechWire? Masuk untuk menyimpan artikel, mengikuti topik, dan lanjut membaca di perangkat mana pun."
+              "Enjoying dailytechwire? Sign in to save articles, follow topics, and pick up where you left off, across every device.",
+              "Bạn đang thích dailytechwire? Đăng nhập để lưu bài, theo dõi chủ đề, và đọc tiếp ở bất kỳ thiết bị nào.",
+              "Suka dailytechwire? Masuk untuk menyimpan artikel, mengikuti topik, dan lanjut membaca di perangkat mana pun."
             )}
             </span>
             <a onClick={openAuth} style={{
@@ -330,7 +319,7 @@ function Header({ route, navigate, theme, setTheme, user, openAuth, openSearch, 
             textDecoration: "underline", textUnderlineOffset: 3,
             color: "var(--accent)", paddingRight: 28
           }}>
-              {t("Sign in — it's free →", "Đăng nhập — miễn phí →", "Masuk — gratis →")}
+              {t("Sign in, it's free →", "Đăng nhập, miễn phí →", "Masuk, gratis →")}
             </a>
             <button onClick={dismissNudge} aria-label="Dismiss" style={{
             position: "absolute", right: 0, top: "50%", transform: "translateY(-50%)",
