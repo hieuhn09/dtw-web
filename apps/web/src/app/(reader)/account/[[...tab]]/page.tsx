@@ -44,7 +44,7 @@ function AccountSaved() {
           style={{
             margin: 0,
             fontSize: 24,
-            fontWeight: 700,
+            fontWeight: 650,
             letterSpacing: "-0.015em",
           }}
         >
@@ -113,7 +113,7 @@ function AccountHistory() {
         style={{
           margin: "0 0 18px",
           fontSize: 24,
-          fontWeight: 700,
+          fontWeight: 650,
           letterSpacing: "-0.015em",
         }}
       >
@@ -175,7 +175,7 @@ function AccountFollowing() {
         style={{
           margin: "0 0 8px",
           fontSize: 24,
-          fontWeight: 700,
+          fontWeight: 650,
           letterSpacing: "-0.015em",
         }}
       >
@@ -247,7 +247,7 @@ function AccountNewsletters() {
         style={{
           margin: "0 0 18px",
           fontSize: 24,
-          fontWeight: 700,
+          fontWeight: 650,
           letterSpacing: "-0.015em",
         }}
       >
@@ -305,7 +305,7 @@ function AccountSettings() {
         style={{
           margin: "0 0 18px",
           fontSize: 24,
-          fontWeight: 700,
+          fontWeight: 650,
           letterSpacing: "-0.015em",
         }}
       >
@@ -391,7 +391,7 @@ export default function AccountPage({
             alignItems: "center",
             justifyContent: "center",
             fontSize: 28,
-            fontWeight: 700,
+            fontWeight: 650,
             fontFamily: "var(--font-serif)",
           }}
         >
@@ -403,7 +403,7 @@ export default function AccountPage({
             style={{
               margin: "0 0 4px",
               fontSize: 32,
-              fontWeight: 700,
+              fontWeight: 650,
               letterSpacing: "-0.02em",
             }}
           >
@@ -426,9 +426,6 @@ export default function AccountPage({
             </span>
           </div>
         </div>
-        <Button variant="accent">
-          {t("Upgrade to Pro · $12/mo", "Nâng cấp Pro · $12/tháng", "Upgrade ke Pro · $12/bulan")}
-        </Button>
       </header>
 
       <div className="r-sidebar" style={{ display: "grid", gap: 36 }}>

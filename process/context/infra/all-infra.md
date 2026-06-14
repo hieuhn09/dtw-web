@@ -171,7 +171,7 @@ These ship in CI as a regression gate:
 | Regulation | Where it bites |
 |---|---|
 | **GDPR** | EU readers. Cookie banner. Right-to-erase from `users` + `bookmarks` + `reading_history`. |
-| **PDPA Singapore** | Default jurisdiction (Asia Press Corporation is registered in Singapore). |
+| **PDPA Singapore** | Default jurisdiction (Asia Press Centre Group (APCG) is registered in Singapore). |
 | **Nghị định 13 (Vietnam)** | Vietnamese readers. Data minimisation + consent. |
 
 **Cookie banner** wording (current, from design): "We use cookies to remember your login and improve the site. No ads, no tracking, no data sale." Horizontal layout (920px), single line, three sections separated by hairlines: icon + COOKIES label / message / Decline + Accept buttons. EN / VI / ID. **No dark patterns** — Decline must be visually equal in weight to Accept.

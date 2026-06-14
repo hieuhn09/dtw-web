@@ -62,31 +62,6 @@ export interface CoverArtProps {
   src?: string | null;
 }
 
-function CoverLabel({ label }: { label?: string }) {
-  if (!label) return null;
-  return (
-    <div
-      className="mono"
-      style={{
-        position: "absolute",
-        left: 10,
-        bottom: 10,
-        padding: "4px 8px",
-        fontSize: 10,
-        letterSpacing: ".1em",
-        background: "rgba(255,255,255,.85)",
-        color: "#111",
-        border: "1px solid rgba(0,0,0,.08)",
-        borderRadius: 3,
-        textTransform: "uppercase",
-        fontWeight: 600,
-      }}
-    >
-      {label}
-    </div>
-  );
-}
-
 export function CoverArt({
   pillar = "asia",
   seed = "x",
@@ -105,7 +80,6 @@ export function CoverArt({
           alt={label ?? ""}
           style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
         />
-        <CoverLabel label={label} />
       </div>
     );
   }
@@ -302,10 +276,12 @@ export function CoverArt({
         width="100%"
         height="100%"
         style={{ display: "block" }}
+        role={label ? "img" : "presentation"}
+        aria-label={label || undefined}
+        aria-hidden={label ? undefined : true}
       >
         {body}
       </svg>
-      <CoverLabel label={label} />
     </div>
   );
 }
@@ -322,7 +298,7 @@ export interface AvatarProps {
 
 export function Avatar({ name, size = 36, color }: AvatarProps) {
   const initials = name.split(" ").map((s) => s[0] ?? "").slice(0, 2).join("").toUpperCase();
-  const palette = ["#E04E1F", "#0EA5E9", "#7C3AED", "#16A34A", "#D97706", "#475569"];
+  const palette = ["#B0512E", "#3E6E80", "#3A4E8C", "#46735C", "#8F7238", "#475569"];
   const h = hashStr(name);
   const bg = color ?? palette[h % palette.length];
   return (
@@ -337,7 +313,7 @@ export function Avatar({ name, size = 36, color }: AvatarProps) {
         alignItems: "center",
         justifyContent: "center",
         fontFamily: "var(--font-serif)",
-        fontWeight: 700,
+        fontWeight: 650,
         fontSize: size * 0.4,
         flexShrink: 0,
         letterSpacing: "-0.02em",
@@ -402,18 +378,18 @@ export function BrandMark({
 // ============================================================================
 
 const CITY_COLOR: Record<string, string> = {
-  Singapore: "#E04E1F",
-  Seoul: "#7C3AED",
-  Jakarta: "#0EA5E9",
-  Hanoi: "#16A34A",
-  "Ho Chi Minh City": "#16A34A",
+  Singapore: "#B0512E",
+  Seoul: "#3A4E8C",
+  Jakarta: "#3E6E80",
+  Hanoi: "#46735C",
+  "Ho Chi Minh City": "#46735C",
   Tokyo: "#475569",
-  Taipei: "#D97706",
-  Bengaluru: "#0EA5E9",
+  Taipei: "#8F7238",
+  Bengaluru: "#3E6E80",
   Shenzhen: "#7C2D12",
-  Manila: "#D97706",
+  Manila: "#8F7238",
   "Hong Kong": "#475569",
-  Bangkok: "#7C3AED",
+  Bangkok: "#3A4E8C",
 };
 
 export interface CityChipProps {

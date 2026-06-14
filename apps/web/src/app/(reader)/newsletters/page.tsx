@@ -29,9 +29,9 @@ export default function NewslettersPage() {
       >
         <div className="kicker" style={{ marginBottom: 6 }}>
           {t(
-            "Newsletters · 6 picks · all free",
-            "Bản tin · 6 lựa chọn · miễn phí",
-            "Newsletter · 6 pilihan · gratis"
+            "Newsletters · 8 picks · all free",
+            "Bản tin · 8 lựa chọn · miễn phí",
+            "Newsletter · 8 pilihan · gratis"
           )}
         </div>
         <h1
@@ -39,7 +39,7 @@ export default function NewslettersPage() {
           style={{
             margin: "0 0 10px",
             fontSize: "clamp(30px, 8vw, 48px)",
-            fontWeight: 700,
+            fontWeight: 650,
             letterSpacing: "-0.025em",
             lineHeight: 1,
           }}
@@ -99,7 +99,7 @@ export default function NewslettersPage() {
                   justifyContent: "center",
                   fontFamily: "var(--font-serif)",
                   fontSize: 18,
-                  fontWeight: 700,
+                  fontWeight: 650,
                   flexShrink: 0,
                 }}
               >
@@ -146,7 +146,7 @@ export default function NewslettersPage() {
                 </div>
                 <p
                   style={{
-                    margin: "0 0 8px",
+                    margin: "0",
                     fontSize: 13,
                     lineHeight: 1.45,
                     color: "var(--ink-2)",
@@ -154,9 +154,6 @@ export default function NewslettersPage() {
                 >
                   {n.desc}
                 </p>
-                <div className="text-mute-2 mono" style={{ fontSize: 11 }}>
-                  {n.subs} {t("subscribers · sample issue →", "người đăng ký · xem mẫu →", "pelanggan · contoh →")}
-                </div>
               </div>
             </label>
           );
@@ -170,8 +167,8 @@ export default function NewslettersPage() {
         }}
         style={{
           padding: "28px 32px",
-          background: "var(--ink)",
-          color: "var(--paper)",
+          background: "var(--banner)",
+          color: "#E8EDF7",
           borderRadius: 8,
           display: "flex",
           gap: 20,
@@ -188,7 +185,7 @@ export default function NewslettersPage() {
               `newsletter terpilih`
             )}
           </div>
-          <div className="serif" style={{ fontSize: 18, fontWeight: 600 }}>
+          <div className="serif" style={{ fontSize: 18, fontWeight: 650, color: "#FFFFFF" }}>
             {t(
               "One confirmation email per newsletter. We'll send them all at once.",
               "Một email xác nhận mỗi bản tin. Chúng tôi sẽ gửi cùng lúc.",
@@ -206,10 +203,10 @@ export default function NewslettersPage() {
             flex: 1,
             maxWidth: 320,
             padding: "14px 16px",
-            border: "1px solid color-mix(in oklab, var(--paper) 20%, transparent)",
+            border: "1px solid rgba(232,237,247,0.20)",
             borderRadius: 5,
-            background: "color-mix(in oklab, var(--paper) 6%, transparent)",
-            color: "var(--paper)",
+            background: "rgba(232,237,247,0.06)",
+            color: "#E8EDF7",
             fontFamily: "var(--font-sans)",
             fontSize: 14,
           }}

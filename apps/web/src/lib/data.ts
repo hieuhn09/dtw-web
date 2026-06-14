@@ -517,6 +517,8 @@ export const NEWSLETTERS: ReadonlyArray<Newsletter> = [
   { id: "fund", name: "Asia Funding Weekly", cadence: "Weekly · Thu", desc: "Every term sheet that closed in ASEAN this week.", subs: "22,900", pillar: "startups" },
   { id: "dev", name: "Dev Digest", cadence: "Weekly · Fri", desc: "What practitioners are actually shipping.", subs: "19,300", pillar: "dev" },
   { id: "prod", name: "Products & Deals", cadence: "Bi-weekly", desc: "Reviews and buy-or-skip calls. Affiliate-disclosed.", subs: "14,100", pillar: "products" },
+  { id: "deep", name: "Deep Dive", cadence: "Weekly · Sun", desc: "One long-form investigation or data story, in full, every weekend.", subs: "17,600", pillar: "policy" },
+  { id: "awards", name: "DTW Awards", cadence: "Occasional", desc: "Updates on the upcoming DTW Awards, plus nominations and winners when they land.", subs: "3,100", pillar: "asia" },
 ];
 
 export interface Podcast {

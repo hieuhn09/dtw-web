@@ -96,9 +96,8 @@ const TIP_LINES: ReadonlyArray<readonly [icon: IconName, line: string, sub: stri
 const BIZ_INFO: ReadonlyArray<readonly [k: string, v: string]> = [
   [
     "Registered office",
-    "Asia Press Corporation Pte. Ltd.\n61 Robinson Road, #12-01\nSingapore 068893",
+    "Asia Press Centre Group (APCG) Pte. Ltd.\n61 Robinson Road, #12-01\nSingapore 068893",
   ],
-  ["Company particulars", "UEN: 201112345A\nGST: 201112345A-G\nMICA Permit: MCI(P)042/06/2025"],
   ["Press inquiries", "press@asiapress.com\nMedia kit (PDF, 4MB) →"],
   ["Investor relations", "ir@asiapress.com\nAnnual report 2025 →"],
 ];
@@ -111,19 +110,19 @@ export default function AboutPage() {
     lang === "vi" ? (
       <>
         DailyTechWire được xuất bản bởi{" "}
-        <strong style={{ color: "var(--paper)" }}>Asia Press Corporation Pte. Ltd.</strong>, một
+        <strong style={{ color: "var(--paper)" }}>Asia Press Centre Group (APCG) Pte. Ltd.</strong>, một
         tập đoàn truyền thông độc lập đặt trụ sở tại Singapore và có bạn đọc ở 138 quốc gia.
       </>
     ) : lang === "id" ? (
       <>
         DailyTechWire diterbitkan oleh{" "}
-        <strong style={{ color: "var(--paper)" }}>Asia Press Corporation Pte. Ltd.</strong>, grup
+        <strong style={{ color: "var(--paper)" }}>Asia Press Centre Group (APCG) Pte. Ltd.</strong>, grup
         media independen yang berkantor pusat di Singapura dan dibaca di 138 negara.
       </>
     ) : (
       <>
         DailyTechWire is published by{" "}
-        <strong style={{ color: "var(--paper)" }}>Asia Press Corporation Pte. Ltd.</strong>, an
+        <strong style={{ color: "var(--paper)" }}>Asia Press Centre Group (APCG) Pte. Ltd.</strong>, an
         independent media group headquartered in Singapore and read in 138 countries.
       </>
     );
@@ -170,9 +169,9 @@ export default function AboutPage() {
           >
             <span className="live-dot" style={{ background: "var(--accent)" }} />
             {t(
-              "About · Asia Press Corporation",
-              "Về chúng tôi · Asia Press Corporation",
-              "Tentang · Asia Press Corporation"
+              "About · Asia Press Centre Group (APCG)",
+              "Về chúng tôi · Asia Press Centre Group (APCG)",
+              "Tentang · Asia Press Centre Group (APCG)"
             )}
           </div>
           <h1
@@ -294,7 +293,7 @@ export default function AboutPage() {
               }}
             >
               <p style={{ margin: "0 0 18px" }}>
-                <strong style={{ color: "var(--ink)" }}>Asia Press Corporation</strong> was
+                <strong style={{ color: "var(--ink)" }}>Asia Press Centre Group (APCG)</strong> was
                 founded in 2023 in Singapore by a group of veteran correspondents and editors who
                 shared a single conviction: the most important business, technology, and policy
                 stories of this decade would be reported from Asia, by reporters who live in it,
@@ -539,7 +538,7 @@ export default function AboutPage() {
                     fontFamily: "var(--font-serif)",
                   }}
                 >
-                  Editor-in-Chief, DailyTechWire · Group Editor, Asia Press Corporation
+                  Editor-in-Chief, DailyTechWire · Group Editor, Asia Press Centre Group (APCG)
                 </div>
 
                 <p
@@ -551,7 +550,7 @@ export default function AboutPage() {
                     color: "var(--ink)",
                   }}
                 >
-                  Cheryl Tan is a founding editor of Asia Press Corporation. She joined at the
+                  Cheryl Tan is a founding editor of Asia Press Centre Group (APCG). She joined at the
                   company&apos;s launch in 2023 as Editor-in-Chief of DailyTechWire and was
                   appointed Group Editor in 2024, where she is responsible for the editorial
                   direction of all eight publications and the standards framework that governs

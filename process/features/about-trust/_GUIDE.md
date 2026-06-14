@@ -6,7 +6,7 @@
 
 The trust-and-transparency surface — six static pages that exist because editorial integrity is the product, not a footnote.
 
-- `/about` — Asia Press Corporation (parent organisation), Editor-in-Chief, mission & values, ownership & funding
+- `/about` — Asia Press Centre Group (APCG) (parent organisation), Editor-in-Chief, mission & values, ownership & funding
 - `/trust/editorial-standards`
 - `/trust/ai-disclosure`
 - `/trust/corrections` — public log of every correction
@@ -23,14 +23,14 @@ The About page went through extensive iteration in `design/chats/chat1.md`. The 
 
 ### Hero (dark)
 
-- Kicker: "About · Asia Press Corporation"
+- Kicker: "About · Asia Press Centre Group (APCG)"
 - Big serif title + dek
 - Stats grid (count-up): **2023** (founded), **8** (publications), **210+** (journalists across the group), **68%** (revenue from readers), **100%** (independent)
 - Note: "2023" must render without a comma (`toLocaleString` off for that one stat — design fix)
 
 ### Who we are
 
-- Asia Press Corporation, **independent newsroom from Singapore**, founded **2023**
+- Asia Press Centre Group (APCG), **independent newsroom from Singapore**, founded **2023**
 - Operates **8 publications** across Asian beats (intentionally **not named** — the design iteration removed the specific publication titles per user instruction; do not reintroduce names)
 - Sole / private ownership + employees; **no state or platform ownership**
 - No fake / unverifiable claims (no "210 staff" specifics in text, no fake awards, no fake memberships)

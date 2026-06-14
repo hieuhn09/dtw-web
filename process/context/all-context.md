@@ -35,7 +35,7 @@ The web is NOT where articles are written — the Engine handles drafting. Edito
 
 ### Parent organisation
 
-DailyTechWire is published by **Asia Press Corporation** (independent newsroom, Singapore, founded **2023**). Asia Press operates several publications across Asian beats; do **not** invent or list other publication names in code or copy. Editor-in-Chief is Cheryl Tan Hwee-Min (no specific career claims — earlier drafts were rejected for invented Reuters / Pulitzer history; do not reintroduce them). See `process/features/about-trust/_GUIDE.md`.
+DailyTechWire is published by **Asia Press Centre Group (APCG)** (independent newsroom, Singapore, founded **2023**; renamed from "Asia Press Corporation" in the 2026-06-14 design refresh). APCG operates several publications across Asian beats; do **not** invent or list other publication names in code or copy. Editor-in-Chief is Cheryl Tan Hwee-Min (no specific career claims — earlier drafts were rejected for invented Reuters / Pulitzer history; do not reintroduce them). See `process/features/about-trust/_GUIDE.md`.
 
 ---
 
@@ -280,7 +280,7 @@ dtw-web/
 | `newsletters/` | 6 newsletters (AM Brief, PM Brief, AI Weekly, Asia Funding Weekly, Dev Digest, Products Deals), Resend, double opt-in, segment-by-pillar |
 | `account/` | Saved / Reading queue / History / Following pillars / Settings, IndexedDB ↔ DB sync, PWA offline cache rules. Auth flows live here (modal, magic link, OAuth callback) |
 | `engine-integration/` | Content Engine ↔ Payload API contract, `lockedFields` / `editedByHuman` / `origin` model, optimistic lock, `afterChange` hook (revalidate + Meilisearch index + OG generation) |
-| `about-trust/` | About page (Asia Press Corporation, Cheryl Tan EIC, no fake history), Editorial Standards, AI Disclosure, Corrections (public log), Transparency Report (auto-generated, Phase 2), Sponsored / Affiliate Policy |
+| `about-trust/` | About page (Asia Press Centre Group / APCG, Cheryl Tan EIC, no fake history), Editorial Standards, AI Disclosure, Corrections (public log), Transparency Report (auto-generated, Phase 2), Sponsored / Affiliate Policy |
 
 ---
 
