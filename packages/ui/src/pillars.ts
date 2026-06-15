@@ -14,7 +14,7 @@ export interface Pillar {
 export const PILLARS: ReadonlyArray<Pillar> = [
   { id: "ai", label: "AI", cssVar: "--ai" },
   { id: "startups", label: "Startups", cssVar: "--startups" },
-  { id: "latest", label: "Latest", cssVar: "--asia" },
+  { id: "latest", label: "Latest", cssVar: "--latest" },
   { id: "dev", label: "Dev", cssVar: "--dev" },
   { id: "products", label: "Products", cssVar: "--products" },
   { id: "policy", label: "Policy", cssVar: "--policy" },
