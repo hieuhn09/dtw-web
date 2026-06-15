@@ -108,7 +108,7 @@ Re-toned to a muted earthy set in the 2026-06-14 refresh (was a brighter rainbow
 ```css
 --ai:           #3A4E8C;   /* was #7C3AED */
 --startups:     #3E6E80;   /* was #0EA5E9 */
---asia:         #B0512E;   /* was #E04E1F */
+--latest:       #B0512E;   /* renamed from --asia (asia pillar → latest); was #E04E1F */
 --dev:          #46735C;   /* was #16A34A */
 --products:     #8F7238;   /* was #D97706 */
 --policy:       #5A6577;   /* was #475569 */

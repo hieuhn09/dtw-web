@@ -30,7 +30,7 @@
   /* Pillars — muted earthy set (design refresh 2026-06-14) */
   --ai: #3A4E8C;
   --startups: #3E6E80;
-  --asia: #B0512E;
+  --latest: #B0512E;      /* was --asia (pillar renamed asia→latest, value unchanged) */
   --dev: #46735C;
   --products: #8F7238;
   --policy: #5A6577;
@@ -88,7 +88,7 @@ html[data-theme="dark"] {
 
   --color-ai: var(--ai);
   --color-startups: var(--startups);
-  --color-asia: var(--asia);
+  --color-latest: var(--latest);
   --color-dev: var(--dev);
   --color-products: var(--products);
   --color-policy: var(--policy);

@@ -34,7 +34,7 @@ export interface NavPillar {
 export const PILLARS: ReadonlyArray<Pillar> = [
   { id: "ai", label: "AI", color: "var(--ai)", slug: "/ai" },
   { id: "startups", label: "Startups", color: "var(--startups)", slug: "/startups" },
-  { id: "latest", label: "Latest", color: "var(--asia)", slug: "/latest" },
+  { id: "latest", label: "Latest", color: "var(--latest)", slug: "/latest" },
   { id: "dev", label: "Dev", color: "var(--dev)", slug: "/dev" },
   { id: "products", label: "Products", color: "var(--products)", slug: "/products" },
   { id: "policy", label: "Policy", color: "var(--policy)", slug: "/policy" },

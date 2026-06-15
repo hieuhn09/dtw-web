@@ -100,7 +100,7 @@ export function toArticleView(a: Article): ArticleView {
     id: String(a.id),
     slug: a.slug,
     pillar: asPillarId(pillar?.slug),
-    pillarColor: pillar?.color ?? "var(--asia)",
+    pillarColor: pillar?.color ?? "var(--latest)",
     pillarLabel: pillar?.title?.en ?? pillar?.slug ?? "Latest",
     author: author?.name ?? "Staff",
     authorCity: author?.city ?? "",
