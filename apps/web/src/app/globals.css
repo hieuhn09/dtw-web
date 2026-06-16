@@ -514,8 +514,12 @@ button[data-glow="1"]:hover {
 
 /* Article body — styles the semantic elements emitted by Payload's Lexical
    RichText renderer (paragraphs, headings, quotes, lists, links). Typography
-   (font, size, colour) is inherited from the .article-prose wrapper. */
-.article-prose > p {
+   (font, size, colour) is inherited from the .article-prose wrapper.
+   NB: use a descendant (not direct-child) combinator — RichText wraps its
+   output in a <div class="payload-richtext">, so paragraphs are nested one
+   level below .article-prose, not direct children. DisclosureBox uses only
+   <div>s, so this never styles disclosure copy. */
+.article-prose p {
   margin: 0 0 22px;
 }
 .article-prose h2,
