@@ -1,6 +1,6 @@
 import "server-only";
 import { unstable_cache } from "next/cache";
-import { getPayload } from "payload";
+import { getPayload, type Where } from "payload";
 import config from "../../payload.config";
 import type { Article, Pillar, Author, WireDrop, Tag, Correction } from "../payload/payload-types";
 import type { NavPillar } from "./data";
@@ -99,6 +99,119 @@ export const getRecentArticles = unstable_cache(
     return r.docs;
   },
   ["articles:recent"],
+  { tags: ["articles:all"], revalidate: 60 }
+);
+
+/**
+ * Resolve a pillar slug to its CMS id (cached). Returns null for "latest" (the
+ * all-beats feed has no single pillar) and for unknown slugs. Shared by the
+ * paginated feed + section scan so neither re-queries the pillars table on every
+ * "Load more" page.
+ */
+const getPillarIdBySlug = unstable_cache(
+  async (pillarSlug: string): Promise<string | number | null> => {
+    if (pillarSlug === "latest") return null;
+    const p = await payload();
+    const pillars = await p.find({
+      collection: "pillars",
+      where: { slug: { equals: pillarSlug } },
+      limit: 1,
+      depth: 0,
+    });
+    return pillars.docs[0]?.id ?? null;
+  },
+  ["pillar:id-by-slug"],
+  { tags: ["pillars:all"], revalidate: 300 }
+);
+
+export interface ArticlesPage {
+  docs: Article[];
+  /** True total matching the filter (Payload counts server-side), not just the
+   *  count returned on this page — drives the "N stories" badge and end-of-feed. */
+  totalDocs: number;
+  hasNextPage: boolean;
+  page: number;
+}
+
+/**
+ * Paginated article feed for the pillar listing pages. Payload paginates
+ * natively, so this scales past any in-memory cap — "Load more" just asks for
+ * the next `page`.
+ *
+ * `pillarSlug === "latest"` is the cross-beat firehose: it skips the pillar
+ * filter and returns every published article, newest first (the "Latest" pillar
+ * is an all-beats feed — see its CMS description in scripts/seed-payload.ts).
+ * Any other slug filters to that pillar. `section` (other than "All") narrows to
+ * a single subsection. Returns an empty page for an unknown pillar slug.
+ */
+export const getArticlesPage = unstable_cache(
+  async (
+    pillarSlug: string,
+    page = 1,
+    section = "All",
+    pageSize = 21
+  ): Promise<ArticlesPage> => {
+    const p = await payload();
+    const and: Where[] = [{ _status: { equals: "published" } }];
+    if (pillarSlug !== "latest") {
+      const pillarId = await getPillarIdBySlug(pillarSlug);
+      if (pillarId == null) return { docs: [], totalDocs: 0, hasNextPage: false, page: 1 };
+      and.push({ pillar: { equals: pillarId } });
+    }
+    if (section && section !== "All") and.push({ section: { equals: section } });
+    // `-id` is a stable, unique tiebreaker: without it, articles that share the
+    // exact same publishedAt could be ordered differently between page requests,
+    // letting one slip across a page boundary (skip/dup). Offset pagination still
+    // can't fully isolate a feed that mutates mid-paging, but the client dedupes
+    // by id on append, so the common "new article published while paging" case
+    // produces a harmless duplicate (filtered), not a gap.
+    const r = await p.find({
+      collection: "articles",
+      where: { and },
+      sort: ["-publishedAt", "-id"],
+      page,
+      limit: pageSize,
+      depth: 1,
+    });
+    return { docs: r.docs, totalDocs: r.totalDocs, hasNextPage: r.hasNextPage, page: r.page ?? page };
+  },
+  ["articles:page"],
+  { tags: ["articles:all"], revalidate: 60 }
+);
+
+/**
+ * Distinct subsection labels for a pillar's tab bar (or all beats for "latest").
+ * `section` is a free-text field on articles, so we scan the newest N and dedupe
+ * rather than relying on a taxonomy collection. NOTE: bounded scan — a section
+ * that only appears in articles older than the cap won't surface as a tab. This
+ * is an intentional trade-off for the tab bar; the feed itself is unbounded.
+ */
+export const getPillarSections = unstable_cache(
+  async (pillarSlug: string): Promise<string[]> => {
+    const SECTION_SCAN_CAP = 500;
+    const p = await payload();
+    const and: Where[] = [{ _status: { equals: "published" } }];
+    if (pillarSlug !== "latest") {
+      const pillarId = await getPillarIdBySlug(pillarSlug);
+      if (pillarId == null) return [];
+      and.push({ pillar: { equals: pillarId } });
+    }
+    const r = await p.find({
+      collection: "articles",
+      where: { and },
+      sort: ["-publishedAt", "-id"],
+      limit: SECTION_SCAN_CAP,
+      depth: 0,
+      select: { section: true },
+    });
+    const seen = new Set<string>();
+    for (const d of r.docs) {
+      const s = (d as { section?: string | null }).section;
+      if (s && s.trim()) seen.add(s.trim());
+    }
+    return Array.from(seen);
+  },
+  ["articles:sections"],
   { tags: ["articles:all"], revalidate: 60 }
 );
 

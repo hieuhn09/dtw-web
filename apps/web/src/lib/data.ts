@@ -4,6 +4,15 @@
 
 export type PillarId = "ai" | "startups" | "latest" | "dev" | "products" | "policy";
 
+/**
+ * Articles fetched per page on the pillar listing feed. Shared between the
+ * server (route + load-more action) and the client (`PillarContent`) so a page
+ * served on the server lines up exactly with what "Load more" requests next.
+ * The feed paginates server-side (Payload paginates natively), so this is a
+ * fetch batch size, NOT a hard cap on how many stories a feed can show.
+ */
+export const ARTICLES_PAGE_SIZE = 21;
+
 export interface Pillar {
   id: PillarId;
   label: string;
