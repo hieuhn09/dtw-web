@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useState, useTransition } from "react";
 import Link from "next/link";
 import { Button, PillarTag } from "@dtw/ui";
 import { CoverArt } from "@/components/cover-art";
@@ -8,22 +8,27 @@ import { Icon } from "@/components/icons";
 import { BylineWired } from "@/components/byline-wired";
 import { TimeAgo } from "@/components/time-ago";
 import type { ArticleView } from "@/lib/article-view";
-import { type PillarId } from "@/lib/data";
+import { ARTICLES_PAGE_SIZE, type PillarId } from "@/lib/data";
 import { localizedPillarLabel, useLang, useT } from "@/lib/i18n";
-
-const PAGE_SIZE = 21;
+import { loadArticlesPage } from "@/app/(reader)/[pillar]/load-more-action";
 
 export interface PillarContentProps {
-  /** Pillar slug from the CMS (not constrained to the 6 known ids). */
+  /** Pillar slug from the CMS (not constrained to the 6 known ids). Also the
+   *  key the load-more server action filters by ("latest" = all beats). */
   pillarId: string;
   pillarColor: string;
   /** Icon name from the CMS pillar doc. */
   pillarIcon: string;
   pillarHeading: string;
   pillarDescription: string;
-  articles: ReadonlyArray<ArticleView>;
-  /** Total stories badge — fed by the server to avoid Date.now()-based mismatches. */
+  /** Page 1 of the feed, server-rendered. `initialArticles[0]` is the featured
+   *  story; the rest seed the grid. Further pages are fetched server-side. */
+  initialArticles: ReadonlyArray<ArticleView>;
+  /** True total stories for this pillar — fed by the server so the badge
+   *  reflects everything, not just what's been paged into memory. */
   totalCount: number;
+  /** Whether the server has a page 2 for the unfiltered feed. */
+  hasMoreInitial: boolean;
 }
 
 export function PillarContent({
@@ -32,8 +37,9 @@ export function PillarContent({
   pillarIcon,
   pillarHeading,
   pillarDescription,
-  articles,
+  initialArticles,
   totalCount,
+  hasMoreInitial,
 }: PillarContentProps) {
   const t = useT();
   const { lang } = useLang();
@@ -41,25 +47,45 @@ export function PillarContent({
   // pillar added later that isn't in the static label map.
   const pillarLabel = localizedPillarLabel(pillarId as PillarId, lang) || pillarHeading;
 
-  const featured = articles[0] ?? null;
-  const rest = articles.slice(1);
+  // The featured story is the newest article in the feed; the rest fill the grid.
+  const featured = initialArticles[0] ?? null;
+  const featuredId = featured?.id ?? null;
 
-  const subsections = useMemo(() => {
-    const s = new Set<string>();
-    articles.forEach((a) => a.section && s.add(a.section));
-    return ["All", ...Array.from(s)];
-  }, [articles]);
+  // Grid = the feed minus the featured card. "Load more" refetches the next page
+  // from the server (loadArticlesPage) instead of slicing memory, so the feed
+  // scales past any cap.
+  const [grid, setGrid] = useState<ArticleView[]>(() =>
+    initialArticles.filter((a) => a.id !== featuredId)
+  );
+  const [page, setPage] = useState<number>(1);
+  const [hasMore, setHasMore] = useState<boolean>(hasMoreInitial);
+  const [total, setTotal] = useState<number>(totalCount);
+  const [pending, startTransition] = useTransition();
 
-  const [activeSub, setActiveSub] = useState<string>("All");
-  const [shown, setShown] = useState<number>(PAGE_SIZE);
+  // Note: navigating to a different pillar remounts this component (the route
+  // keys <PillarContent> by slug), so all state re-initializes from fresh props —
+  // no reset effect needed, and a background ISR refresh won't yank a reader's
+  // loaded pages out from under them.
 
-  useEffect(() => {
-    setShown(PAGE_SIZE);
-  }, [activeSub, pillarId]);
-
-  const visible = activeSub === "All" ? rest : rest.filter((a) => a.section === activeSub);
-  const paged = visible.slice(0, shown);
-  const hasMore = visible.length > shown;
+  function loadMore() {
+    if (pending || !hasMore) return;
+    startTransition(async () => {
+      try {
+        const next = page + 1;
+        const r = await loadArticlesPage(pillarId, next);
+        setGrid((prev) => {
+          const seen = new Set(prev.map((a) => a.id));
+          const add = r.articles.filter((a) => a.id !== featuredId && !seen.has(a.id));
+          return [...prev, ...add];
+        });
+        setPage(r.page);
+        setHasMore(r.hasMore);
+        setTotal(r.totalCount);
+      } catch {
+        // Keep what's already loaded; the button re-enables so the reader can retry.
+      }
+    });
+  }
 
   return (
     <div className="container" style={{ paddingTop: 24, paddingBottom: 32 }}>
@@ -113,66 +139,10 @@ export function PillarContent({
             RSS feed
           </Button>
           <span className="text-mute-2 mono" style={{ fontSize: 11, marginLeft: 8 }}>
-            {totalCount} stories
+            {total} stories
           </span>
         </div>
       </header>
-
-      {/* Subsection tabs */}
-      <div
-        style={{
-          display: "flex",
-          gap: 0,
-          marginBottom: 32,
-          borderBottom: "1px solid var(--hair)",
-          overflowX: "auto",
-        }}
-      >
-        {subsections.map((s) => (
-          <button
-            key={s}
-            onClick={() => setActiveSub(s)}
-            style={{
-              padding: "12px 18px",
-              background: "transparent",
-              border: "none",
-              borderBottom:
-                activeSub === s
-                  ? `2px solid ${pillarColor}`
-                  : "2px solid transparent",
-              marginBottom: -1,
-              fontSize: 13,
-              fontWeight: activeSub === s ? 600 : 400,
-              color: activeSub === s ? "var(--ink)" : "var(--muted)",
-              cursor: "pointer",
-              whiteSpace: "nowrap",
-            }}
-          >
-            {s}
-          </button>
-        ))}
-        <div style={{ flex: 1 }} />
-        <div style={{ display: "flex", alignItems: "center", gap: 8, paddingRight: 8 }}>
-          <span className="text-mute-2 mono" style={{ fontSize: 11 }}>
-            {t("Sort:", "Sắp xếp:", "Urut:")}
-          </span>
-          <select
-            style={{
-              background: "transparent",
-              border: "1px solid var(--hair-2)",
-              padding: "4px 8px",
-              borderRadius: 4,
-              fontSize: 12,
-              color: "var(--ink)",
-              fontFamily: "var(--font-sans)",
-            }}
-          >
-            <option>{t("Latest", "Mới nhất", "Terbaru")}</option>
-            <option>{t("Most read", "Đọc nhiều", "Paling dibaca")}</option>
-            <option>{t("Editor's picks", "Lựa chọn biên tập", "Pilihan editor")}</option>
-          </select>
-        </div>
-      </div>
 
       {/* Featured */}
       {featured && (
@@ -224,7 +194,7 @@ export function PillarContent({
 
       {/* Grid */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 260px), 1fr))", gap: 32 }}>
-        {paged.map((a, i) => (
+        {grid.map((a, i) => (
           <Link
             key={a.id}
             href={`/article/${a.slug}`}
@@ -268,15 +238,18 @@ export function PillarContent({
           <Button
             variant="outline"
             size="lg"
-            onClick={() => setShown((s) => s + PAGE_SIZE)}
-            style={{ padding: "18px 36px", fontSize: 15, letterSpacing: ".02em" }}
+            onClick={loadMore}
+            disabled={pending}
+            style={{ padding: "18px 36px", fontSize: 15, letterSpacing: ".02em", opacity: pending ? 0.6 : 1 }}
           >
-            {t("Load more", "Tải thêm", "Muat lagi")}
+            {pending
+              ? t("Loading…", "Đang tải…", "Memuat…")
+              : t("Load more", "Tải thêm", "Muat lagi")}
           </Button>
         </div>
       )}
 
-      {!hasMore && visible.length > PAGE_SIZE && (
+      {!hasMore && total > ARTICLES_PAGE_SIZE && (
         <div
           style={{
             textAlign: "center",
@@ -286,14 +259,14 @@ export function PillarContent({
           }}
         >
           {t(
-            `End of feed — ${visible.length} stories shown.`,
-            `Hết bài — đã hiển thị ${visible.length} bài.`,
-            `Akhir feed — ${visible.length} artikel ditampilkan.`
+            `End of feed — ${total} stories.`,
+            `Hết bài — ${total} bài.`,
+            `Akhir feed — ${total} artikel.`
           )}
         </div>
       )}
 
-      {visible.length === 0 && !featured && (
+      {grid.length === 0 && !featured && (
         <div
           style={{
             textAlign: "center",

@@ -41,6 +41,11 @@ export default async function HomePage() {
       byPillar[a.pillar] = [...list, a];
     }
   }
+  // "Latest" is an auto-aggregated feed — the newest stories across every pillar,
+  // not only those literally tagged with the "latest" pillar (mirrors the /latest
+  // page). Without this the band would depend on "latest"-tagged articles landing
+  // in the recent set and could drop out of "Across the pillars" entirely.
+  byPillar.latest = articles.slice(0, 4);
 
   const spotlightItems = articles
     .filter((a) => (["latest", "policy", "startups"] as PillarId[]).includes(a.pillar))
