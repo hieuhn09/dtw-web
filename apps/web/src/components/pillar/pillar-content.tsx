@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, useTransition } from "react";
+import { useState, useTransition } from "react";
 import Link from "next/link";
 import { Button, PillarTag } from "@dtw/ui";
 import { CoverArt } from "@/components/cover-art";
@@ -24,9 +24,7 @@ export interface PillarContentProps {
   /** Page 1 of the feed, server-rendered. `initialArticles[0]` is the featured
    *  story; the rest seed the grid. Further pages are fetched server-side. */
   initialArticles: ReadonlyArray<ArticleView>;
-  /** Full subsection label set for the tab bar (server-derived, not just page 1). */
-  sections: ReadonlyArray<string>;
-  /** True total stories for this pillar/section — fed by the server so the badge
+  /** True total stories for this pillar — fed by the server so the badge
    *  reflects everything, not just what's been paged into memory. */
   totalCount: number;
   /** Whether the server has a page 2 for the unfiltered feed. */
@@ -40,7 +38,6 @@ export function PillarContent({
   pillarHeading,
   pillarDescription,
   initialArticles,
-  sections,
   totalCount,
   hasMoreInitial,
 }: PillarContentProps) {
@@ -50,17 +47,13 @@ export function PillarContent({
   // pillar added later that isn't in the static label map.
   const pillarLabel = localizedPillarLabel(pillarId as PillarId, lang) || pillarHeading;
 
-  // The featured story is the newest of the unfiltered feed and stays fixed as
-  // the reader pages or filters by subsection (mirrors the original behavior).
+  // The featured story is the newest article in the feed; the rest fill the grid.
   const featured = initialArticles[0] ?? null;
   const featuredId = featured?.id ?? null;
 
-  const subsections = useMemo(() => ["All", ...sections], [sections]);
-
-  const [activeSub, setActiveSub] = useState<string>("All");
-  // Grid = the feed minus the featured card. "Load more" and subsection switches
-  // refetch from the server (loadArticlesPage) instead of slicing memory, so the
-  // feed scales past any cap.
+  // Grid = the feed minus the featured card. "Load more" refetches the next page
+  // from the server (loadArticlesPage) instead of slicing memory, so the feed
+  // scales past any cap.
   const [grid, setGrid] = useState<ArticleView[]>(() =>
     initialArticles.filter((a) => a.id !== featuredId)
   );
@@ -74,29 +67,12 @@ export function PillarContent({
   // no reset effect needed, and a background ISR refresh won't yank a reader's
   // loaded pages out from under them.
 
-  function selectSub(sub: string) {
-    if (sub === activeSub || pending) return;
-    startTransition(async () => {
-      try {
-        const r = await loadArticlesPage(pillarId, 1, sub);
-        setActiveSub(sub);
-        setGrid(r.articles.filter((a) => a.id !== featuredId));
-        setPage(1);
-        setHasMore(r.hasMore);
-        setTotal(r.totalCount);
-      } catch {
-        // Transient fetch failure — leave the current view intact. The tab
-        // re-enables when the transition settles so the reader can retry.
-      }
-    });
-  }
-
   function loadMore() {
     if (pending || !hasMore) return;
     startTransition(async () => {
       try {
         const next = page + 1;
-        const r = await loadArticlesPage(pillarId, next, activeSub);
+        const r = await loadArticlesPage(pillarId, next);
         setGrid((prev) => {
           const seen = new Set(prev.map((a) => a.id));
           const add = r.articles.filter((a) => a.id !== featuredId && !seen.has(a.id));
@@ -167,64 +143,6 @@ export function PillarContent({
           </span>
         </div>
       </header>
-
-      {/* Subsection tabs */}
-      <div
-        style={{
-          display: "flex",
-          gap: 0,
-          marginBottom: 32,
-          borderBottom: "1px solid var(--hair)",
-          overflowX: "auto",
-        }}
-      >
-        {subsections.map((s) => (
-          <button
-            key={s}
-            onClick={() => selectSub(s)}
-            disabled={pending}
-            style={{
-              padding: "12px 18px",
-              background: "transparent",
-              border: "none",
-              borderBottom:
-                activeSub === s
-                  ? `2px solid ${pillarColor}`
-                  : "2px solid transparent",
-              marginBottom: -1,
-              fontSize: 13,
-              fontWeight: activeSub === s ? 600 : 400,
-              color: activeSub === s ? "var(--ink)" : "var(--muted)",
-              cursor: pending ? "default" : "pointer",
-              opacity: pending && activeSub !== s ? 0.5 : 1,
-              whiteSpace: "nowrap",
-            }}
-          >
-            {s}
-          </button>
-        ))}
-        <div style={{ flex: 1 }} />
-        <div style={{ display: "flex", alignItems: "center", gap: 8, paddingRight: 8 }}>
-          <span className="text-mute-2 mono" style={{ fontSize: 11 }}>
-            {t("Sort:", "Sắp xếp:", "Urut:")}
-          </span>
-          <select
-            style={{
-              background: "transparent",
-              border: "1px solid var(--hair-2)",
-              padding: "4px 8px",
-              borderRadius: 4,
-              fontSize: 12,
-              color: "var(--ink)",
-              fontFamily: "var(--font-sans)",
-            }}
-          >
-            <option>{t("Latest", "Mới nhất", "Terbaru")}</option>
-            <option>{t("Most read", "Đọc nhiều", "Paling dibaca")}</option>
-            <option>{t("Editor's picks", "Lựa chọn biên tập", "Pilihan editor")}</option>
-          </select>
-        </div>
-      </div>
 
       {/* Featured */}
       {featured && (

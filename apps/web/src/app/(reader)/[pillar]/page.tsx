@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { PillarContent } from "@/components/pillar/pillar-content";
 import { toArticleView } from "@/lib/article-view";
-import { getArticlesPage, getPillarSections, getPillars } from "@/lib/payload-server";
+import { getArticlesPage, getPillars } from "@/lib/payload-server";
 import { ARTICLES_PAGE_SIZE } from "@/lib/data";
 
 export const revalidate = 60;
@@ -13,15 +13,13 @@ export default async function PillarPage({
 }) {
   const { pillar: slug } = await params;
 
-  // Page 1 of the feed + the subsection labels, in parallel. getArticlesPage
-  // special-cases "latest" as the all-beats firehose (no pillar filter); every
-  // other slug is filtered to its pillar. Both paginate server-side, so the
-  // feed is no longer capped — "Load more" fetches the next page via a server
-  // action (see load-more-action.ts).
-  const [pillarsRaw, firstPage, sections] = await Promise.all([
+  // Page 1 of the feed. getArticlesPage special-cases "latest" as the all-beats
+  // firehose (no pillar filter); every other slug is filtered to its pillar. It
+  // paginates server-side, so the feed is no longer capped — "Load more" fetches
+  // the next page via a server action (see load-more-action.ts).
+  const [pillarsRaw, firstPage] = await Promise.all([
     getPillars(),
-    getArticlesPage(slug, 1, "All", ARTICLES_PAGE_SIZE),
-    getPillarSections(slug),
+    getArticlesPage(slug, 1, ARTICLES_PAGE_SIZE),
   ]);
 
   // Validate + theme from the CMS, not a hardcoded list: a pillar created in
@@ -44,7 +42,6 @@ export default async function PillarPage({
       pillarHeading={pillarDoc.heading || pillarDoc.title?.en || pillarDoc.slug}
       pillarDescription={pillarDoc.description ?? ""}
       initialArticles={articles}
-      sections={sections}
       totalCount={firstPage.totalDocs}
       hasMoreInitial={firstPage.hasNextPage}
     />
