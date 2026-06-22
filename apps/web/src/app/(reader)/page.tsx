@@ -35,7 +35,14 @@ export default async function HomePage() {
   const pinned = pinnedDoc ? toArticleView(pinnedDoc) : null;
   const heroPool = articles.filter((a) => !a.sponsored);
   const lead = heroPool[0] ?? articles[0]!;
-  const aside = heroPool.slice(1, 5);
+  // "Also leading today" rail: a pinned story leads it too (skipped if it's
+  // already the hero lead, to avoid showing the same card twice), then the next
+  // newest non-sponsored stories fill the remaining slots.
+  const aside = (
+    pinned && pinned.id !== lead.id
+      ? [pinned, ...heroPool.filter((a) => a.id !== lead.id && a.id !== pinned.id)]
+      : heroPool.filter((a) => a.id !== lead.id)
+  ).slice(0, 4);
 
   const byPillar: Partial<Record<PillarId, ArticleView[]>> = {};
   for (const a of articles) {
