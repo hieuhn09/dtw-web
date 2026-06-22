@@ -311,16 +311,29 @@ export const getSponsoredArticle = unstable_cache(
 export const getPinnedLatest = unstable_cache(
   async (): Promise<Article | null> => {
     const p = await payload();
-    const r = await p.find({
-      collection: "articles",
-      where: {
-        and: [{ pinnedToLatest: { equals: true } }, { _status: { equals: "published" } }],
-      },
-      sort: "-publishedAt",
-      limit: 1,
-      depth: 1,
-    });
-    return r.docs[0] ?? null;
+    try {
+      const r = await p.find({
+        collection: "articles",
+        where: {
+          and: [{ pinnedToLatest: { equals: true } }, { _status: { equals: "published" } }],
+        },
+        sort: "-publishedAt",
+        limit: 1,
+        depth: 1,
+      });
+      return r.docs[0] ?? null;
+    } catch (err) {
+      // The `pinned_to_latest` column ships in a migration that only runs on
+      // production deploys (migrate-prod.mjs is gated to VERCEL_ENV=production).
+      // Preview/branch builds prerender this query before the column exists, so
+      // fail open to "nothing pinned" rather than crashing the whole build. Once
+      // the migration has run the query succeeds normally.
+      console.warn(
+        "[getPinnedLatest] query failed — column not migrated yet?",
+        (err as Error)?.message
+      );
+      return null;
+    }
   },
   ["articles:pinned-latest"],
   { tags: ["articles:all"], revalidate: 60 }
