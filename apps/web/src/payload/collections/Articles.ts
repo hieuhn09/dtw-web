@@ -75,7 +75,25 @@ export const Articles: CollectionConfig = {
               min: 1,
               label: "Read time (minutes)",
             },
-            { name: "publishedAt", type: "date", required: true },
+            {
+              name: "publishedAt",
+              type: "date",
+              required: true,
+              // Default to the creation instant so a story is never stamped in
+              // the future by accident.
+              defaultValue: () => new Date().toISOString(),
+              admin: {
+                // `dayAndTime` stores the exact instant chosen (defaulting to
+                // now). The default date-only picker normalizes the time to
+                // noon-UTC, which renders as a future local time for most of the
+                // day (e.g. 7:00 PM in UTC+7) and sends the "time ago" label
+                // negative — see lib/format.ts fmtTimeAgo.
+                date: {
+                  pickerAppearance: "dayAndTime",
+                  displayFormat: "d MMM yyyy, h:mm a",
+                },
+              },
+            },
           ],
         },
         {
@@ -144,6 +162,16 @@ export const Articles: CollectionConfig = {
             },
             { name: "affiliate", type: "checkbox", defaultValue: false },
             { name: "deepDive", type: "checkbox", defaultValue: false },
+            {
+              name: "pinnedToLatest",
+              type: "checkbox",
+              defaultValue: false,
+              label: "Pin to top of Latest",
+              admin: {
+                description:
+                  "Pins this story to the top of the Latest feed (the /latest featured slot) and the homepage Latest band. Manual — untick to unpin. Newest wins if several are pinned.",
+              },
+            },
           ],
         },
         {
