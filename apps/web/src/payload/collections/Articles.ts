@@ -162,6 +162,16 @@ export const Articles: CollectionConfig = {
             },
             { name: "affiliate", type: "checkbox", defaultValue: false },
             { name: "deepDive", type: "checkbox", defaultValue: false },
+            {
+              name: "pinnedToLatest",
+              type: "checkbox",
+              defaultValue: false,
+              label: "Pin to top of Latest",
+              admin: {
+                description:
+                  "Pins this story to the top of the Latest feed (the /latest featured slot) and the homepage Latest band. Manual — untick to unpin. Newest wins if several are pinned.",
+              },
+            },
           ],
         },
         {

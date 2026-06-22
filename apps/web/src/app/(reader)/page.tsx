@@ -14,6 +14,7 @@ import { toArticleView, type ArticleView } from "@/lib/article-view";
 import {
   getDeepDive,
   getNavPillars,
+  getPinnedLatest,
   getRecentArticles,
   getWireDrops,
 } from "@/lib/payload-server";
@@ -22,14 +23,16 @@ import type { PillarId } from "@/lib/data";
 export const revalidate = 60;
 
 export default async function HomePage() {
-  const [recent, deepDive, wireDrops, pillars] = await Promise.all([
+  const [recent, pinnedDoc, deepDive, wireDrops, pillars] = await Promise.all([
     getRecentArticles(40),
+    getPinnedLatest(),
     getDeepDive(),
     getWireDrops(12),
     getNavPillars(),
   ]);
 
   const articles = recent.map(toArticleView);
+  const pinned = pinnedDoc ? toArticleView(pinnedDoc) : null;
   const heroPool = articles.filter((a) => !a.sponsored);
   const lead = heroPool[0] ?? articles[0]!;
   const aside = heroPool.slice(1, 5);
@@ -45,7 +48,10 @@ export default async function HomePage() {
   // not only those literally tagged with the "latest" pillar (mirrors the /latest
   // page). Without this the band would depend on "latest"-tagged articles landing
   // in the recent set and could drop out of "Across the pillars" entirely.
-  byPillar.latest = articles.slice(0, 4);
+  // A pinned story leads the Latest band; the rest fill in newest-first.
+  byPillar.latest = (
+    pinned ? [pinned, ...articles.filter((a) => a.id !== pinned.id)] : articles
+  ).slice(0, 4);
 
   const spotlightItems = articles
     .filter((a) => (["latest", "policy", "startups"] as PillarId[]).includes(a.pillar))

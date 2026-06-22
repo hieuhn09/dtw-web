@@ -302,6 +302,30 @@ export const getSponsoredArticle = unstable_cache(
   { tags: ["articles:all"], revalidate: 60 }
 );
 
+/**
+ * The single article an editor has pinned to the top of the Latest feed. Same
+ * one-flag pattern as getDeepDive/getSponsoredArticle. Newest wins if several
+ * are flagged; null when nothing is pinned. Shares the `articles:all` cache
+ * tag, so ticking/unticking the checkbox in the CMS reflects within ~1 minute.
+ */
+export const getPinnedLatest = unstable_cache(
+  async (): Promise<Article | null> => {
+    const p = await payload();
+    const r = await p.find({
+      collection: "articles",
+      where: {
+        and: [{ pinnedToLatest: { equals: true } }, { _status: { equals: "published" } }],
+      },
+      sort: "-publishedAt",
+      limit: 1,
+      depth: 1,
+    });
+    return r.docs[0] ?? null;
+  },
+  ["articles:pinned-latest"],
+  { tags: ["articles:all"], revalidate: 60 }
+);
+
 export const getWireDrops = unstable_cache(
   async (limit = 12): Promise<WireDrop[]> => {
     const p = await payload();
