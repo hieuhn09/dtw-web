@@ -14,7 +14,7 @@ import config from "../../../../../payload.config";
  *   POST /api/engine/intake
  *   Authorization: Bearer {DTW_INTAKE_TOKEN}
  *   Body: { title, dek, pillarSlug, body_markdown, tags[], heroImageUrl|null,
- *           byline, slug?, aiAssisted:true,
+ *           imageCredit?, byline, slug?, aiAssisted:true,
  *           sourceProvenance:{ url, name, author?, accessedAt }, publishedAt }
  *   Response: { id }
  *
@@ -44,6 +44,7 @@ interface IntakeBody {
   body_markdown?: unknown;
   tags?: unknown;
   heroImageUrl?: unknown;
+  imageCredit?: unknown;
   byline?: unknown;
   slug?: unknown;
   aiAssisted?: unknown;
@@ -149,6 +150,12 @@ export async function POST(request: Request): Promise<Response> {
 
   const heroImageUrl = isNonEmptyString(body.heroImageUrl)
     ? (body.heroImageUrl as string)
+    : null;
+
+  // Photographer / source credit for the hero image (engine-provided). Falls
+  // back to the article's source publisher name when absent.
+  const imageCredit = isNonEmptyString(body.imageCredit)
+    ? (body.imageCredit as string).trim()
     : null;
 
   const provenance = body.sourceProvenance ?? {};
@@ -263,7 +270,7 @@ export async function POST(request: Request): Promise<Response> {
         const ext = mimetype.split("/")[1] || "jpg";
         const media = await payload.create({
           collection: "media",
-          data: { alt: titleStr, credit: sourceName ?? undefined },
+          data: { alt: titleStr, credit: imageCredit ?? sourceName ?? undefined },
           file: {
             data: buffer,
             mimetype,
