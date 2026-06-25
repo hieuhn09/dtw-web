@@ -40,6 +40,8 @@ export interface ArticleView {
   /** Uploaded hero image URL (R2-backed), or null to fall back to cover art. */
   heroImageUrl: string | null;
   heroImageAlt: string | null;
+  /** Photographer / source credit for the hero image, shown beneath it. */
+  heroImageCredit: string | null;
 }
 
 function pickRelationship<T extends { id: string | number }>(
@@ -94,6 +96,7 @@ export function toArticleView(a: Article): ArticleView {
     id: string | number;
     url?: string | null;
     alt?: string | null;
+    credit?: string | null;
   }>(a.heroImage);
 
   return {
@@ -119,5 +122,6 @@ export function toArticleView(a: Article): ArticleView {
     image: a.imageLabel ? { label: a.imageLabel } : undefined,
     heroImageUrl: hero?.url ?? null,
     heroImageAlt: hero?.alt ?? null,
+    heroImageCredit: hero?.credit ?? null,
   };
 }

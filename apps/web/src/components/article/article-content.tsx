@@ -163,12 +163,26 @@ export function ArticleContent({ article, body, related }: ArticleContentProps) 
             label={article.image?.label ?? "HERO"}
           />
         )}
-        {article.heroImageAlt && (
+        {(article.heroImageAlt || article.heroImageCredit) && (
           <div
             className="text-mute"
-            style={{ fontSize: 11, marginTop: 8, fontStyle: "italic", padding: "0 4px" }}
+            style={{
+              fontSize: 11,
+              marginTop: 8,
+              padding: "0 4px",
+              display: "flex",
+              flexWrap: "wrap",
+              gap: 8,
+            }}
           >
-            {article.heroImageAlt}
+            {article.heroImageAlt && (
+              <span style={{ fontStyle: "italic" }}>{article.heroImageAlt}</span>
+            )}
+            {article.heroImageCredit && (
+              <span>
+                {t("Credit", "Nguồn ảnh", "Kredit foto")}: {article.heroImageCredit}
+              </span>
+            )}
           </div>
         )}
       </div>
