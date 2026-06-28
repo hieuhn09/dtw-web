@@ -12,6 +12,7 @@ import { PodcastStrip } from "@/components/home/podcast-strip";
 import { NewsletterCta } from "@/components/home/newsletter-cta";
 import { toArticleView, type ArticleView } from "@/lib/article-view";
 import {
+  getArticlesByPillar,
   getDeepDive,
   getNavPillars,
   getPinnedLatest,
@@ -23,12 +24,24 @@ import type { PillarId } from "@/lib/data";
 export const revalidate = 60;
 
 export default async function HomePage() {
-  const [recent, pinnedDoc, deepDive, wireDrops, pillars] = await Promise.all([
+  // Need the CMS pillar list before fanning out per-pillar queries. It is
+  // unstable_cache-backed, so this is a fast cache hit, not a real round trip.
+  const pillars = await getNavPillars();
+
+  const [recent, pinnedDoc, deepDive, wireDrops, perPillar] = await Promise.all([
     getRecentArticles(40),
     getPinnedLatest(),
     getDeepDive(),
     getWireDrops(12),
-    getNavPillars(),
+    // Each non-"latest" pillar band fills from its OWN newest 4, independent of
+    // how often other pillars publish. Slicing a shared recent-40 pool let a
+    // high-volume pillar (AI/Policy) crowd a low-volume one (Dev) down to a
+    // single item even when plenty of Dev articles exist.
+    Promise.all(
+      pillars
+        .filter((p) => p.slug !== "latest")
+        .map(async (p) => [p.slug, await getArticlesByPillar(p.slug, 4)] as const),
+    ),
   ]);
 
   const articles = recent.map(toArticleView);
@@ -42,11 +55,8 @@ export default async function HomePage() {
   const aside = heroPool.filter((a) => a.id !== lead.id).slice(0, 4);
 
   const byPillar: Partial<Record<PillarId, ArticleView[]>> = {};
-  for (const a of articles) {
-    const list = byPillar[a.pillar] ?? [];
-    if (list.length < 4) {
-      byPillar[a.pillar] = [...list, a];
-    }
+  for (const [slug, docs] of perPillar) {
+    byPillar[slug as PillarId] = docs.map(toArticleView);
   }
   // "Latest" is an auto-aggregated feed — the newest stories across every pillar,
   // not only those literally tagged with the "latest" pillar (mirrors the /latest
