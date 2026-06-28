@@ -71,59 +71,17 @@ export function NewsletterCta() {
             }}
           >
             {t(
-              "AM Brief, PM Brief, AI Weekly, Asia Funding, Dev Digest, Products & Deals, Deep Dive, DTW Awards. Double opt-in. Unsubscribe with one click. We will never sell or share your email.",
-              "AM Brief, PM Brief, AI Weekly, Asia Funding, Dev Digest, Products & Deals, Deep Dive, DTW Awards. Xác nhận kép. Hủy chỉ bằng một cú nhấp. Không bán hay chia sẻ email của bạn.",
-              "AM Brief, PM Brief, AI Weekly, Asia Funding, Dev Digest, Products & Deals, Deep Dive, DTW Awards. Konfirmasi ganda. Berhenti dengan satu klik. Kami tak akan menjual atau membagikan email Anda."
+              "AM Brief, PM Brief, AI Weekly, Asia Funding, Dev Digest, Products & Deals, Deep Dive, DTW Awards.",
+              "AM Brief, PM Brief, AI Weekly, Asia Funding, Dev Digest, Products & Deals, Deep Dive, DTW Awards.",
+              "AM Brief, PM Brief, AI Weekly, Asia Funding, Dev Digest, Products & Deals, Deep Dive, DTW Awards."
             )}
           </p>
         </div>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            alert("Confirmation email sent (demo)");
-          }}
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: 10,
-            position: "relative",
-          }}
-        >
-          <input
-            type="email"
-            required
-            placeholder="you@company.com"
-            style={{
-              padding: "14px 16px",
-              border: "1px solid rgba(232,237,247,0.20)",
-              borderRadius: 5,
-              fontSize: 14,
-              background: "rgba(232,237,247,0.06)",
-              color: "#FFFFFF",
-              fontFamily: "var(--font-sans)",
-            }}
-          />
-          <div style={{ display: "flex", gap: 8 }}>
-            <Button variant="accent" size="lg" type="submit" style={{ flex: 1 }}>
-              {t(
-                "Subscribe to AM Brief",
-                "Đăng ký AM Brief",
-                "Berlangganan AM Brief"
-              )}
-            </Button>
-            <Button
-              href="/newsletters"
-              variant="ghost"
-              size="lg"
-              style={{
-                color: "#FFFFFF",
-                border: "1px solid rgba(232,237,247,0.20)",
-              }}
-            >
-              {t("Choose more", "Chọn thêm", "Pilih lainnya")}
-            </Button>
-          </div>
-        </form>
+        <div style={{ display: "flex", gap: 8, position: "relative" }}>
+          <Button href="/newsletters" variant="accent" size="lg">
+            {t("Browse newsletters", "Xem các bản tin", "Jelajahi newsletter")}
+          </Button>
+        </div>
       </div>
     </section>
   );
