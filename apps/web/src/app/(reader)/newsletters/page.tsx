@@ -1,15 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "@dtw/ui";
 import { NEWSLETTERS, pillarOf } from "@/lib/data";
 import { useT } from "@/lib/i18n";
 
 export default function NewslettersPage() {
   const t = useT();
   const [picks, setPicks] = useState<Set<string>>(new Set(["am", "ai"]));
-  const [email, setEmail] = useState("");
-  const [submitted, setSubmitted] = useState(false);
 
   const toggle = (id: string) => {
     const s = new Set(picks);
@@ -55,9 +52,9 @@ export default function NewslettersPage() {
           style={{ margin: 0, fontSize: 18, lineHeight: 1.45, maxWidth: 760 }}
         >
           {t(
-            "Daily briefs, weekly digests, one bi-weekly. Double opt-in. No tracking pixels. One-click unsubscribe.",
-            "Bản tin ngày, tổng hợp tuần, một bi-weekly. Xác nhận kép. Không pixel theo dõi. Hủy chỉ một cú nhấp.",
-            "Brief harian, digest mingguan, satu dwi-mingguan. Konfirmasi ganda. Tanpa piksel pelacak. Berhenti dengan satu klik."
+            "Daily briefs, weekly digests, one bi-weekly.",
+            "Bản tin ngày, tổng hợp tuần, một bi-weekly.",
+            "Brief harian, digest mingguan, satu dwi-mingguan."
           )}
         </p>
       </header>
@@ -160,11 +157,7 @@ export default function NewslettersPage() {
         })}
       </div>
 
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          setSubmitted(true);
-        }}
+      <div
         style={{
           padding: "28px 32px",
           background: "var(--banner)",
@@ -187,41 +180,13 @@ export default function NewslettersPage() {
           </div>
           <div className="serif" style={{ fontSize: 18, fontWeight: 650, color: "#FFFFFF" }}>
             {t(
-              "One confirmation email per newsletter. We'll send them all at once.",
-              "Một email xác nhận mỗi bản tin. Chúng tôi sẽ gửi cùng lúc.",
-              "Satu email konfirmasi per newsletter. Kami kirim sekaligus."
+              "Newsletter subscriptions opening soon — check back shortly.",
+              "Đăng ký bản tin sẽ sớm mở — hãy quay lại sau.",
+              "Langganan newsletter akan segera dibuka — cek kembali sebentar lagi."
             )}
           </div>
         </div>
-        <input
-          type="email"
-          required
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="you@company.com"
-          style={{
-            flex: 1,
-            maxWidth: 320,
-            padding: "14px 16px",
-            border: "1px solid rgba(232,237,247,0.20)",
-            borderRadius: 5,
-            background: "rgba(232,237,247,0.06)",
-            color: "#E8EDF7",
-            fontFamily: "var(--font-sans)",
-            fontSize: 14,
-          }}
-        />
-        <Button
-          variant="accent"
-          size="lg"
-          type="submit"
-          style={{ whiteSpace: "nowrap" }}
-        >
-          {submitted
-            ? t("Check your inbox →", "Kiểm tra hộp thư →", "Cek inbox →")
-            : t("Subscribe", "Đăng ký", "Berlangganan")}
-        </Button>
-      </form>
+      </div>
     </div>
   );
 }

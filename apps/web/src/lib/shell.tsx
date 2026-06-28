@@ -6,7 +6,6 @@ import {
   useContext,
   useEffect,
   useMemo,
-  useRef,
   useState,
 } from "react";
 import type { ReactNode } from "react";
@@ -28,9 +27,6 @@ export interface ShellContextValue {
   searchOpen: boolean;
   openSearch: () => void;
   closeSearch: () => void;
-
-  articlesRead: number;
-  incrementRead: (id: string) => void;
 }
 
 const ShellContext = createContext<ShellContextValue | null>(null);
@@ -39,19 +35,11 @@ export function ShellProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [authOpen, setAuthOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
-  const [articlesRead, setArticlesRead] = useState(0);
-  const readIds = useRef<Set<string>>(new Set());
 
   const openAuth = useCallback(() => setAuthOpen(true), []);
   const closeAuth = useCallback(() => setAuthOpen(false), []);
   const openSearch = useCallback(() => setSearchOpen(true), []);
   const closeSearch = useCallback(() => setSearchOpen(false), []);
-
-  const incrementRead = useCallback((id: string) => {
-    if (readIds.current.has(id)) return;
-    readIds.current.add(id);
-    setArticlesRead((n) => n + 1);
-  }, []);
 
   // ⌘K / Ctrl+K to open search
   useEffect(() => {
@@ -75,10 +63,8 @@ export function ShellProvider({ children }: { children: ReactNode }) {
       searchOpen,
       openSearch,
       closeSearch,
-      articlesRead,
-      incrementRead,
     }),
-    [user, authOpen, searchOpen, articlesRead, openAuth, closeAuth, openSearch, closeSearch, incrementRead]
+    [user, authOpen, searchOpen, openAuth, closeAuth, openSearch, closeSearch]
   );
 
   return <ShellContext.Provider value={value}>{children}</ShellContext.Provider>;

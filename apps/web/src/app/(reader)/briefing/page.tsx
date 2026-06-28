@@ -32,7 +32,7 @@ export default function BriefingPage() {
           color: "var(--muted)",
         }}
       >
-        The AM and PM Brief are daily email editions of DailyTechWire. Subscriptions open soon
+        The AM and PM Brief are daily email editions of Dailytechwire. Subscriptions open soon
         via the Newsletters page.
       </div>
     </div>

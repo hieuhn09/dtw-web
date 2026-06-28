@@ -364,6 +364,10 @@ export interface Article {
   affiliate?: boolean | null;
   deepDive?: boolean | null;
   /**
+   * Pins this story to the top of the Latest feed (the /latest featured slot) and the homepage Latest band. Manual — untick to unpin. Newest wins if several are pinned.
+   */
+  pinnedToLatest?: boolean | null;
+  /**
    * How this article entered the system.
    */
   origin: 'engine' | 'manual';
@@ -772,6 +776,7 @@ export interface ArticlesSelect<T extends boolean = true> {
   sponsor?: T;
   affiliate?: T;
   deepDive?: T;
+  pinnedToLatest?: T;
   origin?: T;
   editedByHuman?: T;
   lockedFields?:

@@ -35,7 +35,29 @@ function Btn({ label, icon, onClick, active }: BtnProps) {
 
 export function ShareBar() {
   const [saved, setSaved] = useState(false);
+  const [copied, setCopied] = useState(false);
   const t = useT();
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(window.location.href).catch(() => {});
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handleShare = () => {
+    if (typeof navigator !== "undefined" && navigator.share) {
+      navigator
+        .share({ url: window.location.href, title: document.title })
+        .catch(() => {});
+    } else {
+      copyToClipboard();
+    }
+  };
+
+  const handleEmail = () => {
+    window.location.href = `mailto:?subject=${encodeURIComponent(document.title)}&body=${encodeURIComponent(window.location.href)}`;
+  };
+
   return (
     <div
       style={{
@@ -53,9 +75,14 @@ export function ShareBar() {
         onClick={() => setSaved(!saved)}
         active={saved}
       />
-      <Btn label={t("Share", "Chia sẻ", "Bagikan")} icon="share" />
-      <Btn label={t("Copy link", "Sao chép liên kết", "Salin tautan")} icon="external" />
-      <Btn label={t("Email", "Email", "Email")} icon="mail" />
+      <Btn label={t("Share", "Chia sẻ", "Bagikan")} icon="share" onClick={handleShare} />
+      <Btn
+        label={copied ? t("Copied!", "Đã sao chép!", "Tersalin!") : t("Copy link", "Sao chép liên kết", "Salin tautan")}
+        icon="external"
+        onClick={copyToClipboard}
+        active={copied}
+      />
+      <Btn label={t("Email", "Email", "Email")} icon="mail" onClick={handleEmail} />
     </div>
   );
 }

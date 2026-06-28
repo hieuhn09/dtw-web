@@ -247,3 +247,19 @@ Names only — never commit values. Grouped logically.
 - Soketi vs Pusher not chosen
 - CI pipeline not set up (no `.github/workflows/` yet)
 - `prefers-reduced-motion` integration with effects layer pending
+
+## Cookie Consent Constraint
+
+The cookie banner (`components/cookie-banner.tsx`) is intentionally a dismiss-only banner:
+both "Decline" and "Accept" call the same `dismiss()` function and store the same
+localStorage key (`dtw-cookies = "1"`). This is acceptable **only** because the site
+ships NO non-essential tracking. Banner copy: "No ads, no tracking, no data sale."
+Only essential cookies are set (login/auth, theme, locale).
+
+**BINDING CONSTRAINT:** If PostHog or ANY non-essential tracking is ever added, consent
+must be made real before that code ships:
+- "Decline" must store a distinct value (e.g. `"0"`) that gates non-essential cookies.
+- "Accept" stores `"1"` and enables non-essential cookies.
+- This is required to satisfy Invariant #12 (GDPR + PDPA Singapore + Nghị định 13 Vietnam).
+
+Do not ship analytics or third-party pixels without this change.
