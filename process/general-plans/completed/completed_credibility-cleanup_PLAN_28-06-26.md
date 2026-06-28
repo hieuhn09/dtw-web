@@ -2,7 +2,7 @@
 
 **Date:** 28-06-26
 **Complexity:** SIMPLE (one-session)
-**Status:** PLANNED
+**Status:** COMPLETE
 **Plan path:** `process/general-plans/active/credibility-cleanup_PLAN_28-06-26.md`
 **Source audit:** `process/general-plans/reports/dtw-project-review_DETAILED_28-06-26.md` §4
 
@@ -365,3 +365,32 @@ Run `pnpm typecheck` after Step 5 (shell/article/header changes) and again after
 **EXECUTE mode note:** Step 11 modifies a context file (`process/context/infra/all-infra.md`) — this is permitted because it is a documentation-only change (no source code change) made as part of the approved plan.
 
 **No further planning gates.** Proceed directly to EXECUTE.
+
+---
+
+## Completion Log
+
+**2026-06-28 — DONE. Executed all 11 steps. Shipped as PR #20 (`feat/credibility-cleanup`).**
+
+**Commits:** 6 logical commits `d4e628f`..`59414a2` on branch `feat/credibility-cleanup`:
+- `d4e628f` feat(article,dashboards): wire real share/copy-link/email and CSV export
+- `872c7eb` refactor(shell,article,header,podcast): remove non-functional interactive surfaces
+- `b39c2d4` refactor(footer,newsletter): remove fake subscribe forms and dead social icons
+- `2587cd8` fix(briefing): correct brand casing DailyTechWire → Dailytechwire
+- `b10829a` docs(process,infra): record credibility-cleanup plan, project review reports, and cookie-consent constraint
+- `59414a2` chore(cms): regenerate payload-types for pinnedToLatest
+
+**Verification evidence:**
+- `pnpm typecheck` green — 3/3 packages (`web`, `@dtw/db`, `@dtw/ui`).
+- Runtime smoke: home / pillar / article / dashboards / newsletters / briefing / api — all HTTP 200.
+- Removed copy and surfaces confirmed gone (paywall nudge, audio player, podcast play button, fake newsletter forms, false-promise copy, `#` social icons).
+- Real affordances present and working: Copy link (clipboard + "Copied" label), Share (Web Share API), Email (`mailto:`), CSV download from `/dashboards`.
+- Brand casing fixed case-sensitively site-wide.
+
+**Deviation — useShell import removed from `article-content.tsx`:**
+The plan's "Public Contracts" section noted `article-content.tsx` still needed `useShell` for `user` and `openAuth` after removing the paywall block. In practice, removing the `hitPaywall` conditional and the `<Paywall />` render made both `user` and `openAuth` unused in that file, so the `useShell` import was eliminated entirely. This was a required TypeScript-forward fix (unused import would have caused a typecheck error), not added scope.
+
+**Pattern to capture:** Removing a conditional render branch that gates on context values can orphan those context consumers entirely. When a block like `{!hitPaywall && <ShareBar />}{hitPaywall && <Paywall openAuth={openAuth} />}` is collapsed to unconditional `<ShareBar />`, any context value used only inside the removed branch becomes unused and must be cleaned up. Grep for context consumers before and after removing conditional render paths.
+
+**Deviation — `payload-types.ts` drift:**
+The generated file `apps/web/src/payload-types.ts` had drifted — it was missing the `pinnedToLatest` field that had already been merged to the Articles collection. The dev server regenerated it during verification and it was committed as a separate `chore` commit (`59414a2`). This confirms the pattern: generated Payload types should be regenerated and committed whenever a new collection field lands, not deferred to the next dev server start. Add this to the team's field-merge checklist.
