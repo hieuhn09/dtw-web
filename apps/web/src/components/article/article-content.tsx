@@ -5,13 +5,10 @@ import Link from "next/link";
 import { PillarTag } from "@dtw/ui";
 import { Avatar, CoverArt } from "@/components/cover-art";
 import { ArticleBody } from "@/components/article/article-body";
-import { AudioPlayerBar } from "@/components/article/audio-player";
 import { ShareBar } from "@/components/article/share-bar";
-import { Paywall } from "@/components/article/paywall";
 import { RelatedRow } from "@/components/article/related-row";
 import type { ArticleBodyState, ArticleView } from "@/lib/article-view";
 import { fmtDateL, localizedPillarLabel, useLang, useT } from "@/lib/i18n";
-import { useShell } from "@/lib/shell";
 
 export interface ArticleContentProps {
   article: ArticleView;
@@ -22,12 +19,7 @@ export interface ArticleContentProps {
 export function ArticleContent({ article, body, related }: ArticleContentProps) {
   const t = useT();
   const { lang } = useLang();
-  const { articlesRead, incrementRead, user, openAuth } = useShell();
-
-  const hitPaywall = articlesRead > 3 && !user && !article.sponsored;
-
   useEffect(() => {
-    if (!article.sponsored) incrementRead(article.id);
     window.scrollTo({ top: 0 });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [article.id]);
@@ -173,19 +165,11 @@ export function ArticleContent({ article, body, related }: ArticleContentProps) 
         )}
       </div>
 
-      <AudioPlayerBar />
-
       <div style={{ marginTop: 32 }}>
         <ArticleBody body={body} article={article} />
       </div>
 
-      {!hitPaywall && <ShareBar />}
-
-      {hitPaywall && (
-        <div style={{ marginTop: 32 }}>
-          <Paywall onLogin={openAuth} />
-        </div>
-      )}
+      <ShareBar />
 
       {article.affiliate && (
         <div
