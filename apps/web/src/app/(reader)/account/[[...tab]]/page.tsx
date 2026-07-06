@@ -7,12 +7,8 @@ import {
 } from "@/lib/session";
 import { getArticlesByIds, getNavPillars, getNewsletters } from "@/lib/payload-server";
 import { toArticleView, type ArticleView } from "@/lib/article-view";
-import {
-  AccountShell,
-  AccountSignInPrompt,
-  isAccountTab,
-  type AccountTab,
-} from "./account-tabs";
+import { AccountShell, AccountSignInPrompt } from "./account-tabs";
+import { isAccountTab, type AccountTab } from "./tabs";
 
 /**
  * Real, server-verified `/account` — converted from a client component gated
