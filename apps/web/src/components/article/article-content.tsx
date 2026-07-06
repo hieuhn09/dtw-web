@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { PillarTag } from "@dtw/ui";
 import { Avatar, CoverArt } from "@/components/cover-art";
@@ -9,6 +9,7 @@ import { AudioPlayerBar } from "@/components/article/audio-player";
 import { ShareBar } from "@/components/article/share-bar";
 import { Paywall } from "@/components/article/paywall";
 import { RelatedRow } from "@/components/article/related-row";
+import { isBookmarked, recordView, toggleBookmark } from "@/lib/account-actions";
 import type { ArticleBodyState, ArticleView } from "@/lib/article-view";
 import { fmtDateL, localizedPillarLabel, useLang, useT } from "@/lib/i18n";
 import { useShell } from "@/lib/shell";
@@ -22,15 +23,44 @@ export interface ArticleContentProps {
 export function ArticleContent({ article, body, related }: ArticleContentProps) {
   const t = useT();
   const { lang } = useLang();
-  const { articlesRead, incrementRead, user, openAuth } = useShell();
+  const { articlesRead, incrementRead, user, openAuth, paywallThreshold } = useShell();
+  const [saved, setSaved] = useState(false);
 
-  const hitPaywall = articlesRead > 3 && !user && !article.sponsored;
+  const hitPaywall = articlesRead >= paywallThreshold && !user && !article.sponsored;
 
   useEffect(() => {
     if (!article.sponsored) incrementRead(article.id);
     window.scrollTo({ top: 0 });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [article.id]);
+
+  // Logged-in: persist the read (reading_history — also the future paywall
+  // meter's DB-side signal, Stage C) and resolve whether this story is
+  // already saved. Both server-action calls happen client-side, after
+  // hydration, on purpose — the article page's RSC has `revalidate=60`, so
+  // per-user state must never be read/written inside it (see Stage B's
+  // ISR-safety finding). Keyed on `user?.email` (stable) rather than the
+  // whole user object, to avoid a re-run loop.
+  useEffect(() => {
+    if (!user) {
+      setSaved(false);
+      return;
+    }
+    void recordView(article.id);
+    isBookmarked(article.id)
+      .then(setSaved)
+      .catch(() => {});
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [article.id, user?.email]);
+
+  const onToggleSave = () => {
+    if (!user) {
+      openAuth();
+      return;
+    }
+    setSaved((v) => !v);
+    void toggleBookmark(article.id);
+  };
 
   const pillarSlug = `/${article.pillar}`;
 
@@ -179,11 +209,11 @@ export function ArticleContent({ article, body, related }: ArticleContentProps) 
         <ArticleBody body={body} article={article} />
       </div>
 
-      {!hitPaywall && <ShareBar />}
+      {!hitPaywall && <ShareBar saved={saved} onToggleSave={onToggleSave} />}
 
       {hitPaywall && (
         <div style={{ marginTop: 32 }}>
-          <Paywall onLogin={openAuth} />
+          <Paywall onLogin={openAuth} threshold={paywallThreshold} />
         </div>
       )}
 
