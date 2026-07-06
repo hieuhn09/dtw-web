@@ -50,6 +50,7 @@ export function Footer() {
     },
   ];
 
+  // Re-enable by adding real URLs as the third tuple element. Missing href = hidden.
   const socials: ReadonlyArray<readonly [label: string, icon: IconName, href?: string]> = [
     ["X", "external"],
     ["LinkedIn", "external"],
@@ -99,38 +100,15 @@ export function Footer() {
             </h3>
             <p className="text-mute" style={{ margin: 0, fontSize: 13 }}>
               {t(
-                "Founders, operators, and policy people across Asia read it before the day starts. Double opt-in. No tracking pixels. Unsubscribe with one click.",
-                "Các nhà sáng lập, quản lý và người làm chính sách khắp châu Á đọc trước khi ngày mới bắt đầu. Xác nhận kép. Không pixel theo dõi. Hủy đăng ký chỉ một cú nhấp.",
-                "Para founder, operator, dan pembuat kebijakan di Asia membacanya sebelum hari dimulai. Konfirmasi ganda. Tanpa piksel pelacak. Berhenti berlangganan dengan satu klik."
+                "Founders, operators, and policy people across Asia read it before the day starts.",
+                "Các nhà sáng lập, quản lý và người làm chính sách khắp châu Á đọc trước khi ngày mới bắt đầu.",
+                "Para founder, operator, dan pembuat kebijakan di Asia membacanya sebelum hari dimulai."
               )}
             </p>
           </div>
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              alert("Confirmation email sent (demo)");
-            }}
-            style={{ display: "flex", gap: 8 }}
-          >
-            <input
-              type="email"
-              required
-              placeholder={t("you@company.com", "ban@congty.com", "anda@perusahaan.com")}
-              style={{
-                flex: 1,
-                padding: "12px 14px",
-                border: "1px solid var(--hair-2)",
-                borderRadius: 5,
-                fontSize: 13,
-                background: "var(--paper)",
-                color: "var(--ink)",
-                fontFamily: "var(--font-sans)",
-              }}
-            />
-            <Button variant="accent" size="lg" type="submit">
-              {t("Subscribe", "Đăng ký", "Berlangganan")}
-            </Button>
-          </form>
+          <Button href="/newsletters" variant="accent" size="lg">
+            {t("View all newsletters", "Xem tất cả bản tin", "Lihat semua newsletter")}
+          </Button>
         </div>
       </div>
 
@@ -162,7 +140,7 @@ export function Footer() {
             )}
           </p>
           <div style={{ display: "flex", gap: 8, marginTop: 16 }}>
-            {socials.map(([k, ic, href]) => (
+            {socials.filter(([, , href]) => !!href).map(([k, ic, href]) => (
               <a
                 key={k}
                 title={k}

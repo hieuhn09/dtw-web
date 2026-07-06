@@ -80,9 +80,9 @@ export function NewslettersContent({ newsletters }: { newsletters: ReadonlyArray
           style={{ margin: 0, fontSize: 18, lineHeight: 1.45, maxWidth: 760 }}
         >
           {t(
-            "Daily briefs, weekly digests, one bi-weekly. No tracking pixels. One-click unsubscribe.",
-            "Bản tin ngày, tổng hợp tuần, một bi-weekly. Không pixel theo dõi. Hủy chỉ một cú nhấp.",
-            "Brief harian, digest mingguan, satu dwi-mingguan. Tanpa piksel pelacak. Berhenti dengan satu klik."
+            "Daily briefs, weekly digests, one bi-weekly.",
+            "Bản tin ngày, tổng hợp tuần, một bi-weekly.",
+            "Brief harian, digest mingguan, satu dwi-mingguan."
           )}
         </p>
       </header>

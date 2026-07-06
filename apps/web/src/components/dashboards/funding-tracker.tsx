@@ -86,6 +86,26 @@ export function FundingTracker() {
 
   const countries = ["All", ...Array.from(new Set(FUNDING_ROWS.map((r) => r.country)))];
 
+  const downloadCsv = () => {
+    const header = ["ticker", "name", "country", "sector", "px", "chg", "mcap", "funding"];
+    const lines = filtered.map((r) =>
+      header.map((k) => {
+        const v = r[k as keyof FundingRow];
+        return v == null ? "" : String(v);
+      }).join(",")
+    );
+    const csv = [header.join(","), ...lines].join("\n");
+    const blob = new Blob([csv], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "dtw-funding-tracker.csv";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <section>
       <div
@@ -151,7 +171,7 @@ export function FundingTracker() {
               </button>
             ))}
           </div>
-          <Button variant="outline" size="sm">
+          <Button variant="outline" size="sm" onClick={downloadCsv}>
             ↓ CSV
           </Button>
         </div>
