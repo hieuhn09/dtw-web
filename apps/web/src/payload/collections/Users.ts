@@ -38,6 +38,14 @@ export const Users: CollectionConfig = {
         { label: "Editor", value: "editor" },
         { label: "Admin", value: "admin" },
       ],
+      // Field-level write lock: only an admin can change role (including their
+      // own). Without this, the collection-level `update` access above (which
+      // allows a user to update their own record) would let an author
+      // self-escalate to admin via a direct API write. Read/create/delete
+      // stay governed by the collection-level access block above.
+      access: {
+        update: ({ req }) => req.user?.role === "admin",
+      },
       admin: {
         description:
           "Author: draft/submit. Editor: publish + manage taxonomy. Admin: full access. 2FA enforced on Editor + Admin in production.",

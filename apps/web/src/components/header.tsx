@@ -14,6 +14,7 @@ import {
 } from "@/lib/i18n";
 import { NAV_EXTRA, type NavPillar } from "@/lib/data";
 import { useShell } from "@/lib/shell";
+import { authClient } from "@/lib/auth-client";
 
 const NUDGE_KEY = "dtw-nudge-dismissed";
 
@@ -21,7 +22,7 @@ export function Header({ pillars }: { pillars: NavPillar[] }) {
   const router = useRouter();
   const pathname = usePathname() || "/";
   const { theme, setTheme } = useTheme();
-  const { user, openAuth, openSearch, articlesRead, setUser } = useShell();
+  const { user, openAuth, openSearch, articlesRead, paywallThreshold } = useShell();
   const { lang, setLang } = useLang();
   const t = useT();
 
@@ -46,7 +47,7 @@ export function Header({ pillars }: { pillars: NavPillar[] }) {
     setDateLabel(fmtFullDate(new Date(), lang));
   }, [lang]);
 
-  const showNudge = articlesRead >= 3 && !user && !nudgeDismissed;
+  const showNudge = articlesRead >= paywallThreshold && !user && !nudgeDismissed;
 
   const dismissNudge = () => {
     setNudgeDismissed(true);
@@ -417,7 +418,7 @@ export function Header({ pillars }: { pillars: NavPillar[] }) {
                   <div className="divider" style={{ margin: "4px 0", height: 1, background: "var(--hair)" }} />
                   <button
                     onClick={() => {
-                      setUser(null);
+                      void authClient.signOut();
                       setUserMenuOpen(false);
                     }}
                     style={{
@@ -825,7 +826,7 @@ export function Header({ pillars }: { pillars: NavPillar[] }) {
                   </Link>
                   <button
                     onClick={() => {
-                      setUser(null);
+                      void authClient.signOut();
                       setMenuOpen(false);
                     }}
                     style={{
