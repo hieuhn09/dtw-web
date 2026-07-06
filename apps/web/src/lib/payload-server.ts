@@ -2,7 +2,15 @@ import "server-only";
 import { unstable_cache } from "next/cache";
 import { getPayload, type Where } from "payload";
 import config from "../../payload.config";
-import type { Article, Pillar, Author, WireDrop, Tag, Correction } from "../payload/payload-types";
+import type {
+  Article,
+  Pillar,
+  Author,
+  WireDrop,
+  Tag,
+  Correction,
+  Newsletter,
+} from "../payload/payload-types";
 import type { NavPillar } from "./data";
 
 /**
@@ -38,6 +46,8 @@ async function payload() {
 //   pillar:<slug>         → pillar listing surface
 //   pillars:all           → pillars taxonomy (for nav)
 //   wire-drops            → homepage Wire Drops band (refreshed often by hook)
+//   settings:paywall      → CMS-configurable paywall/nudge threshold
+//   newsletters:all       → reader newsletter products (Account tab, /newsletters, homepage CTA)
 // ──────────────────────────────────────────────────────────────────────────────
 
 export const getPillars = unstable_cache(
@@ -221,6 +231,39 @@ export const getArticleBySlug = unstable_cache(
 );
 
 /**
+ * Batch article hydration for a caller-supplied id list (e.g. a signed-in
+ * reader's `bookmarks`/`reading_history` article ids, both `string`-typed —
+ * see `ArticleView.id`). Published-only: if a saved/read article is
+ * unpublished later, it silently drops from the caller's list — the
+ * underlying Drizzle row is untouched, only the hydration join drops it.
+ * Shares the `articles:all` tag with every other article read in this file.
+ *
+ * Caches the *article content* (public, published-only) — never the
+ * *which-user-saved-what* id list, which is always fetched fresh, per
+ * request, from `lib/session.ts`'s `listBookmarks`/`listHistory`/
+ * `listFollows` inside the `force-dynamic` `/account` route. Different
+ * users' distinct id sets naturally produce distinct `unstable_cache` entries
+ * under this same key namespace — safe, since it's public article content
+ * being cached, not per-user state.
+ */
+export const getArticlesByIds = unstable_cache(
+  async (ids: ReadonlyArray<string>): Promise<Article[]> => {
+    const unique = Array.from(new Set(ids)).filter(Boolean);
+    if (!unique.length) return [];
+    const p = await payload();
+    const r = await p.find({
+      collection: "articles",
+      where: { and: [{ id: { in: unique } }, { _status: { equals: "published" } }] },
+      depth: 1,
+      limit: unique.length,
+    });
+    return r.docs;
+  },
+  ["articles:by-ids"],
+  { tags: ["articles:all"], revalidate: 60 }
+);
+
+/**
  * Draft-aware single-article fetch — NOT cached and NOT status-filtered.
  * Only called from the article page when Next.js draft mode is enabled, which
  * can only be turned on by the authenticated `/preview` route. Lets editors see
@@ -369,4 +412,50 @@ export const getCorrections = unstable_cache(
   { tags: ["corrections:all"], revalidate: 300 }
 );
 
-export type { Article, Pillar, Author, WireDrop, Tag, Correction };
+/**
+ * CMS-configurable guest/soft-paywall read threshold (invariant #4 — never
+ * hardcode "3"). Falls back to 3 (today's hardcoded value) if the Global's
+ * migration hasn't run yet on this deploy (preview builds — see
+ * getPinnedLatest above for the same pattern).
+ */
+export const getPaywallThreshold = unstable_cache(
+  async (): Promise<number> => {
+    const p = await payload();
+    try {
+      const g = await p.findGlobal({ slug: "paywallSettings" });
+      return typeof g?.paywallThreshold === "number" ? g.paywallThreshold : 3;
+    } catch (err) {
+      console.warn(
+        "[getPaywallThreshold] query failed — global not migrated yet?",
+        (err as Error)?.message
+      );
+      return 3;
+    }
+  },
+  ["settings:paywall"],
+  { tags: ["settings:paywall"], revalidate: 300 }
+);
+
+/**
+ * Active newsletter products (Account → Newsletters tab, `/newsletters`,
+ * homepage `NewsletterCta`) — all three read this one cached helper. `depth:
+ * 1` so `doc.vertical` resolves to the full `Pillar` object (used for the
+ * pillar accent color in the newsletter picker cards).
+ */
+export const getNewsletters = unstable_cache(
+  async (): Promise<Newsletter[]> => {
+    const p = await payload();
+    const r = await p.find({
+      collection: "newsletters",
+      where: { active: { equals: true } },
+      sort: "order",
+      limit: 12,
+      depth: 1,
+    });
+    return r.docs;
+  },
+  ["newsletters:all"],
+  { tags: ["newsletters:all"], revalidate: 300 }
+);
+
+export type { Article, Pillar, Author, WireDrop, Tag, Correction, Newsletter };

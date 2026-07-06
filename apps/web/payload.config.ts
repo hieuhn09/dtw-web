@@ -16,6 +16,8 @@ import { WireDrops } from "./src/payload/collections/WireDrops";
 import { Corrections } from "./src/payload/collections/Corrections";
 import { SponsorSlots } from "./src/payload/collections/SponsorSlots";
 import { EngineConflictLog } from "./src/payload/collections/EngineConflictLog";
+import { Newsletters } from "./src/payload/collections/Newsletters";
+import { PaywallSettings } from "./src/payload/globals/PaywallSettings";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -55,9 +57,11 @@ export default buildConfig({
     Articles,
     WireDrops,
     Corrections,
+    Newsletters,
     SponsorSlots,
     EngineConflictLog,
   ],
+  globals: [PaywallSettings],
   plugins: r2Configured
     ? [
         s3Storage({
