@@ -1,17 +1,23 @@
 "use client";
 
 import { Button } from "@dtw/ui";
+import { useT } from "@/lib/i18n";
 
 export interface PaywallProps {
   onLogin: () => void;
+  /** CMS-configurable free-read limit (invariant #4 — never hardcode). */
+  threshold: number;
 }
 
 /**
- * Soft paywall card shown after the meter threshold trips.
- * Phase 1 has no actual gate — copy and CTAs are demo. Real paywall + Stripe
- * lands in Phase 2 per process/features/articles/_GUIDE.md.
+ * Soft sign-in nudge card shown after a guest's free-read limit trips.
+ * Never a hard gate — the article body above this card always renders in
+ * full. No billing surface exists in Phase 1; Pro/Stripe is out of scope for
+ * this program (see process/features/account/active/reader-auth-account-simple_PLAN_03-07-26.md).
  */
-export function Paywall({ onLogin }: PaywallProps) {
+export function Paywall({ onLogin, threshold }: PaywallProps) {
+  const t = useT();
+
   return (
     <div
       style={{
@@ -37,7 +43,7 @@ export function Paywall({ onLogin }: PaywallProps) {
         }}
       />
       <div className="kicker" style={{ marginBottom: 10 }}>
-        Free limit reached
+        {t("Free limit reached", "Đã hết lượt đọc miễn phí", "Batas gratis tercapai")}
       </div>
       <h3
         className="serif"
@@ -48,7 +54,11 @@ export function Paywall({ onLogin }: PaywallProps) {
           letterSpacing: "-0.02em",
         }}
       >
-        Keep reading the reporting that matters in tech, across Asia and the world
+        {t(
+          "Keep reading the reporting that matters in tech, across Asia and the world",
+          "Tiếp tục đọc những tin tức công nghệ quan trọng, từ châu Á đến toàn cầu",
+          "Terus baca laporan teknologi penting, dari Asia hingga dunia"
+        )}
       </h3>
       <p
         className="text-mute"
@@ -59,8 +69,11 @@ export function Paywall({ onLogin }: PaywallProps) {
           maxWidth: 480,
         }}
       >
-        You&apos;ve read your 3 free articles this month. DTW Pro is $12/month – unlimited reading,
-        full Dashboards, member-only Q&amp;As, and zero ads.
+        {t(
+          `You've read your ${threshold} free articles this month. Sign in to keep reading — it's free.`,
+          `Bạn đã đọc hết ${threshold} bài miễn phí trong tháng này. Đăng nhập để tiếp tục đọc — hoàn toàn miễn phí.`,
+          `Anda telah membaca ${threshold} artikel gratis bulan ini. Masuk untuk terus membaca — gratis.`
+        )}
       </p>
       <div
         style={{
@@ -70,45 +83,16 @@ export function Paywall({ onLogin }: PaywallProps) {
           marginBottom: 16,
         }}
       >
-        <Button href="/pro" variant="accent" size="lg">
-          Become a member – $12/mo
-        </Button>
-        <Button variant="outline" size="lg" onClick={onLogin}>
-          I already have an account
+        <Button variant="primary" size="lg" onClick={onLogin}>
+          {t("Sign in — it's free →", "Đăng nhập — miễn phí →", "Masuk — gratis →")}
         </Button>
       </div>
       <div className="mono text-mute-2" style={{ fontSize: 11 }}>
-        Free meter resets monthly · cancel anytime · invoice billing for teams
-      </div>
-
-      <div
-        style={{
-          marginTop: 32,
-          paddingTop: 24,
-          borderTop: "1px solid var(--hair)",
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 150px), 1fr))",
-          gap: 18,
-          textAlign: "left",
-        }}
-      >
-        {(
-          [
-            ["Unlimited reading", "Across all six pillars and the archive."],
-            [
-              "Full Dashboards",
-              "Funding tracker + AI leaderboard with CSV export.",
-            ],
-            ["Pro newsletters", "Member-only deep dives every Friday."],
-          ] as const
-        ).map(([k, v]) => (
-          <div key={k}>
-            <div style={{ fontWeight: 600, fontSize: 13, marginBottom: 4 }}>{k}</div>
-            <div className="text-mute" style={{ fontSize: 12 }}>
-              {v}
-            </div>
-          </div>
-        ))}
+        {t(
+          "Free meter resets on the 1st of each month",
+          "Bộ đếm miễn phí sẽ làm mới vào ngày 1 hàng tháng",
+          "Meteran gratis akan direset pada tanggal 1 setiap bulan"
+        )}
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 import { ThemeProvider } from "@/components/theme-provider";
 import { I18nProvider } from "@/lib/i18n";
 import { ShellProvider } from "@/lib/shell";
-import { getNavPillars } from "@/lib/payload-server";
+import { getNavPillars, getPaywallThreshold } from "@/lib/payload-server";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { AuthModal } from "@/components/auth-modal";
@@ -18,11 +18,14 @@ export default async function ReaderLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const pillars = await getNavPillars();
+  const [pillars, paywallThreshold] = await Promise.all([
+    getNavPillars(),
+    getPaywallThreshold(),
+  ]);
   return (
     <I18nProvider>
       <ThemeProvider>
-        <ShellProvider>
+        <ShellProvider paywallThreshold={paywallThreshold}>
           <Header pillars={pillars} />
           <main>{children}</main>
           <Footer />
