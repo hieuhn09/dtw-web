@@ -75,6 +75,7 @@ export interface Config {
     articles: Article;
     wireDrops: WireDrop;
     corrections: Correction;
+    newsletters: Newsletter;
     sponsorSlots: SponsorSlot;
     engineConflictLog: EngineConflictLog;
     'payload-kv': PayloadKv;
@@ -92,6 +93,7 @@ export interface Config {
     articles: ArticlesSelect<false> | ArticlesSelect<true>;
     wireDrops: WireDropsSelect<false> | WireDropsSelect<true>;
     corrections: CorrectionsSelect<false> | CorrectionsSelect<true>;
+    newsletters: NewslettersSelect<false> | NewslettersSelect<true>;
     sponsorSlots: SponsorSlotsSelect<false> | SponsorSlotsSelect<true>;
     engineConflictLog: EngineConflictLogSelect<false> | EngineConflictLogSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
@@ -103,8 +105,12 @@ export interface Config {
     defaultIDType: number;
   };
   fallbackLocale: null;
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    paywallSettings: PaywallSetting;
+  };
+  globalsSelect: {
+    paywallSettings: PaywallSettingsSelect<false> | PaywallSettingsSelect<true>;
+  };
   locale: null;
   widgets: {
     collections: CollectionsWidget;
@@ -463,6 +469,27 @@ export interface Correction {
   createdAt: string;
 }
 /**
+ * Reader newsletter products. `slug` must exactly match the reader app's newsletterId contract (am/pm/ai/fund/dev/prod) — changing it here without updating the app breaks the subscribe/toggle linkage.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "newsletters".
+ */
+export interface Newsletter {
+  id: number;
+  name: string;
+  /**
+   * Linkage key to Drizzle's newsletter_subscriptions.newsletter_id — do not change casually.
+   */
+  slug: string;
+  cadence: string;
+  description: string;
+  vertical?: (number | null) | Pillar;
+  active?: boolean | null;
+  order: number;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * Sponsored placements config. One row per slot location.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -577,6 +604,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'corrections';
         value: number | Correction;
+      } | null)
+    | ({
+        relationTo: 'newsletters';
+        value: number | Newsletter;
       } | null)
     | ({
         relationTo: 'sponsorSlots';
@@ -823,6 +854,21 @@ export interface CorrectionsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "newsletters_select".
+ */
+export interface NewslettersSelect<T extends boolean = true> {
+  name?: T;
+  slug?: T;
+  cadence?: T;
+  description?: T;
+  vertical?: T;
+  active?: T;
+  order?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "sponsorSlots_select".
  */
 export interface SponsorSlotsSelect<T extends boolean = true> {
@@ -886,6 +932,31 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * Controls the guest sign-in nudge / soft paywall trigger. Changes apply within ~5 minutes, or immediately after a save via cache revalidation.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "paywallSettings".
+ */
+export interface PaywallSetting {
+  id: number;
+  /**
+   * Number of distinct articles a guest can read before the sign-in nudge / paywall card appears. Signed-in readers are never gated by this in Phase 1.
+   */
+  paywallThreshold: number;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "paywallSettings_select".
+ */
+export interface PaywallSettingsSelect<T extends boolean = true> {
+  paywallThreshold?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

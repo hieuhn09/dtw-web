@@ -14,25 +14,49 @@ import {
 } from "@/lib/i18n";
 import { NAV_EXTRA, type NavPillar } from "@/lib/data";
 import { useShell } from "@/lib/shell";
+import { authClient } from "@/lib/auth-client";
+
+const NUDGE_KEY = "dtw-nudge-dismissed";
 
 export function Header({ pillars }: { pillars: NavPillar[] }) {
   const router = useRouter();
   const pathname = usePathname() || "/";
   const { theme, setTheme } = useTheme();
-  const { user, openAuth, openSearch, setUser } = useShell();
+  const { user, openAuth, openSearch, articlesRead, paywallThreshold } = useShell();
   const { lang, setLang } = useLang();
   const t = useT();
 
   const [scrolled, setScrolled] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [nudgeDismissed, setNudgeDismissed] = useState(false);
   const [dateLabel, setDateLabel] = useState<string>("");
   const headerRef = useRef<HTMLElement | null>(null);
+
+  // Hydrate nudge state after mount
+  useEffect(() => {
+    try {
+      setNudgeDismissed(window.localStorage.getItem(NUDGE_KEY) === "1");
+    } catch {
+      // ignore
+    }
+  }, []);
 
   // Compute the displayed date on the client so server/client agree at hydration.
   useEffect(() => {
     setDateLabel(fmtFullDate(new Date(), lang));
   }, [lang]);
+
+  const showNudge = articlesRead >= paywallThreshold && !user && !nudgeDismissed;
+
+  const dismissNudge = () => {
+    setNudgeDismissed(true);
+    try {
+      window.localStorage.setItem(NUDGE_KEY, "1");
+    } catch {
+      // ignore
+    }
+  };
 
   // Scroll shadow
   useEffect(() => {
@@ -77,7 +101,7 @@ export function Header({ pillars }: { pillars: NavPillar[] }) {
       obs.disconnect();
       window.removeEventListener("resize", update);
     };
-  }, []);
+  }, [articlesRead, showNudge]);
 
   const isDark = theme === "dark";
 
@@ -394,7 +418,7 @@ export function Header({ pillars }: { pillars: NavPillar[] }) {
                   <div className="divider" style={{ margin: "4px 0", height: 1, background: "var(--hair)" }} />
                   <button
                     onClick={() => {
-                      setUser(null);
+                      void authClient.signOut();
                       setUserMenuOpen(false);
                     }}
                     style={{
@@ -552,6 +576,81 @@ export function Header({ pillars }: { pillars: NavPillar[] }) {
           </nav>
         </div>
       </div>
+
+      {/* Sign-in nudge */}
+      {showNudge && (
+        <div
+          style={{
+            background: "var(--surface-2)",
+            color: "var(--ink)",
+            fontSize: 12,
+            borderBottom: "1px solid var(--hair)",
+            padding: "9px 0",
+            animation: "paywallSlide .35s ease-out both",
+          }}
+        >
+          <div
+            className="container"
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              gap: 16,
+              position: "relative",
+            }}
+          >
+            <span>
+              {t(
+                "Enjoying DailyTechWire? Sign in to save articles, follow topics, and pick up where you left off — across every device.",
+                "Bạn đang thích DailyTechWire? Đăng nhập để lưu bài, theo dõi chủ đề, và đọc tiếp ở bất kỳ thiết bị nào.",
+                "Suka DailyTechWire? Masuk untuk menyimpan artikel, mengikuti topik, dan lanjut membaca di perangkat mana pun."
+              )}
+            </span>
+            <button
+              onClick={openAuth}
+              style={{
+                cursor: "pointer",
+                fontWeight: 600,
+                whiteSpace: "nowrap",
+                textDecoration: "underline",
+                textUnderlineOffset: 3,
+                color: "var(--accent)",
+                paddingRight: 28,
+                background: "transparent",
+                border: "none",
+              }}
+            >
+              {t("Sign in — it's free →", "Đăng nhập — miễn phí →", "Masuk — gratis →")}
+            </button>
+            <button
+              onClick={dismissNudge}
+              aria-label="Dismiss"
+              style={{
+                position: "absolute",
+                right: 0,
+                top: "50%",
+                transform: "translateY(-50%)",
+                width: 18,
+                height: 18,
+                borderRadius: 3,
+                background: "transparent",
+                border: "none",
+                color: "var(--muted-2)",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                padding: 0,
+                opacity: 0.55,
+                transition: "opacity .15s",
+              }}
+            >
+              <Icon name="close" size={11} />
+            </button>
+          </div>
+          <style>{`@keyframes paywallSlide{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}`}</style>
+        </div>
+      )}
 
       {/* Mobile nav drawer */}
       {menuOpen && (
@@ -727,7 +826,7 @@ export function Header({ pillars }: { pillars: NavPillar[] }) {
                   </Link>
                   <button
                     onClick={() => {
-                      setUser(null);
+                      void authClient.signOut();
                       setMenuOpen(false);
                     }}
                     style={{

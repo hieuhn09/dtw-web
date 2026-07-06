@@ -74,6 +74,30 @@ const AUTHORS: ReadonlyArray<{ name: string; role: string; city: string }> = [
   { name: "Linh T. Pham", role: "Southeast Asia Reporter", city: "Hanoi" },
 ];
 
+// The 6 canonical reader newsletters. `slug` MUST match the Drizzle
+// `newsletterId` contract documented on packages/db/src/schema/account.ts
+// ('am' | 'pm' | 'ai' | 'fund' | 'dev' | 'prod') — this is the only linkage
+// between the Payload `newsletters` collection and the Drizzle
+// `newsletter_subscriptions` table (no FK, string-value convention only).
+// name/cadence/description sourced verbatim from apps/web/src/lib/data.ts's
+// NEWSLETTERS fixture; the fixture's 2 non-canonical entries ("deep" / Deep
+// Dive, "awards" / DTW Awards) are deliberately NOT seeded here.
+const NEWSLETTERS: ReadonlyArray<{
+  slug: string;
+  name: string;
+  cadence: string;
+  description: string;
+  verticalSlug: string;
+  order: number;
+}> = [
+  { slug: "am", name: "AM Brief", cadence: "Daily · 07:00", description: "What broke overnight across Asia tech, in 5 minutes.", verticalSlug: "latest", order: 1 },
+  { slug: "pm", name: "PM Brief", cadence: "Daily · 18:00", description: "The day in three stories, plus what to read tonight.", verticalSlug: "latest", order: 2 },
+  { slug: "ai", name: "AI Weekly", cadence: "Weekly · Tue", description: "Models, papers, and the geopolitics underneath them.", verticalSlug: "ai", order: 3 },
+  { slug: "fund", name: "Asia Funding Weekly", cadence: "Weekly · Thu", description: "Every term sheet that closed in ASEAN this week.", verticalSlug: "startups", order: 4 },
+  { slug: "dev", name: "Dev Digest", cadence: "Weekly · Fri", description: "What practitioners are actually shipping.", verticalSlug: "dev", order: 5 },
+  { slug: "prod", name: "Products & Deals", cadence: "Bi-weekly", description: "Reviews and buy-or-skip calls. Affiliate-disclosed.", verticalSlug: "products", order: 6 },
+];
+
 const TAGS: ReadonlyArray<{ slug: string; en: string }> = [
   { slug: "sovereign-ai", en: "Sovereign AI" },
   { slug: "datacenters", en: "Datacenters" },
@@ -305,7 +329,7 @@ const WIRE_DROPS: ReadonlyArray<{ time: string; city: string; text: string }> = 
 // Upsert helpers
 // ──────────────────────────────────────────────────────────────────────────────
 
-type CollSlug = "pillars" | "authors" | "tags" | "articles" | "wireDrops";
+type CollSlug = "pillars" | "authors" | "tags" | "articles" | "wireDrops" | "newsletters";
 
 async function findIdBy(
   payload: Awaited<ReturnType<typeof getPayload>>,
@@ -479,6 +503,27 @@ async function seed() {
     });
   }
   console.log(`[seed] wireDrops: ${WIRE_DROPS.length}`);
+
+  // 6. Newsletters — exactly 6 canonical products (am/pm/ai/fund/dev/prod).
+  let newsletterCount = 0;
+  for (const n of NEWSLETTERS) {
+    const verticalId = pillarIds.get(n.verticalSlug);
+    if (verticalId == null) {
+      console.warn(`[seed] skipping newsletter ${n.slug}: unknown vertical pillar "${n.verticalSlug}"`);
+      continue;
+    }
+    await upsert(payload, "newsletters", { slug: { equals: n.slug } }, {
+      name: n.name,
+      slug: n.slug,
+      cadence: n.cadence,
+      description: n.description,
+      vertical: verticalId,
+      active: true,
+      order: n.order,
+    });
+    newsletterCount++;
+  }
+  console.log(`[seed] newsletters: ${newsletterCount}`);
 
   console.log("[seed] done");
   process.exit(0);

@@ -2,6 +2,7 @@ import { revalidateTag } from "next/cache";
 import type {
   CollectionAfterChangeHook,
   CollectionAfterDeleteHook,
+  GlobalAfterChangeHook,
   Payload,
 } from "payload";
 
@@ -134,5 +135,41 @@ export const revalidatePillarDelete: CollectionAfterDeleteHook = ({
 }) => {
   if (revalidationDisabled(context)) return doc;
   bust(payload, ["pillars:all", "articles:all"], `pillar deleted "${doc?.slug}"`);
+  return doc;
+};
+
+// ──────────────────────────────────────────────────────────────────────────────
+// Paywall settings (Global) — single operational number, no delete/versions.
+// ──────────────────────────────────────────────────────────────────────────────
+
+export const revalidatePaywallSettings: GlobalAfterChangeHook = ({
+  doc,
+  req: { payload, context },
+}) => {
+  if (revalidationDisabled(context)) return doc;
+  bust(payload, ["settings:paywall"], "paywall settings updated");
+  return doc;
+};
+
+// ──────────────────────────────────────────────────────────────────────────────
+// Newsletters — reader subscription products (Account tab, /newsletters,
+// homepage CTA all read via the single `newsletters:all` tag).
+// ──────────────────────────────────────────────────────────────────────────────
+
+export const revalidateNewsletter: CollectionAfterChangeHook = ({
+  doc,
+  req: { payload, context },
+}) => {
+  if (revalidationDisabled(context)) return doc;
+  bust(payload, ["newsletters:all"], `newsletter "${doc?.slug}"`);
+  return doc;
+};
+
+export const revalidateNewsletterDelete: CollectionAfterDeleteHook = ({
+  doc,
+  req: { payload, context },
+}) => {
+  if (revalidationDisabled(context)) return doc;
+  bust(payload, ["newsletters:all"], `newsletter deleted "${doc?.slug}"`);
   return doc;
 };

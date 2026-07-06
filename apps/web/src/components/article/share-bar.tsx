@@ -33,8 +33,17 @@ function Btn({ label, icon, onClick, active }: BtnProps) {
   );
 }
 
-export function ShareBar() {
-  const [saved, setSaved] = useState(false);
+export interface ShareBarProps {
+  /** Real, server-verified saved state — resolved client-side by the parent
+   *  (`article-content.tsx`) via `isBookmarked()`, never inside the article
+   *  page's cached RSC. Guests always get `false`. */
+  saved: boolean;
+  /** Guest: opens the auth modal. Signed-in: optimistic flip + `toggleBookmark()`.
+   *  Owned by the parent so there is one source of truth for `saved`. */
+  onToggleSave: () => void;
+}
+
+export function ShareBar({ saved, onToggleSave }: ShareBarProps) {
   const [copied, setCopied] = useState(false);
   const t = useT();
 
@@ -72,7 +81,7 @@ export function ShareBar() {
       <Btn
         label={saved ? t("Saved", "Đã lưu", "Tersimpan") : t("Save", "Lưu", "Simpan")}
         icon="bookmark"
-        onClick={() => setSaved(!saved)}
+        onClick={onToggleSave}
         active={saved}
       />
       <Btn label={t("Share", "Chia sẻ", "Bagikan")} icon="share" onClick={handleShare} />
