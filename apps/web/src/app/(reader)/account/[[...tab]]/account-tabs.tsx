@@ -20,6 +20,7 @@ import type { ArticleView } from "@/lib/article-view";
 import type { Newsletter } from "@/lib/payload-server";
 import type { SessionUser } from "@/lib/session";
 import { SettingsTab } from "./settings-tab";
+import { ACCOUNT_TABS, type AccountTab } from "./tabs";
 
 /**
  * Client half of `/account`: the parent RSC (`page.tsx`) gates on a real
@@ -32,21 +33,12 @@ import { SettingsTab } from "./settings-tab";
  * subscription state (Stage D) via `setNewsletter`, mirroring this file's own
  * `AccountFollowing` optimistic-toggle pattern. Settings lives in the sibling
  * `SettingsTab` component (`./settings-tab.tsx`).
+ *
+ * `AccountTab` / `ACCOUNT_TABS` / `isAccountTab()` live in the sibling
+ * `./tabs.ts` (no "use client") so the server-only `page.tsx` RSC can call
+ * `isAccountTab()` without importing a function from this "use client"
+ * module — see that file's docstring for why this split exists.
  */
-
-export type AccountTab = "saved" | "history" | "following" | "newsletters" | "settings";
-
-export const ACCOUNT_TABS: ReadonlyArray<readonly [AccountTab, string]> = [
-  ["saved", "Saved"],
-  ["history", "Reading history"],
-  ["following", "Following"],
-  ["newsletters", "Newsletters"],
-  ["settings", "Settings"],
-];
-
-export function isAccountTab(s: string): s is AccountTab {
-  return ACCOUNT_TABS.some(([k]) => k === s);
-}
 
 /** Rendered by the `/account` RSC when there is no session — inline prompt,
  *  no redirect (HTTP 200), matching the pre-existing copy/shape. */
