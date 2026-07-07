@@ -6,7 +6,9 @@ import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { AuthModal } from "@/components/auth-modal";
 import { SearchOverlay } from "@/components/search-overlay";
-import { CookieBanner } from "@/components/cookie-banner";
+// Temporarily hidden — cookie banner disabled. Restore this import and the
+// <CookieBanner /> render below to bring it back.
+// import { CookieBanner } from "@/components/cookie-banner";
 
 /**
  * Reader-site chrome — wraps everything outside `/admin`. Providers go here so
@@ -31,7 +33,7 @@ export default async function ReaderLayout({
           <Footer />
           <AuthModal />
           <SearchOverlay />
-          <CookieBanner />
+          {/* Temporarily hidden: <CookieBanner /> */}
         </ShellProvider>
       </ThemeProvider>
     </I18nProvider>
