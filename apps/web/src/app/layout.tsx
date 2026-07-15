@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Schibsted_Grotesk, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
+import { DEFAULT_OG_IMAGE, siteOrigin } from "@/lib/metadata";
 import "./globals.css";
 
 // Reader chrome (header, footer, providers, modals) lives in (reader)/layout.tsx
@@ -30,8 +31,28 @@ const plexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Dailytechwire",
+  metadataBase: new URL(siteOrigin()),
+  title: {
+    default: "DailyTechWire",
+    template: "%s – DailyTechWire",
+  },
   description: "Tech Intelligence, Wired Daily.",
+  openGraph: {
+    siteName: "DailyTechWire",
+    type: "website",
+    images: [
+      {
+        url: DEFAULT_OG_IMAGE.url,
+        width: DEFAULT_OG_IMAGE.width,
+        height: DEFAULT_OG_IMAGE.height,
+        alt: DEFAULT_OG_IMAGE.alt,
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: [DEFAULT_OG_IMAGE.url],
+  },
 };
 
 export default function RootLayout({
