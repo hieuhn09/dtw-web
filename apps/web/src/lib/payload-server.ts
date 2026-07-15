@@ -458,4 +458,28 @@ export const getNewsletters = unstable_cache(
   { tags: ["newsletters:all"], revalidate: 300 }
 );
 
+/**
+ * Lean projection for `sitemap.ts` (SEO plan RFC-007) — slug + timestamps
+ * only, no relationship expansion (`depth: 0`), `limit: 0` (Payload's
+ * documented "no pagination cap, return every matching doc" value). Shares
+ * the `articles:all` cache tag with every other article read in this file,
+ * so publish/unpublish/edit events (already firing via `revalidateArticle`)
+ * keep the sitemap in sync without any new invalidation path.
+ */
+export const getSitemapArticles = unstable_cache(
+  async (): Promise<Array<Pick<Article, "slug" | "updatedAt" | "publishedAt">>> => {
+    const p = await payload();
+    const r = await p.find({
+      collection: "articles",
+      where: { _status: { equals: "published" } },
+      select: { slug: true, updatedAt: true, publishedAt: true },
+      limit: 0,
+      depth: 0,
+    });
+    return r.docs;
+  },
+  ["articles:sitemap"],
+  { tags: ["articles:all"], revalidate: 900 }
+);
+
 export type { Article, Pillar, Author, WireDrop, Tag, Correction, Newsletter };
