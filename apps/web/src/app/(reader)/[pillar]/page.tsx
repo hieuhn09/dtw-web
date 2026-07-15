@@ -1,10 +1,33 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { PillarContent } from "@/components/pillar/pillar-content";
 import { toArticleView } from "@/lib/article-view";
 import { getArticlesPage, getPillars, getPinnedLatest } from "@/lib/payload-server";
 import { ARTICLES_PAGE_SIZE } from "@/lib/data";
+import { buildMetadata, DEFAULT_OG_IMAGE } from "@/lib/metadata";
 
 export const revalidate = 60;
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ pillar: string }>;
+}): Promise<Metadata> {
+  const { pillar: slug } = await params;
+  const pillars = await getPillars();
+  const pillarDoc = pillars.find((p) => p.slug === slug);
+  if (!pillarDoc) notFound();
+
+  return buildMetadata({
+    title: pillarDoc.heading || pillarDoc.title.en,
+    // Site default description as the fallback for pillars with no
+    // `description` set — matches layout.tsx's root description verbatim.
+    description: pillarDoc.description ?? "Tech Intelligence, Wired Daily.",
+    canonicalPath: `/${pillarDoc.slug}`,
+    image: DEFAULT_OG_IMAGE, // no per-pillar image field exists
+    type: "website",
+  });
+}
 
 export default async function PillarPage({
   params,

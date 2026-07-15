@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { Reveal } from "@/components/effects";
 import { HomeHero } from "@/components/home/home-hero";
 import { BriefBand } from "@/components/home/brief-band";
@@ -19,8 +20,21 @@ import {
   getWireDrops,
 } from "@/lib/payload-server";
 import type { PillarId } from "@/lib/data";
+import { buildMetadata, DEFAULT_OG_IMAGE } from "@/lib/metadata";
 
 export const revalidate = 60;
+
+// Deliberately omits `title` so the route inherits the root layout's
+// `title.default` ("DailyTechWire") verbatim rather than re-stating brand
+// copy through the "%s – DailyTechWire" template (which would otherwise
+// render "DailyTechWire – DailyTechWire"). Static object, not
+// `generateMetadata` — the homepage has no dynamic route params.
+export const metadata: Metadata = buildMetadata({
+  canonicalPath: "/",
+  description: "Tech Intelligence, Wired Daily.",
+  image: DEFAULT_OG_IMAGE,
+  type: "website",
+});
 
 export default async function HomePage() {
   const [recent, pinnedDoc, deepDive, wireDrops, pillars] = await Promise.all([
