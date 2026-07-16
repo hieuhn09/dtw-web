@@ -30,9 +30,9 @@ export default function PressPage() {
       "lock",
       t("Story tips & documents", "Mật báo & tài liệu", "Tip berita & dokumen"),
       t(
-        "Send us a lead in confidence. We guard our sources and never name them without a fight in court.",
-        "Gửi đầu mối một cách bảo mật. Chúng tôi bảo vệ nguồn tin và không nêu danh nếu chưa qua đấu tranh pháp lý.",
-        "Kirim petunjuk secara rahasia. Kami menjaga sumber dan tak menyebut namanya tanpa perjuangan di pengadilan."
+        "Send us a lead in confidence. We protect the confidentiality of our sources.",
+        "Gửi đầu mối một cách bảo mật. Chúng tôi bảo vệ bảo mật nguồn tin.",
+        "Kirim petunjuk secara rahasia. Kami melindungi kerahasiaan sumber kami."
       ),
     ],
     [
