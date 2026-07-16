@@ -38,12 +38,27 @@ export const metadata: Metadata = buildMetadata({
 });
 
 export default async function HomePage() {
-  const [recent, pinnedDoc, deepDive, wireDrops, pillars] = await Promise.all([
+  // Hoisted ahead of the batch below: the per-pillar fan-out needs the CMS
+  // pillar list to know what to fan out over, and this call is
+  // unstable_cache-backed, so it's a cache hit rather than a real round trip.
+  const pillars = await getNavPillars();
+
+  const [recent, pinnedDoc, deepDive, wireDrops, perPillar] = await Promise.all([
     getRecentArticles(40),
     getPinnedLatest(),
     getDeepDive(),
     getWireDrops(12),
-    getNavPillars(),
+    // Each non-"latest" pillar band fills from its own newest 4 directly,
+    // since low-volume pillars (e.g. Dev) can rank entirely outside the
+    // shared newest-40 `articles` pool below, starving to 1 item or getting
+    // dropped by pillar-showcase.tsx's `items.length === 0` guard. "latest"
+    // is excluded here since it's an auto-aggregated feed, not a real beat.
+    // Pillar list is CMS-driven (invariant #8), not hardcoded.
+    Promise.all(
+      pillars
+        .filter((p) => p.slug !== "latest")
+        .map(async (p) => [p.slug, await getArticlesByPillar(p.slug, 4)] as const),
+    ),
   ]);
 
   const articles = recent.map(toArticleView);
@@ -56,26 +71,10 @@ export default async function HomePage() {
   // whatever currently leads.
   const aside = heroPool.filter((a) => a.id !== lead.id).slice(0, 4);
 
-  // Each non-"latest" pillar queries its own newest 4 directly, rather than
-  // grouping the shared newest-40 `articles` pool above by pillar. Pillars
-  // publish at very different rates (e.g. Dev publishes far less often than
-  // AI or Policy), so a low-volume pillar's newest stories can rank well
-  // outside the global top 40 — starving its band down to 1 story, or
-  // vanishing it entirely once nothing it owns is left in that window
-  // (pillar-showcase.tsx's `items.length === 0` guard drops the band). "latest"
-  // is excluded from this fan-out and handled separately below: it's an
-  // auto-aggregated feed, not a real beat — only a couple of stories are ever
-  // literally tagged "latest" — so routing it through `getArticlesByPillar`
-  // would starve it worse than the bug this fixes. Pillar list is CMS-driven
-  // (invariant #8), so this fans out over `pillars` rather than a hardcoded
-  // slug list.
-  const nonLatestPillars = pillars.filter((p) => p.slug !== "latest");
-  const perPillarDocs = await Promise.all(
-    nonLatestPillars.map((p) => getArticlesByPillar(p.slug, 4))
-  );
-  const byPillar: Partial<Record<PillarId, ArticleView[]>> = Object.fromEntries(
-    nonLatestPillars.map((p, i) => [p.slug, perPillarDocs[i]!.map(toArticleView)])
-  ) as Partial<Record<PillarId, ArticleView[]>>;
+  const byPillar: Partial<Record<PillarId, ArticleView[]>> = {};
+  for (const [slug, docs] of perPillar) {
+    byPillar[slug as PillarId] = docs.map(toArticleView);
+  }
   // "Latest" is an auto-aggregated feed — the newest stories across every pillar,
   // not only those literally tagged with the "latest" pillar (mirrors the /latest
   // page). A pinned story leads the Latest band; the rest fill in newest-first
