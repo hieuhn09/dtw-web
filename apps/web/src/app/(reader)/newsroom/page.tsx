@@ -110,13 +110,6 @@ const BUREAUS: ReadonlyArray<{ city: string; role: string; tz: string; chief: st
   { city: "Hanoi", role: "Vietnam & Mekong desk", tz: "GMT+7", chief: "Thao Nguyen" },
 ];
 
-const TIP_LINES: ReadonlyArray<readonly [icon: IconName, line: string, sub: string]> = [
-  ["mail", "media@dailytechwire.com", "PGP key on request"],
-  ["lock", "Signal · +65 8XXX XXXX", "End-to-end encrypted"],
-  ["globe", "SecureDrop · onion link", "Tor-only, anonymous"],
-  ["mail", "corrections@dailytechwire.com", "Spotted an error?"],
-];
-
 const BIZ_INFO: ReadonlyArray<readonly [k: string, v: string]> = [
   ["Registered office", "Asia Press Centre Group (APCG)\nBugis Cube\nSingapore 188735"],
   ["Press inquiries", "media@dailytechwire.com"],
@@ -129,7 +122,6 @@ const BANNER_HEADING = "#FFFFFF";
 const BANNER_BODY = "rgba(232,237,247,0.70)";
 const BANNER_META = "rgba(232,237,247,0.60)";
 const BANNER_BORDER = "rgba(232,237,247,0.20)";
-const BANNER_FILL = "rgba(232,237,247,0.06)";
 
 export default function NewsroomAboutPage() {
   const t = useT();
@@ -665,114 +657,6 @@ export default function NewsroomAboutPage() {
                   </div>
                 </div>
               ))}
-            </div>
-          </section>
-        </Reveal>
-
-        {/* Securely contact the newsroom — navy banner */}
-        <Reveal>
-          <section style={{ marginBottom: 40 }}>
-            <div
-              style={{
-                background: "var(--banner)",
-                borderRadius: 12,
-                padding: "48px",
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 300px), 1fr))",
-                gap: 48,
-                alignItems: "center",
-                position: "relative",
-                overflow: "hidden",
-              }}
-            >
-              <GridBackdrop color="rgba(255,255,255,.05)" size={32} fadeRadius="80%" />
-              <div
-                style={{
-                  position: "absolute",
-                  right: -60,
-                  top: -60,
-                  width: 240,
-                  height: 240,
-                  borderRadius: "50%",
-                  background: "var(--accent)",
-                  opacity: 0.18,
-                  filter: "blur(60px)",
-                  pointerEvents: "none",
-                }}
-              />
-              <div style={{ position: "relative" }}>
-                <div className="kicker" style={{ color: "var(--accent)", marginBottom: 10 }}>
-                  <Icon
-                    name="lock"
-                    size={12}
-                    stroke={2.2}
-                    style={{ verticalAlign: "middle", marginRight: 6 }}
-                  />
-                  {t(
-                    "Securely contact the newsroom",
-                    "Liên hệ an toàn với toà soạn",
-                    "Hubungi redaksi secara aman"
-                  )}
-                </div>
-                <h3
-                  className="serif"
-                  style={{
-                    margin: "0 0 14px",
-                    fontSize: 30,
-                    fontWeight: 650,
-                    letterSpacing: "-0.02em",
-                    color: BANNER_HEADING,
-                    lineHeight: 1.15,
-                  }}
-                >
-                  {t(
-                    "Tips, documents, and on-background conversations",
-                    "Nguồn tin, tài liệu và những trao đổi không công khai",
-                    "Tip, dokumen, dan percakapan latar belakang"
-                  )}
-                </h3>
-                <p style={{ margin: 0, fontSize: 14, lineHeight: 1.6, color: BANNER_BODY, maxWidth: 600 }}>
-                  {t(
-                    "We protect our sources. We use end-to-end encrypted channels by default, hold tips on a separate system with restricted access, and have never disclosed a source to a third party, including law enforcement, without a sealed legal challenge first. If you have something to share, we'd like to hear from you.",
-                    "Chúng tôi bảo vệ nguồn tin. Mặc định dùng các kênh mã hoá đầu-cuối, lưu nguồn tin trên hệ thống riêng có quyền truy cập hạn chế, và chưa bao giờ tiết lộ nguồn tin cho bên thứ ba, kể cả cơ quan thực thi pháp luật, nếu chưa qua một thách thức pháp lý kín. Nếu bạn có điều muốn chia sẻ, chúng tôi rất muốn lắng nghe.",
-                    "Kami melindungi narasumber. Secara bawaan kami memakai kanal terenkripsi ujung-ke-ujung, menyimpan tip pada sistem terpisah dengan akses terbatas, dan tidak pernah mengungkap narasumber ke pihak ketiga, termasuk penegak hukum, tanpa tantangan hukum tersegel terlebih dahulu. Jika Anda punya sesuatu untuk dibagikan, kami ingin mendengarnya."
-                  )}
-                </p>
-              </div>
-              <div
-                style={{
-                  position: "relative",
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: 10,
-                }}
-              >
-                {TIP_LINES.map(([icon, line, sub]) => (
-                  <div
-                    key={line}
-                    style={{
-                      padding: "12px 14px",
-                      background: BANNER_FILL,
-                      border: `1px solid ${BANNER_BORDER}`,
-                      borderRadius: 6,
-                      display: "flex",
-                      gap: 12,
-                      alignItems: "center",
-                    }}
-                  >
-                    <Icon name={icon} size={16} color="var(--accent)" />
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <div
-                        className="mono"
-                        style={{ fontSize: 12, fontWeight: 500, color: BANNER_HEADING }}
-                      >
-                        {line}
-                      </div>
-                      <div style={{ fontSize: 10, color: BANNER_META, marginTop: 2 }}>{sub}</div>
-                    </div>
-                  </div>
-                ))}
-              </div>
             </div>
           </section>
         </Reveal>

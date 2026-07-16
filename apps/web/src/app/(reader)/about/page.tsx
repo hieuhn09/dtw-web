@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { GridBackdrop, Reveal } from "@/components/effects";
-import { Icon, type IconName } from "@/components/icons";
+import { Icon } from "@/components/icons";
 import { useLang, useT } from "@/lib/i18n";
 
 const VALUES: ReadonlyArray<{ k: string; v: string }> = [
@@ -31,13 +31,6 @@ const TRUST_LINKS: ReadonlyArray<readonly [slug: string, title: string, desc: st
   ["sponsored", "Sponsored & Affiliate", "DTW Studio rules + commission disclosure."],
 ];
 
-const TIP_LINES: ReadonlyArray<readonly [icon: IconName, line: string, sub: string]> = [
-  ["mail", "tips@dailytechwire.com", "PGP key on request"],
-  ["lock", "Signal · +65 8XXX XXXX", "End-to-end encrypted"],
-  ["globe", "SecureDrop · onion link", "Tor-only, anonymous"],
-  ["mail", "corrections@dailytechwire.com", "Spotted an error?"],
-];
-
 const BIZ_INFO: ReadonlyArray<readonly [k: string, v: string]> = [
   [
     "Registered office",
@@ -46,6 +39,31 @@ const BIZ_INFO: ReadonlyArray<readonly [k: string, v: string]> = [
   ["Press inquiries", "media@dailytechwire.com"],
   ["Partnerships", "partnership@dailytechwire.com\nasiapresscentre.com"],
 ];
+
+// Same pattern as apps/web/src/lib/account-actions.ts:136 — kept local since
+// that module is a server-action file and this component is "use client".
+const EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+
+/** Renders a (possibly multi-line) BIZ_INFO value, linking any line that
+ * looks like an email address and leaving everything else as plain text. */
+function renderBizValue(v: string) {
+  const lines = v.split("\n");
+  return lines.map((line, i) => (
+    <span key={`${line}-${i}`}>
+      {EMAIL_RE.test(line) ? (
+        <a
+          href={`mailto:${line}`}
+          style={{ color: "var(--accent-ink)", textDecoration: "none" }}
+        >
+          {line}
+        </a>
+      ) : (
+        line
+      )}
+      {i < lines.length - 1 && <br />}
+    </span>
+  ));
+}
 
 export default function AboutPage() {
   const t = useT();
@@ -474,129 +492,6 @@ export default function AboutPage() {
           </section>
         </Reveal>
 
-        {/* Tip line */}
-        <Reveal>
-          <section style={{ marginBottom: 40 }}>
-            <div
-              style={{
-                background: "var(--banner)",
-                color: "#E8EDF7",
-                borderRadius: 12,
-                padding: "48px",
-                display: "grid",
-                gridTemplateColumns: "1.5fr 1fr",
-                gap: 48,
-                alignItems: "center",
-                position: "relative",
-                overflow: "hidden",
-              }}
-            >
-              <GridBackdrop color="rgba(255,255,255,.05)" size={32} fadeRadius="80%" />
-              <div
-                style={{
-                  position: "absolute",
-                  right: -60,
-                  top: -60,
-                  width: 240,
-                  height: 240,
-                  borderRadius: "50%",
-                  background: "var(--accent)",
-                  opacity: 0.18,
-                  filter: "blur(60px)",
-                }}
-              />
-              <div style={{ position: "relative" }}>
-                <div
-                  className="kicker"
-                  style={{ color: "var(--accent)", marginBottom: 10 }}
-                >
-                  <Icon
-                    name="lock"
-                    size={12}
-                    stroke={2.2}
-                    style={{ verticalAlign: "middle", marginRight: 6 }}
-                  />
-                  Securely contact the newsroom
-                </div>
-                <h3
-                  className="serif"
-                  style={{
-                    margin: "0 0 14px",
-                    fontSize: 30,
-                    fontWeight: 650,
-                    letterSpacing: "-0.02em",
-                    color: "#FFFFFF",
-                    lineHeight: 1.15,
-                  }}
-                >
-                  Tips, documents, and on-background conversations.
-                </h3>
-                <p
-                  style={{
-                    margin: 0,
-                    fontSize: 14,
-                    lineHeight: 1.6,
-                    color: "rgba(232,237,247,.75)",
-                    maxWidth: 600,
-                  }}
-                >
-                  We protect our sources. We use end-to-end encrypted channels by default, hold
-                  tips on a separate system with restricted access, and have never disclosed a
-                  source to a third party – including law enforcement – without a sealed legal
-                  challenge first. If you have something to share, we&apos;d like to hear from
-                  you.
-                </p>
-              </div>
-              <div
-                style={{
-                  position: "relative",
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: 10,
-                }}
-              >
-                {TIP_LINES.map(([icon, line, sub]) => (
-                  <div
-                    key={line}
-                    style={{
-                      padding: "12px 14px",
-                      background: "rgba(232,237,247,.06)",
-                      border: "1px solid rgba(232,237,247,.12)",
-                      borderRadius: 6,
-                      display: "flex",
-                      gap: 12,
-                      alignItems: "center",
-                    }}
-                  >
-                    <Icon name={icon} size={16} color="var(--accent)" />
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <div
-                        className="mono"
-                        style={{
-                          fontSize: 12,
-                          fontWeight: 500,
-                          color: "#E8EDF7",
-                        }}
-                      >
-                        {line}
-                      </div>
-                      <div
-                        style={{
-                          fontSize: 10,
-                          color: "rgba(232,237,247,.55)",
-                          marginTop: 2,
-                        }}
-                      >
-                        {sub}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
-        </Reveal>
-
         {/* Business info */}
         <section
           style={{
@@ -627,13 +522,32 @@ export default function AboutPage() {
                   fontSize: 12,
                   lineHeight: 1.6,
                   color: "var(--ink-2)",
-                  whiteSpace: "pre-line",
                 }}
               >
-                {v}
+                {renderBizValue(v)}
               </div>
             </div>
           ))}
+          <div>
+            <div
+              className="upper"
+              style={{
+                fontSize: 10,
+                fontWeight: 600,
+                letterSpacing: ".14em",
+                color: "var(--muted)",
+                marginBottom: 8,
+                textTransform: "uppercase",
+              }}
+            >
+              {t("General inquiries", "Liên hệ chung", "Pertanyaan umum")}
+            </div>
+            <div style={{ fontSize: 12, lineHeight: 1.6 }}>
+              <Link href="/contact" className="linkish" style={{ color: "var(--accent)" }}>
+                {t("Visit our Contact page", "Xem trang Liên hệ", "Kunjungi halaman Kontak")}
+              </Link>
+            </div>
+          </div>
         </section>
       </div>
     </div>

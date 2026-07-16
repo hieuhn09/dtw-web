@@ -62,14 +62,9 @@ The About page went through extensive iteration in `design/chats/chat1.md`. The 
 - 5 link cards: Editorial Standards / AI Disclosure / Corrections / Transparency / Sponsored Policy
 - Each card leads to the matching `/trust/*` page
 
-### Tip line (dark)
-
-- `tips@dailytechwire.com`
-- Signal: available on request
-- SecureDrop
-- Corrections: `corrections@dailytechwire.com`
-
 ### What's NOT on the page (removed during iteration — keep removed)
+
+**Note:** removal of the tip line (below) applies to **every** contact/trust surface, present and future — not just `/about`. Root cause of the original regrowth: the user's blanket removal instruction (`chat1.md:457`, "toàn bài") predates `/about/newsroom` (now `/newsroom`), which was born later and re-accumulated the same content pattern independently.
 
 - Publication name list
 - Bureaus list (no offices yet — "we operate from Singapore" is the only geographic claim)
@@ -77,6 +72,7 @@ The About page went through extensive iteration in `design/chats/chat1.md`. The 
 - "What we promise our readers" + "What we don't do" commitment cards
 - "What we cover" beat grid
 - Any award badge bar (SOPA / ONA / WAN-IFRA / Pulitzer / IPI / GIJN / RSF / CPJ — all fabricated, all removed)
+- Tip line / secure-contact banner (`tips@`/`media@`, masked Signal number, unresolvable SecureDrop reference, unbackable source-protection guarantee) — no infrastructure exists to back any of these claims, and Singapore has no shield law (no newspaper rule; CPC s39/s40 permit compelled decryption without judicial approval), so the guarantee is both fabricated track record and an unkeepable promise. Same category as the removed awards/cap table content. Removed [16-07-26].
 
 If a future agent tries to add any of these, surface the rejection from `design/chats/chat1.md` first.
 

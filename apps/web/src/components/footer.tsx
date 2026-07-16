@@ -16,7 +16,7 @@ export function Footer() {
       title: t("DTW", "DTW", "DTW"),
       links: [
         [t("About", "Giới thiệu", "Tentang"), "/about"],
-        [t("Newsroom", "Toà soạn", "Redaksi"), "/about/newsroom"],
+        [t("Newsroom", "Toà soạn", "Redaksi"), "/newsroom"],
         [t("Contact", "Liên hệ", "Kontak"), "/contact"],
         [t("Press inquiries", "Hỏi báo chí", "Pertanyaan pers"), "/press"],
       ],

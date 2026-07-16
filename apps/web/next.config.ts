@@ -18,6 +18,8 @@ const config: NextConfig = {
     return [
       { source: "/asia", destination: "/latest", permanent: true },
       { source: "/asia/:path*", destination: "/latest/:path*", permanent: true },
+      // /about/newsroom moved to /newsroom (2026-07-16). Preserve old links.
+      { source: "/about/newsroom", destination: "/newsroom", permanent: true },
     ];
   },
   webpack: (webpackConfig) => {
