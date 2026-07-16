@@ -8,6 +8,15 @@ import { buildMetadata, DEFAULT_OG_IMAGE } from "@/lib/metadata";
 
 export const revalidate = 60;
 
+// Without this, a page under a dynamic segment is fully dynamic in Next 15
+// and the `revalidate` above is silently ignored (SSR per request, no-store
+// headers). Empty is enough: dynamicParams stays on, so a pillar created in
+// /admin builds on first request and caches for the 60s window — and the
+// pillars afterChange hook still busts by tag instantly.
+export function generateStaticParams(): Array<{ pillar: string }> {
+  return [];
+}
+
 export async function generateMetadata({
   params,
 }: {

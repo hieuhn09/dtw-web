@@ -19,6 +19,15 @@ import type { Article, Author, Media, Pillar } from "@/payload/payload-types";
 
 export const revalidate = 60;
 
+// Without this, a page under a dynamic segment is fully dynamic in Next 15
+// and the `revalidate` above is silently ignored (SSR per request, no-store
+// headers). Empty is enough: articles build on first request, cache for 60s,
+// and the articles:all afterChange hook still busts by tag on publish/edit.
+// draftMode() stays compatible — an enabled draft cookie bypasses the cache.
+export function generateStaticParams(): Array<{ slug: string }> {
+  return [];
+}
+
 /** Narrow a Payload relationship field (id | expanded doc) to the expanded
  *  doc. The depth:2 queries this page uses always return the expanded shape
  *  for these fields — this only guards the type. */
