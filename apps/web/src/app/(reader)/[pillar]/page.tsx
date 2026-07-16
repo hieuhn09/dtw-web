@@ -26,6 +26,10 @@ export async function generateMetadata({
     canonicalPath: `/${pillarDoc.slug}`,
     image: DEFAULT_OG_IMAGE, // no per-pillar image field exists
     type: "website",
+    feed: {
+      url: `/${pillarDoc.slug}/rss.xml`,
+      title: `DailyTechWire — ${pillarDoc.heading || pillarDoc.title.en}`,
+    },
   });
 }
 

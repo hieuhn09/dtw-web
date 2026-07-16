@@ -466,6 +466,55 @@ export const getNewsletters = unstable_cache(
  * so publish/unpublish/edit events (already firing via `revalidateArticle`)
  * keep the sitemap in sync without any new invalidation path.
  */
+/**
+ * Fields the Atom feeds (`/rss.xml`, `/[pillar]/rss.xml`) render per entry.
+ * `author`/`pillar` stay in Payload's `number | Doc` relation shape — the
+ * builder narrows on `typeof === "object"` like article-view does.
+ */
+export type FeedArticle = Pick<
+  Article,
+  "id" | "title" | "slug" | "dek" | "publishedAt" | "updatedAt" | "author" | "pillar" | "sponsored"
+>;
+
+/**
+ * Newest published articles for the Atom feeds. depth 1 populates the
+ * `author` + `pillar` relations for `<author>`/`<category>`; the select keeps
+ * the row lean (no Lexical body). 50 entries is the news-feed norm —
+ * aggregators poll, they don't paginate. `pillarId === null` → sitewide
+ * firehose (also serves the "latest" pillar, which is all beats by
+ * definition). Shares the `articles:all` tag so the E3c afterChange hook
+ * busts feeds on publish/edit/unpublish; unstable_cache keys on the
+ * `pillarId` argument, so each pillar's feed caches independently.
+ */
+export const getFeedArticles = unstable_cache(
+  async (pillarId: number | null = null): Promise<FeedArticle[]> => {
+    const p = await payload();
+    const and: Where[] = [{ _status: { equals: "published" } }];
+    if (pillarId != null) and.push({ pillar: { equals: pillarId } });
+    const r = await p.find({
+      collection: "articles",
+      where: { and },
+      sort: ["-publishedAt", "-id"],
+      limit: 50,
+      depth: 1,
+      select: {
+        id: true,
+        title: true,
+        slug: true,
+        dek: true,
+        publishedAt: true,
+        updatedAt: true,
+        author: true,
+        pillar: true,
+        sponsored: true,
+      },
+    });
+    return r.docs;
+  },
+  ["articles:feed"],
+  { tags: ["articles:all"], revalidate: 300 }
+);
+
 export const getSitemapArticles = unstable_cache(
   async (): Promise<Array<Pick<Article, "slug" | "updatedAt" | "publishedAt">>> => {
     const p = await payload();

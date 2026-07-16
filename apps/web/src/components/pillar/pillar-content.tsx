@@ -135,7 +135,7 @@ export function PillarContent({
           <Button variant="outline" size="sm">
             {t("Follow", "Theo dõi", "Ikuti")} {pillarLabel}
           </Button>
-          <Button variant="ghost" size="sm">
+          <Button variant="ghost" size="sm" href={`/${pillarId}/rss.xml`}>
             RSS feed
           </Button>
           <span className="text-mute-2 mono" style={{ fontSize: 11, marginLeft: 8 }}>
