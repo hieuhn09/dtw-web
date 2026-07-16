@@ -38,6 +38,11 @@ DailyTechWire is a digital-native technology publication with an Asia-tech focus
 
 ${sections}
 
+## Feeds
+
+- All stories (Atom): ${origin}/rss.xml
+- Per section (Atom): ${origin}/{section-slug}/rss.xml
+
 ## About
 
 - About: ${origin}/about

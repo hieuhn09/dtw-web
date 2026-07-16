@@ -103,6 +103,9 @@ export interface BuildMetadataInput {
   /** Article only — pillar label. */
   section?: string;
   robots?: { index: boolean; follow?: boolean };
+  /** Extra Atom feed advertised for this page (e.g. the pillar's own feed).
+   *  The sitewide /rss.xml is always included. */
+  feed?: { url: string; title: string };
 }
 
 export function buildMetadata(input: BuildMetadataInput): Metadata {
@@ -117,6 +120,7 @@ export function buildMetadata(input: BuildMetadataInput): Metadata {
     authors,
     section,
     robots,
+    feed,
   } = input;
 
   const ogImage = image ?? DEFAULT_OG_IMAGE;
@@ -151,6 +155,16 @@ export function buildMetadata(input: BuildMetadataInput): Metadata {
     description,
     alternates: {
       canonical: canonicalPath,
+      // Feed autodiscovery must live HERE, not only in layout.tsx: Next.js
+      // replaces (not deep-merges) a parent's `alternates` when a page sets
+      // its own, so every buildMetadata page would otherwise drop the layout's
+      // feed <link>.
+      types: {
+        "application/atom+xml": [
+          { url: "/rss.xml", title: "DailyTechWire" },
+          ...(feed ? [feed] : []),
+        ],
+      },
       // languages: reserved for hreflang once i18n subpath routing
       // (`/en /id /vi`, invariant #9) actually ships (Architecture Decision
       // 8). Do NOT populate — no locale routing exists yet.

@@ -15,6 +15,14 @@ function isTrustSlug(v: string): v is TrustSlug {
   return (SLUGS as ReadonlyArray<string>).includes(v);
 }
 
+// The slug list is finite and code-defined, so all five pages prerender at
+// build. Also required for the `revalidate` above to take effect at all — a
+// dynamic-segment page without generateStaticParams is fully dynamic in
+// Next 15 (the 300s window would be silently ignored).
+export function generateStaticParams(): Array<{ slug: TrustSlug }> {
+  return SLUGS.map((slug) => ({ slug }));
+}
+
 /**
  * Server wrapper: fetches corrections (server-only Payload client) and hands the
  * locale-neutral data to the client presentational component, which renders the

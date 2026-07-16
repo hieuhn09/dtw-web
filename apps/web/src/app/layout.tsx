@@ -37,6 +37,13 @@ export const metadata: Metadata = {
     template: "%s – DailyTechWire",
   },
   description: "Tech Intelligence, Wired Daily.",
+  // Fallback feed autodiscovery for pages that don't call buildMetadata
+  // (which re-declares this — page-level `alternates` replaces the layout's).
+  alternates: {
+    types: {
+      "application/atom+xml": [{ url: "/rss.xml", title: "DailyTechWire" }],
+    },
+  },
   openGraph: {
     siteName: "DailyTechWire",
     type: "website",

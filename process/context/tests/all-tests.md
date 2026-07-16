@@ -1,6 +1,6 @@
 # dtw-web - All Tests
 
-Last updated: 2026-05-28
+Last updated: 2026-07-16
 
 Attach this file first when the task involves testing, verification, or test debugging.
 
@@ -109,7 +109,7 @@ Skip Playwright on small, well-scoped logic changes — it's slow.
 
 - Nothing exists yet (greenfield)
 - Test runner versions not pinned (will pin during scaffold)
-- No CI pipeline (no `.github/workflows/`)
+- CI exists (`.github/workflows/ci.yml`) but is typecheck-only — no test runner, lint step, or content-guard step wired in yet
 - No PGlite + Drizzle integration prototype yet — first feature touching DB will set the pattern
 - No Lighthouse CI configured
 - No axe-core integration
