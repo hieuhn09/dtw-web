@@ -4,9 +4,10 @@
 
 ## Scope
 
-The trust-and-transparency surface — six static pages that exist because editorial integrity is the product, not a footnote.
+The trust-and-transparency surface — seven static pages that exist because editorial integrity is the product, not a footnote.
 
 - `/about` — Asia Press Centre Group (APCG) (parent organisation), Editor-in-Chief, mission & values, ownership & funding
+- `/newsroom` — inside-the-newsroom detail page. Moved from `/about/newsroom` to top-level `/newsroom` 2026-07-16 (301 redirect in place, see `next.config.ts`). **Still contains known fabricated content** (named bureaus, fabricated EIC career history, 8-person named masthead, beats grid) not yet cleaned up — see `process/features/about-trust/backlog/newsroom-fabricated-content-cleanup_PLAN_16-07-26.md`. Do not treat this page as launch-ready.
 - `/trust/editorial-standards`
 - `/trust/ai-disclosure`
 - `/trust/corrections` — public log of every correction
@@ -66,6 +67,8 @@ The About page went through extensive iteration in `design/chats/chat1.md`. The 
 
 **Note:** removal of the tip line (below) applies to **every** contact/trust surface, present and future — not just `/about`. Root cause of the original regrowth: the user's blanket removal instruction (`chat1.md:457`, "toàn bài") predates `/about/newsroom` (now `/newsroom`), which was born later and re-accumulated the same content pattern independently.
 
+**This is the second confirmed occurrence of the same regrowth mechanism** (tip line here; the Cheryl Tan Reuters/Pulitzer-style career-history draft earlier — see "Editor-in-Chief" above — and its near-identical structural recurrence on `/newsroom`, tracked in `process/features/about-trust/backlog/newsroom-fabricated-content-cleanup_PLAN_16-07-26.md`). A written "keep removed" note did not prevent regrowth once already; do not assume prose alone is sufficient going forward. If the `/newsroom` cleanup slips past launch, add a mechanical grep-based content guard (pattern candidates: `securedrop|onion|8XXX|bureau-chief|guest-lectured|declined paid placements`) as a new step in `.github/workflows/ci.yml` — CI already exists (typecheck-only today), so this does not need to wait for a test runner.
+
 - Publication name list
 - Bureaus list (no offices yet — "we operate from Singapore" is the only geographic claim)
 - "5 award-winning publications" line
@@ -101,12 +104,12 @@ Editorial firewall doc. Lives in Payload CMS as a single rich-text page. Must in
 
 Trust pages are translated in chrome (title, section headers, kickers). Body content is editor-translated where the editorial team has translated it; otherwise body stays in source language with a "Translation pending" notice. **Body translation is not via automatic LLM** — editor-approved only.
 
-## Key Source Files (to come)
+## Key Source Files
 
-- `apps/web/src/app/(reader)/about/page.tsx`
-- `apps/web/src/app/(reader)/trust/[slug]/page.tsx`
-- `apps/web/src/components/about/{hero,stats,who,mission,eic,masthead,ownership,framework,tip-line}.tsx`
-- `apps/web/src/lib/transparency/{compute,render}.ts` — Phase 2
+- `apps/web/src/app/(reader)/about/page.tsx` — single-file `/about` implementation (not the modular `components/about/*` split originally planned)
+- `apps/web/src/app/(reader)/newsroom/page.tsx` — single-file `/newsroom` implementation (moved from `about/newsroom/page.tsx` 2026-07-16)
+- `apps/web/src/app/(reader)/trust/[slug]/page.tsx` + `trust-content.tsx`
+- `apps/web/src/lib/transparency/{compute,render}.ts` — Phase 2, not yet built
 - Payload `Corrections` collection + `TrustPages` collection
 
 ## Related Context
@@ -117,7 +120,7 @@ Trust pages are translated in chrome (title, section headers, kickers). Body con
 
 ## Current Status
 
-Status: design complete (in `design/`); not implemented
+Status: `/about`, `/newsroom`, and `/trust/*` are implemented and shipped. Tip-line banner removed and `/about/newsroom` moved to `/newsroom` 2026-07-16 (PR #24, merged to `main`). `/newsroom`'s bureaus / masthead / EIC career-history / beats-grid content is implemented but still fabricated — tracked in `process/features/about-trust/backlog/newsroom-fabricated-content-cleanup_PLAN_16-07-26.md`, priority: before launch.
 
 ## Folder Contents
 

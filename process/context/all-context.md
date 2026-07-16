@@ -1,6 +1,6 @@
 # dtw-web - All Context
 
-Last updated: 2026-06-14
+Last updated: 2026-07-16
 
 This file is the root context entrypoint for the repo.
 
@@ -280,7 +280,7 @@ dtw-web/
 | `newsletters/` | 6 newsletters (AM Brief, PM Brief, AI Weekly, Asia Funding Weekly, Dev Digest, Products Deals), Resend, double opt-in, segment-by-pillar |
 | `account/` | Saved / Reading queue / History / Following pillars / Settings, IndexedDB ↔ DB sync, PWA offline cache rules. Auth flows live here (modal, magic link, OAuth callback) |
 | `engine-integration/` | Content Engine ↔ Payload API contract, `lockedFields` / `editedByHuman` / `origin` model, optimistic lock, `afterChange` hook (revalidate + Meilisearch index + OG generation) |
-| `about-trust/` | About page (Asia Press Centre Group / APCG, Cheryl Tan EIC, no fake history), Editorial Standards, AI Disclosure, Corrections (public log), Transparency Report (auto-generated, Phase 2), Sponsored / Affiliate Policy |
+| `about-trust/` | About page (Asia Press Centre Group / APCG, Cheryl Tan EIC, no fake history), `/newsroom` detail page (moved from `/about/newsroom` 2026-07-16; known fabricated-content cleanup backlogged), Editorial Standards, AI Disclosure, Corrections (public log), Transparency Report (auto-generated, Phase 2), Sponsored / Affiliate Policy |
 
 ---
 
