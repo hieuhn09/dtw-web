@@ -14,7 +14,7 @@ export const revalidate = 900;
 // /exit-preview, /api/*.
 const STATIC_ROUTES = [
   "/about",
-  "/about/newsroom",
+  "/newsroom",
   "/awards",
   "/advertise",
   "/contact",
