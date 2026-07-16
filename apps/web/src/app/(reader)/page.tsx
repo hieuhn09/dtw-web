@@ -13,6 +13,7 @@ import { PodcastStrip } from "@/components/home/podcast-strip";
 import { NewsletterCta } from "@/components/home/newsletter-cta";
 import { toArticleView, type ArticleView } from "@/lib/article-view";
 import {
+  getArticlesByPillar,
   getDeepDive,
   getNavPillars,
   getPinnedLatest,
@@ -55,18 +56,30 @@ export default async function HomePage() {
   // whatever currently leads.
   const aside = heroPool.filter((a) => a.id !== lead.id).slice(0, 4);
 
-  const byPillar: Partial<Record<PillarId, ArticleView[]>> = {};
-  for (const a of articles) {
-    const list = byPillar[a.pillar] ?? [];
-    if (list.length < 4) {
-      byPillar[a.pillar] = [...list, a];
-    }
-  }
+  // Each non-"latest" pillar queries its own newest 4 directly, rather than
+  // grouping the shared newest-40 `articles` pool above by pillar. Pillars
+  // publish at very different rates (e.g. Dev publishes far less often than
+  // AI or Policy), so a low-volume pillar's newest stories can rank well
+  // outside the global top 40 — starving its band down to 1 story, or
+  // vanishing it entirely once nothing it owns is left in that window
+  // (pillar-showcase.tsx's `items.length === 0` guard drops the band). "latest"
+  // is excluded from this fan-out and handled separately below: it's an
+  // auto-aggregated feed, not a real beat — only a couple of stories are ever
+  // literally tagged "latest" — so routing it through `getArticlesByPillar`
+  // would starve it worse than the bug this fixes. Pillar list is CMS-driven
+  // (invariant #8), so this fans out over `pillars` rather than a hardcoded
+  // slug list.
+  const nonLatestPillars = pillars.filter((p) => p.slug !== "latest");
+  const perPillarDocs = await Promise.all(
+    nonLatestPillars.map((p) => getArticlesByPillar(p.slug, 4))
+  );
+  const byPillar: Partial<Record<PillarId, ArticleView[]>> = Object.fromEntries(
+    nonLatestPillars.map((p, i) => [p.slug, perPillarDocs[i]!.map(toArticleView)])
+  ) as Partial<Record<PillarId, ArticleView[]>>;
   // "Latest" is an auto-aggregated feed — the newest stories across every pillar,
   // not only those literally tagged with the "latest" pillar (mirrors the /latest
-  // page). Without this the band would depend on "latest"-tagged articles landing
-  // in the recent set and could drop out of "Across the pillars" entirely.
-  // A pinned story leads the Latest band; the rest fill in newest-first.
+  // page). A pinned story leads the Latest band; the rest fill in newest-first
+  // from the shared `articles` pool above.
   byPillar.latest = (
     pinned ? [pinned, ...articles.filter((a) => a.id !== pinned.id)] : articles
   ).slice(0, 4);
