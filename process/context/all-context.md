@@ -1,6 +1,6 @@
 # dtw-web - All Context
 
-Last updated: 2026-07-16
+Last updated: 2026-07-17
 
 This file is the root context entrypoint for the repo.
 
@@ -15,7 +15,7 @@ Start here before loading deeper context files.
 
 ## Project Description
 
-**Dailytechwire (DTW)** — a digital-native technology publication with an Asia-tech focus: regional funding and tech-stock coverage, AI benchmarks and rankings, and deep-dive editorial. The web app (`dtw-web`) is the **reading and presentation layer** of a three-service system:
+**Dailytechwire (DTW)** — a global, digital-native technology publication with an Asian vantage point: funding and tech-stock coverage, AI benchmarks and rankings, and deep-dive editorial. (Repositioned from "Asia-tech focus" to global by product decision 2026-07-17 — see invariant #14.) The web app (`dtw-web`) is the **reading and presentation layer** of a three-service system:
 
 - `dtw-web` (this repo) — Next.js reader site + Payload CMS for editorial review
 - `dtw-engine` — the Content Engine that drafts and pre-approves articles (independent service, separate repo)
@@ -27,7 +27,7 @@ The three share `packages/db`. Engine writes go through the **Payload API only**
 
 ### Audience (priority order)
 
-1. **Public readers** (primary) — Asia tech operators, investors, builders, on mobile + desktop. Drives every decision about performance, SEO, PWA/offline, and i18n.
+1. **Public readers** (primary) — tech operators, investors, builders worldwide (strong Asia readership), on mobile + desktop. Drives every decision about performance, SEO, PWA/offline, and i18n.
 2. **Editorial team** (secondary) — Author / Editor / Admin using the embedded Payload CMS to review, edit, flag sponsored / AI content, manage taxonomy. RBAC has 5 roles total.
 3. **Dev team** — build, deploy, maintain the Engine ↔ Payload contract.
 
@@ -135,6 +135,7 @@ Numbered, terse, load-bearing. Each one ties to a feature folder or context grou
 11. **Tech stack veto list:** no Lucia (deprecated), no Bun runtime (Payload 3 ↔ Bun is unstable). **Header logo (changed 2026-06-14):** the design refresh reintroduced a brand mark — a navy `DTW` monogram + lowercase `dailytechwire` wordmark + terracotta pulse-dot (source asset `design/project/uploads/dtw-logo-primary.svg`), superseding the earlier wordmark-only rule. Tagline stays "Tech Intelligence, Wired Daily".
 12. **Reader-data residency / compliance:** GDPR + PDPA (Singapore) + Nghị định 13 (Vietnam). PostHog is **self-hosted** specifically for first-party analytics.
 13. **Awards page (year-one state):** no medallion, no "see previous winners", no specific categories. Just "Coming this year" with the shimmer hero. Year 1 = inaugural.
+14. **Global positioning (2026-07-17).** DTW is a global publication. "Asia" appears in copy only as: the APCG proper noun, Asia-angle features/content (Asia Funding Tracker, Asia Spotlight, Asia Funding Weekly, "Asia, Decoded", bureau/beat roles, article content), or "…Asia and the world" phrasing. Never scope the publication, newsroom, readership, newsletters, or awards to Asia-only. The About-page hero/mission describe APCG (the Asian parent), not DTW — they stay.
 
 If a change appears to violate one of these, surface it explicitly and ask before proceeding.
 
