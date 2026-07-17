@@ -250,9 +250,9 @@ export function Header({ pillars }: { pillars: NavPillar[] }) {
             <Icon name="search" size={15} />
             <span style={{ flex: 1 }}>
               {t(
-                "Search 12,400 stories, dashboards, awards…",
-                "Tìm 12.400 bài báo, bảng điều khiển, giải thưởng…",
-                "Cari 12.400 artikel, dasbor, penghargaan…"
+                "Search stories, awards…",
+                "Tìm bài báo, giải thưởng…",
+                "Cari artikel, penghargaan…"
               )}
             </span>
             <kbd
