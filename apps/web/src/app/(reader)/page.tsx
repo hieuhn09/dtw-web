@@ -23,6 +23,16 @@ import {
 import type { PillarId } from "@/lib/data";
 import { buildMetadata, DEFAULT_OG_IMAGE } from "@/lib/metadata";
 
+// [temp-hidden 2026-07-17] Homepage sections hidden at product request.
+// Flip any flag back to `true` to restore that band (imports and data-fetch
+// for each section are intentionally left intact so restoring is one edit).
+const SHOW_BRIEF = false;
+const SHOW_WIRE_DROPS = false;
+const SHOW_DASHBOARDS = false;
+const SHOW_DEEP_DIVE = false;
+const SHOW_BEST_OF_REVIEWS = false;
+const SHOW_LISTEN = false;
+
 export const revalidate = 60;
 
 // Deliberately omits `title` so the route inherits the root layout's
@@ -99,31 +109,41 @@ export default async function HomePage() {
   return (
     <div className="container">
       <HomeHero lead={lead} aside={aside} />
-      <BriefBand />
-      <Reveal>
-        <WireDrops initial={wireDropsInitial} />
-      </Reveal>
+      {SHOW_BRIEF && <BriefBand />}
+      {SHOW_WIRE_DROPS && (
+        <Reveal>
+          <WireDrops initial={wireDropsInitial} />
+        </Reveal>
+      )}
       <Reveal>
         <PillarShowcase pillars={pillars} byPillar={byPillar} />
       </Reveal>
       <Reveal>
         <AsiaSpotlight articles={spotlightItems} />
       </Reveal>
-      <Reveal>
-        <DashboardsTeaser />
-      </Reveal>
-      <Reveal>
-        <DeepDive article={deepDiveView} />
-      </Reveal>
+      {SHOW_DASHBOARDS && (
+        <Reveal>
+          <DashboardsTeaser />
+        </Reveal>
+      )}
+      {SHOW_DEEP_DIVE && (
+        <Reveal>
+          <DeepDive article={deepDiveView} />
+        </Reveal>
+      )}
       <Reveal>
         <AwardsBanner />
       </Reveal>
-      <Reveal>
-        <BestOfReviews />
-      </Reveal>
-      <Reveal>
-        <PodcastStrip />
-      </Reveal>
+      {SHOW_BEST_OF_REVIEWS && (
+        <Reveal>
+          <BestOfReviews />
+        </Reveal>
+      )}
+      {SHOW_LISTEN && (
+        <Reveal>
+          <PodcastStrip />
+        </Reveal>
+      )}
       <Reveal>
         <NewsletterCta />
       </Reveal>

@@ -18,6 +18,12 @@ import { authClient } from "@/lib/auth-client";
 
 const NUDGE_KEY = "dtw-nudge-dismissed";
 
+// [temp-hidden 2026-07-17] Language switcher hidden — multi-language (vi/id)
+// isn't shippable yet under current cost constraints, so the site runs
+// English-only. The i18n plumbing (useLang/useT, defaulting to "en") is left
+// intact; flip back to `true` to restore the EN/VI/ID selector.
+const SHOW_LANG_SWITCHER = false;
+
 export function Header({ pillars }: { pillars: NavPillar[] }) {
   const router = useRouter();
   const pathname = usePathname() || "/";
@@ -160,24 +166,28 @@ export function Header({ pillars }: { pillars: NavPillar[] }) {
             >
               {t("AI Disclosure", "Công bố AI", "Pengungkapan AI")}
             </Link>
-            <span style={{ color: "var(--hair-2)" }}>·</span>
-            <select
-              aria-label="Language"
-              value={lang}
-              onChange={(e) => setLang(e.target.value as typeof lang)}
-              style={{
-                background: "transparent",
-                border: "none",
-                fontFamily: "var(--font-mono)",
-                fontSize: 11,
-                color: "var(--muted)",
-                cursor: "pointer",
-              }}
-            >
-              <option value="en">EN</option>
-              <option value="vi">VI</option>
-              <option value="id">ID</option>
-            </select>
+            {SHOW_LANG_SWITCHER && (
+              <>
+                <span style={{ color: "var(--hair-2)" }}>·</span>
+                <select
+                  aria-label="Language"
+                  value={lang}
+                  onChange={(e) => setLang(e.target.value as typeof lang)}
+                  style={{
+                    background: "transparent",
+                    border: "none",
+                    fontFamily: "var(--font-mono)",
+                    fontSize: 11,
+                    color: "var(--muted)",
+                    cursor: "pointer",
+                  }}
+                >
+                  <option value="en">EN</option>
+                  <option value="vi">VI</option>
+                  <option value="id">ID</option>
+                </select>
+              </>
+            )}
           </div>
         </div>
       </div>
