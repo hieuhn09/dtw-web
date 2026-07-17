@@ -32,6 +32,7 @@ const SHOW_DASHBOARDS = false;
 const SHOW_DEEP_DIVE = false;
 const SHOW_BEST_OF_REVIEWS = false;
 const SHOW_LISTEN = false;
+const SHOW_NEWSLETTER_CTA = false;
 
 export const revalidate = 60;
 
@@ -144,9 +145,11 @@ export default async function HomePage() {
           <PodcastStrip />
         </Reveal>
       )}
-      <Reveal>
-        <NewsletterCta />
-      </Reveal>
+      {SHOW_NEWSLETTER_CTA && (
+        <Reveal>
+          <NewsletterCta />
+        </Reveal>
+      )}
     </div>
   );
 }

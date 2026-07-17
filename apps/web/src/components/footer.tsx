@@ -8,6 +8,11 @@ import { useT } from "@/lib/i18n";
 
 type FooterLink = readonly [label: string, href: string];
 
+// [temp-hidden 2026-07-17] Newsletter surfaces hidden until the sending pipeline
+// ships — subscriptions are captured but nothing is mailed yet. Hides the footer
+// newsletter strip and the "Newsletters" business link. Flip to `true` to restore.
+const SHOW_NEWSLETTER = false;
+
 export function Footer() {
   const t = useT();
 
@@ -36,7 +41,8 @@ export function Footer() {
         [t("Advertise", "Quảng cáo", "Iklan"), "/advertise"],
         [t("DTW Studio", "DTW Studio", "DTW Studio"), "/studio"],
         [t("Awards", "Giải thưởng", "Penghargaan"), "/awards"],
-        [t("Newsletters", "Bản tin", "Newsletter"), "/newsletters"],
+        // [temp-hidden 2026-07-17] Newsletters hidden until sending pipeline ships.
+        // [t("Newsletters", "Bản tin", "Newsletter"), "/newsletters"],
       ],
     },
     {
@@ -67,7 +73,8 @@ export function Footer() {
         marginTop: 60,
       }}
     >
-      {/* Newsletter strip */}
+      {/* Newsletter strip — [temp-hidden 2026-07-17] hidden until sending pipeline ships */}
+      {SHOW_NEWSLETTER && (
       <div style={{ borderBottom: "1px solid var(--hair)" }}>
         <div
           className="container r-footer-news"
@@ -111,6 +118,7 @@ export function Footer() {
           </Button>
         </div>
       </div>
+      )}
 
       {/* Cols */}
       <div
