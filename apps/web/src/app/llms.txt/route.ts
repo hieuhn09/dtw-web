@@ -32,7 +32,7 @@ export async function GET() {
 
   const body = `# DailyTechWire
 
-DailyTechWire is a digital-native technology publication with an Asia-tech focus — regional funding and tech-stock coverage, AI benchmarks and rankings, and deep-dive editorial. Published by Asia Press Centre Group (APCG), an independent newsroom based in Singapore, founded 2023.
+DailyTechWire is a global, digital-native technology publication with an Asian vantage point — funding and tech-stock coverage, AI benchmarks and rankings, and deep-dive editorial. Published by Asia Press Centre Group (APCG), an independent newsroom based in Singapore, founded 2023.
 
 ## Sections
 

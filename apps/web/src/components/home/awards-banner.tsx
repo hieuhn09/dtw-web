@@ -66,9 +66,9 @@ export function AwardsBanner() {
             }}
           >
             {t(
-              "Recognising the founders, operators, and engineers quietly shaping Asia's technology decade. Categories, panel, and nominations revealed closer to launch.",
-              "Tôn vinh những nhà sáng lập, lãnh đạo và kỹ sư đang lặng lẽ định hình thập kỷ công nghệ của châu Á. Hạng mục, ban giám khảo và đề cử sẽ được công bố gần ngày ra mắt.",
-              "Mengenali para founder, operator, dan engineer yang diam-diam membentuk dekade teknologi Asia. Kategori, juri, dan nominasi diumumkan menjelang peluncuran."
+              "Recognising the founders, operators, and engineers quietly shaping the technology decade. Categories, panel, and nominations revealed closer to launch.",
+              "Tôn vinh những nhà sáng lập, lãnh đạo và kỹ sư đang lặng lẽ định hình thập kỷ công nghệ. Hạng mục, ban giám khảo và đề cử sẽ được công bố gần ngày ra mắt.",
+              "Mengenali para founder, operator, dan engineer yang diam-diam membentuk dekade teknologi ini. Kategori, juri, dan nominasi diumumkan menjelang peluncuran."
             )}
           </p>
         </div>

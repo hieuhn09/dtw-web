@@ -107,9 +107,9 @@ export default function AwardsPage() {
             }}
           >
             {t(
-              "A new programme recognising the companies and people quietly shaping Asia's technology decade. Categories, panel, and nominations will be revealed closer to launch.",
-              "Một giải thưởng mới tôn vinh những công ty và con người đang lặng lẽ định hình thập kỷ công nghệ của châu Á. Hạng mục, ban giám khảo và đề cử sẽ được công bố gần ngày ra mắt.",
-              "Program baru yang mengenali perusahaan dan tokoh yang diam-diam membentuk dekade teknologi Asia. Kategori, juri, dan nominasi akan diumumkan menjelang peluncuran."
+              "A new programme recognising the companies and people quietly shaping the technology decade. Categories, panel, and nominations will be revealed closer to launch.",
+              "Một giải thưởng mới tôn vinh những công ty và con người đang lặng lẽ định hình thập kỷ công nghệ. Hạng mục, ban giám khảo và đề cử sẽ được công bố gần ngày ra mắt.",
+              "Program baru yang mengenali perusahaan dan tokoh yang diam-diam membentuk dekade teknologi ini. Kategori, juri, dan nominasi akan diumumkan menjelang peluncuran."
             )}
           </p>
 

@@ -20,7 +20,7 @@ export default function BriefingPage() {
         className="serif text-mute"
         style={{ margin: "0 0 24px", fontSize: 19, lineHeight: 1.45 }}
       >
-        Two daily emails. The morning is what broke overnight in Asia tech, in 5 minutes. The
+        Two daily emails. The morning is what broke overnight in tech, in 5 minutes. The
         evening is the day in three stories, plus what to read tonight.
       </p>
       <div

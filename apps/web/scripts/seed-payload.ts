@@ -90,7 +90,7 @@ const NEWSLETTERS: ReadonlyArray<{
   verticalSlug: string;
   order: number;
 }> = [
-  { slug: "am", name: "AM Brief", cadence: "Daily · 07:00", description: "What broke overnight across Asia tech, in 5 minutes.", verticalSlug: "latest", order: 1 },
+  { slug: "am", name: "AM Brief", cadence: "Daily · 07:00", description: "What broke overnight in tech, in 5 minutes.", verticalSlug: "latest", order: 1 },
   { slug: "pm", name: "PM Brief", cadence: "Daily · 18:00", description: "The day in three stories, plus what to read tonight.", verticalSlug: "latest", order: 2 },
   { slug: "ai", name: "AI Weekly", cadence: "Weekly · Tue", description: "Models, papers, and the geopolitics underneath them.", verticalSlug: "ai", order: 3 },
   { slug: "fund", name: "Asia Funding Weekly", cadence: "Weekly · Thu", description: "Every term sheet that closed in ASEAN this week.", verticalSlug: "startups", order: 4 },
