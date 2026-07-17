@@ -542,7 +542,7 @@ export interface Newsletter {
 }
 
 export const NEWSLETTERS: ReadonlyArray<Newsletter> = [
-  { id: "am", name: "AM Brief", cadence: "Daily · 07:00", desc: "What broke overnight across Asia tech, in 5 minutes.", subs: "48,200", pillar: "latest" },
+  { id: "am", name: "AM Brief", cadence: "Daily · 07:00", desc: "What broke overnight in tech, in 5 minutes.", subs: "48,200", pillar: "latest" },
   { id: "pm", name: "PM Brief", cadence: "Daily · 18:00", desc: "The day in three stories, plus what to read tonight.", subs: "41,700", pillar: "latest" },
   { id: "ai", name: "AI Weekly", cadence: "Weekly · Tue", desc: "Models, papers, and the geopolitics underneath them.", subs: "36,400", pillar: "ai" },
   { id: "fund", name: "Asia Funding Weekly", cadence: "Weekly · Thu", desc: "Every term sheet that closed in ASEAN this week.", subs: "22,900", pillar: "startups" },

@@ -21,9 +21,9 @@ export default function PressPage() {
         "Wawancara & komentar pakar"
       ),
       t(
-        "Speak to a reporter or editor who covers Asian tech, markets, or policy, on the record or on background.",
-        "Trao đổi với phóng viên hoặc biên tập viên phụ trách công nghệ, thị trường hay chính sách châu Á, chính thức hoặc ẩn danh nền.",
-        "Bicara dengan reporter atau editor yang meliput teknologi, pasar, atau kebijakan Asia, on the record atau latar belakang."
+        "Speak to a reporter or editor who covers tech, markets, or policy, on the record or on background.",
+        "Trao đổi với phóng viên hoặc biên tập viên phụ trách công nghệ, thị trường hay chính sách, chính thức hoặc ẩn danh nền.",
+        "Bicara dengan reporter atau editor yang meliput teknologi, pasar, atau kebijakan, on the record atau latar belakang."
       ),
     ],
     [

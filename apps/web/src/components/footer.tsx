@@ -107,9 +107,9 @@ export function Footer() {
             </h3>
             <p className="text-mute" style={{ margin: 0, fontSize: 13 }}>
               {t(
-                "Founders, operators, and policy people across Asia read it before the day starts.",
-                "Các nhà sáng lập, quản lý và người làm chính sách khắp châu Á đọc trước khi ngày mới bắt đầu.",
-                "Para founder, operator, dan pembuat kebijakan di Asia membacanya sebelum hari dimulai."
+                "Founders, operators, and policy people around the world read it before the day starts.",
+                "Các nhà sáng lập, quản lý và người làm chính sách khắp thế giới đọc trước khi ngày mới bắt đầu.",
+                "Para founder, operator, dan pembuat kebijakan di seluruh dunia membacanya sebelum hari dimulai."
               )}
             </p>
           </div>
@@ -142,9 +142,9 @@ export function Footer() {
             style={{ fontSize: 12, lineHeight: 1.55, marginTop: 14, maxWidth: 280 }}
           >
             {t(
-              "An independent newsroom covering Asia's technology economy, published from Singapore.",
-              "Một toà soạn độc lập đưa tin về nền kinh tế công nghệ châu Á, xuất bản từ Singapore.",
-              "Ruang redaksi independen yang meliput ekonomi teknologi Asia, terbit dari Singapura."
+              "An independent newsroom covering the global technology economy, published from Singapore.",
+              "Một toà soạn độc lập đưa tin về nền kinh tế công nghệ toàn cầu, xuất bản từ Singapore.",
+              "Ruang redaksi independen yang meliput ekonomi teknologi global, terbit dari Singapura."
             )}
           </p>
           <div style={{ display: "flex", gap: 8, marginTop: 16 }}>

@@ -161,7 +161,7 @@ export default function NewsroomAboutPage() {
       ),
     ],
     [
-      t("In the languages of the region", "Bằng ngôn ngữ bản địa", "Dalam bahasa kawasan"),
+      t("In our readers' languages", "Bằng ngôn ngữ bản địa", "Dalam bahasa pembaca"),
       t(
         "Reporting published in the languages our readers speak.",
         "Đưa tin xuất bản bằng chính ngôn ngữ độc giả nói.",
@@ -231,9 +231,9 @@ export default function NewsroomAboutPage() {
             }}
           >
             {t(
-              "Inside the newsroom, how we report Asia, beat by beat, in-region and in-language",
-              "Bên trong toà soạn, cách chúng tôi đưa tin về châu Á, theo từng mảng, ngay tại khu vực và bằng ngôn ngữ bản địa",
-              "Di dalam ruang redaksi, bagaimana kami meliput Asia, per bidang, di kawasan dan dalam bahasa setempat"
+              "Inside the newsroom, how we report tech, beat by beat, in-region and in-language",
+              "Bên trong toà soạn, cách chúng tôi đưa tin công nghệ, theo từng mảng, ngay tại khu vực và bằng ngôn ngữ bản địa",
+              "Di dalam ruang redaksi, bagaimana kami meliput teknologi, per bidang, di kawasan dan dalam bahasa setempat"
             )}
           </h1>
           <p
