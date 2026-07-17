@@ -37,7 +37,7 @@ const BIZ_INFO: ReadonlyArray<readonly [k: string, v: string]> = [
     "Asia Press Centre Group (APCG)\nBugis Cube\nSingapore 188735",
   ],
   ["Press inquiries", "media@dailytechwire.com"],
-  ["Partnerships", "partnership@dailytechwire.com\nasiapresscentre.com"],
+  ["Partnerships", "partnership@dailytechwire.com"],
 ];
 
 // Same pattern as apps/web/src/lib/account-actions.ts:136 — kept local since

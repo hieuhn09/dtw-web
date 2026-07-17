@@ -393,7 +393,7 @@ function AboutPage({ navigate, variant = "trust" }) {
           {[
           ["Registered office", "Asia Press Centre Group (APCG)\nBugis Cube\nSingapore 188735"],
           ["Press inquiries", "media@dailytechwire.com"],
-          ["Partnerships", "partnership@dailytechwire.com\nasiapresscentre.com"]].
+          ["Partnerships", "partnership@dailytechwire.com"]].
           map(([k, v]) =>
           <div key={k}>
               <div className="upper" style={{ fontSize: 10, fontWeight: 600, letterSpacing: ".14em", color: "var(--muted)", marginBottom: 8 }}>{k}</div>

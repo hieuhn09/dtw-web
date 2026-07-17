@@ -29,6 +29,12 @@ const SHOW_LANG_SWITCHER = false;
 // the entry points are pulled from the header. Flip to `true` to restore.
 const SHOW_NEWSLETTER = false;
 
+// [temp-hidden 2026-07-17] Top-strip Wire Drops ticker hidden. The count was a
+// hardcoded "18" (not a real query), and the homepage Wire Drops band is hidden
+// too, so the claim had nothing behind it. Restoring this should also swap the
+// literal for a real count. Flip to `true` to restore.
+const SHOW_WIRE_DROPS_TICKER = false;
+
 export function Header({ pillars }: { pillars: NavPillar[] }) {
   const router = useRouter();
   const pathname = usePathname() || "/";
@@ -145,15 +151,19 @@ export function Header({ pillars }: { pillars: NavPillar[] }) {
             style={{ display: "flex", gap: 18, alignItems: "center" }}
           >
             <span suppressHydrationWarning>{dateLabel || " "}</span>
-            <span style={{ color: "var(--hair-2)" }}>·</span>
-            <span style={{ display: "flex", alignItems: "center", gap: 6 }}>
-              <span className="live-dot" />{" "}
-              {t(
-                "18 wire drops in the last hour",
-                "18 tin nhanh trong giờ qua",
-                "18 kawat baru dalam jam terakhir"
-              )}
-            </span>
+            {SHOW_WIRE_DROPS_TICKER && (
+              <>
+                <span style={{ color: "var(--hair-2)" }}>·</span>
+                <span style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                  <span className="live-dot" />{" "}
+                  {t(
+                    "18 wire drops in the last hour",
+                    "18 tin nhanh trong giờ qua",
+                    "18 kawat baru dalam jam terakhir"
+                  )}
+                </span>
+              </>
+            )}
           </div>
           <div className="util-right" style={{ display: "flex", gap: 14, alignItems: "center" }}>
             <Link
