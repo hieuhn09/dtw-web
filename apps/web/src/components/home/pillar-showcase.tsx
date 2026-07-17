@@ -21,7 +21,11 @@ export function PillarShowcase({ pillars, byPillar }: PillarShowcaseProps) {
   const { lang } = useLang();
 
   return (
-    <section style={{ marginBottom: 56 }}>
+    // The Brief and Wire Drops used to sit between the hero and this band; with
+    // those hidden it now leads the page directly under the hero, which only
+    // contributes 32px of bottom padding. 24 here takes the gap to 56, matching
+    // this section's own bottom margin.
+    <section style={{ paddingTop: 24, marginBottom: 56 }}>
       <SectionHeader
         title={t("Across the pillars", "Theo các chuyên mục", "Lintas pilar")}
         kicker={t("Fresh in each section", "Mới nhất ở mỗi mục", "Terbaru di tiap rubrik")}
