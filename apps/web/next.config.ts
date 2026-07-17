@@ -20,6 +20,20 @@ const config: NextConfig = {
       { source: "/asia/:path*", destination: "/latest/:path*", permanent: true },
       // /about/newsroom moved to /newsroom (2026-07-16). Preserve old links.
       { source: "/about/newsroom", destination: "/newsroom", permanent: true },
+      // Google still indexes the pre-relaunch `/computing/...` tree, which now
+      // hard-404s (audit finding). Send those hits to the nearest live section
+      // instead of a dead end, so inbound link equity and readers survive.
+      { source: "/computing", destination: "/products", permanent: true },
+      { source: "/computing/:path*", destination: "/products", permanent: true },
+      // Canonical host is www (matches NEXT_PUBLIC_SITE_URL, which the sitemap,
+      // robots, canonical tags and OG urls are all built from). Send the bare
+      // apex to www so the two hosts don't compete in the index.
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "dailytechwire.com" }],
+        destination: "https://www.dailytechwire.com/:path*",
+        permanent: true,
+      },
     ];
   },
   webpack: (webpackConfig) => {

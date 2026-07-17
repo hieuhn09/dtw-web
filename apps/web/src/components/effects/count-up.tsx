@@ -13,6 +13,13 @@ export interface CountUpProps {
 /**
  * Count-up animation with the triple-fallback pattern from the design.
  * IntersectionObserver → already-on-screen check → 800ms safety timeout.
+ *
+ * The resting value is the TARGET, not 0, so the real number is present in the
+ * SSR HTML and whenever the animation never runs (crawlers, JS disabled,
+ * reduced motion, observer never firing). Starting at 0 made the Funding
+ * Tracker render "Deals: 0 · Avg. round $0M" directly under "$8.4B raised" —
+ * a self-contradiction on a data card, which is the trust bug the audit flagged.
+ * The count-up is a progressive enhancement on top of a correct value.
  */
 export function CountUp({
   to,
@@ -21,11 +28,19 @@ export function CountUp({
   duration = 900,
   decimals = 0,
 }: CountUpProps) {
-  const [v, setV] = useState(0);
+  const [v, setV] = useState(to);
   const started = useRef(false);
   const ref = useRef<HTMLSpanElement | null>(null);
 
   useEffect(() => {
+    // Reduced motion: keep the static target, skip the animation entirely.
+    if (
+      typeof window !== "undefined" &&
+      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches
+    ) {
+      return;
+    }
+
     const start = () => {
       if (started.current) return;
       started.current = true;

@@ -23,8 +23,12 @@ import type { Metadata } from "next";
  *
  * Fallback order: explicit `NEXT_PUBLIC_SITE_URL` → `https://${VERCEL_URL}`
  * (automatic on Vercel preview deploys) → `http://localhost:3000` (dev
- * default). Production sets `NEXT_PUBLIC_SITE_URL=https://dailytechwire.com`
+ * default). Production sets `NEXT_PUBLIC_SITE_URL=https://www.dailytechwire.com`
  * explicitly (a Vercel dashboard env var, not code — see Ops Runbook).
+ *
+ * MUST stay on the www host: next.config.ts 301s the bare apex
+ * (dailytechwire.com) to www. Pointing this at the apex would make every
+ * canonical/OG/sitemap URL resolve through a redirect.
  */
 export function siteOrigin(): string {
   if (process.env.NEXT_PUBLIC_SITE_URL) return process.env.NEXT_PUBLIC_SITE_URL;

@@ -208,26 +208,12 @@ export function CoverArt({
           strokeWidth={2.5}
           strokeDasharray="6 6"
         />
-        <rect x={w - 220} y={40} width={180} height={60} fill={c1} />
-        <text
-          x={w - 200}
-          y={80}
-          fill={c4}
-          fontFamily="var(--font-mono)"
-          fontSize={22}
-          fontWeight={600}
-        >
-          +14.2%
-        </text>
-        <text
-          x={w - 200}
-          y={115}
-          fill={c1}
-          fontFamily="var(--font-mono)"
-          fontSize={11}
-        >
-          vs prev. 30d
-        </text>
+        {/* No stat badge here. This is decorative cover art selected by a seed
+            hash (v = h % 6), so it renders on ANY hero-less article — search
+            results, related rows, the Deep Dive card, even a product review.
+            A hardcoded "+14.2% vs prev. 30d" on generative artwork reads as a
+            real metric and is fabricated data wherever it lands. Keep this
+            composition abstract; real numbers belong to the dashboards. */}
       </>
     );
   } else {

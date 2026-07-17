@@ -45,6 +45,43 @@ export default function NotFound() {
           "Coba beranda, pencarian, atau salah satu enam pilar di bawah."
         )}
       </p>
+      {/* Plain GET form: a dead inbound link should still land the visitor
+          somewhere useful, even before JS hydrates. */}
+      <form
+        action="/search"
+        method="get"
+        role="search"
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          gap: 8,
+          margin: "0 auto 28px",
+          maxWidth: 440,
+        }}
+      >
+        <input
+          type="search"
+          name="q"
+          aria-label={t("Search DailyTechWire", "Tìm kiếm DailyTechWire", "Cari DailyTechWire")}
+          placeholder={t("Search articles…", "Tìm bài viết…", "Cari artikel…")}
+          style={{
+            flex: 1,
+            padding: "10px 14px",
+            border: "1px solid var(--hair-2)",
+            borderRadius: 4,
+            fontSize: 14,
+            background: "var(--surface)",
+            color: "var(--ink)",
+          }}
+        />
+        <button
+          type="submit"
+          className="pill"
+          style={{ cursor: "pointer", borderColor: "currentColor" }}
+        >
+          {t("Search", "Tìm", "Cari")}
+        </button>
+      </form>
       <div
         style={{
           display: "flex",
