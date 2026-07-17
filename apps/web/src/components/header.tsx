@@ -24,6 +24,11 @@ const NUDGE_KEY = "dtw-nudge-dismissed";
 // intact; flip back to `true` to restore the EN/VI/ID selector.
 const SHOW_LANG_SWITCHER = false;
 
+// [temp-hidden 2026-07-17] Newsletter "Subscribe" CTAs hidden — subscriptions
+// are captured but no newsletter is actually sent yet (no sending pipeline), so
+// the entry points are pulled from the header. Flip to `true` to restore.
+const SHOW_NEWSLETTER = false;
+
 export function Header({ pillars }: { pillars: NavPillar[] }) {
   const router = useRouter();
   const pathname = usePathname() || "/";
@@ -268,24 +273,26 @@ export function Header({ pillars }: { pillars: NavPillar[] }) {
 
         {/* Right actions */}
         <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-          <Link
-            href="/newsletters"
-            className="desktop-only"
-            style={{
-              padding: "9px 14px",
-              border: "1px solid var(--accent)",
-              background: "var(--accent)",
-              color: "#fff",
-              borderRadius: 5,
-              fontSize: 12,
-              fontWeight: 600,
-              cursor: "pointer",
-              textDecoration: "none",
-              alignItems: "center",
-            }}
-          >
-            {t("Subscribe", "Đăng ký", "Berlangganan")}
-          </Link>
+          {SHOW_NEWSLETTER && (
+            <Link
+              href="/newsletters"
+              className="desktop-only"
+              style={{
+                padding: "9px 14px",
+                border: "1px solid var(--accent)",
+                background: "var(--accent)",
+                color: "#fff",
+                borderRadius: 5,
+                fontSize: 12,
+                fontWeight: 600,
+                cursor: "pointer",
+                textDecoration: "none",
+                alignItems: "center",
+              }}
+            >
+              {t("Subscribe", "Đăng ký", "Berlangganan")}
+            </Link>
+          )}
 
           {/* Mobile: open the ⌘K search overlay */}
           <button
@@ -800,22 +807,24 @@ export function Header({ pillars }: { pillars: NavPillar[] }) {
                 gap: 10,
               }}
             >
-              <Link
-                href="/newsletters"
-                onClick={() => setMenuOpen(false)}
-                style={{
-                  padding: "12px 14px",
-                  background: "var(--accent)",
-                  color: "#fff",
-                  borderRadius: 6,
-                  fontSize: 14,
-                  fontWeight: 600,
-                  textAlign: "center",
-                  textDecoration: "none",
-                }}
-              >
-                {t("Subscribe", "Đăng ký", "Berlangganan")}
-              </Link>
+              {SHOW_NEWSLETTER && (
+                <Link
+                  href="/newsletters"
+                  onClick={() => setMenuOpen(false)}
+                  style={{
+                    padding: "12px 14px",
+                    background: "var(--accent)",
+                    color: "#fff",
+                    borderRadius: 6,
+                    fontSize: 14,
+                    fontWeight: 600,
+                    textAlign: "center",
+                    textDecoration: "none",
+                  }}
+                >
+                  {t("Subscribe", "Đăng ký", "Berlangganan")}
+                </Link>
+              )}
               {user ? (
                 <>
                   <Link

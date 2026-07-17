@@ -59,8 +59,11 @@ export interface NavItem {
 export const NAV_EXTRA: ReadonlyArray<NavItem> = [
   { id: "awards", label: "Awards", slug: "/awards" },
   { id: "studio", label: "Studio", slug: "/studio" },
-  { id: "dashboards", label: "Dashboards", slug: "/dashboards" },
-  { id: "newsletters", label: "Newsletters", slug: "/newsletters" },
+  // [temp-hidden 2026-07-17] Dashboards + Newsletters pulled from nav until
+  // those features are shippable (dashboards data automation + the newsletter
+  // sending pipeline are both incomplete). Uncomment to restore.
+  // { id: "dashboards", label: "Dashboards", slug: "/dashboards" },
+  // { id: "newsletters", label: "Newsletters", slug: "/newsletters" },
   // Pro membership hidden until paid tier launches.
   // { id: "pro", label: "Pro", slug: "/pro", badge: true },
 ];
