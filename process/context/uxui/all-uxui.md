@@ -230,7 +230,7 @@ Six visual templates, one per pillar (see `design/project/src/art.jsx`):
 
 Deterministic: same article ID → same composition forever. This prevents UI thrash on rerender and means readers form a visual memory for each piece.
 
-Used wherever the design has a "hero image slot": Home Hero, Pillar Showcase, Asia Spotlight, Deep Dive, Best of Reviews, Sponsored Strip, Article Hero, Search results, Account Saved list.
+Used wherever the design has a "hero image slot": Home Hero, Pillar Showcase, Most Read, Deep Dive, Best of Reviews, Sponsored Strip, Article Hero, Search results, Account Saved list.
 
 Author monogram avatars use the same deterministic accent-color rule.
 
@@ -270,7 +270,7 @@ const t = useT();
 From `design/project/src/effects.jsx`. These are part of the brand — keep them in production but make them **opt-out friendly** (`prefers-reduced-motion`):
 
 - **Live ticker tape** at the very top — TSMC, GoTo, FX, BTC tickers, scrolling with `▲▼` deltas. Pauses on hover.
-- **Cursor spotlight** on the Asia Spotlight dark band — coral glow follows the mouse.
+- **Cursor spotlight** on the Most Read dark band (formerly Asia Spotlight) — coral glow follows the mouse.
 - **Dot-grid backdrops** on dark sections — faint white grid that fades to edges.
 - **Sparkline draw-in animation** on the Funding dashboard teaser.
 - **Count-up** on dashboard stats (deals, average round size).
