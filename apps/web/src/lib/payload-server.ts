@@ -213,6 +213,106 @@ export const getArticlesByPillar = unstable_cache(
   { tags: ["articles:all"], revalidate: 60 }
 );
 
+/**
+ * The "Read next" row under an article.
+ *
+ * Deliberately NOT `getArticlesByPillar`: that helper sorts `-publishedAt` from
+ * the top with no cursor, so every article in a beat received the same handful
+ * of newest stories. The result was a link graph where every arrow pointed at
+ * recent articles and none pointed back into the archive — a crawl from the
+ * listing pages and feeds reached 228 of 776 articles, and the remaining 548
+ * were linked from nowhere but the sitemap.
+ *
+ * This walks the pillar's own ordering instead: the articles sitting
+ * immediately *before* `(publishedAt, id)` in the `-publishedAt, -id` sequence.
+ * That turns each beat into a chain (newest → older → … → oldest), so a crawler
+ * entering at any article can walk to the end of it. It is also the better
+ * editorial default — "Read next" pointing at stories the reader just scrolled
+ * past on the homepage is wasted space.
+ *
+ * The `(publishedAt, id)` pair is a keyset cursor, not a plain
+ * `publishedAt <` filter: the seed import gave whole batches an identical
+ * timestamp, and a date-only comparison would jump the entire batch, stranding
+ * every article in it. Pairing with `id` gives the total order the chain needs
+ * to actually visit all of them.
+ *
+ * The oldest article in a pillar has no older neighbour, so it wraps to the
+ * newest — the row never renders empty, and the chain closes into a loop.
+ */
+export const getRelatedArticles = unstable_cache(
+  async (
+    pillarSlug: string,
+    publishedAt: string,
+    currentId: number,
+    limit = 3
+  ): Promise<Article[]> => {
+    const p = await payload();
+    // Resolve the slug directly rather than via getPillarIdBySlug: that helper
+    // maps "latest" to null for getArticlesPage's all-beats firehose, but here
+    // "latest" is an ordinary beat whose articles chain among themselves.
+    const pillars = await p.find({
+      collection: "pillars",
+      where: { slug: { equals: pillarSlug } },
+      limit: 1,
+      depth: 0,
+    });
+    const pillarId = pillars.docs[0]?.id;
+    if (pillarId == null) return [];
+
+    const base: Where[] = [
+      { pillar: { equals: pillarId } },
+      { _status: { equals: "published" } },
+    ];
+    const sort = ["-publishedAt", "-id"];
+
+    const older = await p.find({
+      collection: "articles",
+      where: {
+        and: [
+          ...base,
+          {
+            or: [
+              { publishedAt: { less_than: publishedAt } },
+              {
+                and: [
+                  { publishedAt: { equals: publishedAt } },
+                  { id: { less_than: currentId } },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      sort,
+      limit,
+      depth: 1,
+    });
+    if (older.docs.length >= limit) return older.docs;
+
+    // Wrap-around. Over-fetch by the number already held plus one, so the
+    // current article and the older neighbours can be dropped without the
+    // window coming up short.
+    const newest = await p.find({
+      collection: "articles",
+      where: { and: [...base, { id: { not_equals: currentId } }] },
+      sort,
+      limit: limit + older.docs.length + 1,
+      depth: 1,
+    });
+    const picked = [...older.docs];
+    const seen = new Set(picked.map((d) => d.id));
+    for (const doc of newest.docs) {
+      if (picked.length >= limit) break;
+      if (seen.has(doc.id)) continue;
+      seen.add(doc.id);
+      picked.push(doc);
+    }
+    return picked;
+  },
+  ["articles:related"],
+  { tags: ["articles:all"], revalidate: 60 }
+);
+
 export const getArticleBySlug = unstable_cache(
   async (slug: string): Promise<Article | null> => {
     const p = await payload();

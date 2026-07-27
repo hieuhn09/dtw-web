@@ -6,7 +6,7 @@ import { toArticleView } from "@/lib/article-view";
 import {
   getArticleBySlug,
   getArticleBySlugDraft,
-  getArticlesByPillar,
+  getRelatedArticles,
 } from "@/lib/payload-server";
 import {
   absoluteUrl,
@@ -18,6 +18,9 @@ import {
 import type { Article, Author, Media, Pillar } from "@/payload/payload-types";
 
 export const revalidate = 60;
+
+/** Stand-in publishedAt for an unpublished draft — see its use below. */
+const DRAFT_CURSOR = "9999-12-31T23:59:59.999Z";
 
 // Without this, a page under a dynamic segment is fully dynamic in Next 15
 // and the `revalidate` above is silently ignored (SSR per request, no-store
@@ -120,11 +123,22 @@ export default async function ArticlePage({
   if (!article) notFound();
 
   const view = toArticleView(article);
-  const relatedRaw = await getArticlesByPillar(view.pillar, 6);
-  const related = relatedRaw
-    .map(toArticleView)
-    .filter((a) => a.slug !== view.slug)
-    .slice(0, 3);
+  // Chains backwards through the pillar rather than re-showing its newest
+  // stories, so the "Read next" links form a crawlable path into the archive
+  // instead of pointing everything back at the front page.
+  //
+  // An unpublished draft has no publishedAt to anchor the cursor to. The
+  // sentinel sorts after every real timestamp, so the cursor degrades to "the
+  // beat's newest" — and being a constant, it keeps the unstable_cache key
+  // stable (a `new Date()` here would mint a fresh cache entry per render).
+  const related = (
+    await getRelatedArticles(
+      view.pillar,
+      article.publishedAt ?? DRAFT_CURSOR,
+      article.id,
+      3
+    )
+  ).map(toArticleView);
 
   // Draft/preview renders are never indexable and never emit JSON-LD — the
   // content isn't final and shouldn't be treated as a published NewsArticle.
