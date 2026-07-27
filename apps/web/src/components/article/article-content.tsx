@@ -9,6 +9,8 @@ import { ShareBar } from "@/components/article/share-bar";
 import { Paywall } from "@/components/article/paywall";
 import { RelatedRow } from "@/components/article/related-row";
 import { isBookmarked, recordView, toggleBookmark } from "@/lib/account-actions";
+import { claimViewCount } from "@/lib/article-views";
+import { recordArticleView } from "@/lib/view-actions";
 import type { ArticleBodyState, ArticleView } from "@/lib/article-view";
 import { fmtDateL, localizedPillarLabel, useLang, useT } from "@/lib/i18n";
 import { useShell } from "@/lib/shell";
@@ -29,6 +31,12 @@ export function ArticleContent({ article, body, related }: ArticleContentProps) 
 
   useEffect(() => {
     if (!article.sponsored) incrementRead(article.id);
+    // Anonymous aggregate behind the homepage "Most Read" band. Fires for
+    // guests as well as signed-in readers (that is the point of it), and for
+    // sponsored stories too — those are counted but never ranked, see
+    // lib/most-read.ts. `claimViewCount` is the dedupe gate: at most one
+    // count per article per browser per publication day.
+    if (claimViewCount(article.id)) void recordArticleView(article.id);
     window.scrollTo({ top: 0 });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [article.id]);
