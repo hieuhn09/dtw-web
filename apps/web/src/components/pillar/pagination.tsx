@@ -1,19 +1,22 @@
+"use client";
+
 import Link from "next/link";
+import { useT } from "@/lib/i18n";
 
 export interface PaginationProps {
   /** Pillar slug — page 1 lives at `/{slug}`, the rest at `/{slug}/page/{n}`. */
   pillarSlug: string;
+  /** CMS pillar color, used to mark the current page. */
+  pillarColor: string;
   currentPage: number;
   totalPages: number;
-  /** Localized label for the surrounding <nav>. */
-  label: string;
 }
 
 /**
  * Numbered pagination for a pillar feed.
  *
- * This exists for crawlers, not just readers. The feed's "Load more" button is
- * a server action — a <button>, not a link — so Googlebot could never advance
+ * This exists for crawlers as much as for readers. A "Load more" button is a
+ * server action — a <button>, not a link — so Googlebot could never advance
  * past the first 21 stories, leaving the bulk of the archive linked from
  * nowhere but the sitemap. These are real <a href> elements in the server-
  * rendered HTML, which is the only kind of pagination a crawler can follow.
@@ -40,92 +43,82 @@ function hrefFor(pillarSlug: string, page: number): string {
   return page === 1 ? `/${pillarSlug}` : `/${pillarSlug}/page/${page}`;
 }
 
-const cellStyle: React.CSSProperties = {
-  minWidth: 38,
-  padding: "8px 10px",
-  textAlign: "center",
-  border: "1px solid var(--hair-2)",
-  borderRadius: 4,
-  fontSize: 13,
-  textDecoration: "none",
-  color: "var(--ink)",
-};
-
 export function Pagination({
   pillarSlug,
+  pillarColor,
   currentPage,
   totalPages,
-  label,
 }: PaginationProps) {
+  const t = useT();
   if (totalPages <= 1) return null;
   const pages = pageWindow(currentPage, totalPages);
 
   return (
-    <nav
-      aria-label={label}
-      style={{
-        display: "flex",
-        flexWrap: "wrap",
-        gap: 6,
-        justifyContent: "center",
-        alignItems: "center",
-        marginTop: 40,
-      }}
-    >
-      {currentPage > 1 && (
+    <nav className="pager" aria-label={t("Pagination", "Phân trang", "Penomoran halaman")}>
+      {/* Edge links keep their grid slot when absent so the number strip stays
+          optically centred on page 1 and on the last page. */}
+      {currentPage > 1 ? (
         <Link
           href={hrefFor(pillarSlug, currentPage - 1)}
           rel="prev"
-          style={{ ...cellStyle, minWidth: 0 }}
+          className="pager-edge pager-prev"
         >
-          ←
+          <span aria-hidden="true">←</span>
+          {t("Newer", "Mới hơn", "Terbaru")}
         </Link>
+      ) : (
+        <span className="pager-edge-empty pager-prev" />
       )}
 
-      {pages.map((p, i) => {
-        // A gap in the window renders as an inert ellipsis, never as a link to
-        // a page that isn't in the set.
-        const prev = i > 0 ? pages[i - 1] : undefined;
-        const gap = prev !== undefined && p - prev > 1;
-        const cell =
-          p === currentPage ? (
-            <span
-              key={p}
-              aria-current="page"
-              className="mono"
-              style={{
-                ...cellStyle,
-                background: "var(--surface-2)",
-                fontWeight: 650,
-              }}
-            >
-              {p}
+      <div className="pager-numbers pager-nums">
+        {pages.map((p, i) => {
+          const prev = i > 0 ? pages[i - 1] : undefined;
+          const gap = prev !== undefined && p - prev > 1;
+          const cell =
+            p === currentPage ? (
+              <span
+                key={p}
+                aria-current="page"
+                className="mono pager-current"
+                style={{ color: pillarColor, borderBottomColor: pillarColor }}
+              >
+                {p}
+              </span>
+            ) : (
+              <Link
+                key={p}
+                href={hrefFor(pillarSlug, p)}
+                className="mono pager-link"
+              >
+                {p}
+              </Link>
+            );
+          // A gap in the window renders as an inert ellipsis, never as a link
+          // to a page that isn't in the set.
+          return gap ? (
+            <span key={`g-${p}`} style={{ display: "contents" }}>
+              <span className="text-mute-2 mono pager-gap" aria-hidden="true">
+                ···
+              </span>
+              {cell}
             </span>
           ) : (
-            <Link key={p} href={hrefFor(pillarSlug, p)} className="mono" style={cellStyle}>
-              {p}
-            </Link>
+            cell
           );
-        return gap ? (
-          <span key={`g-${p}`} style={{ display: "contents" }}>
-            <span className="text-mute-2" style={{ padding: "0 2px" }}>
-              …
-            </span>
-            {cell}
-          </span>
-        ) : (
-          cell
-        );
-      })}
+        })}
+      </div>
 
-      {currentPage < totalPages && (
+      {currentPage < totalPages ? (
         <Link
           href={hrefFor(pillarSlug, currentPage + 1)}
           rel="next"
-          style={{ ...cellStyle, minWidth: 0 }}
+          className="pager-edge pager-next"
         >
-          →
+          {t("Older", "Cũ hơn", "Terlama")}
+          <span aria-hidden="true">→</span>
         </Link>
+      ) : (
+        <span className="pager-edge-empty pager-next" />
       )}
     </nav>
   );

@@ -1,6 +1,5 @@
 "use client";
 
-import { useState, useTransition } from "react";
 import Link from "next/link";
 import { Button, PillarTag } from "@dtw/ui";
 import { CoverArt } from "@/components/cover-art";
@@ -8,10 +7,9 @@ import { Icon } from "@/components/icons";
 import { BylineWired } from "@/components/byline-wired";
 import { TimeAgo } from "@/components/time-ago";
 import type { ArticleView } from "@/lib/article-view";
-import { ARTICLES_PAGE_SIZE, type PillarId } from "@/lib/data";
+import { type PillarId } from "@/lib/data";
 import { localizedPillarLabel, useLang, useT } from "@/lib/i18n";
 import { Pagination } from "@/components/pillar/pagination";
-import { loadArticlesPage } from "@/app/(reader)/[pillar]/load-more-action";
 
 export interface PillarContentProps {
   /** Pillar slug from the CMS (not constrained to the 6 known ids). Also the
@@ -22,15 +20,13 @@ export interface PillarContentProps {
   pillarIcon: string;
   pillarHeading: string;
   pillarDescription: string;
-  /** Page 1 of the feed, server-rendered. `initialArticles[0]` is the featured
-   *  story; the rest seed the grid. Further pages are fetched server-side. */
+  /** This page of the feed, server-rendered. On page 1 `initialArticles[0]` is
+   *  the featured story; the rest fill the grid. */
   initialArticles: ReadonlyArray<ArticleView>;
   /** True total stories for this pillar — fed by the server so the badge
-   *  reflects everything, not just what's been paged into memory. */
+   *  reflects the whole feed, not just this page. */
   totalCount: number;
-  /** Whether the server has a page 2 for the unfiltered feed. */
-  hasMoreInitial: boolean;
-  /** Which server-rendered page this is. "Load more" continues from here. */
+  /** Which page this is. */
   currentPage: number;
   /** Total pages in the feed, for the crawlable numbered pagination. */
   totalPages: number;
@@ -47,7 +43,6 @@ export function PillarContent({
   pillarDescription,
   initialArticles,
   totalCount,
-  hasMoreInitial,
   currentPage,
   totalPages,
   showFeatured,
@@ -62,43 +57,10 @@ export function PillarContent({
   const featured = showFeatured ? initialArticles[0] ?? null : null;
   const featuredId = featured?.id ?? null;
 
-  // Grid = the feed minus the featured card. "Load more" refetches the next page
-  // from the server (loadArticlesPage) instead of slicing memory, so the feed
-  // scales past any cap.
-  const [grid, setGrid] = useState<ArticleView[]>(() =>
-    initialArticles.filter((a) => a.id !== featuredId)
-  );
-  // Seeded from the server-rendered page, so "Load more" on /ai/page/4 fetches
-  // page 5 rather than restarting the feed at page 2.
-  const [page, setPage] = useState<number>(currentPage);
-  const [hasMore, setHasMore] = useState<boolean>(hasMoreInitial);
-  const [total, setTotal] = useState<number>(totalCount);
-  const [pending, startTransition] = useTransition();
-
-  // Note: navigating to a different pillar remounts this component (the route
-  // keys <PillarContent> by slug), so all state re-initializes from fresh props —
-  // no reset effect needed, and a background ISR refresh won't yank a reader's
-  // loaded pages out from under them.
-
-  function loadMore() {
-    if (pending || !hasMore) return;
-    startTransition(async () => {
-      try {
-        const next = page + 1;
-        const r = await loadArticlesPage(pillarId, next);
-        setGrid((prev) => {
-          const seen = new Set(prev.map((a) => a.id));
-          const add = r.articles.filter((a) => a.id !== featuredId && !seen.has(a.id));
-          return [...prev, ...add];
-        });
-        setPage(r.page);
-        setHasMore(r.hasMore);
-        setTotal(r.totalCount);
-      } catch {
-        // Keep what's already loaded; the button re-enables so the reader can retry.
-      }
-    });
-  }
+  // Grid = this page's feed minus the featured card. Purely derived: paging is
+  // navigation now (see Pagination), so there is no client-side feed state to
+  // keep — every page is a fresh server render at its own URL.
+  const grid = initialArticles.filter((a) => a.id !== featuredId);
 
   return (
     <div className="container" style={{ paddingTop: 24, paddingBottom: 32 }}>
@@ -152,7 +114,7 @@ export function PillarContent({
             RSS feed
           </Button>
           <span className="text-mute-2 mono" style={{ fontSize: 11, marginLeft: 8 }}>
-            {total} stories
+            {totalCount} stories
           </span>
         </div>
       </header>
@@ -206,7 +168,12 @@ export function PillarContent({
       )}
 
       {/* Grid */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 260px), 1fr))", gap: 32 }}>
+      {/* auto-FILL, not auto-fit. auto-fit collapses the empty tracks in a
+          short final row and stretches whatever is left across the full width,
+          which is what made the last row read as ragged. auto-fill keeps the
+          tracks, so a final row of 1-3 cards holds the same column width as
+          every row above it and simply aligns left. */}
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 260px), 1fr))", gap: 32 }}>
         {grid.map((a, i) => (
           <Link
             key={a.id}
@@ -246,47 +213,14 @@ export function PillarContent({
         ))}
       </div>
 
-      {hasMore && (
-        <div style={{ textAlign: "center", marginTop: 48 }}>
-          <Button
-            variant="outline"
-            size="lg"
-            onClick={loadMore}
-            disabled={pending}
-            style={{ padding: "18px 36px", fontSize: 15, letterSpacing: ".02em", opacity: pending ? 0.6 : 1 }}
-          >
-            {pending
-              ? t("Loading…", "Đang tải…", "Memuat…")
-              : t("Load more", "Tải thêm", "Muat lagi")}
-          </Button>
-        </div>
-      )}
-
-      {!hasMore && total > ARTICLES_PAGE_SIZE && (
-        <div
-          style={{
-            textAlign: "center",
-            marginTop: 48,
-            color: "var(--muted)",
-            fontSize: 13,
-          }}
-        >
-          {t(
-            `End of feed — ${total} stories.`,
-            `Hết bài — ${total} bài.`,
-            `Akhir feed — ${total} artikel.`
-          )}
-        </div>
-      )}
-
-      {/* Crawlable counterpart to "Load more" — see pagination.tsx. Always
-          rendered from the server page number, so it stays a stable link
-          target no matter how many extra pages the reader has appended. */}
+      {/* Replaces the old "Load more" button outright. That was a server
+          action behind a <button>, which no crawler could follow — see
+          pagination.tsx. */}
       <Pagination
         pillarSlug={pillarId}
+        pillarColor={pillarColor}
         currentPage={currentPage}
         totalPages={totalPages}
-        label={t("Pagination", "Phân trang", "Penomoran halaman")}
       />
 
       {grid.length === 0 && !featured && (

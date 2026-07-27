@@ -93,7 +93,6 @@ export async function PillarView({ slug, page }: { slug: string; page: number })
       pillarDescription={pillarDoc.description ?? ""}
       initialArticles={articles}
       totalCount={feedPage.totalDocs}
-      hasMoreInitial={feedPage.hasNextPage}
       currentPage={page}
       totalPages={totalPages}
       showFeatured={page === 1}

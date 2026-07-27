@@ -16,7 +16,7 @@
  *
  * This file is `"use server"`, which already makes every export server-only
  * by construction — no additional `import "server-only"` needed here, same
- * convention as the existing `load-more-action.ts` / `search-action.ts`.
+ * convention as the existing `search-action.ts`.
  */
 
 import { randomUUID } from "node:crypto";

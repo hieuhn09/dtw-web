@@ -5,13 +5,22 @@
 export type PillarId = "ai" | "startups" | "latest" | "dev" | "products" | "policy";
 
 /**
- * Articles fetched per page on the pillar listing feed. Shared between the
- * server (route + load-more action) and the client (`PillarContent`) so a page
- * served on the server lines up exactly with what "Load more" requests next.
- * The feed paginates server-side (Payload paginates natively), so this is a
- * fetch batch size, NOT a hard cap on how many stories a feed can show.
+ * Articles per page on the pillar listing feed, shared by the route, the
+ * pagination maths, and the sitemap so all three agree on how many pages a
+ * feed has.
+ *
+ * 24 because the feed grid lays out at 4, 3, 2 or 1 columns depending on
+ * viewport, and 24 divides evenly by all of them — every row on page 2+ comes
+ * out full at every breakpoint. (Page 1 spends one of its 24 on the oversized
+ * lead card, so its grid holds 23 and the final row runs short; `auto-fill`
+ * keeps those cards at their normal column width rather than stretching them.)
+ *
+ * This is deliberately a constant and not viewport-derived: the page number is
+ * part of the URL, so "page 3" has to mean the same stories for every reader
+ * and for the crawler. A per-device page size would make /ai/page/3 a
+ * different set of articles on a phone than on a desktop.
  */
-export const ARTICLES_PAGE_SIZE = 21;
+export const ARTICLES_PAGE_SIZE = 24;
 
 export interface Pillar {
   id: PillarId;

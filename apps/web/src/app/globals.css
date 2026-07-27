@@ -402,6 +402,121 @@ body {
   letter-spacing: 0.08em;
 }
 
+/* Pillar feed pager (components/pillar/pagination.tsx). Lives here rather than
+   inline because the whole design is hover/breakpoint state, which inline
+   styles can't express. Colors stay on tokens so dark mode follows.
+
+   The number strip is never display:none at any width. Google renders with a
+   mobile viewport under mobile-first indexing, so hiding the page links on
+   small screens would hide them from the crawler too — which is the entire
+   reason this component exists. Narrow screens restack instead: numbers get
+   their own row, newer/older sit beneath them. */
+.pager {
+  margin-top: 56px;
+  padding-top: 24px;
+  border-top: 1px solid var(--hair);
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  grid-template-areas: "prev nums next";
+  align-items: center;
+  gap: 12px 16px;
+}
+.pager-prev {
+  grid-area: prev;
+  justify-self: start;
+}
+.pager-nums {
+  grid-area: nums;
+  justify-self: center;
+}
+.pager-next {
+  grid-area: next;
+  justify-self: end;
+}
+
+.pager-edge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font: 600 11px/1 var(--font-sans);
+  letter-spacing: 0.14em;
+  color: var(--muted);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.15s ease;
+}
+.pager-edge:hover {
+  color: var(--accent);
+}
+/* Holds the slot when there is no newer/older page, so the number strip stays
+   optically centred instead of sliding to one side on the first/last page. */
+.pager-edge-empty {
+  display: inline-block;
+  min-width: 1px;
+}
+
+.pager-numbers {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.pager-link,
+.pager-current {
+  display: inline-block;
+  padding: 4px 9px 6px;
+  font-size: 13px;
+  line-height: 1;
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+.pager-link {
+  color: var(--muted);
+}
+.pager-link:hover {
+  color: var(--ink);
+  border-bottom-color: var(--hair-2);
+}
+/* Current page: colour + rule come from the pillar, set inline. Mirrors the
+   4px pillar rule under the page header and the 3px rule above "Read next" —
+   a coloured rule is how this design marks position. */
+.pager-current {
+  font-weight: 650;
+}
+.pager-gap {
+  padding: 0 2px;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+}
+
+/* Narrow: numbers take a full row of their own and wrap there, with the
+   newer/older pair below. Nothing is dropped — see the note above. Cells also
+   tighten so more of them fit per row on a phone. */
+@media (max-width: 720px) {
+  .pager {
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "nums nums"
+      "prev next";
+    row-gap: 22px;
+  }
+  .pager-nums {
+    justify-self: stretch;
+  }
+  .pager-link,
+  .pager-current {
+    padding: 4px 6px 6px;
+    font-size: 12px;
+  }
+  .pager-numbers {
+    gap: 2px;
+    row-gap: 6px;
+  }
+}
+
 .card-hover {
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
