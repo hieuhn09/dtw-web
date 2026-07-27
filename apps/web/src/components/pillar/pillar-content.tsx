@@ -10,6 +10,7 @@ import { TimeAgo } from "@/components/time-ago";
 import type { ArticleView } from "@/lib/article-view";
 import { ARTICLES_PAGE_SIZE, type PillarId } from "@/lib/data";
 import { localizedPillarLabel, useLang, useT } from "@/lib/i18n";
+import { Pagination } from "@/components/pillar/pagination";
 import { loadArticlesPage } from "@/app/(reader)/[pillar]/load-more-action";
 
 export interface PillarContentProps {
@@ -29,6 +30,13 @@ export interface PillarContentProps {
   totalCount: number;
   /** Whether the server has a page 2 for the unfiltered feed. */
   hasMoreInitial: boolean;
+  /** Which server-rendered page this is. "Load more" continues from here. */
+  currentPage: number;
+  /** Total pages in the feed, for the crawlable numbered pagination. */
+  totalPages: number;
+  /** The oversized lead card. Only page 1 gets one — on later pages every
+   *  story goes in the grid, so the page reads as a continuation. */
+  showFeatured: boolean;
 }
 
 export function PillarContent({
@@ -40,6 +48,9 @@ export function PillarContent({
   initialArticles,
   totalCount,
   hasMoreInitial,
+  currentPage,
+  totalPages,
+  showFeatured,
 }: PillarContentProps) {
   const t = useT();
   const { lang } = useLang();
@@ -48,7 +59,7 @@ export function PillarContent({
   const pillarLabel = localizedPillarLabel(pillarId as PillarId, lang) || pillarHeading;
 
   // The featured story is the newest article in the feed; the rest fill the grid.
-  const featured = initialArticles[0] ?? null;
+  const featured = showFeatured ? initialArticles[0] ?? null : null;
   const featuredId = featured?.id ?? null;
 
   // Grid = the feed minus the featured card. "Load more" refetches the next page
@@ -57,7 +68,9 @@ export function PillarContent({
   const [grid, setGrid] = useState<ArticleView[]>(() =>
     initialArticles.filter((a) => a.id !== featuredId)
   );
-  const [page, setPage] = useState<number>(1);
+  // Seeded from the server-rendered page, so "Load more" on /ai/page/4 fetches
+  // page 5 rather than restarting the feed at page 2.
+  const [page, setPage] = useState<number>(currentPage);
   const [hasMore, setHasMore] = useState<boolean>(hasMoreInitial);
   const [total, setTotal] = useState<number>(totalCount);
   const [pending, startTransition] = useTransition();
@@ -265,6 +278,16 @@ export function PillarContent({
           )}
         </div>
       )}
+
+      {/* Crawlable counterpart to "Load more" — see pagination.tsx. Always
+          rendered from the server page number, so it stays a stable link
+          target no matter how many extra pages the reader has appended. */}
+      <Pagination
+        pillarSlug={pillarId}
+        currentPage={currentPage}
+        totalPages={totalPages}
+        label={t("Pagination", "Phân trang", "Penomoran halaman")}
+      />
 
       {grid.length === 0 && !featured && (
         <div
