@@ -10,7 +10,6 @@ import { TimeAgo } from "@/components/time-ago";
 import type { ArticleView } from "@/lib/article-view";
 import { type PillarId } from "@/lib/data";
 import { localizedPillarLabel, useLang, useT } from "@/lib/i18n";
-import { Pagination } from "@/components/pillar/pagination";
 import { loadArticlesPage } from "@/app/(reader)/[pillar]/load-more-action";
 
 export interface PillarContentProps {
@@ -30,7 +29,8 @@ export interface PillarContentProps {
   totalCount: number;
   /** Which page this is. */
   currentPage: number;
-  /** Total pages in the feed, for the crawlable numbered pagination. */
+  /** Total pages in the feed. Bounds "Load more" — the control disappears once
+   *  the reader has pulled the last page in. */
   totalPages: number;
   /** The oversized lead card. Only page 1 gets one — on later pages every
    *  story goes in the grid, so the page reads as a continuation. */
@@ -63,8 +63,8 @@ export function PillarContent({
   // more — every page is a complete server render on its own, so this is
   // enhancement on top, never the source of the first screen.
   const [appended, setAppended] = useState<ArticleView[]>([]);
-  // The furthest page the reader has pulled in. Drives the button's href, the
-  // pager's active number, and the address bar, so all three agree.
+  // The furthest page the reader has pulled in. Drives the button's href and
+  // the address bar, so the two agree.
   const [loadedThrough, setLoadedThrough] = useState<number>(currentPage);
   const [pending, startTransition] = useTransition();
 
@@ -283,18 +283,22 @@ export function PillarContent({
         </div>
       )}
 
-      {/* Kept alongside the button, not replaced by it. The button only ever
-          walks forward one page at a time — a 33-page feed would sit 33 hops
-          deep behind it. The numbered strip is what keeps every page ~2 hops
-          from the first, and it is what a reader uses to jump or to come back
-          to where they were. Its active number tracks what has actually been
-          loaded, so it agrees with the address bar after an append. */}
-      <Pagination
-        pillarSlug={pillarId}
-        pillarColor={pillarColor}
-        currentPage={loadedThrough}
-        totalPages={totalPages}
-      />
+      {!hasMore && totalPages > 1 && (
+        <div
+          style={{
+            textAlign: "center",
+            marginTop: 48,
+            color: "var(--muted)",
+            fontSize: 13,
+          }}
+        >
+          {t(
+            `End of feed — ${totalCount} stories.`,
+            `Hết bài — ${totalCount} bài.`,
+            `Akhir feed — ${totalCount} artikel.`
+          )}
+        </div>
+      )}
 
       {grid.length === 0 && !featured && (
         <div
