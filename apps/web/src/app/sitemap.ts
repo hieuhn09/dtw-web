@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
-import { getPillars, getSitemapArticles } from "@/lib/payload-server";
+import { getArticlesPage, getPillars, getSitemapArticles } from "@/lib/payload-server";
+import { ARTICLES_PAGE_SIZE } from "@/lib/data";
 import { siteOrigin } from "@/lib/metadata";
 
 // News-sitemap-class cadence (15 min), matching infra/all-infra.md, riding on
@@ -49,6 +50,28 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     changeFrequency: "hourly",
   }));
 
+  // Page 2+ of each pillar feed. The numbered pagination already links these,
+  // but listing them here means a crawler doesn't have to walk the chain to
+  // discover the far end of the archive. Priority sits below page 1: these are
+  // navigational surfaces, not destinations.
+  const pillarPageCounts = await Promise.all(
+    pillars.map(async (pillar) => {
+      const first = await getArticlesPage(pillar.slug, 1, ARTICLES_PAGE_SIZE);
+      return {
+        slug: pillar.slug,
+        totalPages: Math.ceil(first.totalDocs / ARTICLES_PAGE_SIZE),
+      };
+    })
+  );
+  const pillarPageEntries: MetadataRoute.Sitemap = pillarPageCounts.flatMap(
+    ({ slug, totalPages }) =>
+      Array.from({ length: Math.max(0, totalPages - 1) }, (_, i) => ({
+        url: `${origin}/${slug}/page/${i + 2}`,
+        priority: 0.4,
+        changeFrequency: "daily" as const,
+      }))
+  );
+
   const articleEntries: MetadataRoute.Sitemap = articles.map((article) => ({
     url: `${origin}/article/${article.slug}`,
     lastModified: article.updatedAt,
@@ -62,5 +85,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     changeFrequency: "monthly",
   }));
 
-  return [...home, ...pillarEntries, ...articleEntries, ...staticEntries];
+  return [
+    ...home,
+    ...pillarEntries,
+    ...pillarPageEntries,
+    ...articleEntries,
+    ...staticEntries,
+  ];
 }

@@ -5,13 +5,32 @@
 export type PillarId = "ai" | "startups" | "latest" | "dev" | "products" | "policy";
 
 /**
- * Articles fetched per page on the pillar listing feed. Shared between the
- * server (route + load-more action) and the client (`PillarContent`) so a page
- * served on the server lines up exactly with what "Load more" requests next.
- * The feed paginates server-side (Payload paginates natively), so this is a
- * fetch batch size, NOT a hard cap on how many stories a feed can show.
+ * Articles per page on the pillar listing feed, shared by the route, the
+ * pagination maths, and the sitemap so all three agree on how many pages a
+ * feed has.
+ *
+ * 25 = one oversized lead card + 24 grid cards. The grid lays out at 4, 3, 2
+ * or 1 columns depending on viewport and 24 divides evenly by all of them, so
+ * every row comes out full at every breakpoint. The lead card is what makes
+ * this 25 and not 24: it consumes an article without occupying a grid cell, so
+ * a 24-article page left the grid holding 23 and its last row a card short.
+ *
+ * This is deliberately a constant and not viewport-derived: the page number is
+ * part of the URL, so "page 3" has to mean the same stories for every reader
+ * and for the crawler. A per-device page size would make /ai/page/3 a
+ * different set of articles on a phone than on a desktop.
  */
-export const ARTICLES_PAGE_SIZE = 21;
+export const ARTICLES_PAGE_SIZE = 25;
+
+/**
+ * Articles added per "Load more" press — 24, not ARTICLES_PAGE_SIZE.
+ *
+ * An append adds plain grid cards and no second lead card, so it has to add a
+ * multiple of the column counts or the grid goes ragged the moment a reader
+ * presses the button. Appending a whole 25-article page would leave the grid
+ * at 49, then 74: one orphan card at four columns, every time.
+ */
+export const APPEND_BATCH_SIZE = 24;
 
 export interface Pillar {
   id: PillarId;
