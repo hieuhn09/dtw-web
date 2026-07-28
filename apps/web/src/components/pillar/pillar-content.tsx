@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useTransition, type MouseEvent } from "react";
 import Link from "next/link";
 import { Button, PillarTag } from "@dtw/ui";
 import { CoverArt } from "@/components/cover-art";
@@ -10,6 +11,7 @@ import type { ArticleView } from "@/lib/article-view";
 import { type PillarId } from "@/lib/data";
 import { localizedPillarLabel, useLang, useT } from "@/lib/i18n";
 import { Pagination } from "@/components/pillar/pagination";
+import { loadArticlesPage } from "@/app/(reader)/[pillar]/load-more-action";
 
 export interface PillarContentProps {
   /** Pillar slug from the CMS (not constrained to the 6 known ids). Also the
@@ -57,10 +59,54 @@ export function PillarContent({
   const featured = showFeatured ? initialArticles[0] ?? null : null;
   const featuredId = featured?.id ?? null;
 
-  // Grid = this page's feed minus the featured card. Purely derived: paging is
-  // navigation now (see Pagination), so there is no client-side feed state to
-  // keep — every page is a fresh server render at its own URL.
-  const grid = initialArticles.filter((a) => a.id !== featuredId);
+  // Pages appended by "Load more", in order. Empty until the reader asks for
+  // more — every page is a complete server render on its own, so this is
+  // enhancement on top, never the source of the first screen.
+  const [appended, setAppended] = useState<ArticleView[]>([]);
+  // The furthest page the reader has pulled in. Drives the button's href, the
+  // pager's active number, and the address bar, so all three agree.
+  const [loadedThrough, setLoadedThrough] = useState<number>(currentPage);
+  const [pending, startTransition] = useTransition();
+
+  const grid = [...initialArticles, ...appended].filter((a) => a.id !== featuredId);
+  const nextPage = loadedThrough + 1;
+  const hasMore = loadedThrough < totalPages;
+  const nextHref = `/${pillarId}/page/${nextPage}`;
+
+  /**
+   * The control is a real `<a href>` pointing at the next page's own URL, so a
+   * crawler follows it and a reader with JS disabled navigates there normally.
+   * This handler is the enhancement: it cancels that navigation and appends
+   * instead.
+   *
+   * Modified clicks (⌘/ctrl/shift/alt, middle button) fall through untouched so
+   * "open in new tab" keeps working — intercepting those is the classic way
+   * this pattern breaks.
+   */
+  function onLoadMore(e: MouseEvent<HTMLAnchorElement | HTMLButtonElement>) {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+    e.preventDefault();
+    if (pending || !hasMore) return;
+    startTransition(async () => {
+      try {
+        const r = await loadArticlesPage(pillarId, nextPage);
+        setAppended((prev) => {
+          const seen = new Set([...initialArticles, ...prev].map((a) => a.id));
+          return [...prev, ...r.articles.filter((a) => !seen.has(a.id))];
+        });
+        setLoadedThrough(r.page);
+        // replaceState, not pushState: each append is a continuation of the
+        // same view, not a place to go "back" to. Back returns the reader to
+        // wherever they entered the feed from instead of unwinding one append
+        // at a time. Next 15 supports calling the History API directly for
+        // exactly this.
+        window.history.replaceState(null, "", `/${pillarId}/page/${r.page}`);
+      } catch {
+        // Keep what's already loaded; the link re-enables so the reader can
+        // retry, and it still works as a plain navigation either way.
+      }
+    });
+  }
 
   return (
     <div className="container" style={{ paddingTop: 24, paddingBottom: 32 }}>
@@ -213,13 +259,40 @@ export function PillarContent({
         ))}
       </div>
 
-      {/* Replaces the old "Load more" button outright. That was a server
-          action behind a <button>, which no crawler could follow — see
-          pagination.tsx. */}
+      {/* Reads as a button, is an <a href> to the next page's real URL. JS
+          turns the click into an append; without JS it just navigates. */}
+      {hasMore && (
+        <div style={{ textAlign: "center", marginTop: 48 }}>
+          <Button
+            href={nextHref}
+            variant="outline"
+            size="lg"
+            onClick={onLoadMore}
+            rel="next"
+            style={{
+              padding: "18px 36px",
+              fontSize: 15,
+              letterSpacing: ".02em",
+              opacity: pending ? 0.6 : 1,
+            }}
+          >
+            {pending
+              ? t("Loading…", "Đang tải…", "Memuat…")
+              : t("Load more", "Tải thêm", "Muat lagi")}
+          </Button>
+        </div>
+      )}
+
+      {/* Kept alongside the button, not replaced by it. The button only ever
+          walks forward one page at a time — a 33-page feed would sit 33 hops
+          deep behind it. The numbered strip is what keeps every page ~2 hops
+          from the first, and it is what a reader uses to jump or to come back
+          to where they were. Its active number tracks what has actually been
+          loaded, so it agrees with the address bar after an append. */}
       <Pagination
         pillarSlug={pillarId}
         pillarColor={pillarColor}
-        currentPage={currentPage}
+        currentPage={loadedThrough}
         totalPages={totalPages}
       />
 
