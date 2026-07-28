@@ -68,11 +68,10 @@ export async function PillarView({ slug, page }: { slug: string; page: number })
   // 404 rather than serve a blank page that a crawler would keep revisiting.
   // Page 1 is exempt so a pillar with no stories yet still renders its header
   // and empty state.
-  const totalPages = Math.max(1, Math.ceil(feedPage.totalDocs / ARTICLES_PAGE_SIZE));
   if (page > 1 && feedPage.docs.length === 0) notFound();
 
-  // A pinned story leads the feed as the featured card. PillarContent dedupes
-  // the grid + later "Load more" pages off initialArticles[0].id, so prepending
+  // A pinned story leads the feed as the featured card. PillarContent takes
+  // initialArticles[0] as the lead and keeps it out of the grid, so prepending
   // here is enough — no double render and no extra paging logic.
   const feed = feedPage.docs.map(toArticleView);
   const pinned = pinnedDoc ? toArticleView(pinnedDoc) : null;
@@ -94,8 +93,7 @@ export async function PillarView({ slug, page }: { slug: string; page: number })
       initialArticles={articles}
       totalCount={feedPage.totalDocs}
       currentPage={page}
-      totalPages={totalPages}
-      showFeatured={page === 1}
+      hasMoreInitial={feedPage.hasNextPage}
     />
   );
 }

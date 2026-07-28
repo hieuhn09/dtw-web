@@ -187,6 +187,61 @@ export const getArticlesPage = unstable_cache(
   { tags: ["articles:all"], revalidate: 60 }
 );
 
+/**
+ * The articles immediately after `(publishedAt, id)` in the feed's own
+ * `-publishedAt, -id` order — the batch behind "Load more".
+ *
+ * Cursor rather than page/limit because an append batch (24) is a different
+ * size from a route page (25, one of which becomes the lead card). The offsets
+ * an append needs — 25, 49, 73 — are not `limit × (page - 1)` for any usable
+ * limit, and Payload's `find` has no `offset`. A keyset cursor sidesteps the
+ * arithmetic entirely, and it's the same shape `getRelatedArticles` already
+ * uses to walk a beat.
+ *
+ * Pairing `id` with `publishedAt` matters for the same reason it does there:
+ * the seed import gave whole batches an identical timestamp, and a date-only
+ * comparison would skip every article sharing the cursor's second.
+ *
+ * `hasMore` comes from over-fetching by one rather than a second count query.
+ */
+export const getArticlesAfter = unstable_cache(
+  async (
+    pillarSlug: string,
+    afterPublishedAt: string,
+    afterId: number,
+    limit: number
+  ): Promise<{ docs: Article[]; hasMore: boolean }> => {
+    const p = await payload();
+    const and: Where[] = [{ _status: { equals: "published" } }];
+    if (pillarSlug !== "latest") {
+      const pillarId = await getPillarIdBySlug(pillarSlug);
+      if (pillarId == null) return { docs: [], hasMore: false };
+      and.push({ pillar: { equals: pillarId } });
+    }
+    and.push({
+      or: [
+        { publishedAt: { less_than: afterPublishedAt } },
+        {
+          and: [
+            { publishedAt: { equals: afterPublishedAt } },
+            { id: { less_than: afterId } },
+          ],
+        },
+      ],
+    });
+    const r = await p.find({
+      collection: "articles",
+      where: { and },
+      sort: ["-publishedAt", "-id"],
+      limit: limit + 1,
+      depth: 1,
+    });
+    return { docs: r.docs.slice(0, limit), hasMore: r.docs.length > limit };
+  },
+  ["articles:after"],
+  { tags: ["articles:all"], revalidate: 60 }
+);
+
 export const getArticlesByPillar = unstable_cache(
   async (pillarSlug: string, limit = 21): Promise<Article[]> => {
     const p = await payload();

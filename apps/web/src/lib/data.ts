@@ -9,18 +9,28 @@ export type PillarId = "ai" | "startups" | "latest" | "dev" | "products" | "poli
  * pagination maths, and the sitemap so all three agree on how many pages a
  * feed has.
  *
- * 24 because the feed grid lays out at 4, 3, 2 or 1 columns depending on
- * viewport, and 24 divides evenly by all of them — every row on page 2+ comes
- * out full at every breakpoint. (Page 1 spends one of its 24 on the oversized
- * lead card, so its grid holds 23 and the final row runs short; `auto-fill`
- * keeps those cards at their normal column width rather than stretching them.)
+ * 25 = one oversized lead card + 24 grid cards. The grid lays out at 4, 3, 2
+ * or 1 columns depending on viewport and 24 divides evenly by all of them, so
+ * every row comes out full at every breakpoint. The lead card is what makes
+ * this 25 and not 24: it consumes an article without occupying a grid cell, so
+ * a 24-article page left the grid holding 23 and its last row a card short.
  *
  * This is deliberately a constant and not viewport-derived: the page number is
  * part of the URL, so "page 3" has to mean the same stories for every reader
  * and for the crawler. A per-device page size would make /ai/page/3 a
  * different set of articles on a phone than on a desktop.
  */
-export const ARTICLES_PAGE_SIZE = 24;
+export const ARTICLES_PAGE_SIZE = 25;
+
+/**
+ * Articles added per "Load more" press — 24, not ARTICLES_PAGE_SIZE.
+ *
+ * An append adds plain grid cards and no second lead card, so it has to add a
+ * multiple of the column counts or the grid goes ragged the moment a reader
+ * presses the button. Appending a whole 25-article page would leave the grid
+ * at 49, then 74: one orphan card at four columns, every time.
+ */
+export const APPEND_BATCH_SIZE = 24;
 
 export interface Pillar {
   id: PillarId;
