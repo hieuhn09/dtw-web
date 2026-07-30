@@ -1,0 +1,1363 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Leaderboard · DTW Dashboards (demo)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:ital,wght@0,400..900;1,400..900&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #FDFCF8;
+    --surface: #FFFFFF;
+    --surface-2: #F2EFE5;
+    --ink: #111111;
+    --ink-2: #2A2A28;
+    --muted: #5B5B58;
+    --muted-2: #8C8B85;
+    --hair: #E5E2D8;
+    --hair-2: #D8D4C6;
+    --accent: #D4623C;
+    --accent-ink: #B14A28;
+    --amber: #F59E0B;
+    --brand-navy: #1B2A52;
+    --brand-amber: #D4623C;
+    --banner: #1B2A52;
+    --up: #10B981;
+    --down: #EF4444;
+    --bar: #3A4E8C;           /* leaderboard bar hue, validated vs #FFFFFF */
+    --maxw: 1280px;
+    --shadow: 0 1px 0 rgba(17,17,17,.04), 0 12px 32px -16px rgba(17,17,17,.12);
+    --font-serif: "Schibsted Grotesk", "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --font-sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+  html[data-theme="dark"] {
+    --paper: #0F172A;
+    --surface: #111C30;
+    --surface-2: #15223A;
+    --ink: #E2E8F0;
+    --ink-2: #CBD5E1;
+    --muted: #94A3B8;
+    --muted-2: #64748B;
+    --hair: #1E2B45;
+    --hair-2: #243453;
+    --brand-navy: #E2E8F0;
+    --banner: #16223C;
+    --bar: #6B84D6;           /* dark-mode step of the same hue, validated vs #111C30 */
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-size: 15px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; }
+  button { font-family: var(--font-sans); cursor: pointer; }
+  .tnum { font-variant-numeric: tabular-nums; }
+  .mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+  .wrap { max-width: var(--maxw); margin-inline: auto; padding-inline: 20px; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 3px; }
+
+  /* ---------- header ---------- */
+  header.site {
+    border-bottom: 1px solid var(--hair);
+    background: color-mix(in oklab, var(--paper) 92%, transparent);
+    position: sticky; top: 0; z-index: 30;
+    backdrop-filter: blur(8px);
+  }
+  .site-inner { display: flex; align-items: center; gap: 14px; height: 58px; }
+  .logo-badge {
+    width: 30px; height: 30px; border-radius: 7px;
+    background: var(--banner); color: #FFFFFF;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-family: var(--font-mono); font-weight: 600; font-size: 10.5px; letter-spacing: .04em;
+    flex: none;
+  }
+  .wordmark { font-family: var(--font-serif); font-weight: 700; font-size: 19px; letter-spacing: -.015em; display: inline-flex; align-items: baseline; gap: 5px; }
+  .pulse-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--brand-amber); display: inline-block; }
+  @media (prefers-reduced-motion: no-preference) {
+    .pulse-dot { animation: pulse 2.4s ease-in-out infinite; }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .35; } }
+  }
+  .crumb { color: var(--muted); font-size: 13px; display: flex; align-items: center; gap: 7px; min-width: 0; }
+  .crumb .sep { color: var(--hair-2); }
+  @media (max-width: 760px) { .crumb { display: none; } }
+  .demo-chip {
+    font-family: var(--font-mono); font-size: 10px; letter-spacing: .08em; text-transform: uppercase;
+    color: var(--accent-ink); border: 1px solid color-mix(in oklab, var(--accent) 45%, transparent);
+    background: color-mix(in oklab, var(--accent) 9%, transparent);
+    padding: 2px 7px; border-radius: 999px;
+  }
+  html[data-theme="dark"] .demo-chip { color: var(--accent); }
+  .head-right { margin-inline-start: auto; display: flex; align-items: center; gap: 10px; }
+  .conn-pill { font-family: var(--font-mono); font-size: 11px; color: var(--muted); display: inline-flex; align-items: center; gap: 6px; }
+  .conn-pill .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--muted-2); flex: none; }
+  .conn-pill.live .dot { background: var(--up); }
+  .conn-pill.sample .dot { background: var(--amber); }
+  .icon-btn {
+    width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--hair-2);
+    background: var(--surface); color: var(--ink); display: inline-flex; align-items: center; justify-content: center;
+  }
+  .icon-btn:hover { border-color: var(--muted-2); }
+
+  /* ---------- page head ---------- */
+  .page-head { padding-block: 30px 6px; }
+  .kicker { font-family: var(--font-mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--accent-ink); }
+  html[data-theme="dark"] .kicker { color: var(--accent); }
+  h1 { font-family: var(--font-serif); font-size: 32px; font-weight: 600; letter-spacing: -.02em; margin: 6px 0 6px; }
+  .lede { color: var(--muted); max-width: 62ch; margin: 0; }
+
+  /* ---------- connect panel ---------- */
+  .connect {
+    margin-block: 18px;
+    border: 1px solid var(--hair);
+    background: var(--surface);
+    border-radius: 12px;
+    padding: 14px 16px;
+    display: flex; flex-wrap: wrap; align-items: center; gap: 10px;
+  }
+  .connect label { font-size: 13px; color: var(--muted); flex: none; }
+  .connect input[type="password"], .connect input[type="text"] {
+    flex: 1 1 260px; min-width: 200px;
+    font-family: var(--font-mono); font-size: 13px;
+    color: var(--ink); background: var(--paper);
+    border: 1px solid var(--hair-2); border-radius: 8px;
+    padding: 8px 10px;
+  }
+  .connect input::placeholder { color: var(--muted-2); }
+  .btn {
+    border-radius: 8px; border: 1px solid transparent;
+    font-size: 13px; font-weight: 600; padding: 8px 14px;
+  }
+  .btn-accent { background: var(--accent); color: #FFFFFF; }
+  .btn-accent:hover { background: var(--accent-ink); }
+  .btn-outline { background: transparent; border-color: var(--hair-2); color: var(--ink); }
+  .btn-outline:hover { border-color: var(--muted-2); }
+  .btn-ghost { background: transparent; color: var(--muted); border: none; font-weight: 500; }
+  .btn-ghost:hover { color: var(--ink); }
+  .btn[disabled] { opacity: .5; cursor: default; }
+  .connect-note { flex-basis: 100%; font-size: 12px; color: var(--muted); margin: 0; }
+  .connect-note a { color: var(--muted); }
+
+  .banner-note {
+    display: none; margin-block: 0 14px; padding: 9px 14px; border-radius: 10px;
+    font-size: 13px; border: 1px solid;
+  }
+  .banner-note.show { display: block; }
+  .banner-note.sample {
+    background: color-mix(in oklab, var(--amber) 12%, var(--surface));
+    border-color: color-mix(in oklab, var(--amber) 45%, transparent);
+    color: var(--ink-2);
+  }
+  .banner-note.error {
+    background: color-mix(in oklab, var(--down) 10%, var(--surface));
+    border-color: color-mix(in oklab, var(--down) 40%, transparent);
+    color: var(--ink-2);
+  }
+
+  /* ---------- stat tiles ---------- */
+  .tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-block: 8px 26px; }
+  @media (max-width: 860px) { .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .tile { border: 1px solid var(--hair); background: var(--surface); border-radius: 12px; padding: 14px 16px; min-width: 0; }
+  .tile .t-label { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+  .tile .t-value { font-family: var(--font-mono); font-size: 26px; font-weight: 600; margin-top: 6px; letter-spacing: -.01em; }
+  .tile .t-sub { font-size: 12px; color: var(--muted); margin-top: 2px; min-height: 18px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+  /* ---------- cards & sections ---------- */
+  section.card {
+    border: 1px solid var(--hair); background: var(--surface); border-radius: 14px;
+    margin-block-end: 26px; overflow: hidden;
+  }
+  .card-head { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding: 16px 18px 0; }
+  .card-title { font-family: var(--font-serif); font-size: 20px; font-weight: 600; letter-spacing: -.015em; margin: 0; }
+  .card-sub { flex-basis: 100%; font-size: 12.5px; color: var(--muted); margin: 2px 0 0; }
+  .card-tools { margin-inline-start: auto; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+
+  .tabs { display: flex; gap: 4px; flex-wrap: wrap; padding: 12px 18px 0; }
+  .tab {
+    border: 1px solid var(--hair-2); background: transparent; color: var(--muted);
+    font-size: 12.5px; font-weight: 600; border-radius: 999px; padding: 5px 12px;
+  }
+  .tab:hover { color: var(--ink); border-color: var(--muted-2); }
+  .tab[aria-selected="true"] { background: var(--banner); border-color: var(--banner); color: #FFFFFF; }
+
+  select, .search-input {
+    font-family: var(--font-sans); font-size: 13px; color: var(--ink);
+    background: var(--paper); border: 1px solid var(--hair-2); border-radius: 8px; padding: 6px 9px;
+  }
+  .search-input { min-width: 190px; }
+
+  .tbl-scroll { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; margin-top: 10px; }
+  thead th {
+    font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .09em; text-transform: uppercase;
+    color: var(--muted); font-weight: 500; text-align: start;
+    padding: 8px 12px; border-bottom: 1px solid var(--hair-2); white-space: nowrap;
+  }
+  thead th.num, td.num { text-align: end; }
+  tbody td { padding: 10px 12px; border-bottom: 1px solid var(--hair); vertical-align: middle; }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr.rowlink { cursor: pointer; }
+  tbody tr.rowlink:hover { background: color-mix(in oklab, var(--ink) 3%, transparent); }
+  .row-btn {
+    display: block; background: none; border: none; padding: 0; margin: 0;
+    font: inherit; color: inherit; text-align: start; cursor: pointer;
+  }
+  td .cell-main { font-weight: 600; font-size: 14px; }
+  td .cell-sub { font-size: 12px; color: var(--muted); margin-top: 1px; }
+  td.num { font-family: var(--font-mono); font-size: 13px; }
+  .rank { font-family: var(--font-mono); font-size: 13px; color: var(--muted); width: 34px; }
+  .rank.top { color: var(--accent-ink); font-weight: 600; }
+  html[data-theme="dark"] .rank.top { color: var(--accent); }
+
+  .scorebar { display: flex; align-items: center; gap: 10px; min-width: 180px; }
+  .scorebar .val { font-family: var(--font-mono); font-size: 13px; font-weight: 600; width: 52px; text-align: end; flex: none; }
+  .scorebar .track { display: block; flex: 1; height: 6px; border-radius: 4px; background: color-mix(in oklab, var(--ink) 7%, transparent); overflow: hidden; }
+  .scorebar .fill { display: block; height: 100%; border-radius: 4px; background: var(--bar); }
+
+  .chip {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 11px; font-weight: 600; border-radius: 999px; padding: 2px 8px;
+    border: 1px solid var(--hair-2); color: var(--muted); white-space: nowrap;
+  }
+  .chip .sq { width: 6px; height: 6px; border-radius: 2px; background: var(--muted-2); flex: none; }
+  .chip.open { color: var(--ink-2); }
+  .chip.open .sq { background: var(--up); }
+  .chip.closed .sq { background: var(--muted-2); }
+  .chip.verified { color: var(--ink-2); }
+  .chip.verified .sq { background: var(--bar); }
+  .chip.selfrep .sq { background: var(--amber); }
+
+  .score-chips { display: flex; flex-wrap: wrap; gap: 5px; }
+  .score-chips .chip { font-family: var(--font-mono); font-weight: 500; }
+
+  .tbl-foot { display: flex; align-items: center; gap: 12px; padding: 12px 18px 16px; }
+  .tbl-foot .meta { font-size: 12px; color: var(--muted); font-family: var(--font-mono); }
+
+  .empty { padding: 26px 18px 30px; color: var(--muted); font-size: 14px; }
+
+  /* ---------- skeletons ---------- */
+  .skel { border-radius: 6px; background: var(--surface-2); height: 14px; }
+  .skel-row { display: flex; gap: 14px; padding: 13px 18px; border-bottom: 1px solid var(--hair); }
+  .skel-row:last-child { border-bottom: none; }
+  @media (prefers-reduced-motion: no-preference) {
+    .skel { animation: skelfade 1.2s ease-in-out infinite; }
+    @keyframes skelfade { 0%,100% { opacity: 1; } 50% { opacity: .55; } }
+  }
+
+  /* ---------- drawer ---------- */
+  .overlay {
+    position: fixed; inset: 0; z-index: 40; display: none;
+    background: color-mix(in oklab, var(--ink) 32%, transparent);
+  }
+  .overlay.show { display: block; }
+  .drawer {
+    position: fixed; inset-block: 0; inset-inline-end: 0; z-index: 41;
+    width: min(560px, 96vw);
+    background: var(--surface); border-inline-start: 1px solid var(--hair-2);
+    transform: translateX(102%); visibility: hidden;
+    transition: transform .22s ease, visibility 0s linear .22s;
+    display: flex; flex-direction: column;
+  }
+  .drawer.show { transform: translateX(0); visibility: visible; transition: transform .22s ease; }
+  @media (prefers-reduced-motion: reduce) { .drawer, .drawer.show { transition: none; } }
+  .drawer-head { display: flex; align-items: flex-start; gap: 12px; padding: 18px 20px 12px; border-bottom: 1px solid var(--hair); }
+  .drawer-title { font-family: var(--font-serif); font-size: 22px; font-weight: 600; letter-spacing: -.015em; margin: 0; }
+  .drawer-org { font-size: 13px; color: var(--muted); margin-top: 2px; }
+  .drawer-body { overflow-y: auto; padding: 16px 20px 30px; }
+  .drawer-desc { font-size: 14px; color: var(--ink-2); margin: 0 0 14px; }
+  .meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 16px; margin-block: 6px 18px; }
+  .meta-grid .m-label { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .09em; text-transform: uppercase; color: var(--muted); }
+  .meta-grid .m-value { font-size: 13.5px; font-family: var(--font-mono); margin-top: 2px; }
+  .drawer h3 { font-family: var(--font-serif); font-size: 15px; font-weight: 600; margin: 18px 0 8px; }
+  .cat-group { margin-block-end: 14px; }
+  .cat-name { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-block-end: 6px; }
+  .bench-row { display: grid; grid-template-columns: minmax(120px, 1.1fr) 2fr; gap: 10px; align-items: center; padding-block: 4px; }
+  .bench-name { font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .bench-flags { display: inline-flex; gap: 4px; margin-inline-start: 6px; vertical-align: 1px; }
+  .prov-status { font-family: var(--font-mono); font-size: 11px; color: var(--muted); }
+  .ext-link { font-size: 13px; color: var(--accent-ink); font-weight: 600; text-decoration: none; }
+  html[data-theme="dark"] .ext-link { color: var(--accent); }
+  .ext-link:hover { text-decoration: underline; }
+
+  footer.site {
+    border-top: 1px solid var(--hair); margin-top: 8px; padding-block: 22px 34px;
+    color: var(--muted); font-size: 12.5px;
+  }
+  footer.site .wrap { display: flex; flex-wrap: wrap; gap: 8px 24px; }
+  .sr-only {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+  }
+  .refetching { opacity: .55; pointer-events: none; }
+  @media (max-width: 480px) { #connLabel { display: none; } }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap site-inner">
+    <span class="logo-badge" aria-hidden="true">DTW</span>
+    <span class="wordmark">dailytechwire<span class="pulse-dot" aria-hidden="true"></span></span>
+    <span class="crumb"><span class="sep">/</span> Dashboards <span class="sep">/</span> AI Leaderboard</span>
+    <span class="demo-chip">Demo</span>
+    <div class="head-right">
+      <span id="connPill" class="conn-pill"><span class="dot"></span><span id="connLabel">Not connected</span></span>
+      <button id="themeBtn" class="icon-btn" aria-label="Toggle dark mode" title="Toggle dark mode">
+        <svg id="themeIcon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="page-head">
+    <div class="kicker">DTW Dashboards</div>
+    <h1>AI Leaderboard</h1>
+    <p class="lede">TrueSkill model rankings, benchmark scores and pricing across every model tracked by LLM Stats. Live data via the LLM Stats API.</p>
+  </div>
+
+  <div class="connect" id="connectPanel">
+    <label for="apiKey">API key</label>
+    <input type="password" id="apiKey" placeholder="ze_..." autocomplete="off" spellcheck="false">
+    <button class="btn btn-accent" id="connectBtn">Connect</button>
+    <button class="btn btn-outline" id="sampleBtn">Preview with sample data</button>
+    <button class="btn btn-ghost" id="forgetBtn" hidden>Forget key</button>
+    <p class="connect-note">Your key is kept in this browser only (localStorage) and sent only to <span class="mono">api.llm-stats.com</span>. Create one at <a href="https://llm-stats.com/developer" target="_blank" rel="noopener">llm-stats.com/developer</a>.</p>
+  </div>
+
+  <div id="noteBanner" class="banner-note" role="status"></div>
+
+  <div class="tiles" aria-label="Overview">
+    <div class="tile"><div class="t-label">Models tracked</div><div class="t-value tnum" id="tileModels">–</div><div class="t-sub" id="tileModelsSub"></div></div>
+    <div class="tile"><div class="t-label">Benchmarks</div><div class="t-value tnum" id="tileBenches">–</div><div class="t-sub" id="tileBenchesSub"></div></div>
+    <div class="tile"><div class="t-label">Organizations</div><div class="t-value tnum" id="tileOrgs">–</div><div class="t-sub" id="tileOrgsSub"></div></div>
+    <div class="tile"><div class="t-label">Added, last 30 days</div><div class="t-value tnum" id="tileNew">–</div><div class="t-sub" id="tileNewSub"></div></div>
+  </div>
+
+  <!-- ============ Rankings ============ -->
+  <section class="card" aria-labelledby="rankTitle">
+    <div class="card-head">
+      <h2 class="card-title" id="rankTitle">TrueSkill rankings</h2>
+      <div class="card-tools">
+        <label for="rankLimit" style="font-size:12px;color:var(--muted)">Show</label>
+        <select id="rankLimit">
+          <option value="10">Top 10</option>
+          <option value="25" selected>Top 25</option>
+          <option value="50">Top 50</option>
+        </select>
+      </div>
+      <p class="card-sub" id="rankSub">Rankings are computed by LLM Stats with TrueSkill across benchmarks in each category.</p>
+    </div>
+    <div class="tabs" id="catTabs" role="tablist" aria-label="Ranking category"></div>
+    <div class="tbl-scroll" id="rankBody" role="tabpanel" aria-label="Ranked models"><div class="empty">Connect with an API key, or preview with sample data.</div></div>
+  </section>
+
+  <!-- ============ Catalog ============ -->
+  <section class="card" aria-labelledby="catalogTitle">
+    <div class="card-head">
+      <h2 class="card-title" id="catalogTitle">Model catalog</h2>
+      <div class="card-tools">
+        <input type="search" class="search-input" id="catalogSearch" placeholder="Search model or org..." aria-label="Search model or organization">
+        <select id="catalogWeight" aria-label="Filter by weights">
+          <option value="all">All weights</option>
+          <option value="open">Open weights</option>
+          <option value="closed">Proprietary</option>
+        </select>
+        <select id="catalogSort" aria-label="Sort loaded models">
+          <option value="release">Newest first</option>
+          <option value="context">Longest context</option>
+          <option value="price-in">Cheapest input</option>
+          <option value="price-out">Cheapest output</option>
+          <option value="name">Name A-Z</option>
+        </select>
+      </div>
+      <p class="card-sub">Catalog with metadata, cheapest provider pricing and per-category top scores. Search and sort apply to loaded rows. Click a row for full benchmark detail.</p>
+    </div>
+    <div class="tbl-scroll" id="catalogBody"><div class="empty">No data yet.</div></div>
+    <div class="tbl-foot">
+      <button class="btn btn-outline" id="loadMoreBtn" hidden>Load more</button>
+      <span class="meta" id="catalogMeta"></span>
+    </div>
+  </section>
+
+  <!-- ============ Recently added ============ -->
+  <section class="card" aria-labelledby="updatesTitle">
+    <div class="card-head">
+      <h2 class="card-title" id="updatesTitle">Recently added</h2>
+      <div class="card-tools">
+        <select id="updatesDays" aria-label="Lookback window">
+          <option value="7">Last 7 days</option>
+          <option value="14">Last 14 days</option>
+          <option value="30" selected>Last 30 days</option>
+        </select>
+      </div>
+      <p class="card-sub">New models added to the LLM Stats catalog.</p>
+    </div>
+    <div class="tbl-scroll" id="updatesBody"><div class="empty">No data yet.</div></div>
+  </section>
+</main>
+
+<div class="overlay" id="overlay"></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drawerTitle" inert>
+  <div class="drawer-head">
+    <div style="min-width:0">
+      <h2 class="drawer-title" id="drawerTitle"></h2>
+      <div class="drawer-org" id="drawerOrg"></div>
+    </div>
+    <button class="icon-btn" id="drawerClose" aria-label="Close details" style="margin-inline-start:auto">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <div class="drawer-body" id="drawerBody"></div>
+</aside>
+
+<footer class="site">
+  <div class="wrap">
+    <span>DTW Dashboards demo · not a production page</span>
+    <span>Data: <a href="https://llm-stats.com" target="_blank" rel="noopener">LLM Stats</a> Stats API v1</span>
+    <span>Rate limits apply per key (rankings 120/min, models 60/min, scores 30/min)</span>
+  </div>
+</footer>
+
+<script>
+"use strict";
+
+/* ================= constants & state ================= */
+
+const API_BASE = "https://api.llm-stats.com/stats/v1";
+const LS_KEY = "dtw-llmstats-key";
+const LS_THEME = "dtw-theme";
+
+const state = {
+  mode: null,              // null | "live" | "sample"
+  apiKey: "",
+  benchmarks: [],
+  categories: [],          // [{id, count}]
+  activeCategory: null,
+  rankings: new Map(),     // `${category}:${limit}` -> RankingsResponse
+  models: [],              // accumulated ModelSummary rows
+  modelsTotal: null,
+  modelsCursor: null,
+  updates: null,           // UpdatesResponse
+  detailCache: new Map(),  // id -> ModelDetail
+  gen: 0,                  // session generation - bumped by boot(); async loaders discard stale responses
+  rankSeq: 0,              // guards out-of-order category loads
+  updSeq: 0,
+  detailSeq: 0,
+};
+
+const $ = (id) => document.getElementById(id);
+
+/* ================= theme ================= */
+
+const SUN = '<circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.9 4.9l1.4 1.4m11.4 11.4 1.4 1.4M2 12h2m16 0h2M4.9 19.1l1.4-1.4m11.4-11.4 1.4-1.4"/>';
+const MOON = '<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>';
+
+function applyTheme(theme) {
+  document.documentElement.setAttribute("data-theme", theme);
+  $("themeIcon").innerHTML = theme === "dark" ? SUN : MOON;
+  const btn = $("themeBtn");
+  const label = theme === "dark" ? "Switch to light theme" : "Switch to dark theme";
+  btn.setAttribute("aria-label", label);
+  btn.title = label;
+  try { localStorage.setItem(LS_THEME, theme); } catch (e) {}
+}
+applyTheme((() => {
+  try { const t = localStorage.getItem(LS_THEME); if (t === "dark" || t === "light") return t; } catch (e) {}
+  return matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+})());
+$("themeBtn").addEventListener("click", () => {
+  applyTheme(document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark");
+});
+
+/* ================= utilities ================= */
+
+function esc(s) {
+  return String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+function fmtInt(n) { return n == null ? "–" : Number(n).toLocaleString("en-US"); }
+function fmtCtx(n) {
+  if (n == null) return "–";
+  if (n >= 1_000_000) return (n / 1_000_000).toFixed(n % 1_000_000 ? 1 : 0) + "M";
+  if (n >= 1000) return Math.round(n / 1000) + "K";
+  return String(n);
+}
+function fmtParams(n) {
+  if (n == null) return "–";
+  if (n >= 1e12) return (n / 1e12).toFixed(1) + "T";
+  if (n >= 1e9) return (n / 1e9).toFixed(n >= 1e11 ? 0 : 1) + "B";
+  if (n >= 1e6) return (n / 1e6).toFixed(0) + "M";
+  return String(n);
+}
+function fmtPrice(n) {
+  if (n == null) return "–";
+  return "$" + Number(n).toFixed(2);
+}
+function fmtDate(iso) {
+  if (!iso) return "–";
+  const d = new Date(iso);
+  if (isNaN(d)) return "–";
+  /* date-only strings parse as UTC midnight - format them in UTC or viewers west of UTC see the previous day */
+  const dateOnly = /^\d{4}-\d{2}-\d{2}$/.test(iso);
+  return d.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric", ...(dateOnly ? { timeZone: "UTC" } : {}) });
+}
+function fmtDateTime(iso) {
+  if (!iso) return "–";
+  const d = new Date(iso);
+  if (isNaN(d)) return "–";
+  return d.toLocaleString("en-US", { year: "numeric", month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" });
+}
+function titleCase(s) { return String(s || "").replace(/[_-]+/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()); }
+function fmtRating(n) { return (typeof n === "number" && isFinite(n)) ? n.toFixed(1) : "–"; }
+function safeUrl(u) {
+  try { const p = new URL(u); return (p.protocol === "http:" || p.protocol === "https:") ? u : null; }
+  catch (e) { return null; }
+}
+
+/* Scores arrive either as 0-1 fractions or 0-max points; normalize to a 0-100 percent for bars. */
+function pct(score, maxScore) {
+  if (score == null) return null;
+  const max = (maxScore && maxScore > 0) ? maxScore : (score <= 1 ? 1 : 100);
+  return Math.max(0, Math.min(100, (score / max) * 100));
+}
+function fmtScore(score, maxScore) {
+  const p = pct(score, maxScore);
+  return p == null ? "–" : p.toFixed(1);
+}
+
+function minProviderPrice(providers, field) {
+  let min = null;
+  for (const p of providers || []) {
+    const v = p[field];
+    if (v != null && (min == null || v < min)) min = v;
+  }
+  return min;
+}
+
+function showBanner(kind, html) {
+  const b = $("noteBanner");
+  b.setAttribute("role", kind === "error" ? "alert" : "status");
+  b.className = "banner-note show " + kind;
+  b.innerHTML = html;
+}
+function hideBanner() { $("noteBanner").className = "banner-note"; }
+
+function setConn(mode, label) {
+  const pill = $("connPill");
+  pill.className = "conn-pill" + (mode ? " " + mode : "");
+  pill.title = label;
+  pill.setAttribute("aria-label", label);
+  $("connLabel").textContent = label;
+}
+
+function skeletonRows(n, cols) {
+  let out = "";
+  for (let i = 0; i < n; i++) {
+    out += '<div class="skel-row">';
+    for (const w of cols) out += `<div class="skel" style="width:${w}"></div>`;
+    out += "</div>";
+  }
+  return out;
+}
+
+/* ================= API client ================= */
+
+class ApiError extends Error {
+  constructor(code, message, status, retryAfter) {
+    super(message);
+    this.code = code; this.status = status; this.retryAfter = retryAfter;
+  }
+}
+
+/* The LLM Stats API only passes CORS preflight for http://localhost:3000 and its own
+   domains. When a direct call is blocked, fall back to the same-origin /api proxy
+   provided by demos/serve-ai-leaderboard.mjs (memoized once it works). */
+let apiBase = API_BASE;
+
+function buildUrl(base, path, params) {
+  const url = new URL(base + path, location.href);
+  for (const [k, v] of Object.entries(params || {})) {
+    if (v !== null && v !== undefined && v !== "") url.searchParams.set(k, v);
+  }
+  return url;
+}
+
+async function api(path, params) {
+  if (state.mode === "sample") return sampleApi(path, params);
+  let res;
+  try {
+    res = await fetch(buildUrl(apiBase, path, params), { headers: { Authorization: "Bearer " + state.apiKey } });
+  } catch (e) {
+    if (apiBase === API_BASE && (location.protocol === "http:" || location.protocol === "https:")) {
+      try {
+        const proxyBase = location.origin + "/api";
+        res = await fetch(buildUrl(proxyBase, path, params), { headers: { Authorization: "Bearer " + state.apiKey } });
+        apiBase = proxyBase;
+      } catch (e2) {
+        throw new ApiError("network_error", "Network error - the API is unreachable directly (CORS) and no local /api proxy is running. Serve the demo with: node demos/serve-ai-leaderboard.mjs", 0);
+      }
+    } else if (location.protocol === "file:") {
+      throw new ApiError("network_error", "Live data can't load from a file:// page - the LLM Stats API rejects its CORS preflight. Run: node demos/serve-ai-leaderboard.mjs and open the printed localhost URL.", 0);
+    } else {
+      throw new ApiError("network_error", "Network error - check your connection and try again.", 0);
+    }
+  }
+  const text = await res.text().catch(() => "");
+  let body = null;
+  try { body = JSON.parse(text); } catch (e) { /* non-JSON body */ }
+  if (!res.ok) {
+    const err = body && body.error ? body.error : {};
+    const retryAfter = res.headers.get("Retry-After");
+    let msg = err.message || `Request failed (HTTP ${res.status}).`;
+    if (res.status === 429) msg = "Rate limit reached." + (retryAfter ? ` Retry in ${retryAfter}s.` : " Try again shortly.");
+    if (res.status === 401) msg = "Invalid or missing API key.";
+    throw new ApiError(err.code || "http_" + res.status, msg, res.status, retryAfter);
+  }
+  if (body === null || typeof body !== "object") {
+    /* 2xx but not JSON - challenge page, empty body, or a broken proxy in between */
+    const peek = text ? text.slice(0, 120) : "(empty body)";
+    throw new ApiError("bad_response", `Unexpected non-JSON response (HTTP ${res.status}) from ${res.url.includes("/api/") ? "the local proxy" : "the API"}: ${peek}`, res.status);
+  }
+  return body;
+}
+
+/* ================= sample data (offline preview only) ================= */
+/* Shapes mirror the API exactly; numbers are illustrative, NOT real benchmark results. */
+
+const SAMPLE = (() => {
+  const benchmarks = [
+    { id: "mmlu-pro", name: "MMLU-Pro", categories: ["knowledge"], modality: "text", max_score: 100, verified: true, model_count: 142 },
+    { id: "gpqa-diamond", name: "GPQA Diamond", categories: ["reasoning", "knowledge"], modality: "text", max_score: 100, verified: true, model_count: 118 },
+    { id: "swe-bench-verified", name: "SWE-bench Verified", categories: ["coding", "agentic"], modality: "text", max_score: 100, verified: true, model_count: 74 },
+    { id: "livecodebench", name: "LiveCodeBench", categories: ["coding"], modality: "text", max_score: 100, verified: true, model_count: 96 },
+    { id: "aime-2025", name: "AIME 2025", categories: ["math"], modality: "text", max_score: 100, verified: true, model_count: 88 },
+    { id: "math-500", name: "MATH-500", categories: ["math"], modality: "text", max_score: 100, verified: false, model_count: 104 },
+    { id: "hle", name: "Humanity's Last Exam", categories: ["reasoning"], modality: "text", max_score: 100, verified: true, model_count: 63 },
+    { id: "mmmu", name: "MMMU", categories: ["multimodal"], modality: "vision", max_score: 100, verified: false, model_count: 57 },
+    { id: "tau2-bench", name: "Tau2-bench", categories: ["agentic"], modality: "text", max_score: 100, verified: true, model_count: 41 },
+    { id: "arc-agi-2", name: "ARC-AGI-2", categories: ["reasoning"], modality: "text", max_score: 100, verified: false, model_count: 29 },
+  ].map((b) => ({ description: null, language: "en", paper_link: null, implementation_link: null, source: "llm-stats", url: "https://llm-stats.com/benchmarks/" + b.id, ...b }));
+
+  const mk = (id, name, org, opts) => ({
+    id, name,
+    description: opts.desc,
+    organization: { id: org.toLowerCase().replace(/\s+/g, "-"), name: org },
+    family: null,
+    license: { id: opts.open ? "apache-2.0" : "proprietary", name: opts.open ? "Apache 2.0" : "Proprietary", allow_commercial: true },
+    open_weight: !!opts.open,
+    model_type: "chat",
+    modalities: opts.modalities || ["text"],
+    context_window: opts.ctx,
+    param_count: opts.params ?? null,
+    release_date: opts.released,
+    providers: opts.providers,
+    top_scores: opts.top,
+    inference: { available: false },
+    created_at: opts.released + "T00:00:00Z",
+    updated_at: "2026-07-20T00:00:00Z",
+    source: "llm-stats",
+    url: "https://llm-stats.com/models/" + id,
+  });
+
+  const models = [
+    mk("sample-gpt-5-2", "GPT-5.2 (sample)", "OpenAI", {
+      desc: "Sample row - frontier reasoning model with long-context tool use.",
+      ctx: 400000, released: "2026-04-14", modalities: ["text", "vision"],
+      providers: [{ provider_id: "openai", provider_name: "OpenAI", input_price_per_m: 1.25, output_price_per_m: 10, status: "active" }],
+      top: { coding: 0.86, math: 0.94, reasoning: 0.91, knowledge: 0.88, agentic: 0.79, multimodal: 0.84 },
+    }),
+    mk("sample-claude-opus-4-5", "Claude Opus 4.5 (sample)", "Anthropic", {
+      desc: "Sample row - flagship model focused on coding and agentic work.",
+      ctx: 200000, released: "2025-11-24", modalities: ["text", "vision"],
+      providers: [
+        { provider_id: "anthropic", provider_name: "Anthropic", input_price_per_m: 5, output_price_per_m: 25, status: "active" },
+        { provider_id: "bedrock", provider_name: "AWS Bedrock", input_price_per_m: 5, output_price_per_m: 25, status: "active" },
+      ],
+      top: { coding: 0.89, math: 0.9, reasoning: 0.9, knowledge: 0.87, agentic: 0.82, multimodal: 0.81 },
+    }),
+    mk("sample-gemini-3-pro", "Gemini 3 Pro (sample)", "Google", {
+      desc: "Sample row - multimodal frontier model with 1M context.",
+      ctx: 1000000, released: "2025-11-18", modalities: ["text", "vision", "audio"],
+      providers: [{ provider_id: "google", provider_name: "Google AI", input_price_per_m: 2, output_price_per_m: 12, status: "active" }],
+      top: { coding: 0.85, math: 0.95, reasoning: 0.92, knowledge: 0.89, agentic: 0.78, multimodal: 0.87 },
+    }),
+    mk("sample-deepseek-v3-2", "DeepSeek-V3.2 (sample)", "DeepSeek", {
+      desc: "Sample row - open-weight MoE model with strong price-performance.",
+      ctx: 128000, released: "2025-12-01", open: true, params: 685e9,
+      providers: [
+        { provider_id: "deepseek", provider_name: "DeepSeek", input_price_per_m: 0.28, output_price_per_m: 0.42, status: "active" },
+        { provider_id: "together", provider_name: "Together AI", input_price_per_m: 0.6, output_price_per_m: 1.2, status: "active" },
+      ],
+      top: { coding: 0.81, math: 0.89, reasoning: 0.84, knowledge: 0.82, agentic: 0.66 },
+    }),
+    mk("sample-grok-4-1", "Grok 4.1 (sample)", "xAI", {
+      desc: "Sample row - reasoning model with realtime data integration.",
+      ctx: 256000, released: "2025-11-17",
+      providers: [{ provider_id: "xai", provider_name: "xAI", input_price_per_m: 3, output_price_per_m: 15, status: "active" }],
+      top: { coding: 0.82, math: 0.92, reasoning: 0.89, knowledge: 0.86, agentic: 0.72 },
+    }),
+    mk("sample-qwen3-max", "Qwen3-Max (sample)", "Alibaba", {
+      desc: "Sample row - large open-weight model from the Qwen family.",
+      ctx: 262144, released: "2025-09-05", open: true, params: 480e9,
+      providers: [{ provider_id: "alibaba", provider_name: "Alibaba Cloud", input_price_per_m: 1.2, output_price_per_m: 6, status: "active" }],
+      top: { coding: 0.79, math: 0.88, reasoning: 0.83, knowledge: 0.83, agentic: 0.64 },
+    }),
+    mk("sample-kimi-k2", "Kimi K2 (sample)", "Moonshot AI", {
+      desc: "Sample row - open-weight agentic model.",
+      ctx: 256000, released: "2025-07-11", open: true, params: 1e12,
+      providers: [{ provider_id: "moonshot", provider_name: "Moonshot", input_price_per_m: 0.6, output_price_per_m: 2.5, status: "active" }],
+      top: { coding: 0.78, math: 0.84, reasoning: 0.8, knowledge: 0.8, agentic: 0.71 },
+    }),
+    mk("sample-llama-4-maverick", "Llama 4 Maverick (sample)", "Meta", {
+      desc: "Sample row - open-weight multimodal MoE model.",
+      ctx: 1000000, released: "2025-04-05", open: true, params: 400e9, modalities: ["text", "vision"],
+      providers: [{ provider_id: "together", provider_name: "Together AI", input_price_per_m: 0.27, output_price_per_m: 0.85, status: "active" }],
+      top: { coding: 0.68, math: 0.75, reasoning: 0.72, knowledge: 0.78, multimodal: 0.73 },
+    }),
+    mk("sample-mistral-large-3", "Mistral Large 3 (sample)", "Mistral AI", {
+      desc: "Sample row - European frontier model.",
+      ctx: 128000, released: "2025-12-02",
+      providers: [{ provider_id: "mistral", provider_name: "Mistral", input_price_per_m: 2, output_price_per_m: 6, status: "active" }],
+      top: { coding: 0.74, math: 0.8, reasoning: 0.78, knowledge: 0.8 },
+    }),
+    mk("sample-glm-4-7", "GLM-4.7 (sample)", "Zhipu AI", {
+      desc: "Sample row - open-weight coding-focused model.",
+      ctx: 200000, released: "2025-12-30", open: true, params: 355e9,
+      providers: [{ provider_id: "zhipu", provider_name: "Z.ai", input_price_per_m: 0.6, output_price_per_m: 2.2, status: "active" }],
+      top: { coding: 0.8, math: 0.85, reasoning: 0.81, knowledge: 0.79, agentic: 0.67 },
+    }),
+    mk("sample-o4-mini", "o4-mini (sample)", "OpenAI", {
+      desc: "Sample row - efficient reasoning model.",
+      ctx: 200000, released: "2025-04-16",
+      providers: [{ provider_id: "openai", provider_name: "OpenAI", input_price_per_m: 1.1, output_price_per_m: 4.4, status: "active" }],
+      top: { coding: 0.75, math: 0.9, reasoning: 0.83, knowledge: 0.78 },
+    }),
+    mk("sample-nova-2-pro", "Nova 2 Pro (sample)", "Amazon", {
+      desc: "Sample row - multimodal model on Bedrock.",
+      ctx: 300000, released: "2025-12-03", modalities: ["text", "vision"],
+      providers: [{ provider_id: "bedrock", provider_name: "AWS Bedrock", input_price_per_m: 0.8, output_price_per_m: 3.2, status: "active" }],
+      top: { coding: 0.66, math: 0.72, reasoning: 0.7, knowledge: 0.75, multimodal: 0.69 },
+    }),
+  ];
+
+  function rankingsFor(category, limit) {
+    const rows = models
+      .filter((m) => m.top_scores[category] != null)
+      .sort((a, b) => b.top_scores[category] - a.top_scores[category])
+      .slice(0, limit)
+      .map((m, i) => ({
+        rank: i + 1,
+        model_id: m.id,
+        model_name: m.name,
+        organization: m.organization.name,
+        score: +(20 + m.top_scores[category] * 20).toFixed(2),
+        conservative_rating: +(18 + m.top_scores[category] * 20).toFixed(2),
+        open_weight: m.open_weight,
+        min_input_price: minProviderPrice(m.providers, "input_price_per_m"),
+        benchmarks_evaluated: 3 + (m.name.length % 4),
+        source: "llm-stats",
+        url: m.url,
+      }));
+    return { category, method: "trueskill", ranked_at: "2026-07-28T09:00:00Z", models: rows };
+  }
+
+  function detailFor(m) {
+    const scores = [];
+    for (const b of benchmarks) {
+      const cat = b.categories[0];
+      const base = m.top_scores[cat];
+      if (base == null) continue;
+      const v = Math.max(2, Math.min(99, base * 100 - (b.id.length % 7)));
+      scores.push({
+        benchmark_id: b.id, benchmark_name: b.name, category: cat, description: null,
+        score: +v.toFixed(1), normalized_score: +(v / 100).toFixed(3), max_score: 100,
+        is_self_reported: !b.verified, verified_by_llmstats: b.verified,
+        rank: null, source_url: null, scored_at: "2026-07-01T00:00:00Z",
+      });
+    }
+    return { ...m, scores, sources: {} };
+  }
+
+  return { benchmarks, models, rankingsFor, detailFor };
+})();
+
+function sampleApi(path, params) {
+  const p = params || {};
+  return new Promise((resolve) => setTimeout(() => {
+    if (path === "/benchmarks") resolve({ benchmarks: SAMPLE.benchmarks });
+    else if (path === "/models") resolve({ models: SAMPLE.models, next_cursor: null, total: SAMPLE.models.length });
+    else if (path.startsWith("/models/")) {
+      const id = decodeURIComponent(path.slice("/models/".length));
+      const m = SAMPLE.models.find((x) => x.id === id);
+      resolve(SAMPLE.detailFor(m || SAMPLE.models[0]));
+    }
+    else if (path === "/rankings") resolve(SAMPLE.rankingsFor(p.category, Number(p.limit) || 10));
+    else if (path === "/updates") {
+      const days = Number(p.days) || 30;
+      const rows = SAMPLE.models.slice(0, days >= 30 ? 5 : days >= 14 ? 3 : 2).map((m) => ({
+        id: m.id, name: m.name, organization: m.organization, model_type: m.model_type,
+        modalities: m.modalities, context_window: m.context_window, release_date: m.release_date,
+        open_weight: m.open_weight, added_at: "2026-07-" + String(10 + (m.id.length % 18)).padStart(2, "0") + "T08:00:00Z",
+      }));
+      resolve({ days, models: rows, total: rows.length });
+    }
+    else resolve({});
+  }, 250));
+}
+
+/* ================= rendering: rankings ================= */
+
+const PREFERRED_CATS = ["coding", "math", "reasoning", "knowledge", "agentic", "multimodal"];
+
+function deriveCategories(benchmarks) {
+  const counts = new Map();
+  for (const b of benchmarks) for (const c of b.categories || []) counts.set(c, (counts.get(c) || 0) + 1);
+  const cats = [...counts.entries()].map(([id, count]) => ({ id, count }));
+  cats.sort((a, b) => {
+    const ia = PREFERRED_CATS.indexOf(a.id), ib = PREFERRED_CATS.indexOf(b.id);
+    if (ia !== -1 || ib !== -1) return (ia === -1 ? 99 : ia) - (ib === -1 ? 99 : ib);
+    return b.count - a.count;
+  });
+  return cats.slice(0, 8);
+}
+
+function renderCatTabs() {
+  const el = $("catTabs");
+  const hadFocus = el.contains(document.activeElement);
+  el.innerHTML = state.categories.map((c) => {
+    const active = c.id === state.activeCategory;
+    return `<button class="tab" role="tab" aria-selected="${active}" aria-controls="rankBody" tabindex="${active ? 0 : -1}" data-cat="${esc(c.id)}">${esc(titleCase(c.id))}</button>`;
+  }).join("");
+  if (hadFocus) el.querySelector('[aria-selected="true"]')?.focus();
+}
+
+$("catTabs").addEventListener("keydown", (e) => {
+  const keys = ["ArrowRight", "ArrowLeft", "Home", "End"];
+  if (!keys.includes(e.key)) return;
+  const tabs = [...$("catTabs").querySelectorAll(".tab")];
+  if (!tabs.length) return;
+  const cur = tabs.indexOf(document.activeElement);
+  let next = cur;
+  if (e.key === "ArrowRight") next = (cur + 1) % tabs.length;
+  else if (e.key === "ArrowLeft") next = (cur - 1 + tabs.length) % tabs.length;
+  else if (e.key === "Home") next = 0;
+  else next = tabs.length - 1;
+  e.preventDefault();
+  loadRankings(tabs[next].dataset.cat);
+});
+
+async function loadRankings(category) {
+  state.activeCategory = category;
+  renderCatTabs();
+  const limit = Number($("rankLimit").value);
+  const key = category + ":" + limit;
+  const gen = state.gen;
+  const seq = ++state.rankSeq;
+  const body = $("rankBody");
+
+  let data = state.rankings.get(key);
+  if (!data) {
+    if (body.querySelector("table")) body.classList.add("refetching");
+    else body.innerHTML = skeletonRows(8, ["34px", "26%", "30%", "10%", "8%", "10%"]);
+    try {
+      data = await api("/rankings", { category, limit });
+    } catch (e) {
+      if (seq !== state.rankSeq || gen !== state.gen) return;
+      body.classList.remove("refetching");
+      body.innerHTML = `<div class="empty">${esc(e.message)}</div>`;
+      showBanner("error", esc(e.message));
+      return;
+    }
+    if (seq !== state.rankSeq || gen !== state.gen) return;
+    state.rankings.set(key, data);
+  }
+  if (seq !== state.rankSeq || gen !== state.gen) return;
+  body.classList.remove("refetching");
+
+  const rows = data.models || [];
+  $("rankSub").innerHTML = rows.length
+    ? `Method: ${esc(data.method || "trueskill")} · category "${esc(titleCase(data.category))}" · ranked <span class="mono">${esc(fmtDateTime(data.ranked_at))}</span>`
+    : "Rankings are computed by LLM Stats with TrueSkill across benchmarks in each category.";
+  if (!rows.length) {
+    body.innerHTML = '<div class="empty">No ranked models in this category.</div>';
+    return;
+  }
+  const scoreNums = rows.map((r) => r.score).filter((v) => typeof v === "number" && isFinite(v));
+  const maxScore = scoreNums.length ? Math.max(...scoreNums) : 0;
+
+  body.innerHTML = `
+    <table>
+      <thead><tr>
+        <th scope="col">#</th>
+        <th scope="col">Model</th>
+        <th scope="col">TrueSkill score</th>
+        <th scope="col" class="num">Conservative</th>
+        <th scope="col" class="num">Benchmarks</th>
+        <th scope="col">Weights</th>
+        <th scope="col" class="num">Min input $/M</th>
+      </tr></thead>
+      <tbody>
+        ${rows.map((r) => `
+          <tr class="rowlink" data-model="${esc(r.model_id)}">
+            <td class="rank ${Number(r.rank) <= 3 ? "top" : ""}">${esc(r.rank)}</td>
+            <td>
+              <button class="row-btn cell-main" data-model="${esc(r.model_id)}" aria-label="Open details for ${esc(r.model_name)}">${esc(r.model_name)}</button>
+              <div class="cell-sub">${esc(r.organization)}</div>
+            </td>
+            <td>
+              <div class="scorebar">
+                <span class="val">${fmtRating(r.score)}</span>
+                <span class="track"><span class="fill" style="width:${(typeof r.score === "number" && isFinite(r.score) && maxScore > 0) ? (r.score / maxScore) * 100 : 0}%"></span></span>
+              </div>
+            </td>
+            <td class="num">${fmtRating(r.conservative_rating)}</td>
+            <td class="num">${fmtInt(r.benchmarks_evaluated)}</td>
+            <td>${r.open_weight
+              ? '<span class="chip open"><span class="sq"></span>Open</span>'
+              : '<span class="chip closed"><span class="sq"></span>Proprietary</span>'}</td>
+            <td class="num">${fmtPrice(r.min_input_price)}</td>
+          </tr>`).join("")}
+      </tbody>
+    </table>`;
+}
+
+/* ================= rendering: catalog ================= */
+
+function catalogView() {
+  const q = $("catalogSearch").value.trim().toLowerCase();
+  const weight = $("catalogWeight").value;
+  const sort = $("catalogSort").value;
+
+  let rows = state.models.slice();
+  if (q) rows = rows.filter((m) =>
+    m.name.toLowerCase().includes(q) ||
+    (m.organization?.name || "").toLowerCase().includes(q) ||
+    m.id.toLowerCase().includes(q));
+  if (weight === "open") rows = rows.filter((m) => m.open_weight);
+  if (weight === "closed") rows = rows.filter((m) => !m.open_weight);
+
+  const nullsLast = (v) => (v == null ? Infinity : v);
+  if (sort === "release") rows.sort((a, b) => String(b.release_date || "").localeCompare(String(a.release_date || "")));
+  else if (sort === "context") rows.sort((a, b) => (b.context_window || 0) - (a.context_window || 0));
+  else if (sort === "price-in") rows.sort((a, b) => nullsLast(minProviderPrice(a.providers, "input_price_per_m")) - nullsLast(minProviderPrice(b.providers, "input_price_per_m")));
+  else if (sort === "price-out") rows.sort((a, b) => nullsLast(minProviderPrice(a.providers, "output_price_per_m")) - nullsLast(minProviderPrice(b.providers, "output_price_per_m")));
+  else if (sort === "name") rows.sort((a, b) => a.name.localeCompare(b.name));
+  return rows;
+}
+
+function renderCatalog() {
+  const body = $("catalogBody");
+  if (!state.models.length) {
+    body.innerHTML = '<div class="empty">No data yet.</div>';
+    $("catalogMeta").textContent = "";
+    $("loadMoreBtn").hidden = true;
+    return;
+  }
+  const rows = catalogView();
+  $("catalogMeta").textContent = `${rows.length} shown · ${state.models.length} loaded` + (state.modelsTotal != null ? ` · ${state.modelsTotal} total` : "");
+  const lm = $("loadMoreBtn");
+  const hideLm = !state.modelsCursor;
+  if (hideLm && document.activeElement === lm) $("catalogSearch").focus();
+  lm.hidden = hideLm;
+
+  if (!rows.length) {
+    body.innerHTML = '<div class="empty">No models match the current filters.</div>';
+    return;
+  }
+  body.innerHTML = `
+    <table>
+      <thead><tr>
+        <th scope="col">Model</th>
+        <th scope="col" class="num">Context</th>
+        <th scope="col" class="num">Input $/M</th>
+        <th scope="col" class="num">Output $/M</th>
+        <th scope="col">Released</th>
+        <th scope="col">Top scores</th>
+      </tr></thead>
+      <tbody>
+        ${rows.map((m) => {
+          const cats = Object.entries(m.top_scores || {})
+            .sort((a, b) => b[1] - a[1]).slice(0, 3);
+          return `
+          <tr class="rowlink" data-model="${esc(m.id)}">
+            <td>
+              <button class="row-btn cell-main" data-model="${esc(m.id)}" aria-label="Open details for ${esc(m.name)}">${esc(m.name)}</button>
+              <div class="cell-sub">${esc(m.organization?.name || "")}${m.open_weight ? " · open weights" : ""}${m.param_count ? ' · <span class="mono">' + fmtParams(m.param_count) + "</span>" : ""}</div>
+            </td>
+            <td class="num">${fmtCtx(m.context_window)}</td>
+            <td class="num">${fmtPrice(minProviderPrice(m.providers, "input_price_per_m"))}</td>
+            <td class="num">${fmtPrice(minProviderPrice(m.providers, "output_price_per_m"))}</td>
+            <td class="num">${fmtDate(m.release_date)}</td>
+            <td><div class="score-chips">${cats.map(([c, v]) =>
+              `<span class="chip" title="${esc(titleCase(c))}"><span class="sq" style="background:var(--bar)"></span>${esc(titleCase(c))} ${fmtScore(v, v <= 1 ? 1 : 100)}</span>`).join("") || '<span class="cell-sub">–</span>'}</div></td>
+          </tr>`;
+        }).join("")}
+      </tbody>
+    </table>`;
+}
+
+let loadingModels = false;
+async function loadModels(cursor) {
+  if (loadingModels) return;
+  loadingModels = true;
+  const gen = state.gen;
+  const body = $("catalogBody");
+  if (!cursor) body.innerHTML = skeletonRows(8, ["28%", "8%", "8%", "8%", "12%", "24%"]);
+  $("loadMoreBtn").setAttribute("aria-busy", "true");
+  try {
+    const data = await api("/models", { limit: 200, cursor: cursor || null });
+    if (gen !== state.gen) return;
+    state.models = cursor ? state.models.concat(data.models || []) : (data.models || []);
+    state.modelsTotal = data.total ?? null;
+    state.modelsCursor = data.next_cursor || null;
+    renderCatalog();
+    renderTiles();
+  } catch (e) {
+    if (gen !== state.gen) return;
+    if (!cursor) body.innerHTML = `<div class="empty">${esc(e.message)}</div>`;
+    showBanner("error", esc(e.message));
+  } finally {
+    loadingModels = false;
+    $("loadMoreBtn").removeAttribute("aria-busy");
+  }
+}
+
+/* ================= rendering: updates ================= */
+
+async function loadUpdates() {
+  const days = Number($("updatesDays").value);
+  const gen = state.gen;
+  const seq = ++state.updSeq;
+  const body = $("updatesBody");
+  if (body.querySelector("table")) body.classList.add("refetching");
+  else body.innerHTML = skeletonRows(4, ["30%", "14%", "10%", "14%"]);
+  try {
+    const data = await api("/updates", { days, limit: 50 });
+    if (seq !== state.updSeq || gen !== state.gen) return;
+    body.classList.remove("refetching");
+    state.updates = data;
+    renderTiles();
+    if (!data.models?.length) {
+      body.innerHTML = `<div class="empty">No models added in the last ${days} days.</div>`;
+      return;
+    }
+    body.innerHTML = `
+      <table>
+        <thead><tr>
+          <th scope="col">Model</th>
+          <th scope="col">Type</th>
+          <th scope="col" class="num">Context</th>
+          <th scope="col">Weights</th>
+          <th scope="col">Released</th>
+          <th scope="col">Added</th>
+        </tr></thead>
+        <tbody>
+          ${data.models.map((m) => `
+            <tr class="rowlink" data-model="${esc(m.id)}">
+              <td><button class="row-btn cell-main" data-model="${esc(m.id)}" aria-label="Open details for ${esc(m.name)}">${esc(m.name)}</button><div class="cell-sub">${esc(m.organization?.name || "")}</div></td>
+              <td>${esc(titleCase(m.model_type || "–"))}</td>
+              <td class="num">${fmtCtx(m.context_window)}</td>
+              <td>${m.open_weight
+                ? '<span class="chip open"><span class="sq"></span>Open</span>'
+                : '<span class="chip closed"><span class="sq"></span>Proprietary</span>'}</td>
+              <td class="num">${fmtDate(m.release_date)}</td>
+              <td class="num">${fmtDate(m.added_at)}</td>
+            </tr>`).join("")}
+        </tbody>
+      </table>`;
+  } catch (e) {
+    if (seq !== state.updSeq || gen !== state.gen) return;
+    body.classList.remove("refetching");
+    body.innerHTML = `<div class="empty">${esc(e.message)}</div>`;
+    showBanner("error", esc(e.message));
+  }
+}
+
+/* ================= rendering: tiles ================= */
+
+function animateCount(el, target) {
+  if (el._raf) { cancelAnimationFrame(el._raf); el._raf = null; }
+  if (target == null) { el._target = null; el.textContent = "–"; return; }
+  if (el._target === target) { el.textContent = fmtInt(target); return; }
+  el._target = target;
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) { el.textContent = fmtInt(target); return; }
+  let start = null;
+  const dur = 700;
+  const step = (now) => {
+    if (start === null) start = now;
+    const t = Math.min(1, Math.max(0, (now - start) / dur));
+    el.textContent = fmtInt(Math.round(target * (1 - Math.pow(1 - t, 3))));
+    el._raf = t < 1 ? requestAnimationFrame(step) : null;
+  };
+  el._raf = requestAnimationFrame(step);
+}
+
+function renderTiles() {
+  animateCount($("tileModels"), state.modelsTotal);
+  $("tileModelsSub").innerHTML = state.models.length ? `<span class="mono">${state.models.length}</span> loaded in catalog` : "";
+
+  animateCount($("tileBenches"), state.benchmarks.length || null);
+  const verified = state.benchmarks.filter((b) => b.verified).length;
+  $("tileBenchesSub").innerHTML = state.benchmarks.length ? `<span class="mono">${verified}</span> verified by LLM Stats` : "";
+
+  const orgs = new Set(state.models.map((m) => m.organization?.name).filter(Boolean));
+  animateCount($("tileOrgs"), orgs.size || null);
+  $("tileOrgsSub").textContent = orgs.size ? "across loaded models" : "";
+
+  if (state.updates && state.updates.days >= 30) {
+    animateCount($("tileNew"), state.updates.total);
+    const newest = state.updates.models?.[0];
+    $("tileNewSub").textContent = newest ? `latest: ${newest.name}` : "";
+  } else {
+    animateCount($("tileNew"), null);
+    $("tileNewSub").textContent = "";
+  }
+}
+
+/* ================= drawer ================= */
+
+let lastFocus = null;
+const PAGE_REGIONS = () => document.querySelectorAll("header.site, main, footer.site");
+
+function openDrawer() {
+  lastFocus = document.activeElement;
+  $("overlay").classList.add("show");
+  $("drawer").inert = false;
+  $("drawer").classList.add("show");
+  PAGE_REGIONS().forEach((el) => { el.inert = true; });
+  $("drawerClose").focus();
+}
+function closeDrawer() {
+  $("overlay").classList.remove("show");
+  $("drawer").classList.remove("show");
+  $("drawer").inert = true;
+  PAGE_REGIONS().forEach((el) => { el.inert = false; });
+  if (lastFocus && lastFocus.isConnected) lastFocus.focus();
+}
+$("overlay").addEventListener("click", closeDrawer);
+$("drawerClose").addEventListener("click", closeDrawer);
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && $("drawer").classList.contains("show")) closeDrawer();
+});
+
+async function showModelDetail(id) {
+  const gen = state.gen;
+  const seq = ++state.detailSeq;
+  $("drawerTitle").textContent = "Loading...";
+  $("drawerOrg").textContent = "";
+  $("drawerBody").innerHTML = skeletonRows(6, ["60%", "35%"]);
+  openDrawer();
+
+  let m = state.detailCache.get(id);
+  if (!m) {
+    try {
+      m = await api("/models/" + encodeURIComponent(id));
+    } catch (e) {
+      if (seq !== state.detailSeq || gen !== state.gen) return;
+      $("drawerTitle").textContent = "Could not load model";
+      $("drawerBody").innerHTML = `<div class="empty">${esc(e.message)}</div>`;
+      return;
+    }
+    if (gen !== state.gen) return;
+    state.detailCache.set(id, m);
+  }
+  if (seq !== state.detailSeq || gen !== state.gen) return;
+  if (!$("drawer").classList.contains("show")) return;
+
+  $("drawerTitle").textContent = m.name;
+  $("drawerOrg").textContent = m.organization?.name || "";
+
+  const byCat = new Map();
+  for (const s of m.scores || []) {
+    const c = s.category || "other";
+    if (!byCat.has(c)) byCat.set(c, []);
+    byCat.get(c).push(s);
+  }
+  const catOrder = [...byCat.keys()].sort((a, b) => {
+    const ia = PREFERRED_CATS.indexOf(a), ib = PREFERRED_CATS.indexOf(b);
+    return (ia === -1 ? 99 : ia) - (ib === -1 ? 99 : ib) || a.localeCompare(b);
+  });
+
+  $("drawerBody").innerHTML = `
+    <p class="drawer-desc">${esc(m.description || "")}</p>
+    <div class="meta-grid">
+      <div><div class="m-label">Release date</div><div class="m-value">${fmtDate(m.release_date)}</div></div>
+      <div><div class="m-label">Context window</div><div class="m-value">${fmtCtx(m.context_window)} tokens</div></div>
+      <div><div class="m-label">Parameters</div><div class="m-value">${fmtParams(m.param_count)}</div></div>
+      <div><div class="m-label">Modalities</div><div class="m-value">${esc((m.modalities || []).join(", ") || "–")}</div></div>
+      <div><div class="m-label">License</div><div class="m-value">${esc(m.license?.name || "–")}</div></div>
+      <div><div class="m-label">Weights</div><div class="m-value">${m.open_weight ? "Open" : "Proprietary"}</div></div>
+    </div>
+
+    <h3>Provider pricing (per 1M tokens)</h3>
+    ${(m.providers || []).length ? `
+    <div class="tbl-scroll"><table>
+      <thead><tr><th scope="col">Provider</th><th scope="col" class="num">Input</th><th scope="col" class="num">Output</th><th scope="col">Status</th></tr></thead>
+      <tbody>${m.providers.map((p) => `
+        <tr>
+          <td>${esc(p.provider_name)}</td>
+          <td class="num">${fmtPrice(p.input_price_per_m)}</td>
+          <td class="num">${fmtPrice(p.output_price_per_m)}</td>
+          <td><span class="prov-status">${esc(p.status)}</span></td>
+        </tr>`).join("")}
+      </tbody>
+    </table></div>` : '<div class="cell-sub">No provider pricing listed.</div>'}
+
+    <h3>Benchmark scores</h3>
+    ${catOrder.length ? catOrder.map((c) => {
+      const list = byCat.get(c).slice().sort((a, b) => pct(b.normalized_score ?? b.score, b.normalized_score != null ? 1 : b.max_score) - pct(a.normalized_score ?? a.score, a.normalized_score != null ? 1 : a.max_score));
+      return `
+      <div class="cat-group">
+        <div class="cat-name">${esc(titleCase(c))}</div>
+        ${list.map((s) => {
+          const p = s.normalized_score != null ? pct(s.normalized_score, s.normalized_score <= 1 ? 1 : 100) : pct(s.score, s.max_score);
+          return `
+          <div class="bench-row">
+            <div class="bench-name" title="${esc(s.benchmark_name)}">${esc(s.benchmark_name)}<span class="bench-flags">${s.verified_by_llmstats ? '<span class="chip verified" title="Verified by LLM Stats"><span class="sq"></span>V<span class="sr-only"> - verified by LLM Stats</span></span>' : ""}${s.is_self_reported ? '<span class="chip selfrep" title="Self-reported"><span class="sq"></span>SR<span class="sr-only"> - self-reported</span></span>' : ""}</span></div>
+            <div class="scorebar">
+              <span class="val">${p == null ? "–" : p.toFixed(1)}</span>
+              <span class="track"><span class="fill" style="width:${p || 0}%"></span></span>
+            </div>
+          </div>`;
+        }).join("")}
+      </div>`;
+    }).join("") : '<div class="cell-sub">No benchmark scores listed.</div>'}
+
+    ${safeUrl(m.url) ? `<p style="margin-top:18px"><a class="ext-link" href="${esc(safeUrl(m.url))}" target="_blank" rel="noopener">View on llm-stats.com →</a></p>` : ""}
+  `;
+}
+
+/* row click delegation (keyboard comes free via the real .row-btn buttons) */
+document.addEventListener("click", (e) => {
+  const row = e.target.closest("tr.rowlink");
+  if (row) showModelDetail(row.dataset.model);
+  const tab = e.target.closest(".tab[data-cat]");
+  if (tab) loadRankings(tab.dataset.cat);
+});
+
+/* ================= boot & connect flow ================= */
+
+function resetSections() {
+  $("catTabs").innerHTML = "";
+  $("rankSub").textContent = "Rankings are computed by LLM Stats with TrueSkill across benchmarks in each category.";
+  $("rankBody").innerHTML = '<div class="empty">Connect with an API key, or preview with sample data.</div>';
+  $("catalogBody").innerHTML = '<div class="empty">No data yet.</div>';
+  $("catalogMeta").textContent = "";
+  $("loadMoreBtn").hidden = true;
+  $("updatesBody").innerHTML = '<div class="empty">No data yet.</div>';
+  renderTiles();
+}
+
+let booting = false;
+async function boot(mode, key) {
+  if (booting) return;
+  booting = true;
+  state.gen++;            /* invalidate every in-flight response from the previous session */
+  loadingModels = false;  /* a stale in-flight catalog load must not block this session's load */
+  state.mode = mode;
+  state.apiKey = key || "";
+  state.benchmarks = [];
+  state.categories = [];
+  state.rankings.clear();
+  state.detailCache.clear();
+  state.models = [];
+  state.modelsTotal = null;
+  state.modelsCursor = null;
+  state.updates = null;
+
+  hideBanner();
+  $("connectBtn").setAttribute("aria-busy", "true");
+  setConn(null, "Connecting...");
+
+  try {
+    const b = await api("/benchmarks", {});
+    state.benchmarks = b.benchmarks || [];
+  } catch (e) {
+    state.mode = null;
+    state.apiKey = "";
+    state.activeCategory = null;
+    resetSections();
+    setConn(null, "Not connected");
+    $("connectBtn").removeAttribute("aria-busy");
+    booting = false;
+    showBanner("error", "<strong>Could not connect.</strong> " + esc(e.message));
+    if (e.status === 401) { try { localStorage.removeItem(LS_KEY); } catch (_) {} $("forgetBtn").hidden = true; }
+    return;
+  }
+
+  $("connectBtn").removeAttribute("aria-busy");
+  if (mode === "live") {
+    setConn("live", "Live");
+    try { localStorage.setItem(LS_KEY, key); } catch (e) {}
+    $("forgetBtn").hidden = false;
+  } else {
+    setConn("sample", "Sample data");
+    showBanner("sample", "<strong>Sample data.</strong> Numbers are illustrative placeholders for layout preview - not real benchmark results. Paste an API key above for live data.");
+  }
+
+  state.categories = deriveCategories(state.benchmarks);
+  const firstCat = state.categories[0]?.id || "coding";
+  renderTiles();
+
+  /* Sequential on purpose: separate per-endpoint rate limits, and each render is independent. */
+  try {
+    await loadRankings(firstCat);
+    await loadModels();
+    await loadUpdates();
+  } finally {
+    booting = false;
+  }
+}
+
+$("connectBtn").addEventListener("click", () => {
+  const key = $("apiKey").value.trim();
+  if (!key) { showBanner("error", "Enter an API key first, or use the sample-data preview."); return; }
+  boot("live", key);
+});
+$("apiKey").addEventListener("keydown", (e) => { if (e.key === "Enter") $("connectBtn").click(); });
+$("sampleBtn").addEventListener("click", () => boot("sample"));
+$("forgetBtn").addEventListener("click", () => {
+  try { localStorage.removeItem(LS_KEY); } catch (e) {}
+  $("apiKey").value = "";
+  $("forgetBtn").hidden = true;
+  $("apiKey").focus();
+  setConn(null, "Not connected");
+  showBanner("sample", "Key removed from this browser.");
+});
+
+$("rankLimit").addEventListener("change", () => { if (state.activeCategory) loadRankings(state.activeCategory); });
+$("catalogSearch").addEventListener("input", renderCatalog);
+$("catalogWeight").addEventListener("change", renderCatalog);
+$("catalogSort").addEventListener("change", renderCatalog);
+$("loadMoreBtn").addEventListener("click", () => loadModels(state.modelsCursor));
+$("updatesDays").addEventListener("change", () => { if (state.mode) loadUpdates(); });
+
+/* auto-start: URL params (?sample=1, ?theme=dark) for sharing/testing, else stored key */
+(() => {
+  const qs = new URLSearchParams(location.search);
+  const theme = qs.get("theme");
+  if (theme === "dark" || theme === "light") applyTheme(theme);
+  if (qs.get("sample") === "1" || location.hash === "#sample") { boot("sample"); return; }
+  if (location.protocol === "file:") {
+    showBanner("sample", "<strong>Opened as a local file.</strong> The LLM Stats API blocks file:// pages at CORS preflight, so live data will not connect here. For live data run <span class=\"mono\">node demos/serve-ai-leaderboard.mjs</span> and open the printed localhost URL. Sample-data preview works fine below.");
+    return;
+  }
+  let saved = "";
+  try { saved = localStorage.getItem(LS_KEY) || ""; } catch (e) {}
+  if (saved) {
+    $("apiKey").value = saved;
+    $("forgetBtn").hidden = false;
+    boot("live", saved);
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,552 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Leaderboard - Preview với dữ liệu thật LLM Stats (demo)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400..900&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper:#FDFCF8; --surface:#FFFFFF; --surface-2:#F2EFE5;
+    --ink:#111111; --ink-2:#2A2A28; --muted:#5B5B58; --muted-2:#8C8B85;
+    --hair:#E5E2D8; --hair-2:#D8D4C6;
+    --accent:#D4623C; --accent-ink:#B14A28; --amber:#F59E0B;
+    --brand-navy:#1B2A52; --sponsored:#FEF3C7; --sponsored-border:#E0B900;
+    --up:#10B981; --bar:#3A4E8C;
+    --maxw:1240px;
+    --font-serif:"Schibsted Grotesk","IBM Plex Sans",system-ui,sans-serif;
+    --font-sans:"IBM Plex Sans",system-ui,sans-serif;
+    --font-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  }
+  html[data-theme="dark"] {
+    --paper:#0F172A; --surface:#111C30; --surface-2:#15223A;
+    --ink:#E2E8F0; --ink-2:#CBD5E1; --muted:#94A3B8; --muted-2:#64748B;
+    --hair:#1E2B45; --hair-2:#243453;
+    --brand-navy:#E2E8F0; --sponsored:#3B2E0A; --sponsored-border:#D9A62E;
+    --bar:#6B84D6;
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--paper); color:var(--ink); font-family:var(--font-sans); font-size:15px; line-height:1.5; -webkit-font-smoothing:antialiased; }
+  .wrap { max-width:var(--maxw); margin-inline:auto; padding-inline:20px; }
+  .mono { font-family:var(--font-mono); font-variant-numeric:tabular-nums; }
+  :focus-visible { outline:2px solid var(--accent); outline-offset:2px; border-radius:3px; }
+
+  .demo-note { background:color-mix(in oklab, var(--up) 10%, var(--surface)); border-bottom:1px solid color-mix(in oklab, var(--up) 40%, transparent); font-size:13px; padding:8px 0; }
+  .demo-note .wrap { display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; align-items:center; }
+  .theme-btn { border:1px solid var(--hair-2); background:var(--surface); color:var(--ink); border-radius:8px; font-size:12px; padding:5px 11px; cursor:pointer; }
+
+  .page-head { position:relative; border-bottom:3px solid var(--brand-navy); padding:32px 0 18px; overflow:hidden; }
+  .page-head::before {
+    content:""; position:absolute; inset:0;
+    background-image:radial-gradient(color-mix(in oklab, var(--ink) 6%, transparent) 1px, transparent 1px);
+    background-size:32px 32px;
+    -webkit-mask-image:radial-gradient(60% 60% at 30% 40%, #000, transparent);
+    mask-image:radial-gradient(60% 60% at 30% 40%, #000, transparent);
+  }
+  .kicker { position:relative; font-family:var(--font-mono); font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); display:flex; align-items:center; gap:8px; }
+  .live-dot { width:7px; height:7px; border-radius:50%; background:var(--accent); }
+  @media (prefers-reduced-motion:no-preference) {
+    .live-dot { animation:pulse 2.2s ease-in-out infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.35} }
+  }
+  h1 { position:relative; font-family:var(--font-serif); font-size:42px; font-weight:650; letter-spacing:-.02em; margin:8px 0 0; }
+
+  .caption { font-family:var(--font-mono); font-size:11.5px; color:var(--muted); margin:18px 0 12px; }
+  .pills { display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:14px; }
+  .pills .lbl { font-size:12px; color:var(--muted); }
+  .pill { border:1px solid var(--hair-2); background:transparent; color:var(--ink-2); font-size:12px; font-weight:600; border-radius:99px; padding:6px 12px; cursor:pointer; font-family:var(--font-sans); }
+  .pill[aria-pressed="true"] { background:var(--ink); color:var(--paper); border-color:var(--ink); }
+
+  .card { border:1px solid var(--hair); background:var(--surface); border-radius:8px; overflow:hidden; }
+  .tbl-scroll { overflow-x:auto; }
+  table { border-collapse:collapse; width:100%; min-width:1080px; }
+  thead th { background:var(--surface); border-bottom:1px solid var(--hair-2); padding:0; position:sticky; top:0; }
+  thead th button {
+    all:unset; box-sizing:border-box; display:block; width:100%; cursor:pointer;
+    font-family:var(--font-sans); font-size:10px; font-weight:600; letter-spacing:.09em; text-transform:uppercase;
+    color:var(--muted); padding:12px 10px; white-space:nowrap;
+  }
+  thead th button:hover { color:var(--ink); }
+  thead th.num button { text-align:end; }
+  thead th .dir { color:var(--accent); margin-inline-start:3px; }
+  tbody td { padding:12px 10px; border-bottom:1px solid var(--hair); }
+  tbody tr:last-child td { border-bottom:none; }
+  tbody tr:nth-child(odd) { background:color-mix(in oklab, var(--ink) 2%, transparent); }
+  td.pos { font-family:var(--font-mono); font-size:12px; color:var(--muted); width:40px; }
+  td.model { white-space:nowrap; }
+  td.model .nm { font-family:var(--font-serif); font-weight:600; font-size:14px; }
+  td.model .org { font-size:11.5px; color:var(--muted); margin-top:1px; }
+  td.num { font-family:var(--font-mono); font-variant-numeric:tabular-nums; font-size:12.5px; text-align:end; white-space:nowrap; }
+  td .na { color:var(--muted-2); }
+  .gauge { display:flex; align-items:center; gap:7px; }
+  .gauge .track { width:56px; height:6px; border-radius:99px; background:var(--surface-2); overflow:hidden; flex:none; }
+  .gauge .fill { display:block; height:100%; border-radius:99px; background:var(--bar); }
+  .gauge .v { font-family:var(--font-mono); font-variant-numeric:tabular-nums; font-size:12px; width:34px; text-align:end; }
+
+  .attribution { font-size:12px; color:var(--muted); margin:12px 2px 0; }
+  .attribution a { color:var(--accent-ink); font-weight:600; text-decoration:none; }
+  html[data-theme="dark"] .attribution a { color:var(--accent); }
+  .attribution a:hover { text-decoration:underline; }
+
+  .annot { margin:36px 0 60px; }
+  .annot h2 { font-family:var(--font-serif); font-size:22px; font-weight:650; margin:0 0 4px; }
+  .annot .sub { color:var(--muted); font-size:13.5px; margin:0 0 14px; }
+  .annot table { min-width:680px; }
+  .annot thead th { position:static; font-family:var(--font-mono); font-size:10px; letter-spacing:.09em; text-transform:uppercase; color:var(--muted); font-weight:500; text-align:start; padding:10px 12px; }
+  .annot td { font-size:13px; vertical-align:top; }
+  .annot td:first-child { font-weight:600; white-space:nowrap; }
+  .annot .path { font-family:var(--font-mono); font-size:11.5px; color:var(--muted); }
+  .warn { color:var(--accent-ink); font-weight:600; }
+  html[data-theme="dark"] .warn { color:var(--accent); }
+</style>
+</head>
+<body>
+
+<div class="demo-note">
+  <div class="wrap">
+    <span><strong>Dữ liệu thật</strong> từ LLM Stats API (lấy 30-07-2026) · top 20 theo ranking tổng "general" · bộ cột chốt 30-07 (bỏ Writing + Context, thêm General)</span>
+    <button class="theme-btn" id="themeBtn">Đổi giao diện sáng/tối</button>
+  </div>
+</div>
+
+<header class="page-head">
+  <div class="wrap">
+    <div class="kicker"><span class="live-dot" aria-hidden="true"></span>Data Desk · Preview</div>
+    <h1>AI Leaderboard</h1>
+  </div>
+</header>
+
+<main class="wrap">
+  <p class="caption">Sort by what you actually use the model for · Scores via LLM Stats (TrueSkill conservative), as of <span class="mono" id="asOf"></span></p>
+
+  <div class="pills" role="group" aria-label="Optimize for">
+    <span class="lbl">Optimize for:</span>
+    <button class="pill" data-key="general">General</button>
+    <button class="pill" data-key="reasoning">Reasoning</button>
+    <button class="pill" data-key="code">Coding</button>
+    <button class="pill" data-key="math">Math</button>
+    <button class="pill" data-key="search">Search</button>
+    <button class="pill" data-key="vision">Vision</button>
+    <button class="pill" data-key="inp">Price (low)</button>
+  </div>
+
+  <div class="card"><div class="tbl-scroll">
+    <table id="tbl">
+      <thead><tr>
+        <th scope="col"><button data-key="pos">#</button></th>
+        <th scope="col"><button data-key="model">Model</button></th>
+        <th scope="col"><button data-key="general">General</button></th>
+        <th scope="col"><button data-key="reasoning">Reasoning</button></th>
+        <th scope="col"><button data-key="code">Coding</button></th>
+        <th scope="col"><button data-key="math">Math</button></th>
+        <th scope="col"><button data-key="search">Search</button></th>
+        <th scope="col"><button data-key="vision">Vision</button></th>
+        <th scope="col" class="num"><button data-key="inp">Input $/M</button></th>
+        <th scope="col" class="num"><button data-key="out">Output $/M</button></th>
+        <th scope="col" class="num"><button data-key="released">Released</button></th>
+      </tr></thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div></div>
+
+  <p class="attribution">Model scores &amp; pricing: <a href="https://llm-stats.com" target="_blank" rel="noopener">LLM Stats</a></p>
+
+  <section class="annot">
+    <h2>Đọc bảng này thế nào</h2>
+    <p class="sub">6 cột điểm = <span class="mono">conservative_rating</span> (TrueSkill μ−3σ) từ <span class="mono">/v1/rankings</span> theo từng category - đúng con số llm-stats.com hiển thị. Thanh bar chuẩn hoá theo model dẫn đầu của từng cột. "–" = model không nằm trong top-50 của category đó (ít benchmark được đánh giá).</p>
+    <div class="card"><div class="tbl-scroll">
+      <table>
+        <thead><tr><th scope="col">Cột</th><th scope="col">Nguồn</th><th scope="col">Độ phủ thực tế (trên 20 dòng)</th></tr></thead>
+        <tbody>
+          <tr><td>Model + Organization</td><td class="path">rankings.model_name + organization</td><td>20/20</td></tr>
+          <tr><td>General</td><td class="path">rankings?category=general</td><td>20/20 - điểm composite, đúng cột "LLM Stats" trên llm-stats.com; cũng là thứ tự mặc định của bảng</td></tr>
+          <tr><td>Reasoning</td><td class="path">rankings?category=reasoning</td><td>20/20</td></tr>
+          <tr><td>Coding</td><td class="path">rankings?category=code</td><td>19/20</td></tr>
+          <tr><td>Math</td><td class="path">rankings?category=math</td><td>17/20</td></tr>
+          <tr><td>Search</td><td class="path">rankings?category=search</td><td>14/20</td></tr>
+          <tr><td>Vision</td><td class="path">rankings?category=vision</td><td>19/20</td></tr>
+          <tr><td>Input / Output $/M</td><td class="path">min(providers[].input/output_price_per_m)</td><td>17/20 (3 model chưa có nhà cung cấp niêm yết giá)</td></tr>
+          <tr><td>Released</td><td class="path">release_date</td><td>19/20</td></tr>
+        </tbody>
+      </table>
+    </div></div>
+  </section>
+</main>
+
+<script>
+"use strict";
+/* Dữ liệu THẬT từ LLM Stats API, 2026-07-30 (top 20 theo rankings?category=general) */
+const DATA = {
+ "asOf": "2026-07-30T09:57:40.535643Z",
+ "rows": [
+  {
+   "id": "gpt-5.6-sol",
+   "model": "GPT-5.6 Sol",
+   "org": "OpenAI",
+   "inp": 5.0,
+   "out": 30.0,
+   "released": "2026-07-09",
+   "open": false,
+   "reasoning": 58.1,
+   "code": 50.1,
+   "math": 36.8,
+   "search": 28.9,
+   "vision": 38.2,
+   "general": 58.0
+  },
+  {
+   "id": "claude-opus-5",
+   "model": "Claude Opus 5",
+   "org": "Anthropic",
+   "inp": 5.0,
+   "out": 25.0,
+   "released": "2026-07-24",
+   "open": false,
+   "reasoning": 57.7,
+   "code": 42.7,
+   "math": 42.4,
+   "search": 30.1,
+   "vision": 38.0,
+   "general": 58.0
+  },
+  {
+   "id": "claude-fable-5",
+   "model": "Claude Fable 5",
+   "org": "Anthropic",
+   "inp": 10.0,
+   "out": 50.0,
+   "released": "2026-06-09",
+   "open": false,
+   "reasoning": 55.3,
+   "code": 48.4,
+   "math": 41.5,
+   "search": null,
+   "vision": 38.3,
+   "general": 57.5
+  },
+  {
+   "id": "claude-mythos-preview",
+   "model": "Claude Mythos Preview",
+   "org": "Anthropic",
+   "inp": null,
+   "out": null,
+   "released": null,
+   "open": false,
+   "reasoning": 56.6,
+   "code": 46.6,
+   "math": 47.1,
+   "search": 26.1,
+   "vision": 41.4,
+   "general": 56.1
+  },
+  {
+   "id": "kimi-k3",
+   "model": "Kimi K3",
+   "org": "Moonshot AI",
+   "inp": 3.0,
+   "out": 15.0,
+   "released": "2026-07-16",
+   "open": true,
+   "reasoning": 54.9,
+   "code": 44.9,
+   "math": 42.0,
+   "search": 34.4,
+   "vision": 39.2,
+   "general": 55.7
+  },
+  {
+   "id": "gpt-5.6-terra",
+   "model": "GPT-5.6 Terra",
+   "org": "OpenAI",
+   "inp": 2.5,
+   "out": 15.0,
+   "released": "2026-07-09",
+   "open": false,
+   "reasoning": 52.1,
+   "code": 46.0,
+   "math": 33.4,
+   "search": 27.0,
+   "vision": 30.0,
+   "general": 53.3
+  },
+  {
+   "id": "claude-opus-4-8",
+   "model": "Claude Opus 4.8",
+   "org": "Anthropic",
+   "inp": 5.0,
+   "out": 25.0,
+   "released": "2026-05-28",
+   "open": false,
+   "reasoning": 52.1,
+   "code": 43.9,
+   "math": 39.8,
+   "search": 26.6,
+   "vision": 40.1,
+   "general": 52.6
+  },
+  {
+   "id": "muse-spark-1.1",
+   "model": "Muse Spark 1.1",
+   "org": "Meta",
+   "inp": 1.25,
+   "out": 4.25,
+   "released": "2026-07-09",
+   "open": false,
+   "reasoning": 52.3,
+   "code": 38.2,
+   "math": 40.7,
+   "search": null,
+   "vision": 38.1,
+   "general": 52.1
+  },
+  {
+   "id": "claude-sonnet-5",
+   "model": "Claude Sonnet 5",
+   "org": "Anthropic",
+   "inp": 3.0,
+   "out": 15.0,
+   "released": "2026-06-30",
+   "open": false,
+   "reasoning": 50.3,
+   "code": 40.4,
+   "math": 36.9,
+   "search": 22.6,
+   "vision": 35.9,
+   "general": 50.9
+  },
+  {
+   "id": "grok-4.5",
+   "model": "Grok 4.5",
+   "org": "xAI",
+   "inp": 2.0,
+   "out": 6.0,
+   "released": "2026-07-16",
+   "open": false,
+   "reasoning": 48.2,
+   "code": 40.5,
+   "math": null,
+   "search": null,
+   "vision": null,
+   "general": 49.5
+  },
+  {
+   "id": "gpt-5.5",
+   "model": "GPT-5.5",
+   "org": "OpenAI",
+   "inp": 5.0,
+   "out": 30.0,
+   "released": "2026-04-23",
+   "open": false,
+   "reasoning": 48.3,
+   "code": 41.1,
+   "math": 38.5,
+   "search": 21.9,
+   "vision": 36.9,
+   "general": 49.1
+  },
+  {
+   "id": "seed-2.1-pro",
+   "model": "Seed 2.1 Pro",
+   "org": "ByteDance",
+   "inp": null,
+   "out": null,
+   "released": "2026-06-24",
+   "open": false,
+   "reasoning": 48.2,
+   "code": 36.3,
+   "math": 40.9,
+   "search": 24.6,
+   "vision": 36.4,
+   "general": 47.3
+  },
+  {
+   "id": "glm-5.2",
+   "model": "GLM-5.2",
+   "org": "Zhipu AI",
+   "inp": 0.95,
+   "out": 3.0,
+   "released": "2026-06-16",
+   "open": true,
+   "reasoning": 46.3,
+   "code": 39.0,
+   "math": 41.9,
+   "search": null,
+   "vision": 28.4,
+   "general": 47.1
+  },
+  {
+   "id": "gpt-5.6-luna",
+   "model": "GPT-5.6 Luna",
+   "org": "OpenAI",
+   "inp": 1.0,
+   "out": 6.0,
+   "released": "2026-07-09",
+   "open": false,
+   "reasoning": 46.6,
+   "code": 39.3,
+   "math": null,
+   "search": 18.4,
+   "vision": 23.5,
+   "general": 46.8
+  },
+  {
+   "id": "qwen3.7-max",
+   "model": "Qwen3.7 Max",
+   "org": "Alibaba Cloud / Qwen Team",
+   "inp": 1.25,
+   "out": 3.75,
+   "released": "2026-05-19",
+   "open": false,
+   "reasoning": 47.3,
+   "code": 38.9,
+   "math": 44.0,
+   "search": null,
+   "vision": 26.0,
+   "general": 46.7
+  },
+  {
+   "id": "claude-opus-4-6",
+   "model": "Claude Opus 4.6",
+   "org": "Anthropic",
+   "inp": 5.0,
+   "out": 25.0,
+   "released": "2026-02-05",
+   "open": false,
+   "reasoning": 46.7,
+   "code": 35.1,
+   "math": 40.4,
+   "search": 24.6,
+   "vision": 27.9,
+   "general": 46.4
+  },
+  {
+   "id": "gemini-3.6-flash",
+   "model": "Gemini 3.6 Flash",
+   "org": "Google",
+   "inp": 1.5,
+   "out": 7.5,
+   "released": "2026-07-21",
+   "open": false,
+   "reasoning": 43.3,
+   "code": 32.8,
+   "math": null,
+   "search": null,
+   "vision": 35.3,
+   "general": 46.2
+  },
+  {
+   "id": "claude-opus-4-7",
+   "model": "Claude Opus 4.7",
+   "org": "Anthropic",
+   "inp": 5.0,
+   "out": 25.0,
+   "released": "2026-04-16",
+   "open": false,
+   "reasoning": 47.1,
+   "code": 39.2,
+   "math": 39.5,
+   "search": 17.3,
+   "vision": 34.5,
+   "general": 45.6
+  },
+  {
+   "id": "gpt-5.5-pro",
+   "model": "GPT-5.5 Pro",
+   "org": "OpenAI",
+   "inp": null,
+   "out": null,
+   "released": "2026-04-23",
+   "open": false,
+   "reasoning": 45.2,
+   "code": null,
+   "math": 37.7,
+   "search": 27.9,
+   "vision": 30.0,
+   "general": 45.3
+  },
+  {
+   "id": "kimi-k2.6",
+   "model": "Kimi K2.6",
+   "org": "Moonshot AI",
+   "inp": 0.75,
+   "out": 3.5,
+   "released": "2026-04-20",
+   "open": true,
+   "reasoning": 44.9,
+   "code": 35.4,
+   "math": 37.9,
+   "search": 26.3,
+   "vision": 30.4,
+   "general": 44.7
+  }
+ ]
+};
+
+const SCORE_COLS = ["general","reasoning","code","math","search","vision"];
+const colMax = {};
+for (const c of SCORE_COLS) colMax[c] = Math.max(...DATA.rows.map(r => r[c] ?? 0), 1);
+let sortKey = "general", dir = -1;
+
+const fmtDate = (iso) => iso ? new Date(iso).toLocaleDateString("en-US", { year:"numeric", month:"short", day:"numeric", timeZone:"UTC" }) : null;
+const na = '<span class="na">–</span>';
+
+function gauge(col, v) {
+  if (v == null) return na;
+  return `<div class="gauge" role="img" aria-label="${col}: ${v.toFixed(1)}">
+    <span class="track"><span class="fill" style="width:${(v / colMax[col]) * 100}%"></span></span>
+    <span class="v">${v.toFixed(1)}</span></div>`;
+}
+function render() {
+  const rows = DATA.rows.slice().sort((a, b) => {
+    const get = (r) => sortKey === "pos" ? DATA.rows.indexOf(r)
+      : sortKey === "model" ? r.model
+      : sortKey === "released" ? (r.released || "")
+      : r[sortKey];
+    let va = get(a), vb = get(b);
+    if (typeof va === "string" || typeof vb === "string") return String(va).localeCompare(String(vb)) * dir;
+    if (va == null) return 1;
+    if (vb == null) return -1;
+    return (va - vb) * dir;
+  });
+  document.getElementById("tbody").innerHTML = rows.map((r, i) => `
+    <tr>
+      <td class="pos">${i + 1}</td>
+      <td class="model"><div class="nm">${r.model}</div><div class="org">${r.org}</div></td>
+      ${SCORE_COLS.map(c => `<td>${gauge(c, r[c])}</td>`).join("")}
+      <td class="num">${r.inp != null ? "$" + r.inp.toFixed(2) : na}</td>
+      <td class="num">${r.out != null ? "$" + r.out.toFixed(2) : na}</td>
+      <td class="num">${fmtDate(r.released) || na}</td>
+    </tr>`).join("");
+  document.querySelectorAll("#tbl thead th").forEach((th) => {
+    const btn = th.querySelector("button");
+    const active = btn.dataset.key === sortKey;
+    th.setAttribute("aria-sort", active ? (dir === 1 ? "ascending" : "descending") : "none");
+    btn.innerHTML = btn.textContent.replace(/ ?[▲▼]$/, "") + (active ? `<span class="dir">${dir === 1 ? "▲" : "▼"}</span>` : "");
+  });
+  document.querySelectorAll(".pill").forEach((p) => p.setAttribute("aria-pressed", String(
+    p.dataset.key === sortKey && (p.dataset.key === "inp" ? dir === 1 : dir === -1)
+  )));
+}
+function setSort(k, forced) {
+  if (forced) { sortKey = k; dir = forced; }
+  else if (sortKey === k) dir = -dir;
+  else { sortKey = k; dir = (k === "inp" || k === "out" || k === "pos" || k === "model") ? 1 : -1; }
+  render();
+}
+document.querySelectorAll("#tbl thead button").forEach((b) => b.addEventListener("click", () => setSort(b.dataset.key)));
+document.querySelectorAll(".pill").forEach((p) => p.addEventListener("click", () => setSort(p.dataset.key, p.dataset.key === "inp" ? 1 : -1)));
+
+document.getElementById("asOf").textContent = fmtDate(DATA.asOf) || "–";
+
+const LS = "dtw-theme";
+function applyTheme(t) { document.documentElement.setAttribute("data-theme", t); try { localStorage.setItem(LS, t); } catch (e) {} }
+applyTheme((() => { try { const t = localStorage.getItem(LS); if (t) return t; } catch (e) {} return matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; })());
+document.getElementById("themeBtn").addEventListener("click", () =>
+  applyTheme(document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark"));
+
+render();
+</script>
+</body>
+</html>
