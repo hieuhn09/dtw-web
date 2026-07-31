@@ -43,9 +43,12 @@ const PILLARS: ReadonlyArray<{
   order: number;
   description: string;
 }> = [
-  { slug: "ai", titleEn: "AI", titleVi: "AI", titleId: "AI", heading: "Artificial Intelligence", color: "var(--ai)", icon: "spark", order: 1, description: "Frontier models, infrastructure, and the policy that shapes them. Reported across Seoul, Singapore, Bengaluru, and Hangzhou." },
-  { slug: "startups", titleEn: "Startups", titleVi: "Khởi nghiệp", titleId: "Startup", heading: "Startups & Capital", color: "var(--startups)", icon: "trend-up", order: 2, description: "Term sheets, IPOs, layoffs, and the operators building the next wave across ASEAN, India, and Greater China." },
-  { slug: "latest", titleEn: "Latest", titleVi: "Mới nhất", titleId: "Terbaru", heading: "Latest", color: "var(--latest)", icon: "clock", order: 3, description: "The newest reporting across every beat — AI, startups, policy, developers, and products, freshest first, with a sharp eye on Asia's tech economy." },
+  // Latest leads, per the 2026-06-14 design refresh (design/project/src/data.jsx
+  // PILLARS order). Seed order must match the live CMS order — upsert overwrites
+  // `order` on every run, so a divergent seed silently reverts /admin reorders.
+  { slug: "latest", titleEn: "Latest", titleVi: "Mới nhất", titleId: "Terbaru", heading: "Latest", color: "var(--latest)", icon: "clock", order: 1, description: "The newest reporting across every beat — AI, startups, policy, developers, and products, freshest first, with a sharp eye on Asia's tech economy." },
+  { slug: "ai", titleEn: "AI", titleVi: "AI", titleId: "AI", heading: "Artificial Intelligence", color: "var(--ai)", icon: "spark", order: 2, description: "Frontier models, infrastructure, and the policy that shapes them. Reported across Seoul, Singapore, Bengaluru, and Hangzhou." },
+  { slug: "startups", titleEn: "Startups", titleVi: "Khởi nghiệp", titleId: "Startup", heading: "Startups & Capital", color: "var(--startups)", icon: "trend-up", order: 3, description: "Term sheets, IPOs, layoffs, and the operators building the next wave across ASEAN, India, and Greater China." },
   { slug: "dev", titleEn: "Dev", titleVi: "Lập trình", titleId: "Pengembang", heading: "Developers", color: "var(--dev)", icon: "code", order: 4, description: "Engineering practice. Tools, frameworks, and the trade-offs teams are actually making in production." },
   { slug: "products", titleEn: "Products", titleVi: "Sản phẩm", titleId: "Produk", heading: "Products & Reviews", color: "var(--products)", icon: "product", order: 5, description: "Independent reviews of phones, laptops, audio, and wearables. Affiliate-disclosed. Manufacturers do not approve our copy." },
   { slug: "policy", titleEn: "Policy", titleVi: "Chính sách", titleId: "Kebijakan", heading: "Policy & Regulation", color: "var(--policy)", icon: "policy", order: 6, description: "Trade rules, export controls, central-bank decisions, and the regulators who write them — covered as the technology beat they have become." },
