@@ -76,6 +76,7 @@ export interface Config {
     wireDrops: WireDrop;
     corrections: Correction;
     newsletters: Newsletter;
+    aiModels: AiModel;
     sponsorSlots: SponsorSlot;
     engineConflictLog: EngineConflictLog;
     'payload-kv': PayloadKv;
@@ -94,6 +95,7 @@ export interface Config {
     wireDrops: WireDropsSelect<false> | WireDropsSelect<true>;
     corrections: CorrectionsSelect<false> | CorrectionsSelect<true>;
     newsletters: NewslettersSelect<false> | NewslettersSelect<true>;
+    aiModels: AiModelsSelect<false> | AiModelsSelect<true>;
     sponsorSlots: SponsorSlotsSelect<false> | SponsorSlotsSelect<true>;
     engineConflictLog: EngineConflictLogSelect<false> | EngineConflictLogSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
@@ -107,9 +109,11 @@ export interface Config {
   fallbackLocale: null;
   globals: {
     paywallSettings: PaywallSetting;
+    dashboardMethodology: DashboardMethodology;
   };
   globalsSelect: {
     paywallSettings: PaywallSettingsSelect<false> | PaywallSettingsSelect<true>;
+    dashboardMethodology: DashboardMethodologySelect<false> | DashboardMethodologySelect<true>;
   };
   locale: null;
   widgets: {
@@ -490,6 +494,82 @@ export interface Newsletter {
   createdAt: string;
 }
 /**
+ * AI Leaderboard rows. rank/model/sourceSlugLlmstats are editor-owned; every other data field is refreshed weekly by the ai-weekly cron unless its name is listed in editorLocked below.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "aiModels".
+ */
+export interface AiModel {
+  id: number;
+  /**
+   * Editorial override sort key. Never cron-written.
+   */
+  rank?: number | null;
+  /**
+   * Editor-owned display name. Never cron-written.
+   */
+  model: string;
+  /**
+   * Cron-writable — LLM Stats /v1/models organization.name.
+   */
+  maker: string;
+  /**
+   * Cron-writable — /v1/rankings?category=general conservative_rating (raw ~0-60 TrueSkill scale, not 0-100). Null if the model falls outside the top-50.
+   */
+  general?: number | null;
+  /**
+   * Cron-writable — /v1/rankings?category=reasoning conservative_rating.
+   */
+  reasoning?: number | null;
+  /**
+   * Cron-writable — /v1/rankings?category=code conservative_rating (LLM Stats category id is "code"; "coding" is an accepted alias for the same data).
+   */
+  coding?: number | null;
+  /**
+   * Cron-writable — /v1/rankings?category=math conservative_rating.
+   */
+  math?: number | null;
+  /**
+   * Cron-writable — /v1/rankings?category=search conservative_rating.
+   */
+  search?: number | null;
+  /**
+   * Cron-writable — /v1/rankings?category=vision conservative_rating.
+   */
+  vision?: number | null;
+  /**
+   * Cron-writable — min non-null providers[].input_price_per_m from /v1/models (USD per million tokens). 0 = free.
+   */
+  inputPrice?: number | null;
+  /**
+   * Cron-writable — min non-null providers[].output_price_per_m from /v1/models (USD per million tokens). 0 = free.
+   */
+  outputPrice?: number | null;
+  /**
+   * Cron-writable — /v1/models release_date.
+   */
+  released?: string | null;
+  /**
+   * Editor-owned exact join key — the LLM Stats /v1/models id (e.g. "gpt-5.6-sol"). Never cron-written; the cron matches rows by this field.
+   */
+  sourceSlugLlmstats?: string | null;
+  /**
+   * Cron-writable — fetch timestamp of the last successful ai-weekly refresh.
+   */
+  asOfScores?: string | null;
+  /**
+   * Field names the ai-weekly cron must NEVER overwrite on this row (e.g. "maker", "general"). Locked fields persist until explicitly released.
+   */
+  editorLocked?:
+    | {
+        field?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * Sponsored placements config. One row per slot location.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -608,6 +688,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'newsletters';
         value: number | Newsletter;
+      } | null)
+    | ({
+        relationTo: 'aiModels';
+        value: number | AiModel;
       } | null)
     | ({
         relationTo: 'sponsorSlots';
@@ -869,6 +953,34 @@ export interface NewslettersSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "aiModels_select".
+ */
+export interface AiModelsSelect<T extends boolean = true> {
+  rank?: T;
+  model?: T;
+  maker?: T;
+  general?: T;
+  reasoning?: T;
+  coding?: T;
+  math?: T;
+  search?: T;
+  vision?: T;
+  inputPrice?: T;
+  outputPrice?: T;
+  released?: T;
+  sourceSlugLlmstats?: T;
+  asOfScores?: T;
+  editorLocked?:
+    | T
+    | {
+        field?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "sponsorSlots_select".
  */
 export interface SponsorSlotsSelect<T extends boolean = true> {
@@ -949,11 +1061,67 @@ export interface PaywallSetting {
   createdAt?: string | null;
 }
 /**
+ * AI Leaderboard methodology + disclaimer copy shown under the table. Changes apply within ~5 minutes, or immediately after a save via cache revalidation.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "dashboardMethodology".
+ */
+export interface DashboardMethodology {
+  id: number;
+  /**
+   * Methodology copy shown under the AI Leaderboard table (source + scoring method).
+   */
+  aiMethodology: {
+    en: string;
+    vi?: string | null;
+    /**
+     * Indonesian translation. Named "ind" not "id" — Payload silently drops any field named "id" at any nesting depth (see file header comment).
+     */
+    ind?: string | null;
+  };
+  /**
+   * Short disclaimer line (e.g. "For informational purposes only · not investment or procurement advice").
+   */
+  disclaimer: {
+    en: string;
+    vi?: string | null;
+    /**
+     * Indonesian translation. Named "ind" not "id" — Payload silently drops any field named "id" at any nesting depth (see file header comment).
+     */
+    ind?: string | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "paywallSettings_select".
  */
 export interface PaywallSettingsSelect<T extends boolean = true> {
   paywallThreshold?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "dashboardMethodology_select".
+ */
+export interface DashboardMethodologySelect<T extends boolean = true> {
+  aiMethodology?:
+    | T
+    | {
+        en?: T;
+        vi?: T;
+        ind?: T;
+      };
+  disclaimer?:
+    | T
+    | {
+        en?: T;
+        vi?: T;
+        ind?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

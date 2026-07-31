@@ -5,6 +5,7 @@ import * as migration_20260605_000000_engine_provenance from './20260605_000000_
 import * as migration_20260622_000000_pin_to_latest from './20260622_000000_pin_to_latest';
 import * as migration_20260706_022942_add_paywall_settings_global from './20260706_022942_add_paywall_settings_global';
 import * as migration_20260706_030547_add_newsletters_collection from './20260706_030547_add_newsletters_collection';
+import * as migration_20260731_025433_ai_leaderboard_llmstats from './20260731_025433_ai_leaderboard_llmstats';
 
 export const migrations = [
   {
@@ -40,6 +41,11 @@ export const migrations = [
   {
     up: migration_20260706_030547_add_newsletters_collection.up,
     down: migration_20260706_030547_add_newsletters_collection.down,
-    name: '20260706_030547_add_newsletters_collection'
+    name: '20260706_030547_add_newsletters_collection',
+  },
+  {
+    up: migration_20260731_025433_ai_leaderboard_llmstats.up,
+    down: migration_20260731_025433_ai_leaderboard_llmstats.down,
+    name: '20260731_025433_ai_leaderboard_llmstats'
   },
 ];

@@ -1,4 +1,5 @@
 import type { CollectionConfig } from "payload";
+import { revalidateSponsorSlot, revalidateSponsorSlotDelete } from "../hooks/revalidate";
 
 /**
  * Sponsor slots — configurable sponsored placements (homepage strip, dashboard
@@ -11,6 +12,10 @@ export const SponsorSlots: CollectionConfig = {
     useAsTitle: "slot",
     defaultColumns: ["slot", "article", "startsAt", "endsAt"],
     description: "Sponsored placements config. One row per slot location.",
+  },
+  hooks: {
+    afterChange: [revalidateSponsorSlot],
+    afterDelete: [revalidateSponsorSlotDelete],
   },
   fields: [
     {

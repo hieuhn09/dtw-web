@@ -17,7 +17,9 @@ import { Corrections } from "./src/payload/collections/Corrections";
 import { SponsorSlots } from "./src/payload/collections/SponsorSlots";
 import { EngineConflictLog } from "./src/payload/collections/EngineConflictLog";
 import { Newsletters } from "./src/payload/collections/Newsletters";
+import { AiModels } from "./src/payload/collections/AiModels";
 import { PaywallSettings } from "./src/payload/globals/PaywallSettings";
+import { DashboardMethodology } from "./src/payload/globals/DashboardMethodology";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -58,10 +60,11 @@ export default buildConfig({
     WireDrops,
     Corrections,
     Newsletters,
+    AiModels,
     SponsorSlots,
     EngineConflictLog,
   ],
-  globals: [PaywallSettings],
+  globals: [PaywallSettings, DashboardMethodology],
   plugins: r2Configured
     ? [
         s3Storage({
