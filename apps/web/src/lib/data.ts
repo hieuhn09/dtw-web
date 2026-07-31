@@ -529,26 +529,45 @@ export const FUNDING_ROWS: ReadonlyArray<FundingRow> = [
   { ticker: "OFLA", name: "Ola Krutrim", country: "IN", sector: "AI", px: null, chg: null, mcap: "$1.0B*", funding: "$50M (C)" },
 ];
 
+/**
+ * AI Leaderboard row shape (amended 2026-07-30, 2nd — final LLM Stats column
+ * set: General/Reasoning/Coding/Math/Search/Vision + dual pricing + Released;
+ * Speed/Context/Writing dropped per
+ * process/features/dashboards/active/ai-leaderboard-llmstats_PLAN_30-07-26.md's
+ * Non-Goals). This is the CMS-backed shape — see
+ * `lib/payload-server.ts::getAiModels()`, which maps `aiModels` rows onto it.
+ */
 export interface AiLeaderboardRow {
   rank: number;
   model: string;
   maker: string;
-  reasoning: number;
-  coding: number;
-  speed: number;
-  price: number;
-  ctx: string;
+  general: number | null;
+  reasoning: number | null;
+  coding: number | null;
+  math: number | null;
+  search: number | null;
+  vision: number | null;
+  inputPrice: number | null;
+  outputPrice: number | null;
+  released: string | null;
 }
 
+/**
+ * Static fallback — the same 8 real, LLM-Stats-verified rows seeded by
+ * `scripts/seed-payload.ts`'s `AI_MODELS` fixture (kept in sync manually;
+ * that file is the source of truth for the table). Used only when
+ * `getAiModels()`'s underlying query throws (Payload down, migration not run
+ * yet on this deploy).
+ */
 export const AI_LEADERBOARD: ReadonlyArray<AiLeaderboardRow> = [
-  { rank: 1, model: "GPT-5.1", maker: "OpenAI", reasoning: 92, coding: 88, speed: 84, price: 9.0, ctx: "512k" },
-  { rank: 2, model: "Claude Sonnet 4.5", maker: "Anthropic", reasoning: 91, coding: 90, speed: 79, price: 8.4, ctx: "1M" },
-  { rank: 3, model: "Gemini 2.5 Pro", maker: "Google", reasoning: 88, coding: 84, speed: 88, price: 6.5, ctx: "2M" },
-  { rank: 4, model: "ERNIE-X 350B", maker: "Baidu", reasoning: 84, coding: 80, speed: 82, price: 2.1, ctx: "256k" },
-  { rank: 5, model: "Qwen3-Max", maker: "Alibaba", reasoning: 83, coding: 85, speed: 80, price: 1.8, ctx: "256k" },
-  { rank: 6, model: "Llama 4 405B", maker: "Meta", reasoning: 80, coding: 78, speed: 74, price: 0.0, ctx: "128k" },
-  { rank: 7, model: "Mistral Large 3", maker: "Mistral", reasoning: 78, coding: 77, speed: 86, price: 3.0, ctx: "128k" },
-  { rank: 8, model: "DeepSeek-V4", maker: "DeepSeek", reasoning: 82, coding: 83, speed: 81, price: 0.6, ctx: "128k" },
+  { rank: 1, model: "GPT-5.6 Sol", maker: "OpenAI", general: 58.0, reasoning: 58.1, coding: 50.1, math: 36.8, search: 28.9, vision: 38.2, inputPrice: 5.0, outputPrice: 30.0, released: "2026-07-09" },
+  { rank: 2, model: "Claude Opus 5", maker: "Anthropic", general: 58.0, reasoning: 57.7, coding: 42.7, math: 42.4, search: 30.1, vision: 38.0, inputPrice: 5.0, outputPrice: 25.0, released: "2026-07-24" },
+  { rank: 3, model: "Claude Fable 5", maker: "Anthropic", general: 57.5, reasoning: 55.3, coding: 48.4, math: 41.5, search: null, vision: 38.3, inputPrice: 10.0, outputPrice: 50.0, released: "2026-06-09" },
+  { rank: 4, model: "Claude Mythos Preview", maker: "Anthropic", general: 56.1, reasoning: 56.6, coding: 46.6, math: 47.1, search: 26.1, vision: 41.4, inputPrice: null, outputPrice: null, released: null },
+  { rank: 5, model: "Kimi K3", maker: "Moonshot AI", general: 55.7, reasoning: 54.9, coding: 44.9, math: 42.0, search: 34.4, vision: 39.2, inputPrice: 3.0, outputPrice: 15.0, released: "2026-07-16" },
+  { rank: 6, model: "GPT-5.6 Terra", maker: "OpenAI", general: 53.3, reasoning: 52.1, coding: 46.0, math: 33.4, search: 27.0, vision: 30.0, inputPrice: 2.5, outputPrice: 15.0, released: "2026-07-09" },
+  { rank: 7, model: "Claude Opus 4.8", maker: "Anthropic", general: 52.6, reasoning: 52.1, coding: 43.9, math: 39.8, search: 26.6, vision: 40.1, inputPrice: 5.0, outputPrice: 25.0, released: "2026-05-28" },
+  { rank: 8, model: "Muse Spark 1.1", maker: "Meta", general: 52.1, reasoning: 52.3, coding: 38.2, math: 40.7, search: null, vision: 38.1, inputPrice: 1.25, outputPrice: 4.25, released: "2026-07-09" },
 ];
 
 export interface Newsletter {

@@ -10,8 +10,10 @@ import type {
   Tag,
   Correction,
   Newsletter,
+  SponsorSlot,
 } from "../payload/payload-types";
-import type { NavPillar } from "./data";
+import type { NavPillar, AiLeaderboardRow } from "./data";
+import { AI_LEADERBOARD } from "./data";
 
 /**
  * Server-side Payload client + cached query helpers.
@@ -48,6 +50,10 @@ async function payload() {
 //   wire-drops            → homepage Wire Drops band (refreshed often by hook)
 //   settings:paywall      → CMS-configurable paywall/nudge threshold
 //   newsletters:all       → reader newsletter products (Account tab, /newsletters, homepage CTA)
+//   dashboards:ai         → AI Leaderboard rows (aiModels), refreshed by editor save or the
+//                           ai-weekly cron (apps/web/src/lib/dashboards/ai-llmstats.ts, Group G)
+//   dashboards:methodology → AI Leaderboard methodology + disclaimer copy (dashboardMethodology Global)
+//   sponsor-slots:all     → sponsor slot placements (homepage strip + dashboard sponsor card)
 // ──────────────────────────────────────────────────────────────────────────────
 
 export const getPillars = unstable_cache(
@@ -686,4 +692,202 @@ export const getSitemapArticles = unstable_cache(
   { tags: ["articles:all"], revalidate: 900 }
 );
 
-export type { Article, Pillar, Author, WireDrop, Tag, Correction, Newsletter };
+// ──────────────────────────────────────────────────────────────────────────────
+// AI Leaderboard — CMS-backed rows (aiModels), the dashboards methodology
+// copy (dashboardMethodology Global), and the AI dashboard sponsor slot
+// (sponsorSlots). See ai-leaderboard-llmstats_PLAN_30-07-26.md.
+//
+// `AiLeaderboardRow` and its static fallback (`AI_LEADERBOARD`) live in
+// `lib/data.ts` per the plan's Touchpoints — imported above — since
+// `components/dashboards/ai-leaderboard.tsx` and
+// `components/home/dashboards-teaser.tsx` both consume that same shared
+// export.
+// ──────────────────────────────────────────────────────────────────────────────
+
+/**
+ * CMS-backed AI Leaderboard rows, sorted by editorial `rank`. `asOfScores` is
+ * the max fetch timestamp across all returned rows (null if none set yet —
+ * e.g. immediately after seed, before the ai-weekly cron has ever run).
+ * Rows missing an explicit `rank` fall back to their position in the sorted
+ * list (1-based) rather than 0, since `rank` is non-nullable on this row
+ * shape. Falls back to `AI_LEADERBOARD` (lib/data.ts) with `asOfScores: null`
+ * on any query failure.
+ */
+export const getAiModels = unstable_cache(
+  async (): Promise<{ rows: AiLeaderboardRow[]; asOfScores: string | null }> => {
+    const p = await payload();
+    try {
+      const r = await p.find({
+        collection: "aiModels",
+        sort: "rank",
+        limit: 50,
+        depth: 0,
+      });
+      const rows: AiLeaderboardRow[] = r.docs.map((d, i) => ({
+        rank: d.rank ?? i + 1,
+        model: d.model,
+        maker: d.maker,
+        general: d.general ?? null,
+        reasoning: d.reasoning ?? null,
+        coding: d.coding ?? null,
+        math: d.math ?? null,
+        search: d.search ?? null,
+        vision: d.vision ?? null,
+        inputPrice: d.inputPrice ?? null,
+        outputPrice: d.outputPrice ?? null,
+        released: d.released ?? null,
+      }));
+      const asOfScores = r.docs.reduce<string | null>((max, d) => {
+        if (!d.asOfScores) return max;
+        if (!max || d.asOfScores > max) return d.asOfScores;
+        return max;
+      }, null);
+      return { rows, asOfScores };
+    } catch (err) {
+      console.warn(
+        "[getAiModels] query failed — falling back to static data",
+        (err as Error)?.message
+      );
+      return { rows: [...AI_LEADERBOARD], asOfScores: null };
+    }
+  },
+  ["dashboards:ai"],
+  { tags: ["dashboards:ai"], revalidate: 3600 }
+);
+
+/**
+ * Sponsor slot for a dashboard placement. Narrowed to the single literal
+ * `"dashboard_ai"` (Lean Deviation #5 — `SponsorSlots`'s own `slot` select
+ * field still has both `dashboard_funding`/`dashboard_ai` options; only this
+ * helper's TS signature is narrowed to what's actually called this pass).
+ *
+ * Filters by `slot` plus the `startsAt`/`endsAt` scheduling window, then
+ * drops the match if its populated `article` isn't published — an editor
+ * unpublishing the sponsored article shouldn't leave a broken sponsor card
+ * up. Returns null if no slot is configured, no article is attached, the
+ * article isn't published, or the query fails.
+ *
+ * EXECUTE-time adaptation (Group D pass, ai-leaderboard-llmstats_PLAN_30-07-26.md
+ * item 4's approved handoff note): `depth` raised from the plan's literal `1`
+ * to `2` — `page.tsx` calls `toArticleView(sponsor.article)` on this doc's
+ * `article`, which needs `article.pillar`/`article.author`/`article.heroImage`
+ * populated as objects (not bare ids) to render the pillar tag/byline/hero.
+ * At `depth: 1`, `article` itself resolves but its own relationships stay
+ * unpopulated ids.
+ */
+export const getDashboardSponsorSlot = unstable_cache(
+  async (slot: "dashboard_ai"): Promise<SponsorSlot | null> => {
+    const p = await payload();
+    try {
+      const now = new Date().toISOString();
+      const r = await p.find({
+        collection: "sponsorSlots",
+        where: {
+          and: [
+            { slot: { equals: slot } },
+            { or: [{ startsAt: { exists: false } }, { startsAt: { less_than_equal: now } }] },
+            { or: [{ endsAt: { exists: false } }, { endsAt: { greater_than_equal: now } }] },
+          ],
+        },
+        sort: "-updatedAt",
+        limit: 1,
+        depth: 2,
+      });
+      const doc = r.docs[0];
+      if (!doc) return null;
+      const article = doc.article;
+      if (article == null) return null;
+      if (typeof article === "object" && article._status !== "published") return null;
+      return doc;
+    } catch (err) {
+      console.warn(
+        "[getDashboardSponsorSlot] query failed",
+        (err as Error)?.message
+      );
+      return null;
+    }
+  },
+  ["dashboard-sponsor-slot"],
+  { tags: ["sponsor-slots:all"], revalidate: 3600 }
+);
+
+/** Localized methodology + disclaimer copy for the AI Leaderboard. */
+export interface DashboardMethodologyContent {
+  aiMethodology: { en: string; vi: string; id: string };
+  disclaimer: { en: string; vi: string; id: string };
+}
+
+/**
+ * Hardcoded fallback, matching the seed copy in scripts/seed-payload.ts's
+ * DASHBOARD_METHODOLOGY constant exactly (mirrors getPaywallThreshold's
+ * defensive pattern above).
+ */
+const DASHBOARD_METHODOLOGY_FALLBACK: DashboardMethodologyContent = {
+  // Plain-language rewrite (owner, "UX round 2" 2026-07-31) — kept in sync
+  // verbatim with the seed copy in `scripts/seed-payload.ts`'s
+  // `DASHBOARD_METHODOLOGY.aiMethodology`.
+  aiMethodology: {
+    en: "Each model's score is a TrueSkill rating - the same system Xbox uses to rank players. Every published benchmark result counts as a head-to-head match between models, and beating a strong model raises a rating more than beating a weak one. We show the conservative estimate: a floor the model is about 99% likely to clear, so models with only a few benchmark results score lower until more evidence arrives. Ratings are grouped by category (General, Reasoning, Coding, Math, Search, Vision), compiled by LLM Stats, and refreshed here every Monday.",
+    vi: "Điểm số của mỗi mô hình là một xếp hạng TrueSkill – hệ thống mà Xbox dùng để xếp hạng người chơi. Mỗi kết quả benchmark được công bố được tính như một trận đấu đối đầu giữa các mô hình, và việc đánh bại một mô hình mạnh sẽ nâng xếp hạng nhiều hơn so với việc đánh bại một mô hình yếu. Chúng tôi hiển thị ước tính thận trọng: một ngưỡng mà mô hình có khoảng 99% khả năng vượt qua, vì vậy các mô hình chỉ có ít kết quả benchmark sẽ có điểm thấp hơn cho đến khi có thêm bằng chứng. Các xếp hạng được nhóm theo hạng mục (Tổng quát, Suy luận, Lập trình, Toán, Tìm kiếm, Thị giác), do LLM Stats tổng hợp, và được cập nhật tại đây mỗi thứ Hai.",
+    id: "Skor setiap model adalah peringkat TrueSkill – sistem yang sama yang digunakan Xbox untuk memberi peringkat pemain. Setiap hasil benchmark yang dipublikasikan dihitung sebagai pertandingan head-to-head antar model, dan mengalahkan model yang kuat menaikkan peringkat lebih banyak daripada mengalahkan model yang lemah. Kami menampilkan estimasi konservatif: sebuah batas bawah yang kemungkinan sekitar 99% dapat dilampaui model tersebut, sehingga model yang hanya memiliki sedikit hasil benchmark mendapat skor lebih rendah sampai ada lebih banyak bukti. Peringkat dikelompokkan berdasarkan kategori (Umum, Penalaran, Pemrograman, Matematika, Pencarian, Visi), disusun oleh LLM Stats, dan diperbarui di sini setiap hari Senin.",
+  },
+  disclaimer: {
+    en: "For informational purposes only · not investment or procurement advice",
+    vi: "Chỉ mang tính chất tham khảo · không phải lời khuyên đầu tư hay mua sắm",
+    id: "Hanya untuk tujuan informasi · bukan saran investasi atau pengadaan",
+  },
+};
+
+/**
+ * CMS-configurable AI Leaderboard methodology + disclaimer copy. Reads the
+ * `dashboardMethodology` Global; applies the same `?? / ||` en-fallback
+ * pattern already used for `NavPillar.title` above. The Global's Indonesian
+ * locale field is named `ind`, not `id` — Payload silently drops any field
+ * literally named "id" at any nesting depth (see
+ * `payload/globals/DashboardMethodology.ts`'s header comment) — mapped back
+ * to the app-facing `id` key here, at the read boundary, so every other
+ * consumer of this helper sees the ordinary `{ en, vi, id }` shape used
+ * throughout the app's i18n conventions.
+ */
+export const getDashboardMethodology = unstable_cache(
+  async (): Promise<DashboardMethodologyContent> => {
+    const p = await payload();
+    try {
+      const g = await p.findGlobal({ slug: "dashboardMethodology" });
+      return {
+        aiMethodology: {
+          en: g.aiMethodology?.en ?? DASHBOARD_METHODOLOGY_FALLBACK.aiMethodology.en,
+          vi:
+            g.aiMethodology?.vi ||
+            g.aiMethodology?.en ||
+            DASHBOARD_METHODOLOGY_FALLBACK.aiMethodology.vi,
+          id:
+            g.aiMethodology?.ind ||
+            g.aiMethodology?.en ||
+            DASHBOARD_METHODOLOGY_FALLBACK.aiMethodology.id,
+        },
+        disclaimer: {
+          en: g.disclaimer?.en ?? DASHBOARD_METHODOLOGY_FALLBACK.disclaimer.en,
+          vi:
+            g.disclaimer?.vi ||
+            g.disclaimer?.en ||
+            DASHBOARD_METHODOLOGY_FALLBACK.disclaimer.vi,
+          id:
+            g.disclaimer?.ind ||
+            g.disclaimer?.en ||
+            DASHBOARD_METHODOLOGY_FALLBACK.disclaimer.id,
+        },
+      };
+    } catch (err) {
+      console.warn(
+        "[getDashboardMethodology] query failed — global not migrated yet?",
+        (err as Error)?.message
+      );
+      return DASHBOARD_METHODOLOGY_FALLBACK;
+    }
+  },
+  ["dashboards:methodology"],
+  { tags: ["dashboards:methodology"], revalidate: 300 }
+);
+
+export type { Article, Pillar, Author, WireDrop, Tag, Correction, Newsletter, SponsorSlot };

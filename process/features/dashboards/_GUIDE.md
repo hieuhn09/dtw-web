@@ -82,7 +82,9 @@ All data sources are configured in Payload `DashboardSources` collection (Admin 
 
 ## Current Status
 
-Status: not-started
+Status: AI Leaderboard live — CMS-backed (`aiModels` collection + `dashboardMethodology` global), weekly-cron-refreshed from the LLM Stats API. See `process/features/dashboards/active/ai-leaderboard-llmstats_PLAN_30-07-26.md`.
+
+The **Asia Funding Tracker is intentionally hidden from the UI** (no tab, no route, no homepage teaser card) — an owner decision (30-07-26), not a bug or missing feature. `/dashboards/funding` 404s. Its build (stocks crons, `dashboardTickers`/`dashboardQuoteSnapshots`/`fundingRounds` collections, Playwright/CI) is deferred to a future pass — see `process/features/dashboards/active/dashboards-automation_PLAN_14-07-26.md` for that deferred scope and its hold note.
 
 ## Folder Contents
 

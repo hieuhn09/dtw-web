@@ -43,9 +43,12 @@ const PILLARS: ReadonlyArray<{
   order: number;
   description: string;
 }> = [
-  { slug: "ai", titleEn: "AI", titleVi: "AI", titleId: "AI", heading: "Artificial Intelligence", color: "var(--ai)", icon: "spark", order: 1, description: "Frontier models, infrastructure, and the policy that shapes them. Reported across Seoul, Singapore, Bengaluru, and Hangzhou." },
-  { slug: "startups", titleEn: "Startups", titleVi: "Khởi nghiệp", titleId: "Startup", heading: "Startups & Capital", color: "var(--startups)", icon: "trend-up", order: 2, description: "Term sheets, IPOs, layoffs, and the operators building the next wave across ASEAN, India, and Greater China." },
-  { slug: "latest", titleEn: "Latest", titleVi: "Mới nhất", titleId: "Terbaru", heading: "Latest", color: "var(--latest)", icon: "clock", order: 3, description: "The newest reporting across every beat — AI, startups, policy, developers, and products, freshest first, with a sharp eye on Asia's tech economy." },
+  // Latest leads, per the 2026-06-14 design refresh (design/project/src/data.jsx
+  // PILLARS order). Seed order must match the live CMS order — upsert overwrites
+  // `order` on every run, so a divergent seed silently reverts /admin reorders.
+  { slug: "latest", titleEn: "Latest", titleVi: "Mới nhất", titleId: "Terbaru", heading: "Latest", color: "var(--latest)", icon: "clock", order: 1, description: "The newest reporting across every beat — AI, startups, policy, developers, and products, freshest first, with a sharp eye on Asia's tech economy." },
+  { slug: "ai", titleEn: "AI", titleVi: "AI", titleId: "AI", heading: "Artificial Intelligence", color: "var(--ai)", icon: "spark", order: 2, description: "Frontier models, infrastructure, and the policy that shapes them. Reported across Seoul, Singapore, Bengaluru, and Hangzhou." },
+  { slug: "startups", titleEn: "Startups", titleVi: "Khởi nghiệp", titleId: "Startup", heading: "Startups & Capital", color: "var(--startups)", icon: "trend-up", order: 3, description: "Term sheets, IPOs, layoffs, and the operators building the next wave across ASEAN, India, and Greater China." },
   { slug: "dev", titleEn: "Dev", titleVi: "Lập trình", titleId: "Pengembang", heading: "Developers", color: "var(--dev)", icon: "code", order: 4, description: "Engineering practice. Tools, frameworks, and the trade-offs teams are actually making in production." },
   { slug: "products", titleEn: "Products", titleVi: "Sản phẩm", titleId: "Produk", heading: "Products & Reviews", color: "var(--products)", icon: "product", order: 5, description: "Independent reviews of phones, laptops, audio, and wearables. Affiliate-disclosed. Manufacturers do not approve our copy." },
   { slug: "policy", titleEn: "Policy", titleVi: "Chính sách", titleId: "Kebijakan", heading: "Policy & Regulation", color: "var(--policy)", icon: "policy", order: 6, description: "Trade rules, export controls, central-bank decisions, and the regulators who write them — covered as the technology beat they have become." },
@@ -318,6 +321,64 @@ const ARTICLES: ReadonlyArray<ArticleFixture> = [
   },
 ];
 
+// AI Leaderboard — 8 curated rows, REAL LLM Stats data (fetched 2026-07-30
+// with the real API key, top-8 by `general` ranking). `sourceSlugLlmstats`
+// values are live-verified upstream ids (LLM Stats /v1/models). `null` cells
+// are genuine upstream gaps (row 3/8 `search`; row 4 `inputPrice` /
+// `outputPrice` / `released`) — seeded as actual `null`, never `0` or "".
+// Score fields are the ~0-60 TrueSkill `conservative_rating` scale, not 0-100
+// — see ai-leaderboard-llmstats_PLAN_30-07-26.md Known Unknowns #1/#2.
+interface AiModelFixture {
+  rank: number;
+  model: string;
+  maker: string;
+  sourceSlugLlmstats: string;
+  general: number | null;
+  reasoning: number | null;
+  coding: number | null;
+  math: number | null;
+  search: number | null;
+  vision: number | null;
+  inputPrice: number | null;
+  outputPrice: number | null;
+  /** ISO date-only string ("2026-07-09") or null. */
+  released: string | null;
+}
+
+const AI_MODELS: ReadonlyArray<AiModelFixture> = [
+  { rank: 1, model: "GPT-5.6 Sol", maker: "OpenAI", sourceSlugLlmstats: "gpt-5.6-sol", general: 58.0, reasoning: 58.1, coding: 50.1, math: 36.8, search: 28.9, vision: 38.2, inputPrice: 5.0, outputPrice: 30.0, released: "2026-07-09" },
+  { rank: 2, model: "Claude Opus 5", maker: "Anthropic", sourceSlugLlmstats: "claude-opus-5", general: 58.0, reasoning: 57.7, coding: 42.7, math: 42.4, search: 30.1, vision: 38.0, inputPrice: 5.0, outputPrice: 25.0, released: "2026-07-24" },
+  { rank: 3, model: "Claude Fable 5", maker: "Anthropic", sourceSlugLlmstats: "claude-fable-5", general: 57.5, reasoning: 55.3, coding: 48.4, math: 41.5, search: null, vision: 38.3, inputPrice: 10.0, outputPrice: 50.0, released: "2026-06-09" },
+  { rank: 4, model: "Claude Mythos Preview", maker: "Anthropic", sourceSlugLlmstats: "claude-mythos-preview", general: 56.1, reasoning: 56.6, coding: 46.6, math: 47.1, search: 26.1, vision: 41.4, inputPrice: null, outputPrice: null, released: null },
+  { rank: 5, model: "Kimi K3", maker: "Moonshot AI", sourceSlugLlmstats: "kimi-k3", general: 55.7, reasoning: 54.9, coding: 44.9, math: 42.0, search: 34.4, vision: 39.2, inputPrice: 3.0, outputPrice: 15.0, released: "2026-07-16" },
+  { rank: 6, model: "GPT-5.6 Terra", maker: "OpenAI", sourceSlugLlmstats: "gpt-5.6-terra", general: 53.3, reasoning: 52.1, coding: 46.0, math: 33.4, search: 27.0, vision: 30.0, inputPrice: 2.5, outputPrice: 15.0, released: "2026-07-09" },
+  { rank: 7, model: "Claude Opus 4.8", maker: "Anthropic", sourceSlugLlmstats: "claude-opus-4-8", general: 52.6, reasoning: 52.1, coding: 43.9, math: 39.8, search: 26.6, vision: 40.1, inputPrice: 5.0, outputPrice: 25.0, released: "2026-05-28" },
+  { rank: 8, model: "Muse Spark 1.1", maker: "Meta", sourceSlugLlmstats: "muse-spark-1.1", general: 52.1, reasoning: 52.3, coding: 38.2, math: 40.7, search: null, vision: 38.1, inputPrice: 1.25, outputPrice: 4.25, released: "2026-07-09" },
+];
+
+// Dashboard methodology (Global) — AI-only shape (Lean Deviation #4). The
+// Indonesian locale key is "ind" not "id" — Payload silently drops any field
+// named "id" at any nesting depth (see globals/DashboardMethodology.ts file
+// header for the full explanation); this seed writes to the actual Payload
+// field names.
+const DASHBOARD_METHODOLOGY = {
+  // Plain-language rewrite (owner, "UX round 2" 2026-07-31) — explains
+  // TrueSkill via the Xbox matchmaking analogy and the conservative-estimate
+  // framing, superseding the earlier "normalized per-category benchmark
+  // scores" copy. Kept in sync verbatim with the fallback in
+  // `lib/payload-server.ts`'s `DASHBOARD_METHODOLOGY_FALLBACK.aiMethodology`.
+  aiMethodology: {
+    en: "Each model's score is a TrueSkill rating - the same system Xbox uses to rank players. Every published benchmark result counts as a head-to-head match between models, and beating a strong model raises a rating more than beating a weak one. We show the conservative estimate: a floor the model is about 99% likely to clear, so models with only a few benchmark results score lower until more evidence arrives. Ratings are grouped by category (General, Reasoning, Coding, Math, Search, Vision), compiled by LLM Stats, and refreshed here every Monday.",
+    vi: "Điểm số của mỗi mô hình là một xếp hạng TrueSkill – hệ thống mà Xbox dùng để xếp hạng người chơi. Mỗi kết quả benchmark được công bố được tính như một trận đấu đối đầu giữa các mô hình, và việc đánh bại một mô hình mạnh sẽ nâng xếp hạng nhiều hơn so với việc đánh bại một mô hình yếu. Chúng tôi hiển thị ước tính thận trọng: một ngưỡng mà mô hình có khoảng 99% khả năng vượt qua, vì vậy các mô hình chỉ có ít kết quả benchmark sẽ có điểm thấp hơn cho đến khi có thêm bằng chứng. Các xếp hạng được nhóm theo hạng mục (Tổng quát, Suy luận, Lập trình, Toán, Tìm kiếm, Thị giác), do LLM Stats tổng hợp, và được cập nhật tại đây mỗi thứ Hai.",
+    ind: "Skor setiap model adalah peringkat TrueSkill – sistem yang sama yang digunakan Xbox untuk memberi peringkat pemain. Setiap hasil benchmark yang dipublikasikan dihitung sebagai pertandingan head-to-head antar model, dan mengalahkan model yang kuat menaikkan peringkat lebih banyak daripada mengalahkan model yang lemah. Kami menampilkan estimasi konservatif: sebuah batas bawah yang kemungkinan sekitar 99% dapat dilampaui model tersebut, sehingga model yang hanya memiliki sedikit hasil benchmark mendapat skor lebih rendah sampai ada lebih banyak bukti. Peringkat dikelompokkan berdasarkan kategori (Umum, Penalaran, Pemrograman, Matematika, Pencarian, Visi), disusun oleh LLM Stats, dan diperbarui di sini setiap hari Senin.",
+  },
+  disclaimer: {
+    en: "For informational purposes only · not investment or procurement advice",
+    vi: "Chỉ mang tính chất tham khảo · không phải lời khuyên đầu tư hay mua sắm",
+    ind: "Hanya untuk tujuan informasi · bukan saran investasi atau pengadaan",
+  },
+} as const;
+
 const WIRE_DROPS: ReadonlyArray<{ time: string; city: string; text: string }> = [
   { time: "08:42", city: "Singapore", text: "MAS approves digital asset custody licence for DBS – first major bank to clear the revised framework." },
   { time: "08:31", city: "Seoul", text: "SK Hynix says HBM4 sampling to top customers begins June; volume in Q4." },
@@ -329,7 +390,14 @@ const WIRE_DROPS: ReadonlyArray<{ time: string; city: string; text: string }> = 
 // Upsert helpers
 // ──────────────────────────────────────────────────────────────────────────────
 
-type CollSlug = "pillars" | "authors" | "tags" | "articles" | "wireDrops" | "newsletters";
+type CollSlug =
+  | "pillars"
+  | "authors"
+  | "tags"
+  | "articles"
+  | "wireDrops"
+  | "newsletters"
+  | "aiModels";
 
 async function findIdBy(
   payload: Awaited<ReturnType<typeof getPayload>>,
@@ -524,6 +592,42 @@ async function seed() {
     newsletterCount++;
   }
   console.log(`[seed] newsletters: ${newsletterCount}`);
+
+  // 7. AI Leaderboard rows — 8 curated, real LLM Stats data. Upsert by
+  //    `model` (the editor-owned display name). `editorLocked: []` on every
+  //    row — nothing pre-locked at seed time.
+  let aiModelCount = 0;
+  for (const m of AI_MODELS) {
+    await upsert(payload, "aiModels", { model: { equals: m.model } }, {
+      rank: m.rank,
+      model: m.model,
+      maker: m.maker,
+      sourceSlugLlmstats: m.sourceSlugLlmstats,
+      general: m.general,
+      reasoning: m.reasoning,
+      coding: m.coding,
+      math: m.math,
+      search: m.search,
+      vision: m.vision,
+      inputPrice: m.inputPrice,
+      outputPrice: m.outputPrice,
+      released: m.released ? new Date(m.released).toISOString() : null,
+      asOfScores: new Date().toISOString(),
+      editorLocked: [],
+    });
+    aiModelCount++;
+  }
+  console.log(`[seed] aiModels: ${aiModelCount}`);
+
+  // 8. Dashboard methodology (Global) — AI-only copy. Globals always exist
+  //    implicitly in Payload, so this is always an update, never a create.
+  await payload.updateGlobal({
+    slug: "dashboardMethodology",
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    data: DASHBOARD_METHODOLOGY as any,
+    context: { disableRevalidate: true },
+  });
+  console.log("[seed] dashboardMethodology: updated");
 
   console.log("[seed] done");
   process.exit(0);

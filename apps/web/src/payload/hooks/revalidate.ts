@@ -173,3 +173,68 @@ export const revalidateNewsletterDelete: CollectionAfterDeleteHook = ({
   bust(payload, ["newsletters:all"], `newsletter deleted "${doc?.slug}"`);
   return doc;
 };
+
+// ──────────────────────────────────────────────────────────────────────────────
+// AI Leaderboard (aiModels) — CMS-backed AI model rows. Both the weekly
+// ai-weekly cron write (Group G, `lib/dashboards/ai-llmstats.ts`) and a direct
+// editor save in /admin flow through Payload's Local/REST API, so they share
+// this single afterChange hook — invariant #1 in
+// process/context/all-context.md ("Engine writes only via Payload API").
+// ──────────────────────────────────────────────────────────────────────────────
+
+export const revalidateAiModel: CollectionAfterChangeHook = ({
+  doc,
+  req: { payload, context },
+}) => {
+  if (revalidationDisabled(context)) return doc;
+  bust(payload, ["dashboards:ai"], `aiModel "${doc?.model}"`);
+  return doc;
+};
+
+export const revalidateAiModelDelete: CollectionAfterDeleteHook = ({
+  doc,
+  req: { payload, context },
+}) => {
+  if (revalidationDisabled(context)) return doc;
+  bust(payload, ["dashboards:ai"], `aiModel deleted "${doc?.model ?? doc?.id}"`);
+  return doc;
+};
+
+// ──────────────────────────────────────────────────────────────────────────────
+// Sponsor slots — homepage strip + dashboard sponsor card placements. First
+// real hooks on this collection (previously had none wired).
+// ──────────────────────────────────────────────────────────────────────────────
+
+export const revalidateSponsorSlot: CollectionAfterChangeHook = ({
+  doc,
+  req: { payload, context },
+}) => {
+  if (revalidationDisabled(context)) return doc;
+  bust(payload, ["sponsor-slots:all"], `sponsorSlot "${doc?.slot}"`);
+  return doc;
+};
+
+export const revalidateSponsorSlotDelete: CollectionAfterDeleteHook = ({
+  doc,
+  req: { payload, context },
+}) => {
+  if (revalidationDisabled(context)) return doc;
+  bust(payload, ["sponsor-slots:all"], `sponsorSlot deleted "${doc?.slot ?? doc?.id}"`);
+  return doc;
+};
+
+// ──────────────────────────────────────────────────────────────────────────────
+// Dashboard methodology (Global) — AI-only copy (Lean Deviation #4 in
+// ai-leaderboard-llmstats_PLAN_30-07-26.md; the big plan's fundingMethodology
+// group is not created this pass). Single editorial text block, no
+// delete/versions — same operational-setting shape as paywallSettings above.
+// ──────────────────────────────────────────────────────────────────────────────
+
+export const revalidateDashboardMethodology: GlobalAfterChangeHook = ({
+  doc,
+  req: { payload, context },
+}) => {
+  if (revalidationDisabled(context)) return doc;
+  bust(payload, ["dashboards:methodology"], "dashboard methodology updated");
+  return doc;
+};

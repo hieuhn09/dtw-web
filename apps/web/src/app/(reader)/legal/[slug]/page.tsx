@@ -186,9 +186,9 @@ export default function LegalPage() {
         "Perlindungan data · hak Anda"
       ),
       intro: t(
-        "Whether you read us from Europe under the GDPR, from Singapore under the PDPA, or from Vietnam under Nghị định 13/2023/NĐ-CP, the same principle holds: your data is yours. This page sets out the specific rights those laws give you and how to use them.",
-        "Dù bạn đọc chúng tôi từ châu Âu theo GDPR, từ Singapore theo PDPA, hay từ Việt Nam theo Nghị định 13/2023/NĐ-CP, nguyên tắc vẫn là một: dữ liệu của bạn là của bạn. Trang này nêu các quyền cụ thể những luật đó trao cho bạn và cách sử dụng chúng.",
-        "Baik Anda membaca dari Eropa di bawah GDPR, dari Singapura di bawah PDPA, atau dari Vietnam di bawah Nghị định 13/2023/NĐ-CP, prinsipnya sama: data Anda milik Anda. Halaman ini menjabarkan hak spesifik yang diberikan undang-undang itu dan cara memakainya."
+        "Whether you read us from Europe under the GDPR or from Singapore under the PDPA, the same principle holds: your data is yours. This page sets out the specific rights those laws give you and how to use them.",
+        "Dù bạn đọc chúng tôi từ châu Âu theo GDPR hay từ Singapore theo PDPA, nguyên tắc vẫn là một: dữ liệu của bạn là của bạn. Trang này nêu các quyền cụ thể những luật đó trao cho bạn và cách sử dụng chúng.",
+        "Baik Anda membaca dari Eropa di bawah GDPR atau dari Singapura di bawah PDPA, prinsipnya sama: data Anda milik Anda. Halaman ini menjabarkan hak spesifik yang diberikan undang-undang itu dan cara memakainya."
       ),
       body: [
         [
@@ -210,9 +210,9 @@ export default function LegalPage() {
         [
           t("Cross-border data", "Dữ liệu xuyên biên giới", "Data lintas batas"),
           t(
-            "Your data is stored in Singapore. For readers in Vietnam, any transfer of personal data abroad follows the impact-assessment and notification requirements of Nghị định 13/2023/NĐ-CP; for readers in the EU, transfers rely on adequacy decisions or standard contractual clauses. Either way, the standard never drops below what your home law requires.",
-            "Dữ liệu của bạn được lưu tại Singapore. Với độc giả ở Việt Nam, mọi việc chuyển dữ liệu cá nhân ra nước ngoài tuân theo yêu cầu đánh giá tác động và thông báo của Nghị định 13/2023/NĐ-CP; với độc giả ở EU, việc chuyển dựa trên quyết định đầy đủ hoặc điều khoản hợp đồng chuẩn. Dù thế nào, tiêu chuẩn không bao giờ thấp hơn luật quê hương bạn yêu cầu.",
-            "Data Anda disimpan di Singapura. Untuk pembaca di Vietnam, setiap transfer data pribadi ke luar negeri mengikuti persyaratan penilaian dampak dan pemberitahuan Nghị định 13/2023/NĐ-CP; untuk pembaca di UE, transfer mengandalkan keputusan kecukupan atau klausul kontrak standar. Dengan cara apa pun, standarnya tak pernah turun di bawah yang dipersyaratkan hukum negara Anda."
+            "Your data is stored in Singapore. For readers in the EU, cross-border transfers rely on adequacy decisions or standard contractual clauses. Wherever you read from, the standard never drops below what your home law requires.",
+            "Dữ liệu của bạn được lưu tại Singapore. Với độc giả ở EU, việc chuyển dữ liệu xuyên biên giới dựa trên quyết định đầy đủ hoặc điều khoản hợp đồng chuẩn. Dù bạn đọc từ đâu, tiêu chuẩn không bao giờ thấp hơn luật quê hương bạn yêu cầu.",
+            "Data Anda disimpan di Singapura. Untuk pembaca di UE, transfer lintas batas mengandalkan keputusan kecukupan atau klausul kontrak standar. Dari mana pun Anda membaca, standarnya tak pernah turun di bawah yang dipersyaratkan hukum negara Anda."
           ),
         ],
         [
@@ -226,9 +226,9 @@ export default function LegalPage() {
         [
           t("Complaints", "Khiếu nại", "Keluhan"),
           t(
-            "If you believe we have mishandled your data, tell us first and we will try to put it right. You also have the right to complain to your local supervisory authority, the relevant DPA in the EU, the PDPC in Singapore, or the data-protection authority under Nghị định 13 in Vietnam.",
-            "Nếu bạn tin chúng tôi đã xử lý sai dữ liệu của bạn, hãy báo chúng tôi trước và chúng tôi sẽ cố khắc phục. Bạn cũng có quyền khiếu nại với cơ quan giám sát địa phương, DPA liên quan ở EU, PDPC ở Singapore, hoặc cơ quan bảo vệ dữ liệu theo Nghị định 13 tại Việt Nam.",
-            "Jika Anda yakin kami salah menangani data Anda, beri tahu kami dulu dan kami akan berupaya memperbaikinya. Anda juga berhak mengadu ke otoritas pengawas setempat, DPA terkait di UE, PDPC di Singapura, atau otoritas perlindungan data berdasarkan Nghị định 13 di Vietnam."
+            "If you believe we have mishandled your data, tell us first and we will try to put it right. You also have the right to complain to your local supervisory authority, the relevant DPA in the EU or the PDPC in Singapore.",
+            "Nếu bạn tin chúng tôi đã xử lý sai dữ liệu của bạn, hãy báo chúng tôi trước và chúng tôi sẽ cố khắc phục. Bạn cũng có quyền khiếu nại với cơ quan giám sát địa phương, DPA liên quan ở EU hoặc PDPC ở Singapore.",
+            "Jika Anda yakin kami salah menangani data Anda, beri tahu kami dulu dan kami akan berupaya memperbaikinya. Anda juga berhak mengadu ke otoritas pengawas setempat, DPA terkait di UE atau PDPC di Singapura."
           ),
         ],
         [

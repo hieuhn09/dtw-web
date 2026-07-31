@@ -14,6 +14,7 @@ import { NewsletterCta } from "@/components/home/newsletter-cta";
 import { toArticleView, type ArticleView } from "@/lib/article-view";
 import { getMostReadArticles } from "@/lib/most-read";
 import {
+  getAiModels,
   getArticlesByPillar,
   getDeepDive,
   getNavPillars,
@@ -29,7 +30,8 @@ import { buildMetadata, DEFAULT_OG_IMAGE } from "@/lib/metadata";
 // for each section are intentionally left intact so restoring is one edit).
 const SHOW_BRIEF = false;
 const SHOW_WIRE_DROPS = false;
-const SHOW_DASHBOARDS = false;
+// Restored 2026-07-31: the teaser now runs on real CMS/LLM Stats data.
+const SHOW_DASHBOARDS = true;
 const SHOW_DEEP_DIVE = false;
 const SHOW_BEST_OF_REVIEWS = false;
 const SHOW_LISTEN = false;
@@ -58,24 +60,26 @@ export default async function HomePage() {
   // unstable_cache-backed, so it's a cache hit rather than a real round trip.
   const pillars = await getNavPillars();
 
-  const [recent, pinnedDoc, deepDive, wireDrops, mostReadDocs, perPillar] = await Promise.all([
-    getRecentArticles(40),
-    getPinnedLatest(),
-    getDeepDive(),
-    getWireDrops(12),
-    getMostReadArticles(MOST_READ_SLOTS),
-    // Each non-"latest" pillar band fills from its own newest 4 directly,
-    // since low-volume pillars (e.g. Dev) can rank entirely outside the
-    // shared newest-40 `articles` pool below, starving to 1 item or getting
-    // dropped by pillar-showcase.tsx's `items.length === 0` guard. "latest"
-    // is excluded here since it's an auto-aggregated feed, not a real beat.
-    // Pillar list is CMS-driven (invariant #8), not hardcoded.
-    Promise.all(
-      pillars
-        .filter((p) => p.slug !== "latest")
-        .map(async (p) => [p.slug, await getArticlesByPillar(p.slug, 4)] as const),
-    ),
-  ]);
+  const [recent, pinnedDoc, deepDive, wireDrops, mostReadDocs, aiModels, perPillar] =
+    await Promise.all([
+      getRecentArticles(40),
+      getPinnedLatest(),
+      getDeepDive(),
+      getWireDrops(12),
+      getMostReadArticles(MOST_READ_SLOTS),
+      getAiModels(),
+      // Each non-"latest" pillar band fills from its own newest 4 directly,
+      // since low-volume pillars (e.g. Dev) can rank entirely outside the
+      // shared newest-40 `articles` pool below, starving to 1 item or getting
+      // dropped by pillar-showcase.tsx's `items.length === 0` guard. "latest"
+      // is excluded here since it's an auto-aggregated feed, not a real beat.
+      // Pillar list is CMS-driven (invariant #8), not hardcoded.
+      Promise.all(
+        pillars
+          .filter((p) => p.slug !== "latest")
+          .map(async (p) => [p.slug, await getArticlesByPillar(p.slug, 4)] as const),
+      ),
+    ]);
 
   const articles = recent.map(toArticleView);
   const pinned = pinnedDoc ? toArticleView(pinnedDoc) : null;
@@ -143,7 +147,7 @@ export default async function HomePage() {
       </Reveal>
       {SHOW_DASHBOARDS && (
         <Reveal>
-          <DashboardsTeaser />
+          <DashboardsTeaser aiRows={aiModels.rows} />
         </Reveal>
       )}
       {SHOW_DEEP_DIVE && (

@@ -145,3 +145,22 @@ export function fmtFullDate(d: Date, lang: Lang): string {
     timeZone: PUBLICATION_TZ,
   });
 }
+
+/**
+ * Formats a date-only calendar string (e.g. an LLM Stats `release_date` like
+ * "2026-07-09") anchored to UTC rather than `PUBLICATION_TZ`. A bare
+ * `YYYY-MM-DD` string parses as UTC midnight; formatting it in any other zone
+ * (Singapore, or the local machine's zone during SSR/CSR) can roll the
+ * displayed calendar date backward a day for viewers west of that zone. This
+ * is the same SSR/CSR-mismatch class of bug `PUBLICATION_TZ` above already
+ * exists to avoid — `release_date` just isn't a Singapore-anchored publish
+ * instant, so it needs its own always-UTC formatter instead.
+ */
+export function fmtDateUTC(iso: string, lang: Lang): string {
+  return new Date(iso).toLocaleDateString(localeFor(lang), {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+    timeZone: "UTC",
+  });
+}

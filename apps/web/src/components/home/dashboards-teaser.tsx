@@ -1,315 +1,296 @@
 "use client";
 
 import Link from "next/link";
-import { Button, ArrowUpDown } from "@dtw/ui";
-import { AnimatedSpark, CountUp } from "@/components/effects";
+import { Button } from "@dtw/ui";
 import { SectionHeader } from "./section-header";
-import { AI_LEADERBOARD } from "@/lib/data";
+import type { AiLeaderboardRow } from "@/lib/data";
 import { useT } from "@/lib/i18n";
 
-const fundSeries: ReadonlyArray<number> = [12, 18, 14, 22, 19, 26, 24, 31, 28, 34];
-const fundChange = 14.2;
+export interface DashboardsTeaserProps {
+  aiRows: AiLeaderboardRow[];
+}
 
-export function DashboardsTeaser() {
-  const aiTop = AI_LEADERBOARD.slice(0, 4);
+/** `null` if either side is missing; a 4:1 in:out blend when both are present;
+ *  the lone non-null side when only one is present (owner-specified — see
+ *  "UX round 2" note in ai-leaderboard-llmstats_PLAN_30-07-26.md). */
+function blendedPrice(input: number | null, output: number | null): number | null {
+  if (input == null && output == null) return null;
+  if (input == null) return output;
+  if (output == null) return input;
+  return (4 * input + output) / 5;
+}
+
+/**
+ * Per-column chip tier (owner "UX round 3", 2026-07-31): the top 3 *distinct*
+ * values among the displayed rows earn a chip — the single highest value is
+ * tier 1 (strongest amber), the next two distinct values are tier 2 (lighter
+ * amber). Ties share a tier (e.g. two rows tied for the top score both get
+ * tier 1), so more than 3 rows can be chipped if there are ties. Returns a
+ * `value → tier` map; a value absent from the map (or `null`) gets no chip.
+ */
+function chipTiers(values: ReadonlyArray<number | null>): Map<number, 1 | 2> {
+  const distinct = Array.from(new Set(values.filter((v): v is number => v != null))).sort(
+    (a, b) => b - a
+  );
+  const top3 = distinct.slice(0, 3);
+  const tiers = new Map<number, 1 | 2>();
+  top3.forEach((v, i) => tiers.set(v, i === 0 ? 1 : 2));
+  return tiers;
+}
+
+/** Renders a score value with a rounded amber chip when it lands in the
+ *  column's top-3 tier; a plain mono number otherwise; "–" when null. Chips
+ *  center within their cell (the cell itself is text-align: center). */
+function ScoreCell({ v, tiers }: { v: number | null; tiers: Map<number, 1 | 2> }) {
+  if (v == null) return <>–</>;
+  const tier = tiers.get(v);
+  const text = v.toFixed(1);
+  if (!tier) return <>{text}</>;
+  return (
+    <span
+      style={{
+        display: "inline-block",
+        padding: "2px 8px",
+        borderRadius: 6,
+        fontWeight: tier === 1 ? 600 : undefined,
+        background:
+          tier === 1
+            ? "color-mix(in oklab, var(--amber) 26%, transparent)"
+            : "color-mix(in oklab, var(--amber) 12%, transparent)",
+      }}
+    >
+      {text}
+    </span>
+  );
+}
+
+/**
+ * Homepage AI Leaderboard teaser — AI-only single card (the Asia Funding
+ * Tracker card is deliberately gone; see
+ * ai-leaderboard-llmstats_PLAN_30-07-26.md's Non-Goals — the funding
+ * dashboard is hidden entirely from the UI this pass, not just here).
+ */
+export function DashboardsTeaser({ aiRows }: DashboardsTeaserProps) {
   const t = useT();
+  const aiTop = aiRows.slice(0, 5);
+
+  // Per-column top-3 chip tiers (owner "UX round 3") — computed over the
+  // displayed rows only, not the full leaderboard.
+  const generalTiers = chipTiers(aiTop.map((m) => m.general));
+  const reasoningTiers = chipTiers(aiTop.map((m) => m.reasoning));
+  const codingTiers = chipTiers(aiTop.map((m) => m.coding));
+  const mathTiers = chipTiers(aiTop.map((m) => m.math));
+  const visionTiers = chipTiers(aiTop.map((m) => m.vision));
+
+  const headers: ReadonlyArray<{ label: string; info?: string }> = [
+    { label: "#" },
+    { label: t("Model", "Mô hình", "Model") },
+    {
+      label: t("General", "Tổng quát", "Umum"),
+      info: t(
+        "Overall TrueSkill rating across all benchmark categories",
+        "Xếp hạng TrueSkill tổng thể trên tất cả các hạng mục benchmark",
+        "Peringkat TrueSkill keseluruhan di semua kategori benchmark"
+      ),
+    },
+    {
+      label: t("Reason", "Luận", "Nalar"),
+      info: t(
+        "TrueSkill rating from reasoning benchmarks",
+        "Xếp hạng TrueSkill từ các benchmark suy luận",
+        "Peringkat TrueSkill dari benchmark penalaran"
+      ),
+    },
+    {
+      label: t("Code", "Mã", "Kode"),
+      info: t(
+        "TrueSkill rating from coding benchmarks",
+        "Xếp hạng TrueSkill từ các benchmark lập trình",
+        "Peringkat TrueSkill dari benchmark pemrograman"
+      ),
+    },
+    {
+      label: t("Math", "Toán", "Matematika"),
+      info: t(
+        "TrueSkill rating from math benchmarks",
+        "Xếp hạng TrueSkill từ các benchmark toán học",
+        "Peringkat TrueSkill dari benchmark matematika"
+      ),
+    },
+    {
+      label: t("Vision", "Thị giác", "Visi"),
+      info: t(
+        "TrueSkill rating from vision benchmarks",
+        "Xếp hạng TrueSkill từ các benchmark thị giác",
+        "Peringkat TrueSkill dari benchmark visi"
+      ),
+    },
+    {
+      label: t("Price", "Giá", "Harga"),
+      info: t(
+        "Blended price per 1M tokens · 4:1 input-to-output ratio",
+        "Giá gộp trên 1 triệu token · tỉ lệ input:output 4:1",
+        "Harga campuran per 1 juta token · rasio input:output 4:1"
+      ),
+    },
+  ];
 
   return (
     <section style={{ marginBottom: 48 }}>
       <SectionHeader
         title={t("Dashboards", "Bảng dữ liệu", "Dasbor")}
         kicker={t(
-          "Data desk · preview",
-          "Bàn dữ liệu · bản xem trước",
-          "Meja data · pratinjau"
+          "Data desk · updated weekly",
+          "Bàn dữ liệu · cập nhật hằng tuần",
+          "Meja data · diperbarui mingguan"
         )}
         right={
           <Button href="/dashboards" size="sm" variant="outline">
-            {t(
-              "Open full dashboards →",
-              "Mở bảng đầy đủ →",
-              "Buka dasbor penuh →"
-            )}
+            {t("Open full dashboards →", "Mở bảng đầy đủ →", "Buka dasbor penuh →")}
           </Button>
         }
       />
-      <div className="r-grid-2" style={{ display: "grid", gap: 24, alignItems: "stretch" }}>
-        {/* Asia Funding teaser */}
-        <Link
-          href="/dashboards/funding"
-          style={{ color: "inherit", textDecoration: "none", display: "block", height: "100%" }}
+      <Link
+        href="/dashboards"
+        style={{ color: "inherit", textDecoration: "none", display: "block" }}
+      >
+        <div
+          className="card-hover"
+          style={{
+            background: "var(--surface)",
+            border: "1px solid var(--hair)",
+            borderRadius: 8,
+            padding: 24,
+            cursor: "pointer",
+          }}
         >
-          <div
-            className="card-hover"
-            style={{
-              background: "var(--surface)",
-              border: "1px solid var(--hair)",
-              borderRadius: 8,
-              padding: 24,
-              cursor: "pointer",
-              height: "100%",
-              display: "flex",
-              flexDirection: "column",
-            }}
-          >
+          <div style={{ marginBottom: 14 }}>
             <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "flex-start",
-                marginBottom: 14,
-              }}
+              className="upper text-mute"
+              style={{ fontSize: 10, fontWeight: 600, letterSpacing: ".14em", marginBottom: 6 }}
             >
-              <div>
-                <div
-                  className="upper text-mute"
-                  style={{
-                    fontSize: 10,
-                    fontWeight: 600,
-                    letterSpacing: ".14em",
-                    marginBottom: 6,
-                    textTransform: "uppercase",
-                  }}
-                >
-                  Asia Funding Tracker
-                </div>
-                <div
-                  className="serif"
-                  style={{
-                    fontSize: 22,
-                    fontWeight: 600,
-                    letterSpacing: "-0.01em",
-                  }}
-                >
-                  $8.4B raised, 14 days
-                </div>
-              </div>
-              <ArrowUpDown chg={fundChange} />
+              {t("AI Leaderboard", "Bảng xếp hạng AI", "Papan Peringkat AI")}
             </div>
-            <AnimatedSpark
-              values={fundSeries}
-              color="var(--up)"
-              width={420}
-              height={56}
-            />
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(3,1fr)",
-                gap: 12,
-                marginTop: 18,
-                paddingTop: 14,
-                borderTop: "1px solid var(--hair)",
-              }}
-            >
-              <div>
-                <div
-                  className="text-mute-2"
-                  style={{
-                    fontSize: 10,
-                    textTransform: "uppercase",
-                    letterSpacing: ".1em",
-                  }}
-                >
-                  Deals
-                </div>
-                <div
-                  className="mono"
-                  style={{ fontSize: 20, fontWeight: 600, marginTop: 2 }}
-                >
-                  <CountUp to={127} />
-                </div>
-              </div>
-              <div>
-                <div
-                  className="text-mute-2"
-                  style={{
-                    fontSize: 10,
-                    textTransform: "uppercase",
-                    letterSpacing: ".1em",
-                  }}
-                >
-                  Avg. round
-                </div>
-                <div
-                  className="mono"
-                  style={{ fontSize: 20, fontWeight: 600, marginTop: 2 }}
-                >
-                  <CountUp to={66} prefix="$" suffix="M" />
-                </div>
-              </div>
-              <div>
-                <div
-                  className="text-mute-2"
-                  style={{
-                    fontSize: 10,
-                    textTransform: "uppercase",
-                    letterSpacing: ".1em",
-                  }}
-                >
-                  Top sector
-                </div>
-                <div
-                  className="mono"
-                  style={{ fontSize: 14, fontWeight: 600, marginTop: 6 }}
-                >
-                  AI infra
-                </div>
-              </div>
-            </div>
-            <div
-              className="text-mute-2"
-              style={{ fontSize: 11, marginTop: "auto", paddingTop: 14, fontStyle: "italic" }}
-            >
-              {t(
-                "For informational purposes only · not investment advice",
-                "Chỉ nhằm mục đích thông tin · không phải tư vấn đầu tư",
-                "Hanya untuk tujuan informasi · bukan saran investasi"
-              )}
+            <div className="serif" style={{ fontSize: 22, fontWeight: 600, letterSpacing: "-0.01em" }}>
+              {t("This week's top models", "Mô hình hàng đầu tuần này", "Model teratas minggu ini")}
             </div>
           </div>
-        </Link>
-
-        {/* AI Leaderboard teaser */}
-        <Link
-          href="/dashboards/ai"
-          style={{ color: "inherit", textDecoration: "none", display: "block", height: "100%" }}
-        >
-          <div
-            className="card-hover"
-            style={{
-              background: "var(--surface)",
-              border: "1px solid var(--hair)",
-              borderRadius: 8,
-              padding: 24,
-              cursor: "pointer",
-              height: "100%",
-              display: "flex",
-              flexDirection: "column",
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "flex-start",
-                marginBottom: 14,
-              }}
-            >
-              <div>
-                <div
-                  className="upper text-mute"
-                  style={{
-                    fontSize: 10,
-                    fontWeight: 600,
-                    letterSpacing: ".14em",
-                    marginBottom: 6,
-                    textTransform: "uppercase",
-                  }}
-                >
-                  AI Leaderboard
-                </div>
-                <div
-                  className="serif"
-                  style={{
-                    fontSize: 22,
-                    fontWeight: 600,
-                    letterSpacing: "-0.01em",
-                  }}
-                >
-                  This week&apos;s top models
-                </div>
-              </div>
-              <span className="mono text-mute-2" style={{ fontSize: 11 }}>
-                filter by use case →
-              </span>
-            </div>
-            <table
-              style={{
-                width: "100%",
-                borderCollapse: "collapse",
-                fontSize: 13,
-              }}
-            >
-              <thead>
-                <tr style={{ borderBottom: "1px solid var(--hair)" }}>
-                  {(["#", "Model", "Reason", "Code", "$/M"] as const).map((h, i) => (
-                    <th
-                      key={h}
-                      className="upper"
-                      style={{
-                        textAlign: i >= 2 ? "right" : "left",
-                        padding: "6px 0",
-                        fontSize: 10,
-                        fontWeight: 600,
-                        letterSpacing: ".1em",
-                        color: "var(--muted)",
-                        textTransform: "uppercase",
-                      }}
-                    >
-                      {h}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {aiTop.map((m) => (
-                  <tr key={m.rank} style={{ borderBottom: "1px solid var(--hair)" }}>
-                    <td
-                      className="mono"
-                      style={{
-                        padding: "10px 0",
-                        fontSize: 12,
-                        color: "var(--muted)",
-                      }}
-                    >
-                      {m.rank}
-                    </td>
-                    <td style={{ padding: "10px 0" }}>
-                      <div style={{ fontWeight: 600, fontSize: 13 }}>
-                        {m.model}
-                      </div>
-                      <div className="text-mute-2" style={{ fontSize: 11 }}>
-                        {m.maker}
-                      </div>
-                    </td>
-                    <td
-                      className="mono tnum"
-                      style={{
-                        padding: "10px 0",
-                        textAlign: "right",
-                        fontSize: 13,
-                      }}
-                    >
-                      {m.reasoning}
-                    </td>
-                    <td
-                      className="mono tnum"
-                      style={{
-                        padding: "10px 0",
-                        textAlign: "right",
-                        fontSize: 13,
-                      }}
-                    >
-                      {m.coding}
-                    </td>
-                    <td
-                      className="mono tnum"
-                      style={{
-                        padding: "10px 0",
-                        textAlign: "right",
-                        fontSize: 13,
-                      }}
-                    >
-                      {m.price.toFixed(1)}
-                    </td>
-                  </tr>
+          <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
+            <thead>
+              <tr style={{ borderBottom: "1px solid var(--hair)" }}>
+                {headers.map((h, i) => (
+                  <th
+                    key={h.label}
+                    className="upper"
+                    style={{
+                      textAlign: i === 1 ? "left" : "center",
+                      padding: "6px 0",
+                      fontSize: 10,
+                      fontWeight: 600,
+                      letterSpacing: ".1em",
+                      color: "var(--muted)",
+                      width: i >= 2 ? 90 : undefined,
+                    }}
+                  >
+                    {h.label}
+                    {h.info && (
+                      <span
+                        className="dtw-tip"
+                        data-tip={h.info}
+                        aria-label={h.info}
+                        tabIndex={0}
+                        style={{
+                          marginInlineStart: 4,
+                          color: "var(--muted-2)",
+                          fontSize: 10,
+                          fontWeight: 400,
+                          textTransform: "none",
+                          letterSpacing: "normal",
+                        }}
+                      >
+                        ⓘ
+                      </span>
+                    )}
+                  </th>
                 ))}
-              </tbody>
-            </table>
-          </div>
-        </Link>
-      </div>
+              </tr>
+            </thead>
+            <tbody>
+              {aiTop.map((m, i) => (
+                <tr
+                  key={m.rank}
+                  style={{
+                    borderBottom: "1px solid var(--hair)",
+                    background:
+                      i % 2 === 0 ? "transparent" : "color-mix(in oklab, var(--ink) 2%, transparent)",
+                  }}
+                >
+                  <td
+                    className={i < 3 ? "mono r-rank-top" : "mono"}
+                    style={{
+                      padding: "10px 0",
+                      fontSize: 12,
+                      textAlign: "center",
+                      color: i < 3 ? undefined : "var(--muted)",
+                    }}
+                  >
+                    {m.rank}
+                  </td>
+                  <td style={{ padding: "10px 0" }}>
+                    <div style={{ fontWeight: 600, fontSize: 13 }}>{m.model}</div>
+                    <div className="text-mute-2" style={{ fontSize: 11 }}>
+                      {m.maker}
+                    </div>
+                  </td>
+                  <td
+                    className="mono tnum"
+                    style={{ padding: "10px 0", textAlign: "center", fontSize: 13, width: 90 }}
+                  >
+                    <ScoreCell v={m.general} tiers={generalTiers} />
+                  </td>
+                  <td
+                    className="mono tnum"
+                    style={{ padding: "10px 0", textAlign: "center", fontSize: 13, width: 90 }}
+                  >
+                    <ScoreCell v={m.reasoning} tiers={reasoningTiers} />
+                  </td>
+                  <td
+                    className="mono tnum"
+                    style={{ padding: "10px 0", textAlign: "center", fontSize: 13, width: 90 }}
+                  >
+                    <ScoreCell v={m.coding} tiers={codingTiers} />
+                  </td>
+                  <td
+                    className="mono tnum"
+                    style={{ padding: "10px 0", textAlign: "center", fontSize: 13, width: 90 }}
+                  >
+                    <ScoreCell v={m.math} tiers={mathTiers} />
+                  </td>
+                  <td
+                    className="mono tnum"
+                    style={{ padding: "10px 0", textAlign: "center", fontSize: 13, width: 90 }}
+                  >
+                    <ScoreCell v={m.vision} tiers={visionTiers} />
+                  </td>
+                  <td
+                    className="mono tnum"
+                    style={{ padding: "10px 0", textAlign: "center", fontSize: 13, width: 90 }}
+                  >
+                    {(() => {
+                      const price = blendedPrice(m.inputPrice, m.outputPrice);
+                      return price == null
+                        ? "–"
+                        : price === 0
+                          ? t("free", "miễn phí", "gratis")
+                          : "$" + price.toFixed(2);
+                    })()}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </Link>
     </section>
   );
 }
