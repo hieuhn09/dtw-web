@@ -11,9 +11,16 @@
 
 `/dashboards` currently renders a client-side tab bar (Funding | AI) from hardcoded arrays in `lib/data.ts`, honestly labeled "sample data." This plan converts `/dashboards` into a single, CMS-backed, cron-refreshed **AI Leaderboard page** — no tabs, no funding UI anywhere — sourced from the LLM Stats API per `references/ai-leaderboard-llmstats-design_REFERENCE_30-07-26.md`. It adds one Payload collection (`aiModels`), one lean Payload global (`dashboardMethodology`, AI-only shape), wires the existing `SponsorSlots` collection's first real hooks, converts the route to a server component with metadata/404/loading/error, rewrites the AI table to be prop-driven + accessible + i18n-complete, shrinks the homepage teaser to a single AI card, and ships one weekly Vercel cron (`ai-weekly`) that refreshes 11 of 14 `aiModels` fields via LLM Stats (final column set amended 2026-07-30, 2nd — see Non-Goals and the Schema Reference). All AI-side architecture decisions, schema, and Known Unknowns from the big plan (AD-4/5/8/11, the `aiModels` schema table, Known Unknowns #1/#2/#5, and the LLM Stats design reference) carry over verbatim except where this reduced scope forces a structural simplification — those simplifications are called out explicitly below as **Lean Deviations**.
 
-**Status**: ⏳ PLANNED
+**Status**: 🧪 TESTING (Groups A-H code-complete + verified against the live Neon dev DB and a real LLM Stats cron write; awaiting user review of the manual-test evidence before archival)
 
 **Amended 2026-07-30 (2nd)**: final column set confirmed by owner against live data — General/Reasoning/Coding/Math/Search/Vision + dual pricing + Released; Speed/Context/Writing dropped.
+
+**EXECUTE progress (2026-07-31, Groups A-C pass)**: Checklist items 1-17 (Groups A "Shared plumbing", B "Payload schema", C "Read helpers") implemented, migrated, seeded, and verified against the live Neon dev DB — see the EXECUTE session report for full evidence. Two adaptations were required (both documented, not silent):
+1. `DashboardMethodology`'s Indonesian locale sub-fields are named `ind`, not `id` — Payload's Postgres/Drizzle adapter silently drops any field literally named `id` at any nesting depth (confirmed via `@payloadcms/drizzle/dist/schema/traverseFields.js`, and confirmed as a **pre-existing, unrelated bug** in `Pillars.title.id` / `Tags.title.id`, both left untouched/out of scope). `getDashboardMethodology()` in `lib/payload-server.ts` maps `ind` back to the app-facing `id` key at the read boundary.
+2. The amended-shape `AiLeaderboardRow` interface + its static fallback constant were defined locally in `lib/payload-server.ts` for that pass, migrated into `lib/data.ts` in the Group D-H pass below (restoring the plan's original Touchpoints).
+
+**EXECUTE progress (2026-07-31, Groups D-H pass)**: Checklist items 18-32 implemented and verified (`next build && next start`, a real `ai-weekly` cron write against the live LLM Stats API, an `editorLocked` proof, and light/dark screenshots — see the EXECUTE session report for full evidence). One additional, non-trivial adaptation beyond the plan's literal text was required, verified with an isolated minimal repro before being applied to the real route:
+3. **Sub-path `notFound()`/`permanentRedirect()` logic moved from `page.tsx` into a new `layout.tsx`** in the same `[[...sub]]` folder (not a folder/URL restructure — same routing pattern, additive file only). As literally specified (item 18, logic inside `page.tsx`), combined with the segment's `loading.tsx` (item 21), `notFound()`/`permanentRedirect()` silently stopped producing real HTTP status codes: `loading.tsx` makes Next.js wrap the *page* component in a Suspense boundary and commit the response to `200` the instant that boundary starts streaming — before a `page.tsx`-level `notFound()`/`permanentRedirect()` can run. Verified in both `next dev` and a real `next build && next start` production server, and confirmed with an isolated minimal repro route (`page.tsx` alone: 200 with `loading.tsx` present, 404 without it). A `layout.tsx` renders *outside* that Suspense boundary, so moving the logic there restores correct `200`/`308`/`404` HTTP semantics while keeping the `loading.tsx` skeleton for the one valid (`sub` empty) case — confirmed with the same repro, then applied to the real `/dashboards` route and re-verified end to end.
 
 ---
 
@@ -240,6 +247,7 @@ Ordered for dependency correctness. Each item is independently verifiable.
 - `apps/web/src/app/api/dashboards/refresh/[source]/route.ts`
 - `apps/web/src/app/(reader)/dashboards/[[...sub]]/loading.tsx`
 - `apps/web/src/app/(reader)/dashboards/[[...sub]]/error.tsx`
+- `apps/web/src/app/(reader)/dashboards/[[...sub]]/layout.tsx` (not in the original Touchpoints — see EXECUTE progress adaptation #3 above)
 
 **Modified files**
 - `apps/web/src/app/api/engine/intake/route.ts` (bearer-check extraction only, no behavior change)
