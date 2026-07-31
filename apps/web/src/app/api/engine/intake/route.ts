@@ -1,10 +1,10 @@
-import { timingSafeEqual } from "node:crypto";
 import { getPayload } from "payload";
 import {
   convertMarkdownToLexical,
   editorConfigFactory,
 } from "@payloadcms/richtext-lexical";
 import config from "../../../../../payload.config";
+import { bearerMatches } from "@/lib/bearer-auth";
 
 /**
  * Engine intake — content-engine PayloadAdapter (Phase 5A) POSTs a normalized,
@@ -66,19 +66,6 @@ function slugify(input: string): string {
     .replace(/^-+|-+$/g, "")
     .slice(0, 80)
     .replace(/-+$/g, "");
-}
-
-/** Constant-time bearer check. Returns false on any shape/length mismatch. */
-function bearerMatches(header: string | null, expected: string): boolean {
-  if (!header) return false;
-  const prefix = "Bearer ";
-  if (!header.startsWith(prefix)) return false;
-  const presented = header.slice(prefix.length).trim();
-  const a = Buffer.from(presented, "utf8");
-  const b = Buffer.from(expected, "utf8");
-  // timingSafeEqual throws on length mismatch — guard first (length is not secret).
-  if (a.length !== b.length) return false;
-  return timingSafeEqual(a, b);
 }
 
 function isNonEmptyString(v: unknown): v is string {
