@@ -30,7 +30,8 @@ import { buildMetadata, DEFAULT_OG_IMAGE } from "@/lib/metadata";
 // for each section are intentionally left intact so restoring is one edit).
 const SHOW_BRIEF = false;
 const SHOW_WIRE_DROPS = false;
-const SHOW_DASHBOARDS = false;
+// Restored 2026-07-31: the teaser now runs on real CMS/LLM Stats data.
+const SHOW_DASHBOARDS = true;
 const SHOW_DEEP_DIVE = false;
 const SHOW_BEST_OF_REVIEWS = false;
 const SHOW_LISTEN = false;
