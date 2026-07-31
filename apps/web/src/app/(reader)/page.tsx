@@ -13,6 +13,7 @@ import { PodcastStrip } from "@/components/home/podcast-strip";
 import { NewsletterCta } from "@/components/home/newsletter-cta";
 import { toArticleView, type ArticleView } from "@/lib/article-view";
 import {
+  getAiModels,
   getArticlesByPillar,
   getDeepDive,
   getNavPillars,
@@ -54,11 +55,12 @@ export default async function HomePage() {
   // unstable_cache-backed, so it's a cache hit rather than a real round trip.
   const pillars = await getNavPillars();
 
-  const [recent, pinnedDoc, deepDive, wireDrops, perPillar] = await Promise.all([
+  const [recent, pinnedDoc, deepDive, wireDrops, aiModels, perPillar] = await Promise.all([
     getRecentArticles(40),
     getPinnedLatest(),
     getDeepDive(),
     getWireDrops(12),
+    getAiModels(),
     // Each non-"latest" pillar band fills from its own newest 4 directly,
     // since low-volume pillars (e.g. Dev) can rank entirely outside the
     // shared newest-40 `articles` pool below, starving to 1 item or getting
@@ -124,7 +126,7 @@ export default async function HomePage() {
       </Reveal>
       {SHOW_DASHBOARDS && (
         <Reveal>
-          <DashboardsTeaser />
+          <DashboardsTeaser aiRows={aiModels.rows} />
         </Reveal>
       )}
       {SHOW_DEEP_DIVE && (

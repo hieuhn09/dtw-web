@@ -24,8 +24,10 @@
   --brand-amber: #D4623C; /* logo pulse dot, matches accent */
   --banner: #1B2A52;      /* deep navy for large banners (dark in both themes) */
   --sponsored: #FEF3C7;   /* spec invariant */
+  --sponsored-border: #E0B900; /* AI Leaderboard sponsor card border (30-07-26) */
   --up: #10B981;          /* spec invariant */
   --down: #EF4444;        /* spec invariant */
+  --bar: #3A4E8C;         /* single-hue bar-fill for the AI Leaderboard score columns (30-07-26, 2nd) */
 
   /* Pillars — muted earthy set (design refresh 2026-06-14) */
   --ai: #3A4E8C;
@@ -57,8 +59,10 @@ html[data-theme="dark"] {
   --hair: #1E2B45;
   --hair-2: #243453;
   --sponsored: #3B2E0A;
+  --sponsored-border: #D9A62E;
   --brand-navy: #E2E8F0;  /* lightened for dark mode */
   --banner: #16223C;      /* softer banner for dark mode */
+  --bar: #6B84D6;         /* brighter for dark-background contrast — --ai itself has no dark override */
 }
 
 /* ---------------------------------------------------------------------------
@@ -79,8 +83,10 @@ html[data-theme="dark"] {
   --color-accent: var(--accent);
   --color-accent-ink: var(--accent-ink);
   --color-sponsored: var(--sponsored);
+  --color-sponsored-border: var(--sponsored-border);
   --color-up: var(--up);
   --color-down: var(--down);
+  --color-bar: var(--bar);
   --color-banner: var(--banner);
   --color-brand-navy: var(--brand-navy);
   --color-amber: var(--amber);
