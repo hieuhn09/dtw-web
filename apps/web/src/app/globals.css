@@ -376,6 +376,29 @@ body {
   min-width: 680px;
 }
 
+/* Right-edge fade hint over a horizontally-scrollable table, shown/hidden by
+   JS (scroll position) — signals more columns exist without a hard edge. */
+.r-table-fade {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 48px;
+  pointer-events: none;
+  background: linear-gradient(to right, transparent, var(--surface) 70%);
+}
+
+/* Muted-but-clickable attribution/source links (e.g. dashboard meta lines):
+   underlined at rest, brightens to the accent color on hover/focus. */
+.r-meta-link {
+  color: inherit;
+  text-decoration: underline;
+}
+.r-meta-link:hover,
+.r-meta-link:focus-visible {
+  color: var(--accent);
+}
+
 .kicker {
   font: 600 11px/1 var(--font-sans);
   letter-spacing: 0.14em;

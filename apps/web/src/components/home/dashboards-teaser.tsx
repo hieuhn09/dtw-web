@@ -24,7 +24,11 @@ export function DashboardsTeaser({ aiRows }: DashboardsTeaserProps) {
     <section style={{ marginBottom: 48 }}>
       <SectionHeader
         title={t("Dashboards", "Bảng dữ liệu", "Dasbor")}
-        kicker={t("Data desk · preview", "Bàn dữ liệu · bản xem trước", "Meja data · pratinjau")}
+        kicker={t(
+          "Data desk · updated weekly",
+          "Bàn dữ liệu · cập nhật hằng tuần",
+          "Meja data · diperbarui mingguan"
+        )}
         right={
           <Button href="/dashboards" size="sm" variant="outline">
             {t("Open full dashboards →", "Mở bảng đầy đủ →", "Buka dasbor penuh →")}
@@ -78,7 +82,7 @@ export function DashboardsTeaser({ aiRows }: DashboardsTeaserProps) {
                     t("General", "Tổng quát", "Umum"),
                     t("Reason", "Luận", "Nalar"),
                     t("Code", "Mã", "Kode"),
-                    "$/M-in",
+                    t("Input $/M", "Input $/Tr", "Input $/Jt"),
                   ] as const
                 ).map((h, i) => (
                   <th
@@ -91,6 +95,7 @@ export function DashboardsTeaser({ aiRows }: DashboardsTeaserProps) {
                       fontWeight: 600,
                       letterSpacing: ".1em",
                       color: "var(--muted)",
+                      width: i >= 2 ? 90 : undefined,
                     }}
                   >
                     {h}
@@ -99,8 +104,15 @@ export function DashboardsTeaser({ aiRows }: DashboardsTeaserProps) {
               </tr>
             </thead>
             <tbody>
-              {aiTop.map((m) => (
-                <tr key={m.rank} style={{ borderBottom: "1px solid var(--hair)" }}>
+              {aiTop.map((m, i) => (
+                <tr
+                  key={m.rank}
+                  style={{
+                    borderBottom: "1px solid var(--hair)",
+                    background:
+                      i % 2 === 0 ? "transparent" : "color-mix(in oklab, var(--ink) 2%, transparent)",
+                  }}
+                >
                   <td className="mono" style={{ padding: "10px 0", fontSize: 12, color: "var(--muted)" }}>
                     {m.rank}
                   </td>
@@ -110,16 +122,28 @@ export function DashboardsTeaser({ aiRows }: DashboardsTeaserProps) {
                       {m.maker}
                     </div>
                   </td>
-                  <td className="mono tnum" style={{ padding: "10px 0", textAlign: "right", fontSize: 13 }}>
+                  <td
+                    className="mono tnum"
+                    style={{ padding: "10px 0", textAlign: "right", fontSize: 13, width: 90 }}
+                  >
                     {m.general != null ? m.general.toFixed(1) : "–"}
                   </td>
-                  <td className="mono tnum" style={{ padding: "10px 0", textAlign: "right", fontSize: 13 }}>
+                  <td
+                    className="mono tnum"
+                    style={{ padding: "10px 0", textAlign: "right", fontSize: 13, width: 90 }}
+                  >
                     {m.reasoning != null ? m.reasoning.toFixed(1) : "–"}
                   </td>
-                  <td className="mono tnum" style={{ padding: "10px 0", textAlign: "right", fontSize: 13 }}>
+                  <td
+                    className="mono tnum"
+                    style={{ padding: "10px 0", textAlign: "right", fontSize: 13, width: 90 }}
+                  >
                     {m.coding != null ? m.coding.toFixed(1) : "–"}
                   </td>
-                  <td className="mono tnum" style={{ padding: "10px 0", textAlign: "right", fontSize: 13 }}>
+                  <td
+                    className="mono tnum"
+                    style={{ padding: "10px 0", textAlign: "right", fontSize: 13, width: 90 }}
+                  >
                     {m.inputPrice == null
                       ? "–"
                       : m.inputPrice === 0
