@@ -128,9 +128,9 @@ export function DashboardsTeaser({ aiRows }: DashboardsTeaserProps) {
     {
       label: t("Price", "Giá", "Harga"),
       info: t(
-        "Blended price per 1M tokens: (4 × input + output) ÷ 5",
-        "Giá gộp trên 1 triệu token: (4 × giá vào + giá ra) ÷ 5",
-        "Harga campuran per 1 juta token: (4 × input + output) ÷ 5"
+        "Blended price per 1M tokens · 4:1 input-to-output ratio",
+        "Giá gộp trên 1 triệu token · tỉ lệ input:output 4:1",
+        "Harga campuran per 1 juta token · rasio input:output 4:1"
       ),
     },
   ];
