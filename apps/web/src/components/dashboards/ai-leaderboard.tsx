@@ -130,17 +130,19 @@ function Th({
       </button>
       {info && (
         <span
-          title={info}
+          className="dtw-tip"
+          data-tip={info}
           aria-label={info}
+          tabIndex={0}
           style={{
             position: "absolute",
             top: "50%",
             insetInlineEnd: 10,
             transform: "translateY(-50%)",
-            cursor: "help",
             color: "var(--muted-2)",
             fontSize: 11,
             lineHeight: 1,
+            zIndex: 1,
           }}
         >
           ⓘ
