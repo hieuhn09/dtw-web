@@ -823,10 +823,13 @@ export interface DashboardMethodologyContent {
  * defensive pattern above).
  */
 const DASHBOARD_METHODOLOGY_FALLBACK: DashboardMethodologyContent = {
+  // Plain-language rewrite (owner, "UX round 2" 2026-07-31) — kept in sync
+  // verbatim with the seed copy in `scripts/seed-payload.ts`'s
+  // `DASHBOARD_METHODOLOGY.aiMethodology`.
   aiMethodology: {
-    en: "Scores are normalized per-category benchmark scores compiled by LLM Stats (source-verified where marked). Rankings method: TrueSkill. For informational purposes only.",
-    vi: "Điểm số là điểm chuẩn đã được chuẩn hóa theo từng hạng mục, do LLM Stats tổng hợp (đã xác minh nguồn khi có đánh dấu). Phương pháp xếp hạng: TrueSkill. Chỉ mang tính chất tham khảo.",
-    id: "Skor adalah skor benchmark yang dinormalisasi per kategori, disusun oleh LLM Stats (sumber terverifikasi jika ditandai). Metode peringkat: TrueSkill. Hanya untuk tujuan informasi.",
+    en: "Each model's score is a TrueSkill rating - the same system Xbox uses to rank players. Every published benchmark result counts as a head-to-head match between models, and beating a strong model raises a rating more than beating a weak one. We show the conservative estimate: a floor the model is about 99% likely to clear, so models with only a few benchmark results score lower until more evidence arrives. Ratings are grouped by category (General, Reasoning, Coding, Math, Search, Vision), compiled by LLM Stats, and refreshed here every Monday.",
+    vi: "Điểm số của mỗi mô hình là một xếp hạng TrueSkill – hệ thống mà Xbox dùng để xếp hạng người chơi. Mỗi kết quả benchmark được công bố được tính như một trận đấu đối đầu giữa các mô hình, và việc đánh bại một mô hình mạnh sẽ nâng xếp hạng nhiều hơn so với việc đánh bại một mô hình yếu. Chúng tôi hiển thị ước tính thận trọng: một ngưỡng mà mô hình có khoảng 99% khả năng vượt qua, vì vậy các mô hình chỉ có ít kết quả benchmark sẽ có điểm thấp hơn cho đến khi có thêm bằng chứng. Các xếp hạng được nhóm theo hạng mục (Tổng quát, Suy luận, Lập trình, Toán, Tìm kiếm, Thị giác), do LLM Stats tổng hợp, và được cập nhật tại đây mỗi thứ Hai.",
+    id: "Skor setiap model adalah peringkat TrueSkill – sistem yang sama yang digunakan Xbox untuk memberi peringkat pemain. Setiap hasil benchmark yang dipublikasikan dihitung sebagai pertandingan head-to-head antar model, dan mengalahkan model yang kuat menaikkan peringkat lebih banyak daripada mengalahkan model yang lemah. Kami menampilkan estimasi konservatif: sebuah batas bawah yang kemungkinan sekitar 99% dapat dilampaui model tersebut, sehingga model yang hanya memiliki sedikit hasil benchmark mendapat skor lebih rendah sampai ada lebih banyak bukti. Peringkat dikelompokkan berdasarkan kategori (Umum, Penalaran, Pemrograman, Matematika, Pencarian, Visi), disusun oleh LLM Stats, dan diperbarui di sini setiap hari Senin.",
   },
   disclaimer: {
     en: "For informational purposes only · not investment or procurement advice",

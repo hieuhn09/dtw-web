@@ -55,6 +55,10 @@ interface ThProps {
   stickyLeft?: number;
   stickyBorder?: boolean;
   cellRef?: React.Ref<HTMLTableCellElement>;
+  /** Translated one-line tooltip shown via a small ⓘ after the label. Renders
+   *  as a plain `<span>` sibling of the sort `<button>` (not nested inside
+   *  it), so hovering/clicking it never triggers a sort. */
+  info?: string;
 }
 
 /**
@@ -62,7 +66,18 @@ interface ThProps {
  * `tabIndex`/`onKeyDown` shim on the `<th>` itself. `aria-sort` stays on the
  * `<th>`, matching the WAI-ARIA sortable-table pattern.
  */
-function Th({ k, num, children, sortKey, sortDir, onSort, stickyLeft, stickyBorder, cellRef }: ThProps) {
+function Th({
+  k,
+  num,
+  children,
+  sortKey,
+  sortDir,
+  onSort,
+  stickyLeft,
+  stickyBorder,
+  cellRef,
+  info,
+}: ThProps) {
   const active = sortKey === k;
   const sticky = stickyLeft != null;
   return (
@@ -74,9 +89,9 @@ function Th({ k, num, children, sortKey, sortDir, onSort, stickyLeft, stickyBord
         padding: 0,
         borderBottom: "1px solid var(--hair-2)",
         background: "var(--surface)",
+        position: sticky ? ("sticky" as const) : ("relative" as const),
         ...(sticky
           ? {
-              position: "sticky" as const,
               left: stickyLeft,
               zIndex: 2,
               borderInlineEnd: stickyBorder ? "1px solid var(--hair)" : undefined,
@@ -101,7 +116,7 @@ function Th({ k, num, children, sortKey, sortDir, onSort, stickyLeft, stickyBord
           fontSize: 10,
           fontWeight: 600,
           color: active ? "var(--ink)" : "var(--muted)",
-          padding: "10px 12px",
+          padding: info && num ? "10px 24px 10px 12px" : "10px 12px",
           textAlign: num ? "right" : "left",
           whiteSpace: "nowrap",
         }}
@@ -113,17 +128,48 @@ function Th({ k, num, children, sortKey, sortDir, onSort, stickyLeft, stickyBord
           </span>
         )}
       </button>
+      {info && (
+        <span
+          title={info}
+          aria-label={info}
+          style={{
+            position: "absolute",
+            top: "50%",
+            insetInlineEnd: 10,
+            transform: "translateY(-50%)",
+            cursor: "help",
+            color: "var(--muted-2)",
+            fontSize: 11,
+            lineHeight: 1,
+          }}
+        >
+          ⓘ
+        </span>
+      )}
     </th>
   );
 }
 
 /**
- * Score-column gauge. `v == null` renders a plain "–" (no track/fill — the
- * model fell outside that category's top-50). Otherwise a single-hue
- * `var(--bar)` fill, padded min-max scaled against `range` (the column's
- * min/max across all rows) so close scores still read as visibly different
- * bars, plus the raw 1-decimal value. `role="img"` + `aria-label` carry the
- * raw value only (no dimension-name prefix, matching the visual reference).
+ * Score-column gauge (owner UX round-2, 2026-07-31). `v == null` renders a
+ * plain "–" (no track/fill — the model fell outside that category's top-50).
+ * Otherwise a centered stack: the raw 1-decimal value (mono, tabular) sits
+ * ABOVE a full-width bar — never inside the fill, so contrast never breaks
+ * across filled/unfilled regions or themes — and the whole stack centers
+ * within its column so values line up vertically down the column.
+ *
+ * Width scale: `floor = columnMin - 10`, `width% = (v - floor) / (columnMax -
+ * floor) × 100` (100% when the column has no spread) — a shallower floor than
+ * the column's own minimum so even the lowest-scoring row in a tight column
+ * still reads as a substantial bar, not a nub.
+ *
+ * Fill color is a value-band signal, not just decoration: `delta = columnMax
+ * - v`; within 2 points of the column leader → `var(--up)`; within 6 → the
+ * neutral `var(--bar)`; further behind → `var(--amber)`. The number stays
+ * visible next to the bar regardless, so color is never the only signal.
+ *
+ * `role="img"` + `aria-label` carry the raw value only (no dimension-name
+ * prefix, matching the visual reference).
  */
 function Bar({ v, range }: { v: number | null; range: { min: number; max: number } }) {
   if (v == null) {
@@ -133,21 +179,33 @@ function Bar({ v, range }: { v: number | null; range: { min: number; max: number
       </span>
     );
   }
+  const floor = range.min - 10;
   const pct =
     range.max === range.min
       ? 100
-      : Math.max(0, Math.min(100, 15 + 85 * ((v - range.min) / (range.max - range.min))));
+      : Math.max(0, Math.min(100, ((v - floor) / (range.max - floor)) * 100));
+  const delta = range.max - v;
+  const fillColor = delta <= 2 ? "var(--up)" : delta <= 6 ? "var(--bar)" : "var(--amber)";
   return (
     <div
       role="img"
       aria-label={v.toFixed(1)}
-      style={{ display: "flex", alignItems: "center", gap: 7 }}
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: 4,
+        width: 64,
+        margin: "0 auto",
+      }}
     >
+      <span className="mono tnum" style={{ fontSize: 12, lineHeight: 1 }}>
+        {v.toFixed(1)}
+      </span>
       <span
         style={{
-          display: "inline-block",
-          flex: "none",
-          width: 56,
+          display: "block",
+          width: "100%",
           height: 6,
           borderRadius: 99,
           background: "var(--surface-2)",
@@ -160,12 +218,9 @@ function Bar({ v, range }: { v: number | null; range: { min: number; max: number
             height: "100%",
             borderRadius: 99,
             width: `${pct}%`,
-            background: "var(--bar)",
+            background: fillColor,
           }}
         />
-      </span>
-      <span className="mono tnum" style={{ fontSize: 12, width: 34, textAlign: "right" }}>
-        {v.toFixed(1)}
       </span>
     </div>
   );
@@ -379,31 +434,124 @@ export function AILeaderboard({ rows, asOfScores, methodology, sponsor }: AILead
                   >
                     {t("Model", "Mô hình", "Model")}
                   </Th>
-                  <Th k="general" sortKey={sortKey} sortDir={sortDir} onSort={onSort}>
+                  <Th
+                    k="general"
+                    sortKey={sortKey}
+                    sortDir={sortDir}
+                    onSort={onSort}
+                    info={t(
+                      "Overall TrueSkill rating across all benchmark categories",
+                      "Xếp hạng TrueSkill tổng thể trên tất cả các hạng mục benchmark",
+                      "Peringkat TrueSkill keseluruhan di semua kategori benchmark"
+                    )}
+                  >
                     {t("General", "Tổng quát", "Umum")}
                   </Th>
-                  <Th k="reasoning" sortKey={sortKey} sortDir={sortDir} onSort={onSort}>
+                  <Th
+                    k="reasoning"
+                    sortKey={sortKey}
+                    sortDir={sortDir}
+                    onSort={onSort}
+                    info={t(
+                      "TrueSkill rating from reasoning benchmarks",
+                      "Xếp hạng TrueSkill từ các benchmark suy luận",
+                      "Peringkat TrueSkill dari benchmark penalaran"
+                    )}
+                  >
                     {t("Reasoning", "Suy luận", "Penalaran")}
                   </Th>
-                  <Th k="coding" sortKey={sortKey} sortDir={sortDir} onSort={onSort}>
+                  <Th
+                    k="coding"
+                    sortKey={sortKey}
+                    sortDir={sortDir}
+                    onSort={onSort}
+                    info={t(
+                      "TrueSkill rating from coding benchmarks",
+                      "Xếp hạng TrueSkill từ các benchmark lập trình",
+                      "Peringkat TrueSkill dari benchmark pemrograman"
+                    )}
+                  >
                     {t("Coding", "Lập trình", "Pemrograman")}
                   </Th>
-                  <Th k="math" sortKey={sortKey} sortDir={sortDir} onSort={onSort}>
+                  <Th
+                    k="math"
+                    sortKey={sortKey}
+                    sortDir={sortDir}
+                    onSort={onSort}
+                    info={t(
+                      "TrueSkill rating from math benchmarks",
+                      "Xếp hạng TrueSkill từ các benchmark toán học",
+                      "Peringkat TrueSkill dari benchmark matematika"
+                    )}
+                  >
                     {t("Math", "Toán", "Matematika")}
                   </Th>
-                  <Th k="search" sortKey={sortKey} sortDir={sortDir} onSort={onSort}>
+                  <Th
+                    k="search"
+                    sortKey={sortKey}
+                    sortDir={sortDir}
+                    onSort={onSort}
+                    info={t(
+                      "TrueSkill rating from search benchmarks",
+                      "Xếp hạng TrueSkill từ các benchmark tìm kiếm",
+                      "Peringkat TrueSkill dari benchmark pencarian"
+                    )}
+                  >
                     {t("Search", "Tìm kiếm", "Pencarian")}
                   </Th>
-                  <Th k="vision" sortKey={sortKey} sortDir={sortDir} onSort={onSort}>
+                  <Th
+                    k="vision"
+                    sortKey={sortKey}
+                    sortDir={sortDir}
+                    onSort={onSort}
+                    info={t(
+                      "TrueSkill rating from vision benchmarks",
+                      "Xếp hạng TrueSkill từ các benchmark thị giác",
+                      "Peringkat TrueSkill dari benchmark visi"
+                    )}
+                  >
                     {t("Vision", "Thị giác", "Visi")}
                   </Th>
-                  <Th k="inputPrice" num sortKey={sortKey} sortDir={sortDir} onSort={onSort}>
+                  <Th
+                    k="inputPrice"
+                    num
+                    sortKey={sortKey}
+                    sortDir={sortDir}
+                    onSort={onSort}
+                    info={t(
+                      "Cheapest listed provider price per 1M tokens",
+                      "Giá thấp nhất trong số các nhà cung cấp niêm yết, tính trên 1 triệu token",
+                      "Harga penyedia terdaftar termurah per 1 juta token"
+                    )}
+                  >
                     {t("Input $/M", "Input $/Tr", "Input $/Jt")}
                   </Th>
-                  <Th k="outputPrice" num sortKey={sortKey} sortDir={sortDir} onSort={onSort}>
+                  <Th
+                    k="outputPrice"
+                    num
+                    sortKey={sortKey}
+                    sortDir={sortDir}
+                    onSort={onSort}
+                    info={t(
+                      "Cheapest listed provider price per 1M tokens",
+                      "Giá thấp nhất trong số các nhà cung cấp niêm yết, tính trên 1 triệu token",
+                      "Harga penyedia terdaftar termurah per 1 juta token"
+                    )}
+                  >
                     {t("Output $/M", "Output $/Tr", "Output $/Jt")}
                   </Th>
-                  <Th k="released" num sortKey={sortKey} sortDir={sortDir} onSort={onSort}>
+                  <Th
+                    k="released"
+                    num
+                    sortKey={sortKey}
+                    sortDir={sortDir}
+                    onSort={onSort}
+                    info={t(
+                      "First public release date",
+                      "Ngày phát hành công khai đầu tiên",
+                      "Tanggal rilis publik pertama"
+                    )}
+                  >
                     {t("Released", "Phát hành", "Rilis")}
                   </Th>
                 </tr>
@@ -521,15 +669,8 @@ export function AILeaderboard({ rows, asOfScores, methodology, sponsor }: AILead
           <div className="kicker" style={{ marginBottom: 8 }}>
             {t("Methodology", "Phương pháp", "Metodologi")}
           </div>
-          <p style={{ margin: "0 0 8px", fontSize: 13, lineHeight: 1.55, color: "var(--ink-2)" }}>
+          <p style={{ margin: 0, fontSize: 13, lineHeight: 1.55, color: "var(--ink-2)" }}>
             {t(methodology.en, methodology.vi, methodology.id)}
-          </p>
-          <p className="mono text-mute-2" style={{ margin: 0, fontSize: 11 }}>
-            {t(
-              "For informational purposes only · not investment or procurement advice",
-              "Chỉ nhằm mục đích thông tin · không phải tư vấn đầu tư hay mua sắm",
-              "Hanya untuk tujuan informasi · bukan saran investasi atau pengadaan"
-            )}
           </p>
         </div>
 

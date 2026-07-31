@@ -10,6 +10,16 @@ export interface DashboardsTeaserProps {
   aiRows: AiLeaderboardRow[];
 }
 
+/** `null` if either side is missing; a 4:1 in:out blend when both are present;
+ *  the lone non-null side when only one is present (owner-specified — see
+ *  "UX round 2" note in ai-leaderboard-llmstats_PLAN_30-07-26.md). */
+function blendedPrice(input: number | null, output: number | null): number | null {
+  if (input == null && output == null) return null;
+  if (input == null) return output;
+  if (output == null) return input;
+  return (4 * input + output) / 5;
+}
+
 /**
  * Homepage AI Leaderboard teaser — AI-only single card (the Asia Funding
  * Tracker card is deliberately gone; see
@@ -18,7 +28,7 @@ export interface DashboardsTeaserProps {
  */
 export function DashboardsTeaser({ aiRows }: DashboardsTeaserProps) {
   const t = useT();
-  const aiTop = aiRows.slice(0, 4);
+  const aiTop = aiRows.slice(0, 5);
 
   return (
     <section style={{ marginBottom: 48 }}>
@@ -49,28 +59,16 @@ export function DashboardsTeaser({ aiRows }: DashboardsTeaserProps) {
             cursor: "pointer",
           }}
         >
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "flex-start",
-              marginBottom: 14,
-            }}
-          >
-            <div>
-              <div
-                className="upper text-mute"
-                style={{ fontSize: 10, fontWeight: 600, letterSpacing: ".14em", marginBottom: 6 }}
-              >
-                {t("AI Leaderboard", "Bảng xếp hạng AI", "Papan Peringkat AI")}
-              </div>
-              <div className="serif" style={{ fontSize: 22, fontWeight: 600, letterSpacing: "-0.01em" }}>
-                {t("This week's top models", "Mô hình hàng đầu tuần này", "Model teratas minggu ini")}
-              </div>
+          <div style={{ marginBottom: 14 }}>
+            <div
+              className="upper text-mute"
+              style={{ fontSize: 10, fontWeight: 600, letterSpacing: ".14em", marginBottom: 6 }}
+            >
+              {t("AI Leaderboard", "Bảng xếp hạng AI", "Papan Peringkat AI")}
             </div>
-            <span className="mono text-mute-2" style={{ fontSize: 11 }}>
-              {t("filter by use case →", "lọc theo mục đích sử dụng →", "filter berdasarkan kasus penggunaan →")}
-            </span>
+            <div className="serif" style={{ fontSize: 22, fontWeight: 600, letterSpacing: "-0.01em" }}>
+              {t("This week's top models", "Mô hình hàng đầu tuần này", "Model teratas minggu ini")}
+            </div>
           </div>
           <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
             <thead>
@@ -82,7 +80,9 @@ export function DashboardsTeaser({ aiRows }: DashboardsTeaserProps) {
                     t("General", "Tổng quát", "Umum"),
                     t("Reason", "Luận", "Nalar"),
                     t("Code", "Mã", "Kode"),
-                    t("Input $/M", "Input $/Tr", "Input $/Jt"),
+                    t("Math", "Toán", "Matematika"),
+                    t("Vision", "Thị giác", "Visi"),
+                    t("Price", "Giá", "Harga"),
                   ] as const
                 ).map((h, i) => (
                   <th
@@ -144,11 +144,26 @@ export function DashboardsTeaser({ aiRows }: DashboardsTeaserProps) {
                     className="mono tnum"
                     style={{ padding: "10px 0", textAlign: "right", fontSize: 13, width: 90 }}
                   >
-                    {m.inputPrice == null
-                      ? "–"
-                      : m.inputPrice === 0
-                        ? t("free", "miễn phí", "gratis")
-                        : "$" + m.inputPrice.toFixed(2)}
+                    {m.math != null ? m.math.toFixed(1) : "–"}
+                  </td>
+                  <td
+                    className="mono tnum"
+                    style={{ padding: "10px 0", textAlign: "right", fontSize: 13, width: 90 }}
+                  >
+                    {m.vision != null ? m.vision.toFixed(1) : "–"}
+                  </td>
+                  <td
+                    className="mono tnum"
+                    style={{ padding: "10px 0", textAlign: "right", fontSize: 13, width: 90 }}
+                  >
+                    {(() => {
+                      const price = blendedPrice(m.inputPrice, m.outputPrice);
+                      return price == null
+                        ? "–"
+                        : price === 0
+                          ? t("free", "miễn phí", "gratis")
+                          : "$" + price.toFixed(2);
+                    })()}
                   </td>
                 </tr>
               ))}
