@@ -4,7 +4,7 @@
 
 ## Scope
 
-The reader's entry surface — `/` (and `/en /id /vi`). A high-density editorial homepage that lives or dies by perceived speed and editorial integrity. Composes 11+ distinct bands: Hero, Brief, Wire Drops (realtime), Pillar showcase (6 × 4 articles), Asia Tech Spotlight, Live Dashboards teaser, Deep Dive of the Week, Awards banner, Sponsored Strip, Best of Reviews (affiliate), Podcast, Newsletter CTA.
+The reader's entry surface — `/` (and `/en /id /vi`). A high-density editorial homepage that lives or dies by perceived speed and editorial integrity. Composes 11+ distinct bands: Hero, Brief, Wire Drops (realtime), Pillar showcase (6 × 4 articles), Most Read, Live Dashboards teaser, Deep Dive of the Week, Awards banner, Sponsored Strip, Best of Reviews (affiliate), Podcast, Newsletter CTA.
 
 Does NOT include: the article reader page (`articles/`), pillar listing pages (`articles/` covers those), search overlay surface (`search/`).
 
@@ -17,7 +17,7 @@ Does NOT include: the article reader page (`articles/`), pillar listing pages (`
 5. **The Brief** — 4-column band: 200px label / 1fr / 1fr / 150px button. Vertical dividers run only 22%–78% (not full-height — design decision). AM Brief + PM Brief preview.
 6. **Wire Drops** — realtime band. Subscribes to Soketi/Pusher `wire-drops` channel. Drops slide in. Each ≤ 150 chars + city chip (Singapore coral, Seoul violet, Jakarta sky, Hanoi green) + timestamp.
 7. **Pillar showcase** — 6 columns, **4 articles each** (1 cover-art card + 3 text rows). Uses `localizedPillarLabel(id, lang)`.
-8. **Asia Tech Spotlight** — dark band with cursor-following coral spotlight + dot-grid backdrop. Hand-curated articles.
+8. **Most Read** — dark band with cursor-following coral spotlight + dot-grid backdrop, four cards. Order alone conveys the ranking — rank numerals were tried and removed by product decision 2026-07-27. Ranked by the anonymous `article_views` counter over a trailing 14 days (`lib/most-read.ts`); sponsored stories are counted but never ranked. Falls back to newest non-sponsored stories, hero-deduped, whenever the counter has fewer than four ranked entries. (Was "Asia Tech Spotlight", hand-curated by pillar, until 2026-07-27 — renamed for invariant #14 and to make the slot self-maintaining.)
 9. **Live Dashboards teaser** — sparkline draw-in animation + count-up stats. Links to `/dashboards/funding` and `/dashboards/ai`.
 10. **Deep Dive of the Week** — one long-form featured.
 11. **Awards banner** — coral kicker "Awards · Coming soon", title "The inaugural awards arrive in 2026", description, single CTA "Learn more →". **No "see previous winners"** (Y1 = inaugural). EST 2026 medallion.

@@ -6,6 +6,7 @@
 //     - auth tables: users, sessions, accounts, verifications  (Better-Auth, Phase E2)
 //     - reader-data tables: bookmarks, reading_queue, reading_history, follows,
 //       newsletter_subscriptions, pending_newsletter_confirmations
+//     - anonymous aggregates: article_views (homepage "Most Read" ranking)
 //
 //   Payload owns (apps/web/payload.config.ts):
 //     - editorial entities: articles, pillars, subsections, tags, authors,
@@ -19,3 +20,4 @@
 
 export * from "./auth";
 export * from "./account";
+export * from "./analytics";

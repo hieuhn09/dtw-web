@@ -4,7 +4,7 @@ import { HomeHero } from "@/components/home/home-hero";
 import { BriefBand } from "@/components/home/brief-band";
 import { WireDrops } from "@/components/home/wire-drops";
 import { PillarShowcase } from "@/components/home/pillar-showcase";
-import { AsiaSpotlight } from "@/components/home/asia-spotlight";
+import { MostRead } from "@/components/home/most-read";
 import { DashboardsTeaser } from "@/components/home/dashboards-teaser";
 import { DeepDive } from "@/components/home/deep-dive";
 import { AwardsBanner } from "@/components/home/awards-banner";
@@ -12,6 +12,7 @@ import { BestOfReviews } from "@/components/home/best-of-reviews";
 import { PodcastStrip } from "@/components/home/podcast-strip";
 import { NewsletterCta } from "@/components/home/newsletter-cta";
 import { toArticleView, type ArticleView } from "@/lib/article-view";
+import { getMostReadArticles } from "@/lib/most-read";
 import {
   getAiModels,
   getArticlesByPillar,
@@ -35,6 +36,9 @@ const SHOW_BEST_OF_REVIEWS = false;
 const SHOW_LISTEN = false;
 const SHOW_NEWSLETTER_CTA = false;
 
+/** Cards in the "Most Read" band — the grid is designed around four. */
+const MOST_READ_SLOTS = 4;
+
 export const revalidate = 60;
 
 // Deliberately omits `title` so the route inherits the root layout's
@@ -55,24 +59,26 @@ export default async function HomePage() {
   // unstable_cache-backed, so it's a cache hit rather than a real round trip.
   const pillars = await getNavPillars();
 
-  const [recent, pinnedDoc, deepDive, wireDrops, aiModels, perPillar] = await Promise.all([
-    getRecentArticles(40),
-    getPinnedLatest(),
-    getDeepDive(),
-    getWireDrops(12),
-    getAiModels(),
-    // Each non-"latest" pillar band fills from its own newest 4 directly,
-    // since low-volume pillars (e.g. Dev) can rank entirely outside the
-    // shared newest-40 `articles` pool below, starving to 1 item or getting
-    // dropped by pillar-showcase.tsx's `items.length === 0` guard. "latest"
-    // is excluded here since it's an auto-aggregated feed, not a real beat.
-    // Pillar list is CMS-driven (invariant #8), not hardcoded.
-    Promise.all(
-      pillars
-        .filter((p) => p.slug !== "latest")
-        .map(async (p) => [p.slug, await getArticlesByPillar(p.slug, 4)] as const),
-    ),
-  ]);
+  const [recent, pinnedDoc, deepDive, wireDrops, mostReadDocs, aiModels, perPillar] =
+    await Promise.all([
+      getRecentArticles(40),
+      getPinnedLatest(),
+      getDeepDive(),
+      getWireDrops(12),
+      getMostReadArticles(MOST_READ_SLOTS),
+      getAiModels(),
+      // Each non-"latest" pillar band fills from its own newest 4 directly,
+      // since low-volume pillars (e.g. Dev) can rank entirely outside the
+      // shared newest-40 `articles` pool below, starving to 1 item or getting
+      // dropped by pillar-showcase.tsx's `items.length === 0` guard. "latest"
+      // is excluded here since it's an auto-aggregated feed, not a real beat.
+      // Pillar list is CMS-driven (invariant #8), not hardcoded.
+      Promise.all(
+        pillars
+          .filter((p) => p.slug !== "latest")
+          .map(async (p) => [p.slug, await getArticlesByPillar(p.slug, 4)] as const),
+      ),
+    ]);
 
   const articles = recent.map(toArticleView);
   const pinned = pinnedDoc ? toArticleView(pinnedDoc) : null;
@@ -96,9 +102,23 @@ export default async function HomePage() {
     pinned ? [pinned, ...articles.filter((a) => a.id !== pinned.id)] : articles
   ).slice(0, 4);
 
-  const spotlightItems = articles
-    .filter((a) => (["latest", "policy", "startups"] as PillarId[]).includes(a.pillar))
-    .slice(0, 4);
+  // "Most Read" band. `getMostReadArticles` reports only what the anonymous
+  // view counter actually ranked, so it can come back short — or empty on a
+  // fresh deploy, before anyone has read anything. The band is a fixed slot in
+  // the page rhythm, so top it up with the newest non-sponsored stories rather
+  // than collapsing it. Anything already on screen in the hero is excluded from
+  // the *top-up* only: a story that genuinely is the most read stays, even if
+  // it also leads.
+  const mostReadRanked = mostReadDocs.map(toArticleView);
+  const usedIds = new Set([
+    lead.id,
+    ...aside.map((a) => a.id),
+    ...mostReadRanked.map((a) => a.id),
+  ]);
+  const mostReadItems = [
+    ...mostReadRanked,
+    ...heroPool.filter((a) => !usedIds.has(a.id)),
+  ].slice(0, MOST_READ_SLOTS);
 
   const deepDiveView = deepDive ? toArticleView(deepDive) : null;
 
@@ -122,7 +142,7 @@ export default async function HomePage() {
         <PillarShowcase pillars={pillars} byPillar={byPillar} />
       </Reveal>
       <Reveal>
-        <AsiaSpotlight articles={spotlightItems} />
+        <MostRead articles={mostReadItems} />
       </Reveal>
       {SHOW_DASHBOARDS && (
         <Reveal>

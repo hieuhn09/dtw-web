@@ -41,6 +41,7 @@ Does NOT cover the Engine's own ingestion pipeline (lives in `dtw-engine` repo) 
 | Users + sessions | Better-Auth (Drizzle tables) | Payload reads user records for RBAC; Payload does NOT own auth |
 | Subscriptions (Phase 2) | Stripe webhook → Drizzle | Pro status synced from Stripe |
 | Bookmarks, reading history, follows | Drizzle, directly from Next.js | not editorial content, no Payload involvement |
+| Article view counts (`article_views`) | Drizzle, directly from Next.js | anonymous aggregate only: one row per (article, Asia/Singapore day), no visitor identifier of any kind, so no consent gate needed. Written by `lib/view-actions.ts` (deduped in the browser by `lib/article-views.ts`), read by `lib/most-read.ts` for the homepage Most Read band. Distinct from `reading_history`, which is per-signed-in-user and private. |
 | Wire Drops | Payload (small CRUD) + Soketi/Pusher broadcast on insert | |
 
 ## Article Provenance Model (load-bearing)

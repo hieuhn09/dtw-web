@@ -135,7 +135,7 @@ Numbered, terse, load-bearing. Each one ties to a feature folder or context grou
 11. **Tech stack veto list:** no Lucia (deprecated), no Bun runtime (Payload 3 ↔ Bun is unstable). **Header logo (changed 2026-06-14):** the design refresh reintroduced a brand mark — a navy `DTW` monogram + lowercase `dailytechwire` wordmark + terracotta pulse-dot (source asset `design/project/uploads/dtw-logo-primary.svg`), superseding the earlier wordmark-only rule. Tagline stays "Tech Intelligence, Wired Daily".
 12. **Reader-data residency / compliance:** GDPR + PDPA (Singapore) + Nghị định 13 (Vietnam). PostHog is **self-hosted** specifically for first-party analytics.
 13. **Awards page (year-one state):** no medallion, no "see previous winners", no specific categories. Just "Coming this year" with the shimmer hero. Year 1 = inaugural.
-14. **Global positioning (2026-07-17).** DTW is a global publication. "Asia" appears in copy only as: the APCG proper noun, Asia-angle features/content (Asia Funding Tracker, Asia Spotlight, Asia Funding Weekly, "Asia, Decoded", bureau/beat roles, article content), or "…Asia and the world" phrasing. Never scope the publication, newsroom, readership, newsletters, or awards to Asia-only. The About-page hero/mission describe APCG (the Asian parent), not DTW — they stay.
+14. **Global positioning (2026-07-17).** DTW is a global publication. "Asia" appears in copy only as: the APCG proper noun, Asia-angle features/content (Asia Funding Tracker, Asia Funding Weekly, "Asia, Decoded", bureau/beat roles, article content), or "…Asia and the world" phrasing. (The homepage's "Asia Spotlight" band was retired under this invariant on 2026-07-27 — it is now "Most Read".) Never scope the publication, newsroom, readership, newsletters, or awards to Asia-only. The About-page hero/mission describe APCG (the Asian parent), not DTW — they stay.
 
 If a change appears to violate one of these, surface it explicitly and ask before proceeding.
 
@@ -273,7 +273,7 @@ dtw-web/
 
 | Folder | Scope |
 |---|---|
-| `homepage/` | Hero (LQIP, ≤ 440px), Brief band, Wire Drops realtime, Pillar showcase (6 × 4), Asia Spotlight, Dashboards teaser, Deep Dive of the Week, Awards banner, Sponsored Strip, Best of Reviews (affiliate), Podcast, Newsletter CTA |
+| `homepage/` | Hero (LQIP, ≤ 440px), Brief band, Wire Drops realtime, Pillar showcase (6 × 4), Most Read (view-ranked; was Asia Spotlight until 2026-07-27), Dashboards teaser, Deep Dive of the Week, Awards banner, Sponsored Strip, Best of Reviews (affiliate), Podcast, Newsletter CTA |
 | `articles/` | Article page (serif body, ByLine, hero LQIP/HLS), disclosure boxes, TTS bar (Phase 2), related row, save / share, paywall meter + sign-in nudge (Phase 1); also covers pillar listing pages `/[pillar]/[subsection]/[slug]` |
 | `cms/` | Payload 3 setup, `/admin` embedded mount, RBAC 5 roles, taxonomy entities (Pillar / Sub-section / Tag), sponsor slot configuration, disclosure flag enforcement |
 | `dashboards/` | Asia Funding Tracker + AI Leaderboard (sortable, filterable, sparkline, count-up, CSV export, methodology, sponsor slot) |
