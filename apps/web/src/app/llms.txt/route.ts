@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getPillars } from "@/lib/payload-server";
+import { getPillars } from "@/lib/cms-client";
 import { siteOrigin } from "@/lib/metadata";
 
 // Pillar taxonomy changes far less often than articles publish; still

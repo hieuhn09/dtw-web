@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { PillarContent } from "@/components/pillar/pillar-content";
 import { toArticleView } from "@/lib/article-view";
-import { getArticlesPage, getPillars, getPinnedLatest } from "@/lib/payload-server";
+import { getArticlesPage, getPillars, getPinnedLatest } from "@/lib/cms-client";
 import { ARTICLES_PAGE_SIZE } from "@/lib/data";
 import { buildMetadata, DEFAULT_OG_IMAGE } from "@/lib/metadata";
 

@@ -1,4 +1,4 @@
-import { getNewsletters } from "@/lib/payload-server";
+import { getNewsletters } from "@/lib/cms-client";
 import { NewslettersContent } from "./newsletters-content";
 
 /**

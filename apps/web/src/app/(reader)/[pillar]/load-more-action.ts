@@ -1,6 +1,6 @@
 "use server";
 
-import { getArticlesAfter } from "@/lib/payload-server";
+import { getArticlesAfter } from "@/lib/cms-client";
 import { toArticleView, type ArticleView } from "@/lib/article-view";
 import { APPEND_BATCH_SIZE } from "@/lib/data";
 

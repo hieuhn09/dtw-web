@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { getArticlesPage, getPillars, getSitemapArticles } from "@/lib/payload-server";
+import { getArticlesPage, getPillars, getSitemapArticles } from "@/lib/cms-client";
 import { ARTICLES_PAGE_SIZE } from "@/lib/data";
 import { siteOrigin } from "@/lib/metadata";
 

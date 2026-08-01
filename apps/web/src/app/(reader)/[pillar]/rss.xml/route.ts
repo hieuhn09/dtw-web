@@ -1,4 +1,4 @@
-import { getFeedArticles, getPillars } from "@/lib/payload-server";
+import { getFeedArticles, getPillars } from "@/lib/cms-client";
 import { atomResponse, buildAtomFeed } from "@/lib/feed";
 import { siteOrigin } from "@/lib/metadata";
 

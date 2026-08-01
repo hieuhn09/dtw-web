@@ -7,7 +7,7 @@ import {
   getArticleBySlug,
   getArticleBySlugDraft,
   getRelatedArticles,
-} from "@/lib/payload-server";
+} from "@/lib/cms-client";
 import {
   absoluteUrl,
   buildArticleJsonLd,

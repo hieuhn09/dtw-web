@@ -17,7 +17,7 @@ import {
   toggleFollow,
 } from "@/lib/account-actions";
 import type { ArticleView } from "@/lib/article-view";
-import type { Newsletter } from "@/lib/payload-server";
+import type { Newsletter } from "@/lib/cms-client";
 import type { SessionUser } from "@/lib/session";
 import { SettingsTab } from "./settings-tab";
 import { ACCOUNT_TABS, type AccountTab } from "./tabs";

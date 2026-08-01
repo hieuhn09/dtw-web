@@ -91,6 +91,17 @@ export interface FetchArticlesParams {
   page?: number;
   limit?: number;
   sort?: string;
+  /**
+   * Keyset cursor — return only rows strictly older than (after_published_at,
+   * after_id) under the default `-publishedAt` sort. Both must be sent together;
+   * the id breaks ties when several articles share a timestamp.
+   *
+   * Used instead of `page` for infinite scroll: with articles publishing
+   * continuously, offset paging shifts under the reader and repeats or skips a
+   * story. Requires the matching params on the Central route.
+   */
+  after_published_at?: string;
+  after_id?: number | string;
 }
 
 export async function fetchArticles<T = unknown>(

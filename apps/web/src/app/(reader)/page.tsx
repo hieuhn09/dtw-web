@@ -21,7 +21,7 @@ import {
   getPinnedLatest,
   getRecentArticles,
   getWireDrops,
-} from "@/lib/payload-server";
+} from "@/lib/cms-client";
 import type { PillarId } from "@/lib/data";
 import { buildMetadata, DEFAULT_OG_IMAGE } from "@/lib/metadata";
 

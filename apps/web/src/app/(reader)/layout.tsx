@@ -1,7 +1,7 @@
 import { ThemeProvider } from "@/components/theme-provider";
 import { I18nProvider } from "@/lib/i18n";
 import { ShellProvider } from "@/lib/shell";
-import { getNavPillars, getPaywallThreshold } from "@/lib/payload-server";
+import { getNavPillars, getPaywallThreshold } from "@/lib/cms-client";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { AuthModal } from "@/components/auth-modal";

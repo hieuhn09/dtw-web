@@ -4,7 +4,7 @@ import { desc, gte, sql } from "drizzle-orm";
 import { db } from "@dtw/db/client";
 import { articleViews } from "@dtw/db";
 import { currentDayKeySGT } from "@/lib/article-views";
-import { getArticlesByIds, type Article } from "@/lib/payload-server";
+import { getArticlesByIds, type Article } from "@/lib/cms-client";
 
 /**
  * The read half of the anonymous view counter — ranks articles for the

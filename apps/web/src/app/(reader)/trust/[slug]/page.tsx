@@ -1,4 +1,4 @@
-import { getCorrections } from "@/lib/payload-server";
+import { getCorrections } from "@/lib/cms-client";
 import { TrustContent, type CorrectionView, type TrustSlug } from "./trust-content";
 
 export const revalidate = 300;

@@ -1,6 +1,6 @@
 "use server";
 
-import { searchArticles } from "@/lib/payload-server";
+import { searchArticles } from "@/lib/cms-client";
 import { toArticleView, type ArticleView } from "@/lib/article-view";
 
 /**

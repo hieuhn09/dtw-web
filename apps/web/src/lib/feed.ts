@@ -1,4 +1,4 @@
-import type { FeedArticle } from "@/lib/payload-server";
+import type { FeedArticle } from "@/lib/cms-client";
 
 /**
  * Atom 1.0 feed builder for `/rss.xml` and `/[pillar]/rss.xml`.

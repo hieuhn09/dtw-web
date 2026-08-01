@@ -5,7 +5,7 @@ import {
   listHistory,
   listNewsletterSubs,
 } from "@/lib/session";
-import { getArticlesByIds, getNavPillars, getNewsletters } from "@/lib/payload-server";
+import { getArticlesByIds, getNavPillars, getNewsletters } from "@/lib/cms-client";
 import { toArticleView, type ArticleView } from "@/lib/article-view";
 import { AccountShell, AccountSignInPrompt } from "./account-tabs";
 import { isAccountTab, type AccountTab } from "./tabs";

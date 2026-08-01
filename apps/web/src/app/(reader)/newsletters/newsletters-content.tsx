@@ -5,7 +5,7 @@ import type { FormEvent } from "react";
 import { Button } from "@dtw/ui";
 import { subscribeGuest } from "@/lib/account-actions";
 import { useT } from "@/lib/i18n";
-import type { Newsletter } from "@/lib/payload-server";
+import type { Newsletter } from "@/lib/cms-client";
 
 const DEFAULT_PICKS = new Set(["am", "ai"]);
 
