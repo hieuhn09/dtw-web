@@ -47,6 +47,23 @@ export const getNewsletters = impl.getNewsletters;
 export const getFeedArticles = impl.getFeedArticles;
 export const getSitemapArticles = impl.getSitemapArticles;
 
+// ── Dashboards: LOCAL in BOTH modes ───────────────────────────────────────────
+// These three deliberately bypass the switch. Central's `dashboards` module
+// exposes `fundingRows` + `aiLeaderboardRows`, but the AI Leaderboard reads a
+// different shape entirely: the `aiModels` collection, the `dashboardMethodology`
+// global, and `sponsorSlots` — none of which exist in Central's schema.
+//
+// So after cutover DTW still needs its local Payload for this one surface. That
+// is a real dependency, not an oversight: routing them through `impl` would
+// silently empty the leaderboard the moment CMS_SOURCE flips, because
+// central-api resolves every miss to an empty result rather than throwing.
+//
+// Closing this means adding the three surfaces to Central and migrating the rows;
+// until then, leave them here so the coupling stays visible.
+export const getAiModels = local.getAiModels;
+export const getDashboardMethodology = local.getDashboardMethodology;
+export const getDashboardSponsorSlot = local.getDashboardSponsorSlot;
+
 // Types are re-exported from payload-server, which owns the canonical shapes —
 // the central client returns the same ones.
 export type {

@@ -5,7 +5,7 @@ import {
   getAiModels,
   getDashboardMethodology,
   getDashboardSponsorSlot,
-} from "@/lib/payload-server";
+} from "@/lib/cms-client";
 
 export const revalidate = 60;
 
