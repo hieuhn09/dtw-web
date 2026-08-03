@@ -69,11 +69,42 @@ export async function cmsFetch<T>(
       }
       return empty;
     }
-    return (await res.json()) as T;
+    return absolutizeMediaUrls(await res.json()) as T;
   } catch (err) {
     console.warn(`[central-api] ${url.pathname} fetch failed:`, (err as Error)?.message);
     return empty;
   }
+}
+
+/**
+ * Rewrite Central's RELATIVE media URLs to absolute URLs pointing at Central.
+ *
+ * Central returns `url: "/api/media/file/<name>?prefix=<tenant>"`. Left as-is,
+ * the browser resolves that against the site being viewed — dailytechwire.com —
+ * so every image request lands on DTW's own Payload instead of Central.
+ *
+ * The failure is deceptive rather than loud: the local Payload still holds those
+ * files, so images keep rendering and the migration looks complete while the site
+ * is in fact still served entirely by the old storage. It only breaks on the day
+ * the local Payload goes away — or immediately, for any image that only exists in
+ * Central.
+ *
+ * Fixed at the fetch boundary so every media doc is covered (hero, author photo,
+ * podcast cover) rather than relying on each call site remembering.
+ */
+function absolutizeMediaUrls<T>(node: T): T {
+  if (Array.isArray(node)) return node.map(absolutizeMediaUrls) as unknown as T;
+  if (!node || typeof node !== "object") return node;
+
+  const out: Record<string, unknown> = {};
+  for (const [k, v] of Object.entries(node as Record<string, unknown>)) {
+    // Only Payload media paths; other URLs (outbound links, canonicals) pass through.
+    out[k] =
+      (k === "url" || k === "thumbnailURL") && typeof v === "string" && v.startsWith("/api/media/")
+        ? `${CMS_URL}${v}`
+        : absolutizeMediaUrls(v);
+  }
+  return out as T;
 }
 
 // ── Typed helpers ───────────────────────────────────────────────────────────
