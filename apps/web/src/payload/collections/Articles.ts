@@ -169,7 +169,18 @@ export const Articles: CollectionConfig = {
               label: "Pin to top of Latest",
               admin: {
                 description:
-                  "Pins this story to the top of the Latest feed (the /latest featured slot) and the homepage Latest band. Manual — untick to unpin. Newest wins if several are pinned.",
+                  "Pins this story to the top of the Latest feed (the /latest featured slot) and the homepage Latest band. Untick to unpin, or set 'Pinned until' for auto-expiry. Newest wins if several are pinned.",
+              },
+            },
+            {
+              name: "pinnedUntil",
+              type: "date",
+              label: "Pinned until",
+              admin: {
+                condition: (data) => Boolean(data?.pinnedToLatest),
+                date: { pickerAppearance: "dayAndTime" },
+                description:
+                  "Optional expiry: the story leaves the pinned slot after this time. Empty = pinned until manually unticked.",
               },
             },
           ],

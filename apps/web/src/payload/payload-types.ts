@@ -374,9 +374,13 @@ export interface Article {
   affiliate?: boolean | null;
   deepDive?: boolean | null;
   /**
-   * Pins this story to the top of the Latest feed (the /latest featured slot) and the homepage Latest band. Manual — untick to unpin. Newest wins if several are pinned.
+   * Pins this story to the top of the Latest feed (the /latest featured slot) and the homepage Latest band. Untick to unpin, or set 'Pinned until' for auto-expiry. Newest wins if several are pinned.
    */
   pinnedToLatest?: boolean | null;
+  /**
+   * Optional expiry: the story leaves the pinned slot after this time. Empty = pinned until manually unticked.
+   */
+  pinnedUntil?: string | null;
   /**
    * How this article entered the system.
    */
@@ -892,6 +896,7 @@ export interface ArticlesSelect<T extends boolean = true> {
   affiliate?: T;
   deepDive?: T;
   pinnedToLatest?: T;
+  pinnedUntil?: T;
   origin?: T;
   editedByHuman?: T;
   lockedFields?:

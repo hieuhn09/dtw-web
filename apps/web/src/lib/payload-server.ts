@@ -516,10 +516,17 @@ export const getPinnedLatest = unstable_cache(
   async (): Promise<Article | null> => {
     const p = await payload();
     try {
+      // Time-boxed pins (same date-window pattern as getDashboardSponsorSlot):
+      // a past pinnedUntil means the pin has lapsed; NULL = pinned until unticked.
+      const now = new Date().toISOString();
       const r = await p.find({
         collection: "articles",
         where: {
-          and: [{ pinnedToLatest: { equals: true } }, { _status: { equals: "published" } }],
+          and: [
+            { pinnedToLatest: { equals: true } },
+            { _status: { equals: "published" } },
+            { or: [{ pinnedUntil: { exists: false } }, { pinnedUntil: { greater_than: now } }] },
+          ],
         },
         sort: "-publishedAt",
         limit: 1,
