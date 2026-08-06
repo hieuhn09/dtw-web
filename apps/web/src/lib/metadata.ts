@@ -71,8 +71,13 @@ export const DEFAULT_OG_IMAGE: OgImage = {
 
 /**
  * The schema.org Organization node shared by every JSON-LD `publisher`
- * field. No `foundingDate`/`sameAs`/social URLs — none are confirmed
- * anywhere in project context, so none are invented (Decisions Log #1).
+ * field (and, sitewide, the root Organization node itself — see
+ * `(reader)/layout.tsx`). `foundingDate` is confirmed in
+ * `process/context/all-context.md` ("independent newsroom, Singapore,
+ * founded 2023"), so it's safe to state. Deliberately still no `sameAs` /
+ * social URLs — none are confirmed anywhere in project context, so none are
+ * invented (Decisions Log #1; this line intentionally stays even though the
+ * decision it documents keeps being reconfirmed rather than resolved).
  * `logo` reuses `og-default.png` as a pragmatic stand-in for a dedicated
  * square logo raster (see plan's Out of Scope / Future Work).
  */
@@ -80,6 +85,7 @@ export const ORGANIZATION = {
   name: "Asia Press Centre Group (APCG)",
   url: siteOrigin(),
   logo: { url: absoluteUrl(DEFAULT_OG_IMAGE.url) },
+  foundingDate: "2023",
 };
 
 // ──────────────────────────────────────────────────────────────────────────
