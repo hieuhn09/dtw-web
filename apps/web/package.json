@@ -20,6 +20,7 @@
   "dependencies": {
     "@dtw/db": "workspace:*",
     "@dtw/ui": "workspace:*",
+    "@next/third-parties": "15.4.11",
     "@payloadcms/db-postgres": "^3.85.0",
     "@payloadcms/next": "^3.85.0",
     "@payloadcms/richtext-lexical": "^3.85.0",

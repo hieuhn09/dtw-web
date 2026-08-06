@@ -1,3 +1,4 @@
+import { GoogleAnalytics } from "@next/third-parties/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import { I18nProvider } from "@/lib/i18n";
 import { ShellProvider } from "@/lib/shell";
@@ -10,6 +11,13 @@ import { ORGANIZATION, siteOrigin, toJsonLdScript } from "@/lib/metadata";
 // Temporarily hidden — cookie banner disabled. Restore this import and the
 // <CookieBanner /> render below to bring it back.
 // import { CookieBanner } from "@/components/cookie-banner";
+
+// GA4 — NEXT_PUBLIC_GA_ID overrides; otherwise the id is inlined only on Vercel
+// production builds (team env vars need owner permissions to set). Local dev and
+// previews send nothing. Reader layout only, so /admin (Payload) stays untracked.
+const GA_ID =
+  process.env.NEXT_PUBLIC_GA_ID ||
+  (process.env.VERCEL_ENV === "production" ? "G-5H175FPLGR" : undefined);
 
 /**
  * Sitewide Organization + WebSite JSON-LD (SEO audit finding: the homepage
@@ -60,6 +68,7 @@ export default async function ReaderLayout({
           <AuthModal />
           <SearchOverlay />
           {/* Temporarily hidden: <CookieBanner /> */}
+          {GA_ID ? <GoogleAnalytics gaId={GA_ID} /> : null}
         </ShellProvider>
       </ThemeProvider>
     </I18nProvider>
