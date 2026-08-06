@@ -20,11 +20,20 @@ const config: NextConfig = {
       { source: "/asia/:path*", destination: "/latest/:path*", permanent: true },
       // /about/newsroom moved to /newsroom (2026-07-16). Preserve old links.
       { source: "/about/newsroom", destination: "/newsroom", permanent: true },
-      // Google still indexes the pre-relaunch `/computing/...` tree, which now
-      // hard-404s (audit finding). Send those hits to the nearest live section
-      // instead of a dead end, so inbound link equity and readers survive.
-      { source: "/computing", destination: "/products", permanent: true },
-      { source: "/computing/:path*", destination: "/products", permanent: true },
+      // /feed and /rss are the only genuine 1:1 equivalents from the
+      // pre-relaunch WordPress URL space: the new site has a real Atom feed
+      // at /rss.xml, so redirecting is warranted here (unlike /computing
+      // below).
+      { source: "/feed", destination: "/rss.xml", permanent: true },
+      { source: "/rss", destination: "/rss.xml", permanent: true },
+      // NOTE: the pre-relaunch `/computing/...` tree (WordPress, ~225 distinct
+      // URLs per the GSC export) used to redirect here to /products. That was
+      // removed 2026-08-06: mass-redirecting a whole unrelated tree to one
+      // page reads to Google as a soft 404 — it passes no link equity and
+      // burns crawl budget the domain can't spare (throttled since mid-June).
+      // `middleware.ts` now returns a deliberate 410 Gone for /computing and
+      // the rest of the dead WordPress URL space instead, which Google drops
+      // from its index in one crawl pass rather than several 404 confirmations.
       // Canonical host is www (matches NEXT_PUBLIC_SITE_URL, which the sitemap,
       // robots, canonical tags and OG urls are all built from). Send the bare
       // apex to www so the two hosts don't compete in the index.

@@ -49,7 +49,13 @@ export const revalidate = 60;
 // `generateMetadata` — the homepage has no dynamic route params.
 export const metadata: Metadata = buildMetadata({
   canonicalPath: "/",
-  description: "Tech Intelligence, Wired Daily.",
+  // 157 chars (SEO audit finding: the old 31-char tagline was too short for
+  // Google to use verbatim, so it was synthesizing a snippet from the footer
+  // instead). Describes what DTW actually publishes; "Asia and the world"
+  // phrasing matches invariant #14 — DTW is global, Asia is a beat within
+  // that, not the scope.
+  description:
+    "DailyTechWire tracks global tech and AI: funding rounds, tech-stock moves, AI model benchmarks and rankings, and deep-dive reporting from Asia and the world.",
   image: DEFAULT_OG_IMAGE,
   type: "website",
 });
