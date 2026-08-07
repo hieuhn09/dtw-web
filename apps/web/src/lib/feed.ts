@@ -1,4 +1,8 @@
 import type { FeedArticle } from "@/lib/cms-client";
+// Central serves pillar `title` as a plain string while the local Payload serves a
+// {en,vi,id} group; this reads both. See the helper's comment for why the naive
+// `.title?.en` degrades to a slug rather than failing.
+import { pillarLabel as pillarLabelOf } from "@/lib/article-view";
 
 /**
  * Atom 1.0 feed builder for `/rss.xml` and `/[pillar]/rss.xml`.
@@ -71,7 +75,7 @@ export function buildAtomFeed(channel: AtomChannel, articles: FeedArticle[]): st
       typeof article.author === "object" && article.author !== null ? article.author.name : null;
     const pillarLabel =
       typeof article.pillar === "object" && article.pillar !== null
-        ? (article.pillar.title?.en ?? article.pillar.slug)
+        ? pillarLabelOf(article.pillar)
         : null;
     // Most aggregators never render <category>, so the Paid Partner
     // disclosure must live on a visible surface — the title — to keep the

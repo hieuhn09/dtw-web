@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { draftMode } from "next/headers";
 import { notFound } from "next/navigation";
 import { ArticleContent } from "@/components/article/article-content";
-import { toArticleView } from "@/lib/article-view";
+import { toArticleView, pillarLabel } from "@/lib/article-view";
 import {
   getArticleBySlug,
   getArticleBySlugDraft,
@@ -103,7 +103,10 @@ export async function generateMetadata({
     publishedTime: article.publishedAt,
     modifiedTime: article.updatedAt,
     authors: author ? [author.name, ...coAuthors.map((a) => a.name)] : coAuthors.map((a) => a.name),
-    section: pillar?.heading || pillar?.title?.en,
+    // `heading` first (the editor's explicit override), then the pillar title in
+    // whichever shape the CMS served it — Central sends a plain string, local
+    // Payload an {en,vi,id} group.
+    section: pillar?.heading || (pillar ? pillarLabel(pillar, "") : "") || undefined,
     robots: isDraft ? { index: false, follow: false } : undefined,
   });
 }

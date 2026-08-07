@@ -16,6 +16,31 @@ import type { Article } from "../payload/payload-types";
  *  and don't serialise every body into the page payload. */
 export type ArticleBodyState = Article["body"];
 
+/**
+ * A pillar's display label, tolerating both shapes it arrives in.
+ *
+ * The local Payload models `title` as a group of {en,vi,id}; the Central CMS
+ * declares it as a plain localized text field and serves it already resolved to a
+ * string. Both reach the reader, and which one you get depends on WHERE the pillar
+ * came from rather than on CMS_SOURCE: `getPillars`/`getNavPillars` run it through
+ * the client's own parser and always hand back the object, but a pillar populated
+ * inside an article (depth 1 on /api/public/articles) arrives raw — a string.
+ *
+ * Reading `.title.en` on the string form yields undefined and silently degrades the
+ * label to the slug: "ai" where the page used to say "AI". No error, no empty page,
+ * just quietly worse copy on every card, RSS category and JSON-LD section.
+ */
+export function pillarLabel(
+  pillar: { title?: unknown; slug?: string | null; heading?: string | null } | null | undefined,
+  fallback = "Latest",
+): string {
+  if (!pillar) return fallback;
+  const t = pillar.title;
+  if (typeof t === "string" && t) return t;
+  const en = (t as { en?: string } | null | undefined)?.en;
+  return en || pillar.slug || fallback;
+}
+
 export interface ArticleView {
   id: string;
   slug: string;
@@ -104,7 +129,7 @@ export function toArticleView(a: Article): ArticleView {
     slug: a.slug,
     pillar: asPillarId(pillar?.slug),
     pillarColor: pillar?.color ?? "var(--latest)",
-    pillarLabel: pillar?.title?.en ?? pillar?.slug ?? "Latest",
+    pillarLabel: pillarLabel(pillar),
     author: author?.name ?? "Staff",
     authorCity: author?.city ?? "",
     authorRole: author?.role ?? "",
