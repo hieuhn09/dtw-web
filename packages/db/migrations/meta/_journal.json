@@ -5,15 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1779988839301,
-      "tag": "0000_third_ender_wiggin",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1785135131106,
-      "tag": "0001_stormy_gabe_jones",
+      "when": 1786375497189,
+      "tag": "0000_dtw_auth_baseline",
       "breakpoints": true
     }
   ]

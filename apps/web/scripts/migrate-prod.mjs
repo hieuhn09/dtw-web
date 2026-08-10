@@ -33,6 +33,25 @@ if (!direct) {
   process.exit(1);
 }
 
+// Auth/reader tables (Drizzle, dtw_auth schema) live on the CENTRAL Neon DB
+// since the 08-2026 auth-central migration. drizzle.config.ts prefers
+// AUTH_DATABASE_DIRECT_URL → AUTH_DATABASE_URL → DATABASE_URL, so when the
+// AUTH_* vars are present on Vercel the Drizzle step targets central and the
+// DATABASE_URL override below only affects the Payload step.
+if (process.env.AUTH_DATABASE_URL && !process.env.AUTH_DATABASE_DIRECT_URL) {
+  console.warn(
+    "[migrate] AUTH_DATABASE_URL is set but AUTH_DATABASE_DIRECT_URL is not — " +
+      "Drizzle DDL will run over the pooled central URL. PgBouncer can break DDL; " +
+      "set AUTH_DATABASE_DIRECT_URL in the Vercel dashboard."
+  );
+}
+if (!process.env.AUTH_DATABASE_URL) {
+  console.warn(
+    "[migrate] AUTH_DATABASE_URL not set — Drizzle migrations will target " +
+      "DATABASE_URL (the per-site DB). Expected only before the auth-central cutover."
+  );
+}
+
 const runEnv = { ...process.env, DATABASE_URL: direct };
 const run = (cmd) => {
   console.log(`[migrate] $ ${cmd}`);
@@ -41,9 +60,9 @@ const run = (cmd) => {
   execSync(cmd, { stdio: "inherit", env: runEnv });
 };
 
-// Drizzle (auth_* tables) first, then Payload (its collections). Call the
-// binaries directly — the package `db:migrate` script wraps dotenv-cli reading
-// .env.local, which doesn't exist on Vercel.
+// Drizzle (dtw_auth schema on central) first, then Payload (its collections on
+// the site DB). Call the binaries directly — the package `db:migrate` script
+// wraps dotenv-cli reading .env.local, which doesn't exist on Vercel.
 run("pnpm --filter @dtw/db exec drizzle-kit migrate");
 run("pnpm --filter web payload:migrate");
 

@@ -1,4 +1,5 @@
-import { pgTable, text, date, integer, index, uniqueIndex } from "drizzle-orm/pg-core";
+import { text, date, integer, index, uniqueIndex } from "drizzle-orm/pg-core";
+import { dtwAuth } from "./auth";
 
 /**
  * Anonymous, aggregate article view counts — the data behind the homepage
@@ -29,7 +30,7 @@ import { pgTable, text, date, integer, index, uniqueIndex } from "drizzle-orm/pg
  * `article_id` references a Payload-owned table by value, not through a
  * Drizzle `.references()` — same convention, and same reason, as account.ts.
  */
-export const articleViews = pgTable(
+export const articleViews = dtwAuth.table(
   "article_views",
   {
     articleId: text("article_id").notNull(),

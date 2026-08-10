@@ -12,6 +12,7 @@
     "lint": "echo '(lint skipped - db package)'",
     "typecheck": "tsc --noEmit",
     "with-env": "dotenv -e ../../.env.local --",
+    "auth:copy-to-central": "tsx scripts/copy-auth-to-central.ts",
     "db:generate": "pnpm with-env drizzle-kit generate",
     "db:migrate": "pnpm with-env drizzle-kit migrate",
     "db:push": "pnpm with-env drizzle-kit push",

@@ -1,12 +1,11 @@
 import {
-  pgTable,
   text,
   timestamp,
   integer,
   index,
   uniqueIndex,
 } from "drizzle-orm/pg-core";
-import { users } from "./auth";
+import { dtwAuth, users } from "./auth";
 
 /**
  * Per-user state — bookmarks, queue, history, follows.
@@ -19,7 +18,7 @@ import { users } from "./auth";
  * For now we rely on application-level integrity.
  */
 
-export const bookmarks = pgTable(
+export const bookmarks = dtwAuth.table(
   "bookmarks",
   {
     userId: text("user_id")
@@ -34,7 +33,7 @@ export const bookmarks = pgTable(
   })
 );
 
-export const readingQueue = pgTable(
+export const readingQueue = dtwAuth.table(
   "reading_queue",
   {
     userId: text("user_id")
@@ -51,7 +50,7 @@ export const readingQueue = pgTable(
   })
 );
 
-export const readingHistory = pgTable(
+export const readingHistory = dtwAuth.table(
   "reading_history",
   {
     userId: text("user_id")
@@ -68,7 +67,7 @@ export const readingHistory = pgTable(
   })
 );
 
-export const follows = pgTable(
+export const follows = dtwAuth.table(
   "follows",
   {
     userId: text("user_id")
@@ -82,7 +81,7 @@ export const follows = pgTable(
   })
 );
 
-export const newsletterSubscriptions = pgTable(
+export const newsletterSubscriptions = dtwAuth.table(
   "newsletter_subscriptions",
   {
     id: text("id").primaryKey(),
@@ -100,7 +99,7 @@ export const newsletterSubscriptions = pgTable(
   })
 );
 
-export const pendingNewsletterConfirmations = pgTable(
+export const pendingNewsletterConfirmations = dtwAuth.table(
   "pending_newsletter_confirmations",
   {
     token: text("token").primaryKey(),

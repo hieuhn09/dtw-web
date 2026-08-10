@@ -1,12 +1,12 @@
 {
-  "id": "7def4a2b-b7f9-48b4-aab9-4e65652261e0",
+  "id": "19206825-be94-4eea-b024-77a7ff77465f",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "dtw_auth.auth_accounts": {
+    "public.auth_accounts": {
       "name": "auth_accounts",
-      "schema": "dtw_auth",
+      "schema": "",
       "columns": {
         "id": {
           "name": "id",
@@ -132,7 +132,6 @@
           "name": "auth_accounts_user_id_auth_users_id_fk",
           "tableFrom": "auth_accounts",
           "tableTo": "auth_users",
-          "schemaTo": "dtw_auth",
           "columnsFrom": [
             "user_id"
           ],
@@ -149,9 +148,9 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "dtw_auth.auth_sessions": {
+    "public.auth_sessions": {
       "name": "auth_sessions",
-      "schema": "dtw_auth",
+      "schema": "",
       "columns": {
         "id": {
           "name": "id",
@@ -241,7 +240,6 @@
           "name": "auth_sessions_user_id_auth_users_id_fk",
           "tableFrom": "auth_sessions",
           "tableTo": "auth_users",
-          "schemaTo": "dtw_auth",
           "columnsFrom": [
             "user_id"
           ],
@@ -258,9 +256,9 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "dtw_auth.auth_users": {
+    "public.auth_users": {
       "name": "auth_users",
-      "schema": "dtw_auth",
+      "schema": "",
       "columns": {
         "id": {
           "name": "id",
@@ -296,7 +294,7 @@
         "role": {
           "name": "role",
           "type": "auth_user_role",
-          "typeSchema": "dtw_auth",
+          "typeSchema": "public",
           "primaryKey": false,
           "notNull": true,
           "default": "'reader'"
@@ -368,9 +366,9 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "dtw_auth.auth_verifications": {
+    "public.auth_verifications": {
       "name": "auth_verifications",
-      "schema": "dtw_auth",
+      "schema": "",
       "columns": {
         "id": {
           "name": "id",
@@ -435,9 +433,9 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "dtw_auth.bookmarks": {
+    "public.bookmarks": {
       "name": "bookmarks",
-      "schema": "dtw_auth",
+      "schema": "",
       "columns": {
         "user_id": {
           "name": "user_id",
@@ -502,7 +500,6 @@
           "name": "bookmarks_user_id_auth_users_id_fk",
           "tableFrom": "bookmarks",
           "tableTo": "auth_users",
-          "schemaTo": "dtw_auth",
           "columnsFrom": [
             "user_id"
           ],
@@ -519,9 +516,9 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "dtw_auth.follows": {
+    "public.follows": {
       "name": "follows",
-      "schema": "dtw_auth",
+      "schema": "",
       "columns": {
         "user_id": {
           "name": "user_id",
@@ -571,7 +568,6 @@
           "name": "follows_user_id_auth_users_id_fk",
           "tableFrom": "follows",
           "tableTo": "auth_users",
-          "schemaTo": "dtw_auth",
           "columnsFrom": [
             "user_id"
           ],
@@ -588,9 +584,9 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "dtw_auth.newsletter_subscriptions": {
+    "public.newsletter_subscriptions": {
       "name": "newsletter_subscriptions",
-      "schema": "dtw_auth",
+      "schema": "",
       "columns": {
         "id": {
           "name": "id",
@@ -673,7 +669,6 @@
           "name": "newsletter_subscriptions_user_id_auth_users_id_fk",
           "tableFrom": "newsletter_subscriptions",
           "tableTo": "auth_users",
-          "schemaTo": "dtw_auth",
           "columnsFrom": [
             "user_id"
           ],
@@ -690,9 +685,9 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "dtw_auth.pending_newsletter_confirmations": {
+    "public.pending_newsletter_confirmations": {
       "name": "pending_newsletter_confirmations",
-      "schema": "dtw_auth",
+      "schema": "",
       "columns": {
         "token": {
           "name": "token",
@@ -750,9 +745,9 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "dtw_auth.reading_history": {
+    "public.reading_history": {
       "name": "reading_history",
-      "schema": "dtw_auth",
+      "schema": "",
       "columns": {
         "user_id": {
           "name": "user_id",
@@ -830,7 +825,6 @@
           "name": "reading_history_user_id_auth_users_id_fk",
           "tableFrom": "reading_history",
           "tableTo": "auth_users",
-          "schemaTo": "dtw_auth",
           "columnsFrom": [
             "user_id"
           ],
@@ -847,9 +841,9 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "dtw_auth.reading_queue": {
+    "public.reading_queue": {
       "name": "reading_queue",
-      "schema": "dtw_auth",
+      "schema": "",
       "columns": {
         "user_id": {
           "name": "user_id",
@@ -927,7 +921,6 @@
           "name": "reading_queue_user_id_auth_users_id_fk",
           "tableFrom": "reading_queue",
           "tableTo": "auth_users",
-          "schemaTo": "dtw_auth",
           "columnsFrom": [
             "user_id"
           ],
@@ -943,81 +936,12 @@
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false
-    },
-    "dtw_auth.article_views": {
-      "name": "article_views",
-      "schema": "dtw_auth",
-      "columns": {
-        "article_id": {
-          "name": "article_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "day": {
-          "name": "day",
-          "type": "date",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "views": {
-          "name": "views",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "default": 0
-        }
-      },
-      "indexes": {
-        "article_views_pk": {
-          "name": "article_views_pk",
-          "columns": [
-            {
-              "expression": "article_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            },
-            {
-              "expression": "day",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": true,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        },
-        "article_views_day_idx": {
-          "name": "article_views_day_idx",
-          "columns": [
-            {
-              "expression": "day",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        }
-      },
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
     }
   },
   "enums": {
-    "dtw_auth.auth_user_role": {
+    "public.auth_user_role": {
       "name": "auth_user_role",
-      "schema": "dtw_auth",
+      "schema": "public",
       "values": [
         "reader",
         "pro",
@@ -1027,9 +951,7 @@
       ]
     }
   },
-  "schemas": {
-    "dtw_auth": "dtw_auth"
-  },
+  "schemas": {},
   "sequences": {},
   "roles": {},
   "policies": {},

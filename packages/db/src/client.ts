@@ -10,14 +10,17 @@ import * as schema from "./schema/index";
  *   import { db } from "@dtw/db/client";
  *   const articles = await db.query.articles.findMany({ limit: 10 });
  *
- * The connection URL comes from `DATABASE_URL`. In Next.js + Vercel the
+ * The connection URL comes from `AUTH_DATABASE_URL` (central Neon DB, pooled
+ * -pooler endpoint — auth + reader-data live there in the `dtw_auth` schema
+ * since the 08-2026 auth-central migration), falling back to `DATABASE_URL`
+ * so local dev keeps working with a single URL. In Next.js + Vercel the
  * environment is set per deploy; in local dev it lives in `.env.local`.
  */
 
-const databaseUrl = process.env.DATABASE_URL;
+const databaseUrl = process.env.AUTH_DATABASE_URL ?? process.env.DATABASE_URL;
 if (!databaseUrl) {
   throw new Error(
-    "DATABASE_URL is not set. Copy .env.example → .env.local and run `pnpm db:up`."
+    "Neither AUTH_DATABASE_URL nor DATABASE_URL is set. Copy .env.example → .env.local and run `pnpm db:up`."
   );
 }
 

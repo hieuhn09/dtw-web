@@ -1,9 +1,8 @@
 import {
-  pgTable,
+  pgSchema,
   text,
   timestamp,
   boolean,
-  pgEnum,
   index,
   uniqueIndex,
 } from "drizzle-orm/pg-core";
@@ -15,9 +14,16 @@ import {
  * Reader / Pro / Author / Editor / Admin — see process/context/auth/all-auth.md.
  * 2FA enforced on Editor + Admin at the Better-Auth layer; the schema doesn't
  * gate it.
+ *
+ * All Drizzle tables live in the dedicated `dtw_auth` Postgres schema (not
+ * `public`). On the central Neon DB this keeps them invisible to central-cms's
+ * Payload dev-push, and keeps the three sites' auth schemas apart. See
+ * apc/AUTH_CENTRAL_MIGRATION_PLAN.md.
  */
 
-export const roleEnum = pgEnum("auth_user_role", [
+export const dtwAuth = pgSchema("dtw_auth");
+
+export const roleEnum = dtwAuth.enum("auth_user_role", [
   "reader",
   "pro",
   "author",
@@ -25,7 +31,7 @@ export const roleEnum = pgEnum("auth_user_role", [
   "admin",
 ]);
 
-export const users = pgTable(
+export const users = dtwAuth.table(
   "auth_users",
   {
     id: text("id").primaryKey(),
@@ -46,7 +52,7 @@ export const users = pgTable(
   })
 );
 
-export const sessions = pgTable(
+export const sessions = dtwAuth.table(
   "auth_sessions",
   {
     id: text("id").primaryKey(),
@@ -71,7 +77,7 @@ export const sessions = pgTable(
  * `password` is for the email/password fallback flow if we ever enable it;
  * the magic-link flow leaves it null.
  */
-export const accounts = pgTable(
+export const accounts = dtwAuth.table(
   "auth_accounts",
   {
     id: text("id").primaryKey(),
@@ -100,7 +106,7 @@ export const accounts = pgTable(
 );
 
 /** Magic-link tokens, password-reset tokens, etc. Single-use, short-lived. */
-export const verifications = pgTable(
+export const verifications = dtwAuth.table(
   "auth_verifications",
   {
     id: text("id").primaryKey(),
