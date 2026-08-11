@@ -1,11 +1,93 @@
 "use client";
 
-import { RichText } from "@payloadcms/richtext-lexical/react";
+import { RichText, type JSXConvertersFunction } from "@payloadcms/richtext-lexical/react";
 import { DisclosureBox } from "@dtw/ui";
 import type { ArticleBodyState, ArticleView } from "@/lib/article-view";
 import { useT } from "@/lib/i18n";
 
 type EditorState = NonNullable<ArticleBodyState>;
+
+/** The populated media doc inside a body upload node (Central depth-2 shape). */
+type UploadDoc = {
+  alt?: string | null;
+  caption?: string | null;
+  credit?: string | null;
+  height?: number | null;
+  mimeType?: string | null;
+  sizes?: Record<
+    string,
+    { height?: number | null; mimeType?: string | null; url?: string | null; width?: number | null } | null
+  > | null;
+  url?: string | null;
+  width?: number | null;
+};
+
+/**
+ * Figcaption for inline body images, mirroring the hero credit chrome in
+ * article-content.tsx (localized "Credit" label, text-mute 11px). Credits are
+ * stored bare ("AFP") by the engine but editors sometimes type their own label
+ * ("Photo: ezCloud", "Render: Hyatt") — only prefix the localized label when
+ * the value carries none of its own, so neither style doubles up.
+ */
+function BodyFigcaption({ caption, credit }: { caption?: string; credit?: string }) {
+  const t = useT();
+  const label = credit && !/^[a-z]+\s*:/i.test(credit) ? `${t("Credit", "Nguồn ảnh", "Kredit foto")}: ${credit}` : credit;
+  return (
+    <figcaption
+      className="text-mute"
+      style={{ display: "flex", flexWrap: "wrap", fontSize: 11, gap: 8, marginTop: 8, padding: "0 4px" }}
+    >
+      {caption && <span style={{ fontStyle: "italic" }}>{caption}</span>}
+      {label && <span>{label}</span>}
+    </figcaption>
+  );
+}
+
+/**
+ * Inline body images. The default upload converter emits a bare <picture> and
+ * silently drops the media doc's caption + credit — editors fill both at
+ * upload and nothing showed in the article.
+ */
+const bodyConverters: JSXConvertersFunction = ({ defaultConverters }) => ({
+  ...defaultConverters,
+  upload: ({ node }) => {
+    if (typeof node.value !== "object" || node.value == null) return null;
+    const media = node.value as UploadDoc;
+    if (!media.url) return null;
+    if (!(media.mimeType ?? "").startsWith("image")) {
+      return (
+        <a href={media.url} rel="noopener noreferrer">
+          {media.alt || media.url}
+        </a>
+      );
+    }
+    const alt = ((node as { fields?: { alt?: string } }).fields?.alt || media.alt) ?? "";
+    const caption = media.caption?.trim();
+    const credit = media.credit?.trim();
+    const sources = Object.entries(media.sizes ?? {}).filter(
+      (e): e is [string, { url: string; width: number; mimeType: string }] =>
+        Boolean(e[1]?.url && e[1]?.width && e[1]?.mimeType)
+    );
+    return (
+      <figure style={{ margin: "28px 0" }}>
+        <picture>
+          {sources.map(([name, size]) => (
+            <source key={name} media={`(max-width: ${size.width}px)`} srcSet={size.url} type={size.mimeType} />
+          ))}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            alt={alt}
+            src={media.url}
+            width={media.width ?? undefined}
+            height={media.height ?? undefined}
+            style={{ borderRadius: 6, display: "block", height: "auto", width: "100%" }}
+          />
+        </picture>
+        {(caption || credit) && <BodyFigcaption caption={caption} credit={credit} />}
+      </figure>
+    );
+  },
+});
 
 /**
  * Split the Lexical root children in half so a middle disclosure box can be
@@ -89,11 +171,11 @@ export function ArticleBody({
     <div style={proseStyle} className="article-prose">
       <SponsoredBox article={article} position="top" />
 
-      <RichText data={first} />
+      <RichText converters={bodyConverters} data={first} />
 
       <SponsoredBox article={article} position="middle" />
 
-      <RichText data={second} />
+      <RichText converters={bodyConverters} data={second} />
 
       <SponsoredBox article={article} position="bottom" />
     </div>
