@@ -10,9 +10,14 @@ export const revalidate = 900;
 // Genuinely code-defined App Router routes, not CMS taxonomy — hardcoding
 // them here does not violate invariant #8 (Architecture Decision 6).
 // Deliberately omits /dashboards/funding (duplicate of the bare /dashboards
-// default tab) and every route covered by robots.ts's disallow list
-// (RFC-008): /search, /account*, /reset-password, /admin*, /preview,
-// /exit-preview, /api/*.
+// default tab), /dashboards/ai (permanent-redirects to /dashboards — a
+// bookmark-compat route from before the dashboards rewrite; see
+// (reader)/dashboards/[[...sub]]/layout.tsx), and every route covered by
+// robots.ts's disallow list (RFC-008): /search, /account*, /reset-password,
+// /admin*, /preview, /exit-preview, /api/*. General rule: only
+// non-redirecting, canonical URLs belong in this list — a sitemap entry that
+// 3xx's gets filed by Google under "Page with redirect" and burns crawl
+// budget for nothing.
 const STATIC_ROUTES = [
   "/about",
   "/newsroom",
@@ -33,7 +38,6 @@ const STATIC_ROUTES = [
   "/briefing",
   "/newsletters",
   "/dashboards",
-  "/dashboards/ai",
 ] as const;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
