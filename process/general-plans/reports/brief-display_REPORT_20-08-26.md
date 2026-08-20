@@ -36,7 +36,7 @@
 | `app/sitemap.ts` | brief priority 0.4 |
 | `app/(reader)/briefing/{page.tsx,briefing-view.tsx,briefing-content.tsx,page/[n]/page.tsx}` | hub + phân trang |
 | `components/home/brief-band.tsx` | props-driven, copy giờ, WIB→SGT |
-| `app/(reader)/page.tsx` | fetch + props; `SHOW_BRIEF` **vẫn `false`** |
+| `app/(reader)/page.tsx` | fetch + props; `SHOW_BRIEF` bật `true` 20-08-26 |
 | `lib/data.ts` | `BRIEFS_PAGE_SIZE` + mục nav "Briefing" |
 | `app/globals.css` | `.r-brief-latest` / `.r-brief-archive` |
 | `scripts/seed-payload.ts` | cadence AM/PM bỏ giờ cứng |
@@ -89,4 +89,4 @@ Cả hai PR đã merge và deploy: apcg-cms#1 (`582bb85`) và dtw-web#40 (`fb378
 2. Central `/admin`: seed Author `DTW Briefing Desk`.
 3. dtw-web: migrate + deploy → verify bước 3-4 **trước** khi có brief.
 4. Đăng thử 1 số AM + PM → chạy nốt verify 6-18.
-5. Bật một lần: `dtw` vào `BRIEF_PUBLISH_PUBS` **và** `SHOW_BRIEF = true`.
+5. `SHOW_BRIEF = true` — **đã làm 20-08-26**. Còn lại đúng một công tắc: thêm `dtw` vào `BRIEF_PUBLISH_PUBS` (Vercel, admin engine) rồi Redeploy. Đó cũng là chỗ tắt nếu cần gỡ brief khỏi trang chủ — không cần deploy dtw-web.
