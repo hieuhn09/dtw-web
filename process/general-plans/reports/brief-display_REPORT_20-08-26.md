@@ -1,7 +1,7 @@
 # Daily Brief — Report thi công (20-08-26)
 
 **Plans:** `apcg-cms/.../brief-content-type_PLAN_20-08-26.md` + `dtw-web/.../brief-display_PLAN_20-08-26.md`
-**Trạng thái:** code xong cả hai repo. **Chưa deploy, chưa migrate, chưa verify runtime.**
+**Trạng thái:** đã merge + deploy cả hai repo, migration đã chạy, phép đếm chặn đã đạt trên production. Còn lại: seed Author desk, đối chiếu snapshot migration, và verify với bản tin thật.
 
 ---
 
@@ -49,14 +49,31 @@
 - Central: 6 file đổi đều qua `node --check` (type-stripping).
 - Snapshot migration Central: JSON hợp lệ, 75 bảng / 38 enum, 2 cột mới đúng vị trí.
 
-## Chưa verify — cần môi trường
+## Verify trên production (sau khi merge, 20-08-26)
 
-- `next build` dừng ở "collecting page data" vì máy này **không có `DATABASE_URL`**. Không phải lỗi code; mọi thứ trước bước đó đã pass.
-- **Toàn bộ verification runtime của cả hai plan chưa chạy** — cần DB thật + token Central. Quan trọng nhất và không được bỏ:
-  - Central §Verification bước **5 và 6** — `totalDocs` khi không truyền `content_type` và khi truyền `article` phải **bằng nhau và bằng T**. Tụt là filter ngược chiều → dừng, đừng deploy.
-  - dtw-web §Verification bước **3-4** — số bài trên `/latest` và RSS **không đổi** so với trước patch, chạy **trước** khi có brief nào.
-- apcg-cms không có `node_modules` và máy không có docker ⇒ **chưa chạy được** `pnpm typecheck`, `payload:generate-types`, `payload:migrate` ở repo đó.
-- Chưa seed Author desk (`DTW Briefing Desk` / role `Newsroom systems`) cho tenant `dtw` — cần `/admin` của Central.
+Cả hai PR đã merge và deploy: apcg-cms#1 (`582bb85`) và dtw-web#40 (`fb37813`).
+
+- **Migration Central đã chạy.** `vercel-build` là chuỗi `migrate-prod.mjs && payload generate:importmap && next build`, Vercel báo success cho commit merge ⇒ migration apply xong, nếu lỗi thì build đã chết trước `next build`.
+- **Vercel preview build của dtw-web SUCCESS** — tức `next build` đầy đủ với env thật, qua cả bước "collecting page data" mà máy local chết ở đó.
+- **Phép đếm chặn — ĐẠT.** Đo trên `www.dailytechwire.com` sau khi bản mới lên:
+
+  | Kiểm | Trước | Sau | |
+  |---|---|---|---|
+  | RSS entries | 50 | 50 | ✅ |
+  | Sitemap article URLs | 1.661 | 1.677 | ✅ tăng đúng nhịp ~24 bài/ngày, không tụt |
+  | `/latest` link bài | — | 25 | ✅ đúng `ARTICLES_PAGE_SIZE` |
+  | `/briefing` | placeholder | 200, empty state mới | ✅ |
+
+  Lọc **không** ngược chiều. Đây là rủi ro đắt nhất của đợt này (loại nhầm là mất 1.661 bài) và đã loại trừ bằng dữ liệu thật.
+
+- apcg-cms: đã `npm ci`, `npm run typecheck` **sạch với types thật** — `contentType: 'article' | 'daily-brief'` sinh ra đúng.
+
+## Còn lại — cần môi trường
+
+- **Seed Author desk** cho tenant `dtw` trong `/admin` Central. Không seed thì bản tin đầu tiên đẻ ra một Author `role: "Staff Writer"`. Giá trị chốt 20-08-26 (xem §P11 doc nghiên cứu):
+  `name: "DTW Briefing Desk"` (khớp đúng từng ký tự) · `role: "Dailytechwire Newsroom"` · `city: "Singapore"`.
+- **Snapshot migration Central chưa đối chiếu.** Migration viết tay vì máy không có DB/docker. Chạy `payload migrate:create` một lần trên DB đã migrate — kỳ vọng sinh ra migration rỗng.
+- **Verify runtime với bản tin thật chưa chạy** — cần một số AM + PM đã đăng: hero, `/latest`, related (mở bài cũ nhất một pillar để kiểm nhánh wrap-around), paywall, `/briefing`, rail Saved.
 
 ## Lệch so với plan, có chủ đích
 
