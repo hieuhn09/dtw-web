@@ -14,6 +14,7 @@ import { claimViewCount } from "@/lib/article-views";
 import { recordArticleView } from "@/lib/view-actions";
 import type { ArticleBodyState, ArticleView } from "@/lib/article-view";
 import { fmtDateL, localizedPillarLabel, useLang, useT } from "@/lib/i18n";
+import { PAYWALL_ENABLED } from "@/lib/paywall";
 import { useShell } from "@/lib/shell";
 
 export interface ArticleContentProps {
@@ -34,7 +35,11 @@ export function ArticleContent({ article, body, related }: ArticleContentProps) 
   const isBrief = article.contentType === BRIEF_CONTENT_TYPE;
 
   const hitPaywall =
-    articlesRead >= paywallThreshold && !user && !article.sponsored && !isBrief;
+    PAYWALL_ENABLED &&
+    articlesRead >= paywallThreshold &&
+    !user &&
+    !article.sponsored &&
+    !isBrief;
 
   useEffect(() => {
     if (!article.sponsored && !isBrief) incrementRead(article.id);

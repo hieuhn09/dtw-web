@@ -13,6 +13,7 @@ import {
   useT,
 } from "@/lib/i18n";
 import { NAV_EXTRA, type NavPillar } from "@/lib/data";
+import { PAYWALL_ENABLED } from "@/lib/paywall";
 import { useShell } from "@/lib/shell";
 import { authClient } from "@/lib/auth-client";
 
@@ -64,7 +65,8 @@ export function Header({ pillars }: { pillars: NavPillar[] }) {
     setDateLabel(fmtFullDate(new Date(), lang));
   }, [lang]);
 
-  const showNudge = articlesRead >= paywallThreshold && !user && !nudgeDismissed;
+  const showNudge =
+    PAYWALL_ENABLED && articlesRead >= paywallThreshold && !user && !nudgeDismissed;
 
   const dismissNudge = () => {
     setNudgeDismissed(true);

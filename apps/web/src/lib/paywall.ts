@@ -15,6 +15,14 @@
 
 const PAYWALL_TZ = "Asia/Singapore"; // mirrors PUBLICATION_TZ in lib/i18n.tsx
 
+// [temp-hidden 2026-08-20] Paywall/sign-in nudge hidden site-wide by product
+// decision — no reader-facing surface trips the meter while this is `false`
+// (article-end Paywall card + header nudge banner both gate on it). The meter
+// machinery below keeps running (cookie + DB counts stay accurate), and the
+// CMS `paywallThreshold` setting is untouched, so flipping this back to `true`
+// restores the configured behaviour with no other change.
+export const PAYWALL_ENABLED = false;
+
 export const GUEST_METER_COOKIE = "dtw-read-count";
 
 /** Hard cap on tracked ids per period — bounds cookie size. Well above any
