@@ -56,12 +56,13 @@ export function Footer() {
     },
   ];
 
-  // Re-enable by adding real URLs as the third tuple element. Missing href = hidden.
+  // Re-enable by adding real URLs as the third tuple element. Missing href = hidden,
+  // so X and Instagram already carry their brand glyph and only await a URL.
   const socials: ReadonlyArray<readonly [label: string, icon: IconName, href?: string]> = [
-    ["X", "external"],
+    ["X", "x"],
     ["LinkedIn", "linkedin", "https://www.linkedin.com/company/dailytechwire/"],
     ["Facebook", "facebook", "https://www.facebook.com/apcgdailytechwire/"],
-    ["Instagram", "external"],
+    ["Instagram", "instagram"],
     ["Email", "mail", "mailto:info@dailytechwire.com"],
     ["RSS", "rss", "/rss.xml"],
   ];
