@@ -29,12 +29,11 @@ import { buildMetadata, DEFAULT_OG_IMAGE } from "@/lib/metadata";
 // [temp-hidden 2026-07-17] Homepage sections hidden at product request.
 // Flip any flag back to `true` to restore that band (imports and data-fetch
 // for each section are intentionally left intact so restoring is one edit).
-// Brief band. Stays false until the engine is actually publishing briefs to
-// this site (`BRIEF_PUBLISH_PUBS` on the engine admin); the band renders nothing
-// on its own until an edition exists, so flipping this early would just show a
-// gap. Flip together with adding `dtw` to that env — see
-// process/general-plans/active/brief-display_PLAN_20-08-26.md.
-const SHOW_BRIEF = false;
+// Brief band, live 2026-08-20. The band self-hides until an edition exists, so
+// this is inert until `dtw` is added to `BRIEF_PUBLISH_PUBS` on the engine admin
+// — that env is the real switch, and the one to pull to take briefs off the
+// homepage again. See process/general-plans/active/brief-display_PLAN_20-08-26.md.
+const SHOW_BRIEF = true;
 const SHOW_WIRE_DROPS = false;
 // Restored 2026-07-31: the teaser now runs on real CMS/LLM Stats data.
 const SHOW_DASHBOARDS = true;
