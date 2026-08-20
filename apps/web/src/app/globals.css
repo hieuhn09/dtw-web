@@ -294,6 +294,18 @@ body {
   }
 }
 
+/* /briefing: the day's two editions side by side, and the archive's AM|PM pair. */
+.r-brief-latest,
+.r-brief-archive {
+  grid-template-columns: 1fr 1fr;
+}
+@media (max-width: 640px) {
+  .r-brief-latest,
+  .r-brief-archive {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* Asymmetric "main + side" patterns -> stack. */
 .r-split-12 {
   grid-template-columns: 1fr 2fr;

@@ -23,6 +23,12 @@ export type PillarId = "ai" | "startups" | "latest" | "dev" | "products" | "poli
 export const ARTICLES_PAGE_SIZE = 25;
 
 /**
+ * Brief editions per page of `/briefing`. 20 = ten days of AM+PM, so a page
+ * boundary never splits a day across two pages.
+ */
+export const BRIEFS_PAGE_SIZE = 20;
+
+/**
  * Articles added per "Load more" press — 24, not ARTICLES_PAGE_SIZE.
  *
  * An append adds plain grid cards and no second lead card, so it has to add a
@@ -76,6 +82,7 @@ export interface NavItem {
 }
 
 export const NAV_EXTRA: ReadonlyArray<NavItem> = [
+  { id: "briefing", label: "Briefing", slug: "/briefing" },
   { id: "awards", label: "Awards", slug: "/awards" },
   { id: "studio", label: "Studio", slug: "/studio" },
   // [temp-hidden 2026-07-17] Dashboards + Newsletters pulled from nav until

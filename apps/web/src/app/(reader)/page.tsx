@@ -19,6 +19,7 @@ import {
   getDeepDive,
   getNavPillars,
   getPinnedLatest,
+  getLatestBriefs,
   getRecentArticles,
   getWireDrops,
 } from "@/lib/cms-client";
@@ -28,6 +29,11 @@ import { buildMetadata, DEFAULT_OG_IMAGE } from "@/lib/metadata";
 // [temp-hidden 2026-07-17] Homepage sections hidden at product request.
 // Flip any flag back to `true` to restore that band (imports and data-fetch
 // for each section are intentionally left intact so restoring is one edit).
+// Brief band. Stays false until the engine is actually publishing briefs to
+// this site (`BRIEF_PUBLISH_PUBS` on the engine admin); the band renders nothing
+// on its own until an edition exists, so flipping this early would just show a
+// gap. Flip together with adding `dtw` to that env — see
+// process/general-plans/active/brief-display_PLAN_20-08-26.md.
 const SHOW_BRIEF = false;
 const SHOW_WIRE_DROPS = false;
 // Restored 2026-07-31: the teaser now runs on real CMS/LLM Stats data.
@@ -66,7 +72,7 @@ export default async function HomePage() {
   // unstable_cache-backed, so it's a cache hit rather than a real round trip.
   const pillars = await getNavPillars();
 
-  const [recent, pinnedDoc, deepDive, wireDrops, mostReadDocs, aiModels, perPillar] =
+  const [recent, pinnedDoc, deepDive, wireDrops, mostReadDocs, aiModels, briefs, perPillar] =
     await Promise.all([
       getRecentArticles(40),
       getPinnedLatest(),
@@ -74,6 +80,9 @@ export default async function HomePage() {
       getWireDrops(12),
       getMostReadArticles(MOST_READ_SLOTS),
       getAiModels(),
+      // Fail-open inside the helper: a brief query that throws resolves to an
+      // empty pair rather than taking the homepage down with it.
+      getLatestBriefs(),
       // Each non-"latest" pillar band fills from its own newest 4 directly,
       // since low-volume pillars (e.g. Dev) can rank entirely outside the
       // shared newest-40 `articles` pool below, starving to 1 item or getting
@@ -139,7 +148,12 @@ export default async function HomePage() {
   return (
     <div className="container">
       <HomeHero lead={lead} aside={aside} />
-      {SHOW_BRIEF && <BriefBand />}
+      {SHOW_BRIEF && (
+        <BriefBand
+          am={briefs.am ? toArticleView(briefs.am) : null}
+          pm={briefs.pm ? toArticleView(briefs.pm) : null}
+        />
+      )}
       {SHOW_WIRE_DROPS && (
         <Reveal>
           <WireDrops initial={wireDropsInitial} />
