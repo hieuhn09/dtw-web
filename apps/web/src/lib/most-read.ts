@@ -5,6 +5,7 @@ import { db } from "@dtw/db/client";
 import { articleViews } from "@dtw/db";
 import { currentDayKeySGT } from "@/lib/article-views";
 import { getArticlesByIds, type Article } from "@/lib/cms-client";
+import { BRIEF_CONTENT_TYPE } from "@/lib/brief";
 
 /**
  * The read half of the anonymous view counter — ranks articles for the
@@ -81,7 +82,11 @@ export const getMostReadArticles = unstable_cache(
     const rank = new Map(ids.map((id, i) => [id, i]));
     const docs = await getArticlesByIds(ids);
     return docs
-      .filter((d) => !d.sponsored)
+      // Briefs are filtered here rather than in the query: `getArticlesByIds`
+      // deliberately serves every content type so the account rails can resolve
+      // a brief a reader saved. A digest of the week's most-read stories placing
+      // in "Most Read" is also just circular.
+      .filter((d) => !d.sponsored && d.contentType !== BRIEF_CONTENT_TYPE)
       .sort((a, b) => (rank.get(String(a.id)) ?? 0) - (rank.get(String(b.id)) ?? 0))
       .slice(0, limit);
   },

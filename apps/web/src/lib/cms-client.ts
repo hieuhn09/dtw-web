@@ -19,7 +19,7 @@ import * as local from "@/lib/payload-server";
  * and the rollback are one environment variable plus a redeploy — never a code
  * revert under pressure.
  *
- * Both modules expose the same 20 functions with the same signatures, so a drift
+ * Both modules expose the same 22 functions with the same signatures, so a drift
  * between them is a compile error here rather than a runtime surprise.
  */
 export const USING_CENTRAL_CMS = process.env.CMS_SOURCE === "central";
@@ -46,6 +46,8 @@ export const getPaywallThreshold = impl.getPaywallThreshold;
 export const getNewsletters = impl.getNewsletters;
 export const getFeedArticles = impl.getFeedArticles;
 export const getSitemapArticles = impl.getSitemapArticles;
+export const getLatestBriefs = impl.getLatestBriefs;
+export const getBriefsPage = impl.getBriefsPage;
 
 // ── Dashboards: LOCAL in BOTH modes ───────────────────────────────────────────
 // These three deliberately bypass the switch. Central's `dashboards` module
@@ -75,4 +77,5 @@ export type {
   Correction,
   Newsletter,
   FeedArticle,
+  LatestBriefs,
 } from "@/lib/payload-server";

@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { getArticlesPage, getPillars, getSitemapArticles } from "@/lib/cms-client";
+import { isBriefSlug } from "@/lib/brief";
 import { ARTICLES_PAGE_SIZE } from "@/lib/data";
 import { siteOrigin } from "@/lib/metadata";
 
@@ -76,10 +77,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       }))
   );
 
+  // Briefs stay in the sitemap — they are real pages with their own hub at
+  // /briefing, and two a day is ~730 URLs a year that would otherwise be
+  // reachable from nowhere. They just don't compete with reporting for crawl
+  // budget, hence the lower weight. Detected by slug because getSitemapArticles
+  // uses the refs projection (slug + dates only), which carries no contentType.
   const articleEntries: MetadataRoute.Sitemap = articles.map((article) => ({
     url: `${origin}/article/${article.slug}`,
     lastModified: article.updatedAt,
-    priority: 0.6,
+    priority: isBriefSlug(article.slug) ? 0.4 : 0.6,
     changeFrequency: "daily",
   }));
 

@@ -46,6 +46,7 @@ interface IntakeBody {
   heroImageUrl?: unknown;
   imageCredit?: unknown;
   byline?: unknown;
+  contentType?: unknown;
   slug?: unknown;
   aiAssisted?: unknown;
   sourceProvenance?: SourceProvenance;
@@ -130,6 +131,15 @@ export async function POST(request: Request): Promise<Response> {
     : titleStr.slice(0, 200);
 
   const byline = isNonEmptyString(body.byline) ? (body.byline as string).trim() : "";
+
+  // What the document IS (see Articles.contentType). Mirrors the Central intake:
+  // whitelist rather than pass-through, and an unrecognised value degrades to
+  // "article" instead of 400ing — a metadata field the route doesn't recognise
+  // must never stop a publication's daily output.
+  const contentType: "article" | "daily-brief" =
+    isNonEmptyString(body.contentType) && (body.contentType as string).trim() === "daily-brief"
+      ? "daily-brief"
+      : "article";
 
   const tags: string[] = Array.isArray(body.tags)
     ? body.tags.filter(isNonEmptyString).map((t) => t.trim())
@@ -289,6 +299,7 @@ export async function POST(request: Request): Promise<Response> {
       collection: "articles",
       data: {
         _status: "published",
+        contentType,
         origin: "engine",
         editedByHuman: false,
         aiAssisted: true,

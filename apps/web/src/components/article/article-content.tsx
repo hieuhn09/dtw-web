@@ -8,6 +8,7 @@ import { ArticleBody } from "@/components/article/article-body";
 import { ShareBar } from "@/components/article/share-bar";
 import { Paywall } from "@/components/article/paywall";
 import { RelatedRow } from "@/components/article/related-row";
+import { BRIEF_CONTENT_TYPE } from "@/lib/brief";
 import { isBookmarked, recordView, toggleBookmark } from "@/lib/account-actions";
 import { claimViewCount } from "@/lib/article-views";
 import { recordArticleView } from "@/lib/view-actions";
@@ -27,10 +28,16 @@ export function ArticleContent({ article, body, related }: ArticleContentProps) 
   const { articlesRead, incrementRead, user, openAuth, paywallThreshold } = useShell();
   const [saved, setSaved] = useState(false);
 
-  const hitPaywall = articlesRead >= paywallThreshold && !user && !article.sponsored;
+  // The AM/PM brief is the free daily digest — the thing a reader is meant to
+  // form a habit around. Metering it, or worse blocking it behind the sign-in
+  // nudge, argues against the product it exists to advertise.
+  const isBrief = article.contentType === BRIEF_CONTENT_TYPE;
+
+  const hitPaywall =
+    articlesRead >= paywallThreshold && !user && !article.sponsored && !isBrief;
 
   useEffect(() => {
-    if (!article.sponsored) incrementRead(article.id);
+    if (!article.sponsored && !isBrief) incrementRead(article.id);
     // Anonymous aggregate behind the homepage "Most Read" band. Fires for
     // guests as well as signed-in readers (that is the point of it), and for
     // sponsored stories too — those are counted but never ranked, see
@@ -178,7 +185,7 @@ export function ArticleContent({ article, body, related }: ArticleContentProps) 
       </header>
 
       <div style={{ maxWidth: 1100, margin: "0 auto 8px" }}>
-        {article.heroImageUrl ? (
+        {isBrief ? null : article.heroImageUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={article.heroImageUrl}
@@ -278,7 +285,7 @@ export function ArticleContent({ article, body, related }: ArticleContentProps) 
         </div>
       )}
 
-      <RelatedRow articles={related} />
+      {!isBrief && <RelatedRow articles={related} />}
 
       <div
         style={{
