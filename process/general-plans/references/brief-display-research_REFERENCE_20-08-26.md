@@ -159,7 +159,7 @@ Brief vào Articles như hiện tại; web thêm 1 field, lọc khớp dương, 
 5. `cms-client.central.ts`: tương đương — **cần thêm tham số ở Central** (xem §3.1). Nếu Central chưa sẵn sàng, ghi rõ là gap và giữ `CMS_SOURCE` ở local cho tới khi xong.
 6. `most-read.ts`: loại brief sau khi hydrate (dễ — đã có bước lọc `sponsored`).
 7. `article-content.tsx`: brief **không tính** vào paywall meter và không bị chặn.
-8. Author: **không** để intake sinh "Staff Writer". Hoặc seed sẵn một Author `DTW Briefing Desk` với role kiểu "Newsroom systems", hoặc cho intake nhận diện brief và gán vào một author desk cố định.
+8. Author: **không** để intake sinh "Staff Writer". Hoặc seed sẵn một Author `DTW Briefing Desk` với role phù hợp, hoặc cho intake nhận diện brief và gán vào một author desk cố định.
 9. Template bài brief: bỏ `CoverArt` giả, thêm dòng disclosure không tắt được, related row riêng (hoặc bỏ).
 10. `/briefing` + BriefBand (§6).
 
@@ -398,7 +398,7 @@ Chọn tham số tường minh thay vì mặc-định-loại-trừ vì: (a) khô
 
 ### P8.5. Câu 3 (seed author) — cách thực hiện
 
-Vì `resolveOrCreateAuthor` tìm theo `name` trước rồi mới tạo: chỉ cần **seed sẵn** một Author trong tenant `dtw` tên đúng `DTW Briefing Desk` với `role` phù hợp (vd "Newsroom systems" — cần EIC chốt chữ), thì intake sẽ nối vào hàng đó và **không bao giờ** tạo "Staff Writer". Không phải sửa code intake. Làm cùng lúc cho `briefasia`/`wtb` nếu hai tờ đó sắp bật.
+Vì `resolveOrCreateAuthor` tìm theo `name` trước rồi mới tạo: chỉ cần **seed sẵn** một Author trong tenant `dtw` tên đúng `DTW Briefing Desk` với `role` phù hợp (xem §P11), thì intake sẽ nối vào hàng đó và **không bao giờ** tạo "Staff Writer". Không phải sửa code intake. Làm cùng lúc cho `briefasia`/`wtb` nếu hai tờ đó sắp bật.
 
 ### P8.6. Doc của Central phải cập nhật cùng patch
 
@@ -462,6 +462,33 @@ Hệ quả, áp dụng cho mọi plan phát sinh từ doc này:
 - **Không** thêm dòng disclosure dạng chrome trên `/briefing`, trang bài brief, hay tooltip band. Giữ nguyên câu engine đã chèn cuối body (`_Compiled by DTW Briefing Desk from DailyTechWire reporting._`) — không thêm, không nâng cấp.
 - **Không** sửa `/trust/ai` trong phạm vi việc brief. KNOWN GAP của invariant #5 vẫn là KNOWN GAP, không mở rộng, không đóng.
 - **Không** đưa câu hỏi "brief nằm ở đâu trong chính sách AI" vào plan.
-- Việc duy nhất còn lại từ nhánh này là kỹ thuật, không phải chính sách: **seed Author desk** cho tenant `dtw` để `resolveOrCreateAuthor` không tự ghi `role: "Staff Writer"`. Đây không phải lựa chọn — không seed thì giá trị đó xuất hiện mặc định. Mặc định lấy: `name: "DTW Briefing Desk"`, `role: "Newsroom systems"`. Đổi được bất cứ lúc nào bằng một lần sửa trong `/admin` của Central, không cần deploy.
+- Việc duy nhất còn lại từ nhánh này là kỹ thuật, không phải chính sách: **seed Author desk** cho tenant `dtw` để `resolveOrCreateAuthor` không tự ghi `role: "Staff Writer"`. Đây không phải lựa chọn — không seed thì giá trị đó xuất hiện mặc định. Giá trị chốt ở §P11. Đổi được bất cứ lúc nào bằng một lần sửa trong `/admin` của Central, không cần deploy.
 
 ⚠️ Đừng diễn giải mục này thành "brief không cần đánh dấu gì". Field `contentType` vẫn làm — nó là hạ tầng lọc, không phải công bố biên tập.
+
+
+---
+
+## P11. QUYẾT ĐỊNH 20-08-26 — chữ cho Author desk
+
+Chủ dự án chốt: **role viết chung chung theo kiểu toà soạn, không dùng chữ gợi máy móc.** "Newsroom systems" bị bác vì nghe như AI.
+
+Giá trị seed cho tenant `dtw` trên Central:
+
+```
+name: "DTW Briefing Desk"        ← KHÔNG đổi được
+role: "Dailytechwire Newsroom"
+city: "Singapore"
+```
+
+`name` phải đúng từng ký tự vì `resolveOrCreateAuthor` khớp theo `name`; lệch một chữ là intake đẻ ra một Author mới với `role: "Staff Writer"` — đúng thứ việc seed này sinh ra để tránh.
+
+**`role` là chữ công khai, không phải ghi chú nội bộ** (điểm này không hiển nhiên, kiểm 20-08-26):
+
+- `apps/web/src/components/article/article-content.tsx:175` render `{authorRole} · {authorCity}` ngay dưới byline ⇒ trang bài brief hiện **"Dailytechwire Newsroom · Singapore"**.
+- `apps/web/src/lib/metadata.ts:241` đẩy nó vào JSON-LD làm `jobTitle` của Person ⇒ Google đọc được.
+- `authorCity` còn hiện trên card Most Read (`most-read.tsx:143`), tuy brief đã bị loại khỏi băng đó.
+
+"Singapore" đúng sự thật — toà soạn APCG đặt ở Singapore.
+
+Không mở lại nhánh disclosure/`/trust/ai` (§P10 vẫn nguyên hiệu lực). Đây thuần tuý là chọn chữ cho một trường dữ liệu.
