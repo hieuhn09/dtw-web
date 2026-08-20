@@ -191,6 +191,27 @@ export const Articles: CollectionConfig = {
             "Provenance + conflict-resolution fields. Editor-controlled. See process/features/engine-integration/_GUIDE.md.",
           fields: [
             {
+              // WHAT this is, next to `origin`'s WHO wrote it. Only the engine's
+              // daily brief is marked; everything else is an ordinary article.
+              // MUST stay identical to the same field on the Central CMS
+              // (apcg-cms src/collections/Articles.ts) — production reads from
+              // Central and this collection only backs local mode + the shared
+              // `Article` type, so a drift here is a type lie, not a bug you see.
+              name: "contentType",
+              type: "select",
+              required: true,
+              defaultValue: "article",
+              options: [
+                { label: "Article", value: "article" },
+                { label: "Daily brief", value: "daily-brief" },
+              ],
+              admin: {
+                readOnly: true,
+                description:
+                  "Set by the engine. 'Daily brief' = a machine-composed digest of our own reporting; it is kept out of news feeds and lives at /briefing.",
+              },
+            },
+            {
               name: "origin",
               type: "select",
               required: true,

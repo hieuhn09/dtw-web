@@ -7,6 +7,7 @@ import * as migration_20260706_022942_add_paywall_settings_global from './202607
 import * as migration_20260706_030547_add_newsletters_collection from './20260706_030547_add_newsletters_collection';
 import * as migration_20260731_025433_ai_leaderboard_llmstats from './20260731_025433_ai_leaderboard_llmstats';
 import * as migration_20260805_000000_pinned_until from './20260805_000000_pinned_until';
+import * as migration_20260820_000000_content_type from './20260820_000000_content_type';
 
 export const migrations = [
   {
@@ -53,5 +54,10 @@ export const migrations = [
     up: migration_20260805_000000_pinned_until.up,
     down: migration_20260805_000000_pinned_until.down,
     name: '20260805_000000_pinned_until',
+  },
+  {
+    up: migration_20260820_000000_content_type.up,
+    down: migration_20260820_000000_content_type.down,
+    name: '20260820_000000_content_type',
   },
 ];

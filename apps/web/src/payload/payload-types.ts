@@ -382,6 +382,10 @@ export interface Article {
    */
   pinnedUntil?: string | null;
   /**
+   * Set by the engine. 'Daily brief' = a machine-composed digest of our own reporting; it is kept out of news feeds and lives at /briefing.
+   */
+  contentType: 'article' | 'daily-brief';
+  /**
    * How this article entered the system.
    */
   origin: 'engine' | 'manual';
@@ -897,6 +901,7 @@ export interface ArticlesSelect<T extends boolean = true> {
   deepDive?: T;
   pinnedToLatest?: T;
   pinnedUntil?: T;
+  contentType?: T;
   origin?: T;
   editedByHuman?: T;
   lockedFields?:

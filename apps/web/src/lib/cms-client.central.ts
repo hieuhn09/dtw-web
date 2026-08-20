@@ -11,6 +11,8 @@ import type {
   Newsletter,
 } from "../payload/payload-types";
 import type { NavPillar } from "./data";
+import { BRIEFS_PAGE_SIZE } from "./data";
+import { BRIEF_CONTENT_TYPE, briefEdition } from "./brief";
 import {
   fetchArticles,
   fetchArticleBySlug,
@@ -43,6 +45,19 @@ import {
  * IMPORTANT: import only from server components / route handlers — `"server-only"`
  * throws if it leaks into a client bundle.
  */
+
+/**
+ * Central returns every content type unless asked otherwise, so each news
+ * surface opts out of the daily brief explicitly. See NOT_BRIEF in
+ * payload-server.ts for why the brief is excluded and which helpers are
+ * deliberately left unfiltered — the two modules must stay in step, and
+ * cms-client.ts turns a drift into a compile error.
+ *
+ * Spread into params rather than written inline nine times: a helper that
+ * quietly loses it is the failure mode here, and one named constant makes the
+ * omission visible in review.
+ */
+const ARTICLE_ONLY = { content_type: "article" } as const;
 
 // Preview-token cookie set by the /preview route (draft mode). Read by
 // getArticleBySlugDraft to fetch the draft from the signed preview endpoint.
@@ -142,7 +157,7 @@ export const getNavPillars = unstable_cache(
 
 export const getRecentArticles = unstable_cache(
   async (limit = 12): Promise<Article[]> => {
-    const { docs } = await fetchArticles<Article>({ limit, sort: "-publishedAt" });
+    const { docs } = await fetchArticles<Article>({ limit, sort: "-publishedAt", ...ARTICLE_ONLY });
     return docs;
   },
   ["articles:recent"],
@@ -173,8 +188,8 @@ export const getArticlesPage = unstable_cache(
   ): Promise<ArticlesPage> => {
     const params =
       pillarSlug === "latest"
-        ? { page, limit: pageSize, sort: "-publishedAt" }
-        : { pillar: pillarSlug, page, limit: pageSize, sort: "-publishedAt" };
+        ? { page, limit: pageSize, sort: "-publishedAt", ...ARTICLE_ONLY }
+        : { pillar: pillarSlug, page, limit: pageSize, sort: "-publishedAt", ...ARTICLE_ONLY };
     const r = await fetchArticles<Article>(params);
     return { docs: r.docs, totalDocs: r.totalDocs, hasNextPage: r.hasNextPage, page: r.page ?? page };
   },
@@ -188,6 +203,7 @@ export const getArticlesByPillar = unstable_cache(
       pillar: pillarSlug,
       limit,
       sort: "-publishedAt",
+      ...ARTICLE_ONLY,
     });
     return docs;
   },
@@ -251,7 +267,7 @@ export async function getArticleBySlugDraft(slug: string): Promise<Article | nul
  * (per-query, low-traffic) — mirrors payload-server.
  */
 export async function searchArticles(q: string, limit = 40): Promise<Article[]> {
-  const { docs } = await fetchArticles<Article>({ q: q.trim(), limit, sort: "-publishedAt" });
+  const { docs } = await fetchArticles<Article>({ q: q.trim(), limit, sort: "-publishedAt", ...ARTICLE_ONLY });
   return docs;
 }
 
@@ -294,6 +310,7 @@ export const getPinnedLatest = unstable_cache(
       flag: "pinnedToLatest",
       limit: 1,
       sort: "-publishedAt",
+      ...ARTICLE_ONLY,
     });
     return docs[0] ?? null;
   },
@@ -386,6 +403,7 @@ export const getArticlesAfter = unstable_cache(
       sort: "-publishedAt",
       after_published_at: afterPublishedAt,
       after_id: afterId,
+      ...ARTICLE_ONLY,
     };
     if (pillarSlug !== "latest") params.pillar = pillarSlug;
     const { docs } = await fetchArticles<Article>(params);
@@ -414,6 +432,7 @@ export const getRelatedArticles = unstable_cache(
       sort: "-publishedAt",
       after_published_at: publishedAt,
       after_id: currentId,
+      ...ARTICLE_ONLY,
     });
     const out = older.docs.slice(0, limit);
     if (out.length >= limit) return out;
@@ -424,6 +443,7 @@ export const getRelatedArticles = unstable_cache(
       pillar: pillarSlug,
       limit: limit + out.length + 1,
       sort: "-publishedAt",
+      ...ARTICLE_ONLY,
     });
     const taken = new Set<unknown>([currentId, ...out.map((d) => d.id)]);
     for (const d of newest.docs) {
@@ -445,7 +465,11 @@ export const getRelatedArticles = unstable_cache(
  */
 export const getFeedArticles = unstable_cache(
   async (pillarId: number | null = null): Promise<Article[]> => {
-    const params: Record<string, string | number> = { limit: 50, sort: "-publishedAt" };
+    const params: Record<string, string | number> = {
+      limit: 50,
+      sort: "-publishedAt",
+      ...ARTICLE_ONLY,
+    };
     if (pillarId != null) {
       const pillars = await getPillars();
       const slug = pillars.find((p) => String(p.id) === String(pillarId))?.slug;
@@ -479,6 +503,60 @@ export const getSitemapArticles = unstable_cache(
   },
   ["articles:sitemap"],
   { tags: ["articles:all"], revalidate: 900 }
+);
+
+// ──────────────────────────────────────────────────────────────────────────────
+// Daily Brief — the surfaces that WANT the brief. Mirrors payload-server.ts.
+// ──────────────────────────────────────────────────────────────────────────────
+
+export interface LatestBriefs {
+  am: Article | null;
+  pm: Article | null;
+}
+
+/**
+ * Newest published AM and PM edition, for the homepage band and `/briefing`.
+ * One query: editions alternate, so the newest handful holds one of each unless
+ * a run was skipped (the engine drops thin editions rather than padding them).
+ *
+ * Fail-open — a brief query that throws must not take the homepage with it.
+ * `fetchArticles` already resolves failures to an empty envelope; the try/catch
+ * covers anything above it.
+ */
+export const getLatestBriefs = unstable_cache(
+  async (): Promise<LatestBriefs> => {
+    try {
+      const { docs } = await fetchArticles<Article>({
+        content_type: BRIEF_CONTENT_TYPE,
+        limit: 10,
+        sort: "-publishedAt",
+      });
+      return {
+        am: docs.find((d) => briefEdition(d.slug) === "am") ?? null,
+        pm: docs.find((d) => briefEdition(d.slug) === "pm") ?? null,
+      };
+    } catch (err) {
+      console.warn("[getLatestBriefs] query failed:", (err as Error)?.message);
+      return { am: null, pm: null };
+    }
+  },
+  ["articles:briefs-latest"],
+  { tags: ["articles:all"], revalidate: 60 }
+);
+
+/** Paginated brief archive behind `/briefing` and `/briefing/page/[n]`. */
+export const getBriefsPage = unstable_cache(
+  async (page = 1, pageSize = BRIEFS_PAGE_SIZE): Promise<ArticlesPage> => {
+    const r = await fetchArticles<Article>({
+      content_type: BRIEF_CONTENT_TYPE,
+      page,
+      limit: pageSize,
+      sort: "-publishedAt",
+    });
+    return { docs: r.docs, totalDocs: r.totalDocs, hasNextPage: r.hasNextPage, page: r.page ?? page };
+  },
+  ["articles:briefs-page"],
+  { tags: ["articles:all"], revalidate: 60 }
 );
 
 export type { Article, Pillar, Author, WireDrop, Tag, Correction, Newsletter };

@@ -119,6 +119,13 @@ export interface FetchArticlesParams {
   q?: string;
   ids?: string;
   flag?: "deepDive" | "sponsored" | "pinnedToLatest" | "breaking";
+  /**
+   * Narrow by what the document IS. Omitted = everything, which is why every
+   * news surface has to opt in with "article" — see ARTICLE_ONLY in
+   * cms-client.central.ts. Never sent alongside `ids`: the saved/history rails
+   * resolve by id and must still return a brief the reader saved.
+   */
+  content_type?: "article" | "daily-brief";
   page?: number;
   limit?: number;
   sort?: string;

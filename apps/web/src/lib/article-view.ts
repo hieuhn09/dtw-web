@@ -56,6 +56,8 @@ export interface ArticleView {
   section: string;
   readMin: number;
   published: string; // ISO
+  /** "daily-brief" marks the machine-composed AM/PM digest; everything else is "article". */
+  contentType: "article" | "daily-brief";
   sponsored: boolean;
   sponsor?: string;
   aiAssisted: boolean;
@@ -139,6 +141,9 @@ export function toArticleView(a: Article): ArticleView {
     section: a.section ?? "",
     readMin: a.readMin,
     published: a.publishedAt,
+    // Rows written before the field existed read as undefined; treat the absence
+    // as an ordinary article, which is what every one of them is.
+    contentType: a.contentType === "daily-brief" ? "daily-brief" : "article",
     sponsored: Boolean(a.sponsored),
     sponsor: a.sponsor ?? undefined,
     aiAssisted: Boolean(a.aiAssisted),

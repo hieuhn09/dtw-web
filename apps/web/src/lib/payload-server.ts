@@ -13,7 +13,8 @@ import type {
   SponsorSlot,
 } from "../payload/payload-types";
 import type { NavPillar, AiLeaderboardRow } from "./data";
-import { AI_LEADERBOARD } from "./data";
+import { BRIEF_CONTENT_TYPE, briefEdition } from "./brief";
+import { AI_LEADERBOARD, BRIEFS_PAGE_SIZE } from "./data";
 
 /**
  * Server-side Payload client + cached query helpers.
@@ -40,6 +41,28 @@ async function payload() {
   }
   return instance;
 }
+
+/**
+ * Every feed on the site means "news stories", and the daily brief is not one —
+ * it is a machine-composed digest of stories that already ran. Left unfiltered it
+ * takes the homepage hero twice a day, fills a quarter of a section page, and
+ * shows up as its own "read next".
+ *
+ * A positive match, never `not_equals`: the column is NOT NULL DEFAULT 'article'
+ * (see the 20260820 migration) precisely so exclusion never has to be expressed
+ * as a negation, which is the shape that silently drops rows.
+ *
+ * Deliberately NOT applied to: `getArticleBySlug` / `getArticlesByIds` /
+ * `getArticleBySlugDraft` (a brief's own page must resolve, and the account rails
+ * resolve saved + history by id — a reader who saved a brief gets it back), and
+ * `getSitemapArticles` (briefs are real pages worth indexing; sitemap.ts just
+ * ranks them lower). `getDeepDive` / `getSponsoredArticle` filter on flags a brief
+ * never carries.
+ *
+ * Mirrored in cms-client.central.ts as `content_type=article`. The two modules
+ * must stay in step — cms-client.ts makes a drift a compile error.
+ */
+const NOT_BRIEF: Where = { contentType: { equals: "article" } };
 
 // ──────────────────────────────────────────────────────────────────────────────
 // Cache-tag conventions:
@@ -107,7 +130,7 @@ export const getRecentArticles = unstable_cache(
     const p = await payload();
     const r = await p.find({
       collection: "articles",
-      where: { _status: { equals: "published" } },
+      where: { and: [{ _status: { equals: "published" } }, NOT_BRIEF] },
       sort: "-publishedAt",
       limit,
       depth: 1,
@@ -167,7 +190,7 @@ export const getArticlesPage = unstable_cache(
     pageSize = 21
   ): Promise<ArticlesPage> => {
     const p = await payload();
-    const and: Where[] = [{ _status: { equals: "published" } }];
+    const and: Where[] = [{ _status: { equals: "published" } }, NOT_BRIEF];
     if (pillarSlug !== "latest") {
       const pillarId = await getPillarIdBySlug(pillarSlug);
       if (pillarId == null) return { docs: [], totalDocs: 0, hasNextPage: false, page: 1 };
@@ -218,7 +241,7 @@ export const getArticlesAfter = unstable_cache(
     limit: number
   ): Promise<{ docs: Article[]; hasMore: boolean }> => {
     const p = await payload();
-    const and: Where[] = [{ _status: { equals: "published" } }];
+    const and: Where[] = [{ _status: { equals: "published" } }, NOT_BRIEF];
     if (pillarSlug !== "latest") {
       const pillarId = await getPillarIdBySlug(pillarSlug);
       if (pillarId == null) return { docs: [], hasMore: false };
@@ -262,7 +285,7 @@ export const getArticlesByPillar = unstable_cache(
     const r = await p.find({
       collection: "articles",
       where: {
-        and: [{ pillar: { equals: pillarId } }, { _status: { equals: "published" } }],
+        and: [{ pillar: { equals: pillarId } }, { _status: { equals: "published" } }, NOT_BRIEF],
       },
       sort: "-publishedAt",
       limit,
@@ -323,6 +346,7 @@ export const getRelatedArticles = unstable_cache(
     const base: Where[] = [
       { pillar: { equals: pillarId } },
       { _status: { equals: "published" } },
+      NOT_BRIEF,
     ];
     const sort = ["-publishedAt", "-id"];
 
@@ -459,10 +483,11 @@ export async function searchArticles(q: string, limit = 40): Promise<Article[]> 
       ? {
           and: [
             { _status: { equals: "published" } },
+            NOT_BRIEF,
             { or: [{ title: { like: query } }, { dek: { like: query } }] },
           ],
         }
-      : { _status: { equals: "published" } },
+      : { and: [{ _status: { equals: "published" } }, NOT_BRIEF] },
     sort: "-publishedAt",
     limit,
     depth: 1,
@@ -525,6 +550,7 @@ export const getPinnedLatest = unstable_cache(
           and: [
             { pinnedToLatest: { equals: true } },
             { _status: { equals: "published" } },
+            NOT_BRIEF,
             { or: [{ pinnedUntil: { exists: false } }, { pinnedUntil: { greater_than: now } }] },
           ],
         },
@@ -657,7 +683,7 @@ export type FeedArticle = Pick<
 export const getFeedArticles = unstable_cache(
   async (pillarId: number | null = null): Promise<FeedArticle[]> => {
     const p = await payload();
-    const and: Where[] = [{ _status: { equals: "published" } }];
+    const and: Where[] = [{ _status: { equals: "published" } }, NOT_BRIEF];
     if (pillarId != null) and.push({ pillar: { equals: pillarId } });
     const r = await p.find({
       collection: "articles",
@@ -697,6 +723,83 @@ export const getSitemapArticles = unstable_cache(
   },
   ["articles:sitemap"],
   { tags: ["articles:all"], revalidate: 900 }
+);
+
+// ──────────────────────────────────────────────────────────────────────────────
+// Daily Brief — the surfaces that WANT the brief, i.e. the inverse of NOT_BRIEF.
+// ──────────────────────────────────────────────────────────────────────────────
+
+export interface LatestBriefs {
+  am: Article | null;
+  pm: Article | null;
+}
+
+/**
+ * Newest published AM and PM edition, for the homepage band and the top of
+ * `/briefing`.
+ *
+ * One query, not two: editions alternate, so the newest handful always contains
+ * one of each unless a run was skipped (the engine drops an edition rather than
+ * padding it when the pool is thin — an honest gap, and the band then keeps
+ * showing the older edition with its true date).
+ *
+ * Fail-open. A brief query that throws must never take the homepage with it, so
+ * the caller gets an empty pair and the band renders nothing.
+ */
+export const getLatestBriefs = unstable_cache(
+  async (): Promise<LatestBriefs> => {
+    try {
+      const p = await payload();
+      const r = await p.find({
+        collection: "articles",
+        where: {
+          and: [
+            { _status: { equals: "published" } },
+            { contentType: { equals: BRIEF_CONTENT_TYPE } },
+          ],
+        },
+        sort: ["-publishedAt", "-id"],
+        limit: 10,
+        depth: 1,
+      });
+      const am = r.docs.find((d) => briefEdition(d.slug) === "am") ?? null;
+      const pm = r.docs.find((d) => briefEdition(d.slug) === "pm") ?? null;
+      return { am, pm };
+    } catch (err) {
+      console.warn("[getLatestBriefs] query failed:", (err as Error)?.message);
+      return { am: null, pm: null };
+    }
+  },
+  ["articles:briefs-latest"],
+  { tags: ["articles:all"], revalidate: 60 }
+);
+
+/** Paginated brief archive behind `/briefing` and `/briefing/page/[n]`. */
+export const getBriefsPage = unstable_cache(
+  async (page = 1, pageSize = BRIEFS_PAGE_SIZE): Promise<ArticlesPage> => {
+    const p = await payload();
+    const r = await p.find({
+      collection: "articles",
+      where: {
+        and: [
+          { _status: { equals: "published" } },
+          { contentType: { equals: BRIEF_CONTENT_TYPE } },
+        ],
+      },
+      sort: ["-publishedAt", "-id"],
+      page,
+      limit: pageSize,
+      depth: 1,
+    });
+    return {
+      docs: r.docs,
+      totalDocs: r.totalDocs,
+      hasNextPage: r.hasNextPage,
+      page: r.page ?? page,
+    };
+  },
+  ["articles:briefs-page"],
+  { tags: ["articles:all"], revalidate: 60 }
 );
 
 // ──────────────────────────────────────────────────────────────────────────────
