@@ -59,7 +59,8 @@ export function Footer() {
   // Re-enable by adding real URLs as the third tuple element. Missing href = hidden.
   const socials: ReadonlyArray<readonly [label: string, icon: IconName, href?: string]> = [
     ["X", "external"],
-    ["LinkedIn", "external"],
+    ["LinkedIn", "linkedin", "https://www.linkedin.com/company/dailytechwire/"],
+    ["Facebook", "facebook", "https://www.facebook.com/apcgdailytechwire/"],
     ["Instagram", "external"],
     ["Email", "mail", "mailto:info@dailytechwire.com"],
     ["RSS", "rss", "/rss.xml"],
@@ -152,7 +153,11 @@ export function Footer() {
               <a
                 key={k}
                 title={k}
+                aria-label={k}
                 href={href ?? "#"}
+                {...(href?.startsWith("http")
+                  ? { target: "_blank", rel: "noopener noreferrer" }
+                  : {})}
                 style={{
                   width: 32,
                   height: 32,
