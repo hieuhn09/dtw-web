@@ -74,10 +74,10 @@ export const DEFAULT_OG_IMAGE: OgImage = {
  * field (and, sitewide, the root Organization node itself — see
  * `(reader)/layout.tsx`). `foundingDate` is confirmed in
  * `process/context/all-context.md` ("independent newsroom, Singapore,
- * founded 2023"), so it's safe to state. Deliberately still no `sameAs` /
- * social URLs — none are confirmed anywhere in project context, so none are
- * invented (Decisions Log #1; this line intentionally stays even though the
- * decision it documents keeps being reconfirmed rather than resolved).
+ * founded 2023"), so it's safe to state. `sameAs` lists only the official
+ * profiles confirmed by the owner (2026-08-20: LinkedIn + Facebook, the same
+ * two surfaced in the footer). Never invent additional social URLs — add one
+ * here only when the owner confirms it (supersedes Decisions Log #1).
  * `logo` reuses `og-default.png` as a pragmatic stand-in for a dedicated
  * square logo raster (see plan's Out of Scope / Future Work).
  */
@@ -86,6 +86,10 @@ export const ORGANIZATION = {
   url: siteOrigin(),
   logo: { url: absoluteUrl(DEFAULT_OG_IMAGE.url) },
   foundingDate: "2023",
+  sameAs: [
+    "https://www.linkedin.com/company/dailytechwire/",
+    "https://www.facebook.com/apcgdailytechwire/",
+  ],
 };
 
 // ──────────────────────────────────────────────────────────────────────────
