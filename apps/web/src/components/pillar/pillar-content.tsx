@@ -187,7 +187,7 @@ export function PillarContent({
             <CoverArt
               pillar={featured.pillar}
               seed={featured.id}
-              src={featured.heroImageUrl}
+              src={featured.heroImageFullUrl}
               variant={5}
               height={440}
               label="FEATURED"

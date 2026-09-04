@@ -190,10 +190,10 @@ export function ArticleContent({ article, body, related }: ArticleContentProps) 
       </header>
 
       <div style={{ maxWidth: 1100, margin: "0 auto 8px" }}>
-        {isBrief ? null : article.heroImageUrl ? (
+        {isBrief ? null : article.heroImageFullUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
-            src={article.heroImageUrl}
+            src={article.heroImageFullUrl}
             alt={article.heroImageAlt ?? article.title}
             style={{
               width: "100%",
