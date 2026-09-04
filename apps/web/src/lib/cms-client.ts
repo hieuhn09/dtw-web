@@ -1,73 +1,55 @@
 import "server-only";
 import * as central from "@/lib/cms-client.central";
-import * as local from "@/lib/payload-server";
 
 /**
- * Chooses where the reader gets its content.
+ * The reader's single data entry point.
  *
- *   CMS_SOURCE=central  → Central CMS over HTTP (cms-client.central.ts)
- *   anything else / unset → the local Payload instance (payload-server.ts)  ← DEFAULT
+ * Until 04-09-2026 this module was a SWITCH: `CMS_SOURCE=central` picked the
+ * shared Central CMS over HTTP, anything else fell back to an embedded Payload
+ * instance in this repo. The fallback is gone — Central has been the live source
+ * since the cutover, local Payload has been deleted, and a dormant second
+ * implementation reliably produces drift rather than safety.
  *
- * Why the switch exists rather than importing the central client directly:
- * `central-api.ts` deliberately never throws into render — every network error,
- * 404 or bad token resolves to an empty result. That is the right call for
- * runtime resilience, but it means a deploy whose CMS_URL does not yet point at
- * a seeded Central renders a COMPLETELY EMPTY site with no error anywhere. WTB
- * hit exactly that on 28/07/2026.
+ * The three dashboard reads below used to bypass the switch entirely and stay on
+ * local Payload in BOTH modes, because Central's schema had no `aiModels`
+ * collection and no `dashboardMethodology` global. That was the last thing
+ * keeping a Payload instance in this repo. Central now carries both, so they go
+ * through the same client as everything else.
  *
- * With the switch, `main` keeps behaving as it does today, and both the cutover
- * and the rollback are one environment variable plus a redeploy — never a code
- * revert under pressure.
- *
- * Both modules expose the same 22 functions with the same signatures, so a drift
- * between them is a compile error here rather than a runtime surprise.
+ * This file stays as a re-export barrel rather than having every page import
+ * `cms-client.central` directly: the call sites already point here, and it is
+ * the one place the reader's whole data surface is listed.
  */
-export const USING_CENTRAL_CMS = process.env.CMS_SOURCE === "central";
 
-const impl = USING_CENTRAL_CMS ? central : local;
+export const getPillars = central.getPillars;
+export const getNavPillars = central.getNavPillars;
+export const getRecentArticles = central.getRecentArticles;
+export const getArticlesPage = central.getArticlesPage;
+export const getArticlesAfter = central.getArticlesAfter;
+export const getArticlesByPillar = central.getArticlesByPillar;
+export const getRelatedArticles = central.getRelatedArticles;
+export const getArticleBySlug = central.getArticleBySlug;
+export const getArticlesByIds = central.getArticlesByIds;
+export const getArticleBySlugDraft = central.getArticleBySlugDraft;
+export const searchArticles = central.searchArticles;
+export const getDeepDive = central.getDeepDive;
+export const getSponsoredArticle = central.getSponsoredArticle;
+export const getPinnedLatest = central.getPinnedLatest;
+export const getWireDrops = central.getWireDrops;
+export const getCorrections = central.getCorrections;
+export const getPaywallThreshold = central.getPaywallThreshold;
+export const getNewsletters = central.getNewsletters;
+export const getFeedArticles = central.getFeedArticles;
+export const getSitemapArticles = central.getSitemapArticles;
+export const getLatestBriefs = central.getLatestBriefs;
+export const getBriefsPage = central.getBriefsPage;
 
-export const getPillars = impl.getPillars;
-export const getNavPillars = impl.getNavPillars;
-export const getRecentArticles = impl.getRecentArticles;
-export const getArticlesPage = impl.getArticlesPage;
-export const getArticlesAfter = impl.getArticlesAfter;
-export const getArticlesByPillar = impl.getArticlesByPillar;
-export const getRelatedArticles = impl.getRelatedArticles;
-export const getArticleBySlug = impl.getArticleBySlug;
-export const getArticlesByIds = impl.getArticlesByIds;
-export const getArticleBySlugDraft = impl.getArticleBySlugDraft;
-export const searchArticles = impl.searchArticles;
-export const getDeepDive = impl.getDeepDive;
-export const getSponsoredArticle = impl.getSponsoredArticle;
-export const getPinnedLatest = impl.getPinnedLatest;
-export const getWireDrops = impl.getWireDrops;
-export const getCorrections = impl.getCorrections;
-export const getPaywallThreshold = impl.getPaywallThreshold;
-export const getNewsletters = impl.getNewsletters;
-export const getFeedArticles = impl.getFeedArticles;
-export const getSitemapArticles = impl.getSitemapArticles;
-export const getLatestBriefs = impl.getLatestBriefs;
-export const getBriefsPage = impl.getBriefsPage;
+// ─── Dashboards (AI Leaderboard) ─────────────────────────────────────────────
+export const getAiModels = central.getAiModels;
+export const getDashboardMethodology = central.getDashboardMethodology;
+export const getDashboardSponsorSlot = central.getDashboardSponsorSlot;
 
-// ── Dashboards: LOCAL in BOTH modes ───────────────────────────────────────────
-// These three deliberately bypass the switch. Central's `dashboards` module
-// exposes `fundingRows` + `aiLeaderboardRows`, but the AI Leaderboard reads a
-// different shape entirely: the `aiModels` collection, the `dashboardMethodology`
-// global, and `sponsorSlots` — none of which exist in Central's schema.
-//
-// So after cutover DTW still needs its local Payload for this one surface. That
-// is a real dependency, not an oversight: routing them through `impl` would
-// silently empty the leaderboard the moment CMS_SOURCE flips, because
-// central-api resolves every miss to an empty result rather than throwing.
-//
-// Closing this means adding the three surfaces to Central and migrating the rows;
-// until then, leave them here so the coupling stays visible.
-export const getAiModels = local.getAiModels;
-export const getDashboardMethodology = local.getDashboardMethodology;
-export const getDashboardSponsorSlot = local.getDashboardSponsorSlot;
-
-// Types are re-exported from payload-server, which owns the canonical shapes —
-// the central client returns the same ones.
+// Types come from the central client, which owns the canonical shapes.
 export type {
   Article,
   Pillar,
@@ -76,6 +58,7 @@ export type {
   Tag,
   Correction,
   Newsletter,
+  SponsorSlot,
   FeedArticle,
   LatestBriefs,
-} from "@/lib/payload-server";
+} from "@/lib/cms-client.central";

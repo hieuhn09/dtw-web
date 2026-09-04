@@ -9,11 +9,13 @@ import type {
   Tag,
   Correction,
   Newsletter,
+  SponsorSlot,
 } from "../payload/payload-types";
-import type { NavPillar } from "./data";
-import { BRIEFS_PAGE_SIZE } from "./data";
+import type { AiLeaderboardRow, NavPillar } from "./data";
+import { AI_LEADERBOARD, BRIEFS_PAGE_SIZE } from "./data";
 import { BRIEF_CONTENT_TYPE, briefEdition } from "./brief";
 import {
+  CENTRAL_PREVIEW_TOKEN_COOKIE,
   fetchArticles,
   fetchArticleBySlug,
   fetchPreview,
@@ -58,10 +60,6 @@ import {
  * omission visible in review.
  */
 const ARTICLE_ONLY = { content_type: "article" } as const;
-
-// Preview-token cookie set by the /preview route (draft mode). Read by
-// getArticleBySlugDraft to fetch the draft from the signed preview endpoint.
-const PREVIEW_COOKIE = "dtw_preview_token";
 
 // ──────────────────────────────────────────────────────────────────────────────
 // Cache-tag conventions (kept identical to payload-server.ts):
@@ -249,17 +247,19 @@ export const getArticlesByIds = unstable_cache(
 
 /**
  * Draft-aware single-article fetch — NOT cached, NOT status-filtered. Only used
- * when Next draft mode is on (enabled by the /preview route, which also stores a
- * signed preview token cookie). With a token we fetch the draft from the signed
- * preview endpoint; without one we fall back to the published copy.
+ * when Next draft mode is on, which only `/preview` can turn on, and `/preview`
+ * always parks the signed Central token in a cookie first.
+ *
+ * No cookie means no draft. It used to fall back to the published copy; that
+ * fallback went on 04-09-2026 with local Payload, because showing an editor the
+ * live version under a "preview" URL is worse than showing them nothing — they
+ * read it as "my edit saved and looks like this".
  */
 export async function getArticleBySlugDraft(slug: string): Promise<Article | null> {
-  const token = (await cookies()).get(PREVIEW_COOKIE)?.value;
-  if (token) {
-    const draft = await fetchPreview<Article>(token, "en");
-    if (draft) return draft;
-  }
-  return fetchArticleBySlug<Article>(slug, "en");
+  const token = (await cookies()).get(CENTRAL_PREVIEW_TOKEN_COOKIE)?.value;
+  if (!token) return null;
+  const draft = await fetchPreview<Article>(token, "en");
+  return draft?.slug === slug ? draft : null;
 }
 
 /**
@@ -559,4 +559,176 @@ export const getBriefsPage = unstable_cache(
   { tags: ["articles:all"], revalidate: 60 }
 );
 
-export type { Article, Pillar, Author, WireDrop, Tag, Correction, Newsletter };
+// ──────────────────────────────────────────────────────────────────────────────
+// Dashboards — the AI Leaderboard
+//
+// These three read Central's `dashboards` and `sponsors` modules. Until
+// 04-09-2026 they were the ONE surface that stayed bound to this repo's local
+// Payload in both CMS modes, because Central's schema had no equivalent of the
+// `aiModels` collection or the `dashboardMethodology` global. Central grew both
+// (its `aiLeaderboardRows` absorbed every `aiModels` column; the copy moved onto
+// the tenant), which is what let local Payload be removed from this repo.
+// ──────────────────────────────────────────────────────────────────────────────
+
+/** A row as Central sends it, before the null-normalising map below. */
+interface CentralLeaderboardRow {
+  rank?: number | null;
+  model?: string | null;
+  maker?: string | null;
+  general?: number | null;
+  reasoning?: number | null;
+  coding?: number | null;
+  math?: number | null;
+  search?: number | null;
+  vision?: number | null;
+  inputPrice?: number | null;
+  outputPrice?: number | null;
+  released?: string | null;
+  asOfScores?: string | null;
+}
+
+/**
+ * AI Leaderboard rows + the newest `asOfScores` across them (the "as of" stamp
+ * under the table).
+ *
+ * Falls back to the static `AI_LEADERBOARD` fixture when Central returns
+ * nothing. `central-api` never throws — a disabled feature, a bad token and an
+ * outage all resolve to an empty object — so "no rows" is exactly the case the
+ * old local implementation caught in its `catch`. An empty leaderboard is a
+ * worse answer than eight slightly stale rows.
+ */
+export const getAiModels = unstable_cache(
+  async (): Promise<{ rows: AiLeaderboardRow[]; asOfScores: string | null }> => {
+    const data = await fetchModule("dashboards", "en");
+    const docs = (data.aiLeaderboardRows as CentralLeaderboardRow[] | undefined) ?? [];
+    if (!docs.length) {
+      console.warn("[getAiModels] Central returned no rows — falling back to static data");
+      return { rows: [...AI_LEADERBOARD], asOfScores: null };
+    }
+
+    const rows: AiLeaderboardRow[] = docs.map((d, i) => ({
+      rank: d.rank ?? i + 1,
+      model: d.model ?? "",
+      maker: d.maker ?? "",
+      general: d.general ?? null,
+      reasoning: d.reasoning ?? null,
+      coding: d.coding ?? null,
+      math: d.math ?? null,
+      search: d.search ?? null,
+      vision: d.vision ?? null,
+      inputPrice: d.inputPrice ?? null,
+      outputPrice: d.outputPrice ?? null,
+      released: d.released ?? null,
+    }));
+    const asOfScores = docs.reduce<string | null>((max, d) => {
+      if (!d.asOfScores) return max;
+      return !max || d.asOfScores > max ? d.asOfScores : max;
+    }, null);
+    return { rows, asOfScores };
+  },
+  ["dashboards:ai"],
+  { tags: ["dashboards:ai"], revalidate: 3600 }
+);
+
+/**
+ * Sponsor slot for a dashboard placement. Narrowed to the single literal
+ * `"dashboard_ai"` — that is the only placement this site renders, and a narrow
+ * signature makes adding a second one a compile error at the call site rather
+ * than a silently empty card.
+ *
+ * Central applies the startsAt/endsAt window itself, so everything returned is
+ * already in flight. We still drop a slot whose populated `article` is not
+ * published: an editor unpublishing the sponsored story should not leave a
+ * broken sponsor card up.
+ */
+export const getDashboardSponsorSlot = unstable_cache(
+  async (slot: "dashboard_ai"): Promise<SponsorSlot | null> => {
+    const data = await fetchModule("sponsors", "en", { slot });
+    const docs = (data.sponsorSlots as SponsorSlot[] | undefined) ?? [];
+    const doc = docs[0];
+    if (!doc) return null;
+    const article = doc.article;
+    if (article == null) return null;
+    if (typeof article === "object" && article._status !== "published") return null;
+    return doc;
+  },
+  ["dashboard-sponsor-slot"],
+  { tags: ["sponsor-slots:all"], revalidate: 3600 }
+);
+
+/** Localized methodology + disclaimer copy for the AI Leaderboard. */
+export interface DashboardMethodologyContent {
+  aiMethodology: { en: string; vi: string; id: string };
+  disclaimer: { en: string; vi: string; id: string };
+}
+
+/** Shape Central sends under `data.methodology` (the tenant's `dashboards` group). */
+interface CentralMethodology {
+  aiMethodology?: { en?: string | null; vi?: string | null; ind?: string | null } | null;
+  disclaimer?: { en?: string | null; vi?: string | null; ind?: string | null } | null;
+}
+
+/**
+ * Hardcoded fallback, carried over verbatim from the local implementation. It is
+ * what renders if the copy has not been written on the tenant yet.
+ */
+const DASHBOARD_METHODOLOGY_FALLBACK: DashboardMethodologyContent = {
+  // Plain-language rewrite (owner, "UX round 2" 2026-07-31).
+  aiMethodology: {
+    en: "Each model's score is a TrueSkill rating - the same system Xbox uses to rank players. Every published benchmark result counts as a head-to-head match between models, and beating a strong model raises a rating more than beating a weak one. We show the conservative estimate: a floor the model is about 99% likely to clear, so models with only a few benchmark results score lower until more evidence arrives. Ratings are grouped by category (General, Reasoning, Coding, Math, Search, Vision), compiled by LLM Stats, and refreshed here every Monday.",
+    vi: "Điểm số của mỗi mô hình là một xếp hạng TrueSkill – hệ thống mà Xbox dùng để xếp hạng người chơi. Mỗi kết quả benchmark được công bố được tính như một trận đấu đối đầu giữa các mô hình, và việc đánh bại một mô hình mạnh sẽ nâng xếp hạng nhiều hơn so với việc đánh bại một mô hình yếu. Chúng tôi hiển thị ước tính thận trọng: một ngưỡng mà mô hình có khoảng 99% khả năng vượt qua, vì vậy các mô hình chỉ có ít kết quả benchmark sẽ có điểm thấp hơn cho đến khi có thêm bằng chứng. Các xếp hạng được nhóm theo hạng mục (Tổng quát, Suy luận, Lập trình, Toán, Tìm kiếm, Thị giác), do LLM Stats tổng hợp, và được cập nhật tại đây mỗi thứ Hai.",
+    id: "Skor setiap model adalah peringkat TrueSkill – sistem yang sama yang digunakan Xbox untuk memberi peringkat pemain. Setiap hasil benchmark yang dipublikasikan dihitung sebagai pertandingan head-to-head antar model, dan mengalahkan model yang kuat menaikkan peringkat lebih banyak daripada mengalahkan model yang lemah. Kami menampilkan estimasi konservatif: sebuah batas bawah yang kemungkinan sekitar 99% dapat dilampaui model tersebut, sehingga model yang hanya memiliki sedikit hasil benchmark mendapat skor lebih rendah sampai ada lebih banyak bukti. Peringkat dikelompokkan berdasarkan kategori (Umum, Penalaran, Pemrograman, Matematika, Pencarian, Visi), disusun oleh LLM Stats, dan diperbarui di sini setiap hari Senin.",
+  },
+  disclaimer: {
+    en: "For informational purposes only · not investment or procurement advice",
+    vi: "Chỉ mang tính chất tham khảo · không phải lời khuyên đầu tư hay mua sắm",
+    id: "Hanya untuk tujuan informasi · bukan saran investasi atau pengadaan",
+  },
+};
+
+/**
+ * CMS-configurable AI Leaderboard methodology + disclaimer copy.
+ *
+ * Central's Indonesian key is `ind`, not `id`: Payload's Postgres adapter
+ * silently DROPS any field named "id" at any nesting depth, so the column would
+ * never have existed. It is mapped back to the app-facing `id` here, at the read
+ * boundary, so every consumer sees the ordinary `{ en, vi, id }` shape.
+ *
+ * Per-language `||` fallback to English, then to the constant above — an empty
+ * translation must never render as a blank paragraph under the table.
+ */
+export const getDashboardMethodology = unstable_cache(
+  async (): Promise<DashboardMethodologyContent> => {
+    const data = await fetchModule("dashboards", "en");
+    const m = (data.methodology as CentralMethodology | undefined) ?? null;
+    if (!m) return DASHBOARD_METHODOLOGY_FALLBACK;
+
+    const fb = DASHBOARD_METHODOLOGY_FALLBACK;
+    return {
+      aiMethodology: {
+        en: m.aiMethodology?.en || fb.aiMethodology.en,
+        vi: m.aiMethodology?.vi || m.aiMethodology?.en || fb.aiMethodology.vi,
+        id: m.aiMethodology?.ind || m.aiMethodology?.en || fb.aiMethodology.id,
+      },
+      disclaimer: {
+        en: m.disclaimer?.en || fb.disclaimer.en,
+        vi: m.disclaimer?.vi || m.disclaimer?.en || fb.disclaimer.vi,
+        id: m.disclaimer?.ind || m.disclaimer?.en || fb.disclaimer.id,
+      },
+    };
+  },
+  ["dashboards:methodology"],
+  { tags: ["dashboards:methodology"], revalidate: 300 }
+);
+
+/**
+ * Fields the Atom feeds (`/rss.xml`, `/[pillar]/rss.xml`) render per entry.
+ * `author`/`pillar` stay in Payload's `number | Doc` relation shape — the
+ * builder narrows on `typeof === "object"` like article-view does.
+ */
+export type FeedArticle = Pick<
+  Article,
+  "id" | "title" | "slug" | "dek" | "publishedAt" | "updatedAt" | "author" | "pillar" | "sponsored"
+>;
+
+export type { Article, Pillar, Author, WireDrop, Tag, Correction, Newsletter, SponsorSlot };
