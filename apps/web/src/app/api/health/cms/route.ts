@@ -1,31 +1,31 @@
 import { NextResponse } from "next/server";
-import { USING_CENTRAL_CMS, getRecentArticles } from "@/lib/cms-client";
+import { getRecentArticles } from "@/lib/cms-client";
 import { CMS_URL } from "@/lib/central-api";
 
 /**
- * Cutover probe. `GET /api/health/cms` answers the one question nothing else can:
- * is the CODE CURRENTLY RUNNING reading from the Central CMS, or from this repo's
- * embedded Payload?
+ * CMS probe. `GET /api/health/cms` answers one question that nothing else can:
+ * can the CODE CURRENTLY RUNNING actually read from the Central CMS?
  *
- * Why not read the Vercel dashboard: `CMS_SOURCE` is captured at module load, so a
- * deployment built before the variable was set keeps serving the old source while
- * the dashboard shows the new value. The dashboard describes intent; this route
- * describes reality. It reports the constant the router itself resolved, not a
- * fresh `process.env` read — on brief-asia's cutover that distinction was what
- * revealed a flip that had silently done nothing, because the env was set but the
- * code had never been pushed.
+ * It began life as the cutover probe, reporting whether the deployed bundle had
+ * resolved `CMS_SOURCE` to central or to this repo's embedded Payload. That
+ * question died with local Payload on 04-09-2026 — Central is the only source
+ * now — but the probe outlived the flag: it exercises the real read path and
+ * reports what came back, so "the site renders empty" gets a one-request answer
+ * (bad token? wrong host? Central down?).
  *
- * `mediaHost` catches the other silent one: Central returns RELATIVE media URLs,
- * which a browser resolves against dailytechwire.com and quietly keeps serving from
- * the old storage. After the flip this must be Central's host; this site's own host
- * means the absolutize step at the fetch boundary is not running.
+ * Why not a view-counter probe: dailytechwire counts views in its OWN database, so a
+ * view write proves nothing about the read path — and the one Central write helper
+ * swallows every error, so a rejection is indistinguishable from success. The
+ * cutover is a READ-path change, so the probe is a read.
  *
- * `dashboardsStayLocal` is a reminder, not a fault: the AI Leaderboard reads
- * `aiModels` / `dashboardMethodology` / `sponsorSlots`, none of which exist in
- * Central's schema, so those three stay bound to the local Payload in both modes.
- * DTW therefore still needs its local Payload after cutover.
+ * It also surfaces the media-URL trap that cost the WTB cutover a round: Central
+ * returns RELATIVE media paths, which the browser would resolve against
+ * dailytechwire.com and quietly 404. `mediaHost` below must be the Central
+ * host — if it echoes this site's own domain, the absolutize step at the fetch
+ * boundary is not running.
  *
- * Exposes no secrets: the read token is never echoed and CMS_URL is reduced to a host.
+ * Deliberately exposes no secrets: the read token is never echoed, and CMS_URL is
+ * reduced to its host.
  */
 
 export const runtime = "nodejs";
@@ -47,7 +47,7 @@ export async function GET(): Promise<Response> {
   try {
     // Goes through the SAME router every page uses — that is the point.
     const [article] = await getRecentArticles(1);
-    const hero = (article as { heroImage?: unknown } | undefined)?.heroImage;
+    const hero = article?.heroImage;
     const heroUrl = hero && typeof hero === "object" ? (hero as { url?: string }).url : undefined;
 
     probe = article
@@ -56,6 +56,8 @@ export async function GET(): Promise<Response> {
           articleId: article.id,
           slug: article.slug,
           publishedAt: article.publishedAt ?? null,
+          // Absolute + Central host after the flip; this site's host or a bare
+          // relative path means absolutizeMediaUrls is not doing its job.
           mediaHost: hostOf(heroUrl) ?? (heroUrl ? "RELATIVE — not absolutized" : null),
         }
       : { ok: false, reason: "no articles returned" };
@@ -65,13 +67,16 @@ export async function GET(): Promise<Response> {
 
   return NextResponse.json(
     {
-      cmsSource: USING_CENTRAL_CMS ? "central" : "local",
-      // These disagreeing is the signature of "env set, never redeployed".
-      envSaysCentral: process.env.CMS_SOURCE === "central",
-      centralHost: USING_CENTRAL_CMS ? hostOf(CMS_URL) : null,
+      // A literal since 04-09-2026: there is no other source any more. Kept in
+      // the response so anything scripted against this probe still parses.
+      cmsSource: "central",
+      centralHost: hostOf(CMS_URL),
+      // Was `true` until 04-09-2026, when Central grew `aiLeaderboardRows` with
+      // the full `aiModels` column set plus the methodology copy on the tenant.
+      // The AI Leaderboard now reads Central like every other surface.
+      dashboardsStayLocal: false,
       hasReadToken: Boolean(process.env.CMS_READ_TOKEN),
       hasRevalidateSecret: Boolean(process.env.REVALIDATE_SECRET),
-      dashboardsStayLocal: true,
       probe,
       ms: Date.now() - started,
     },

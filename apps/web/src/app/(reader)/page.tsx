@@ -100,10 +100,18 @@ export default async function HomePage() {
   const heroPool = articles.filter((a) => !a.sponsored);
   // A pinned story headlines the big hero slot (top-left of the homepage);
   // otherwise the newest non-sponsored story leads.
-  const lead = pinned ?? heroPool[0] ?? articles[0]!;
+  //
+  // `null` when the CMS returns nothing at all — a Central outage, a revoked or
+  // wrong read token, a tenant with no published stories yet. `central-api`
+  // never throws (every failure resolves to an empty result), so that arrives
+  // here as an empty array rather than an error. This line used to end in
+  // `articles[0]!`, whose non-null assertion silenced the compiler and handed
+  // `undefined` to `lead.id` two lines down — one bad token took the whole
+  // homepage to a 500 instead of an empty page.
+  const lead = pinned ?? heroPool[0] ?? articles[0] ?? null;
   // "Also leading today" rail = the next newest non-sponsored stories, minus
   // whatever currently leads.
-  const aside = heroPool.filter((a) => a.id !== lead.id).slice(0, 4);
+  const aside = lead ? heroPool.filter((a) => a.id !== lead.id).slice(0, 4) : [];
 
   const byPillar: Partial<Record<PillarId, ArticleView[]>> = {};
   for (const [slug, docs] of perPillar) {
@@ -126,7 +134,7 @@ export default async function HomePage() {
   // it also leads.
   const mostReadRanked = mostReadDocs.map(toArticleView);
   const usedIds = new Set([
-    lead.id,
+    ...(lead ? [lead.id] : []),
     ...aside.map((a) => a.id),
     ...mostReadRanked.map((a) => a.id),
   ]);
@@ -146,7 +154,10 @@ export default async function HomePage() {
 
   return (
     <div className="container">
-      <HomeHero lead={lead} aside={aside} />
+      {/* Dropped, not faked, when the CMS returned no stories: the hero is the
+          one band that REQUIRES an article, and every section below already
+          renders its own empty state. */}
+      {lead && <HomeHero lead={lead} aside={aside} />}
       {SHOW_BRIEF && (
         <BriefBand
           am={briefs.am ? toArticleView(briefs.am) : null}
