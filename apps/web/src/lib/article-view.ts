@@ -82,7 +82,9 @@ export interface ArticleView {
  * hero 1600. Optional at every level — media adopted by the legacy import can
  * be missing an entry, so every read must fall back to the original.
  */
-type MediaSizes = Partial<Record<"thumbnail" | "card" | "hero", { url?: string | null } | null>>;
+type MediaSizes = Partial<
+  Record<"thumbnail" | "card" | "hero", { url?: string | null; filesize?: number | null } | null>
+>;
 
 /**
  * First derivative in `order` that actually has a URL, else the original.
@@ -95,13 +97,23 @@ type MediaSizes = Partial<Record<"thumbnail" | "card" | "hero", { url?: string |
  * to the reader.
  */
 function mediaSizeUrl(
-  media: { url?: string | null; sizes?: MediaSizes } | null,
+  media: { url?: string | null; filesize?: number | null; sizes?: MediaSizes } | null,
   order: ReadonlyArray<"thumbnail" | "card" | "hero">
 ): string | null {
   if (!media) return null;
+  const originalBytes = typeof media.filesize === "number" ? media.filesize : null;
   for (const name of order) {
-    const url = media.sizes?.[name]?.url;
-    if (url) return url;
+    const size = media.sizes?.[name];
+    if (!size?.url) continue;
+    // A derivative is only worth serving when it is actually SMALLER. Payload
+    // re-encodes rather than copies, so a small well-compressed upload can come
+    // back bigger (measured: 27,388 B original -> 32,759 B card), and `hero`
+    // upscales anything narrower than 1600px (167,018 B -> 183,242 B). Without
+    // this check the change made pages heavier, not lighter.
+    if (originalBytes !== null && typeof size.filesize === "number" && size.filesize >= originalBytes) {
+      continue;
+    }
+    return size.url;
   }
   return media.url ?? null;
 }
@@ -159,6 +171,7 @@ export function toArticleView(a: Article): ArticleView {
     url?: string | null;
     alt?: string | null;
     credit?: string | null;
+    filesize?: number | null;
     sizes?: MediaSizes;
   }>(a.heroImage);
 
