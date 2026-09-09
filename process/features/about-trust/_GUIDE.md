@@ -98,7 +98,7 @@ Editorial firewall doc. Lives in Payload CMS as a single rich-text page. Must in
 
 - What "Paid Partner" means (`var(--sponsored)` band, disclosure box, newsroom not involved)
 - What "affiliate" means (icon + tooltip, commission disclosed, redirect tracker logs click)
-- Why DTW doesn't run mid-article ads or popups
+- Why Opentechwire doesn't run mid-article ads or popups (renamed from "DTW" by rebrand decision D1/§5.1.1)
 
 ## i18n
 

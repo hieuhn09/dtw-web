@@ -11,7 +11,7 @@ Does NOT include: the article reader page (`articles/`), pillar listing pages (`
 ## Composition (top → bottom)
 
 1. **Ticker tape** (top strip) — TSMC, GoTo, FX, BTC, scrolling with `▲▼` deltas. Pauses on hover.
-2. **Header** — wordmark "DailyTechWire" (30px serif), tagline "Tech Intelligence, Wired Daily", search ⌘K, dark-mode toggle, sign-in button, pillar nav (AI / Startups / Asia / Dev / Products / Policy, 14px font / 15px icon).
+2. **Header** — wordmark "Opentechwire" (30px serif; renamed from "DailyTechWire" by rebrand decision D1 — asset not yet redrawn as of this Phase 0 note, see rebrand Phase 3), tagline "Tech Intelligence, Openly Wired" (renamed from "Tech Intelligence, Wired Daily", D8; code still shows the old tagline until rebrand Phase 4), search ⌘K, dark-mode toggle, sign-in button, pillar nav (AI / Startups / Latest / Dev / Products / Policy, 14px font / 15px icon — corrected here to "Latest" per invariant #14; this doc had drifted and still said "Asia").
 3. **Sign-in nudge banner** — conditional: shows after ≥ 3 article reads when not authenticated. Dismissible (×). In-flow (pushes content down, NOT floating). Localised.
 4. **Hero band** — 1 main story with LQIP cover (~440px height after iteration) + 4 aside stories. Section uses `clamp()` for fluid scaling.
 5. **The Brief** — 4-column band: 200px label / 1fr / 1fr / 150px button. Vertical dividers run only 22%–78% (not full-height — design decision). AM Brief + PM Brief preview.
@@ -21,9 +21,9 @@ Does NOT include: the article reader page (`articles/`), pillar listing pages (`
 9. **Live Dashboards teaser** — sparkline draw-in animation + count-up stats. Links to `/dashboards/funding` and `/dashboards/ai`.
 10. **Deep Dive of the Week** — one long-form featured.
 11. **Awards banner** — coral kicker "Awards · Coming soon", title "The inaugural awards arrive in 2026", description, single CTA "Learn more →". **No "see previous winners"** (Y1 = inaugural). EST 2026 medallion.
-12. **Sponsored Strip ("DTW Studio Presents")** — `var(--sponsored)` bg `#FEF3C7`, "Paid Partner" label. Editorial firewall — labelled, not blended.
+12. **Sponsored Strip ("OTW Studio Presents")** — `var(--sponsored)` bg `#FEF3C7`, "Paid Partner" label. Editorial firewall — labelled, not blended. (Renamed from "DTW Studio Presents" by rebrand decision D1/§5.1.1; code still says "DTW" until rebrand Phase 4.)
 13. **Best of Reviews** — affiliate strip, each link has icon + disclosure tooltip. Goes through `/r/[token]` redirect tracker.
-14. **Podcast / Voice** — DTW Daily Brief audio + Asia podcasts.
+14. **Podcast / Voice** — OTW Daily Brief audio + Asia podcasts. (Renamed from "DTW Daily Brief" by rebrand decision D1/§5.1.1; code still says "DTW" until rebrand Phase 4.)
 15. **Newsletter CTA** — full-width invite, drives to `/newsletters`.
 16. **Footer** — 4-column layout + mini newsletter form + language picker + trust links + copyright.
 

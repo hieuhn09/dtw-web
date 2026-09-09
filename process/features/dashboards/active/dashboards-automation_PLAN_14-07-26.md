@@ -16,6 +16,8 @@ This is **one execute pass** — no phase program. The stocks cron ships fully b
 
 **Status**: ⏳ PLANNED
 
+> **[REBRAND 2026-09] Brand/domain strings in this plan predate the Opentechwire rebrand** (ledger at `process/features/rebrand/active/rebrand-opentechwire-umbrella_PLAN_08-09-26.md`). **`DTW_DASHBOARD_REFRESH_TOKEN` keeps its exact name** (umbrella §6b.2, same commitment as `ai-leaderboard-llmstats_PLAN_30-07-26.md` so the two plans don't drift) — only its value changes, and only if/when it is rotated on Vercel; do not rename this env var during the rebrand.
+
 **Amended 2026-07-30**: AI data sources swapped to LLM Stats API per `references/ai-leaderboard-llmstats-design_REFERENCE_30-07-26.md` (owner decision).
 
 **ON HOLD (2026-07-30, owner decision)**: the AI Leaderboard portion is superseded by `active/ai-leaderboard-llmstats_PLAN_30-07-26.md` and ships alone; the Funding Tracker is hidden from the UI and this plan's stocks/funding scope is deferred until the owner revives it. Do not execute this file as-is — reconcile with what the AI-only plan already built (`aiModels`, methodology global, bearer-auth, cron route, page restructure) before resuming.

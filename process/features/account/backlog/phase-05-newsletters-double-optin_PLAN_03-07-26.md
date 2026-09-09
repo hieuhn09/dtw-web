@@ -1,5 +1,7 @@
 # Phase 5 — Newsletters (CMS Collection + Double Opt-In) — Phase Plan
 
+> **[REBRAND 2026-09] This backlog plan carries stale brand/domain strings — reconcile against the ledger before reviving.** The publication is now **Opentechwire/OTW** (`process/features/rebrand/active/rebrand-opentechwire-umbrella_PLAN_08-09-26.md`, ledger D1-D15). Do not copy-paste this plan's brand/domain literals when this plan is next picked up.
+
 **Date**: 03-07-26
 **Complexity**: Complex — Phase 5 of 5 in the `reader-auth-account` phase program (see umbrella)
 **Feature**: `account`

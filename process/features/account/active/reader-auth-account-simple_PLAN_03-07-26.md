@@ -5,6 +5,8 @@
 **Complexity**: Complex, but intentionally kept in one file per explicit user request (brevity over phase-program ceremony).
 **Status**: ✅ APPROVED FOR EXECUTE — user confirmed the scope below on 03-07-26.
 
+> **[REBRAND 2026-09] Every brand/domain string in this plan is stale — reconcile against the ledger before executing.** This plan's FROM-email template, the `dtw-read-count` cookie key, and any "DTW Awards" copy were written pre-rebrand. The publication is now **Opentechwire/OTW** (`process/features/rebrand/active/rebrand-opentechwire-umbrella_PLAN_08-09-26.md`, ledger D1/D2/D3/D5/D8/D14). Do not execute this plan's brand/domain literals as written — check each against the ledger first.
+
 **Execute anchor**: this file. Do not point EXECUTE at any other file for this work.
 
 **Supersedes**: the 6-file phase-program set in `process/features/account/backlog/` (`reader-auth-account_UMBRELLA-PLAN_03-07-26.md` + `phase-01` through `phase-05`). Those files remain as **deep reference only** — every touchpoint below was extracted from them (each already spot-verified against the live filesystem during that PLAN pass; re-verified again during this consolidation, see [Grounding](#grounding)). Where this plan's scope differs from the backlog set (narrower in every case — see [Deferred](#deferred-not-this-pass)), this file wins.

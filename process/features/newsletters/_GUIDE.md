@@ -39,7 +39,7 @@ Double opt-in is mandatory — single opt-in is a deliverability + compliance ri
 
 - 6 newsletter cards with sample subject line, cadence, "subscribe" toggle each
 - Single email input at top — toggles multiple cards then a single confirm send
-- Hero: "Read Dailytechwire the way you read." (line under it is 1px `var(--hair)` — earlier iteration used 3px which the user flagged as too heavy)
+- Hero: "Read Opentechwire the way you read." (renamed from "Read Dailytechwire the way you read." by rebrand decision D1; code still says "Dailytechwire" until rebrand Phase 4, must match this exact string) (line under it is 1px `var(--hair)` — earlier iteration used 3px which the user flagged as too heavy)
 
 ## Sending pipeline
 
@@ -50,7 +50,7 @@ Double opt-in is mandatory — single opt-in is a deliverability + compliance ri
 
 ## Bounces + unsubscribes
 
-- Resend webhook `bounce` event → mark email `dtw-bounced`, suppress future sends
+- Resend webhook `bounce` event → mark email `dtw-bounced` (internal status token, frozen — not renamed by the rebrand), suppress future sends
 - One-click unsubscribe header per RFC 8058 — required for major inbox providers
 - Unsubscribe link in every email — segment-scoped (unsubscribing from AI Weekly does NOT unsubscribe from AM Brief)
 
