@@ -161,7 +161,7 @@ These are user-approved and are **not** to be relitigated during EXECUTE:
    homepage and pillar pages, use the static `public/og-default.png`
    (1200×630, geometric, no fake photography). The BullMQ dynamic OG pipeline
    (`revalidate.ts:72` TODO stub) is **not** built this wave.
-3. **Production origin** for `NEXT_PUBLIC_SITE_URL` = `https://dailytechwire.com`
+3. **Production origin** for `NEXT_PUBLIC_SITE_URL` = `https://www.opentechwire.com` (cập nhật theo ledger rebrand D3/D5 — xem process/features/rebrand/active/rebrand-opentechwire-umbrella_PLAN_08-09-26.md; giá trị này có hiệu lực trên Vercel sau Phase 6 của chương trình rebrand, không phải ngay bây giờ)
    (matches the existing DKIM/email domain precedent in `lib/email.ts:12`).
    Dev default `http://localhost:3000`. On Vercel previews, fall back to
    `https://${VERCEL_URL}` when the explicit var is unset.
@@ -514,7 +514,7 @@ RFC in isolation beyond typecheck.
   (numbered setup comments), and add `NEXT_PUBLIC_SITE_URL` with a comment
   explaining the fallback chain (`NEXT_PUBLIC_SITE_URL` explicit → `https://
   ${VERCEL_URL}` on Vercel → `http://localhost:3000` dev default) and noting
-  the production value is `https://dailytechwire.com`.
+  the production value is `https://www.opentechwire.com` (theo ledger rebrand D3/D5).
 - `apps/web/src/app/layout.tsx` — replace the current static `metadata`
   object (lines 32-35) with: `metadataBase: new URL(siteOrigin())`; `title:
   { default: "DailyTechWire", template: "%s – DailyTechWire" }` (en dash);
@@ -904,7 +904,7 @@ under `apps/web/src/components/`, auth/session/paywall logic, `next.config.ts`
 (no CSP/headers added), any file under `apps/web/src/app/(payload)/admin`.
 
 **Deployment-only touchpoint (outside repo, not a code change):** set
-`NEXT_PUBLIC_SITE_URL=https://dailytechwire.com` in the Vercel production
+`NEXT_PUBLIC_SITE_URL=https://www.opentechwire.com` in the Vercel production
 environment variables. Vercel preview deploys need no manual var — the
 `VERCEL_URL` fallback in `siteOrigin()` covers them automatically.
 
@@ -1021,6 +1021,14 @@ If EXECUTE is resumed in a new session or after context compaction:
    en-dash rule, JSON-LD escaping approach, no-CSP-today finding, the
    `engineSourceUrl` field-name correction, and the hreflang deferral are
    all settled.
+
+   *[SUPERSEDED 2026-09-09 — see the banner at the top of this file. **Brand
+   casing is explicitly re-litigated and is NO LONGER settled by this plan.**
+   It is now governed by invariant #15 in `process/context/all-context.md` and
+   ledger D1 in `process/features/rebrand/active/rebrand-opentechwire-umbrella_PLAN_08-09-26.md`:
+   `Opentechwire` / `opentechwire` / `OTW`, never `DailyTechWire`. The other
+   items in this rule (en-dash, JSON-LD escaping, CSP, `engineSourceUrl`,
+   hreflang) remain settled and are unaffected.]*
 6. After code changes, run the full [Verification Evidence](#verification-evidence)
    pass before reporting the plan complete.
 7. Flag the one deployment-only step (`NEXT_PUBLIC_SITE_URL` in Vercel
@@ -1041,7 +1049,7 @@ revise), update this plan file, then continue.
 ## Ops Runbook
 
 - **One manual deployment step:** set `NEXT_PUBLIC_SITE_URL=https://
-  dailytechwire.com` in Vercel's production environment variables before
+  www.opentechwire.com` in Vercel's production environment variables before
   (or promptly after) this plan's first production deploy. Preview deploys
   need no manual step — `VERCEL_URL` fallback covers them.
 - **Local dev:** `apps/web/.env.local` gets one new line
@@ -1123,10 +1131,14 @@ revise), update this plan file, then continue.
    documented per RFC-002.
 3. Upgrade `apps/web/src/app/layout.tsx`'s `metadata` export
    (`metadataBase`, `title.template`, `openGraph`, `twitter`) per RFC-002.
-   Rename `"Dailytechwire"` → `"DailyTechWire"` in `apps/web/src/app/
-   manifest.ts`.
+   ~~Rename `"Dailytechwire"` → `"DailyTechWire"` in `apps/web/src/app/
+   manifest.ts`.~~ *[SUPERSEDED 2026-09-09 — **DO NOT EXECUTE.** This is a
+   direct instruction to revert the rebrand. `manifest.ts` is owned by Phase 3
+   of the rebrand program (`process/features/rebrand/active/phase-3-the-mark_PLAN_08-09-26.md`),
+   which sets `name: "Opentechwire"` + `short_name: "OTW"` per ledger D1/D2.]*
 4. Verify: `pnpm build` has zero "metadataBase" warning; `curl /about` shows
-   `<title>DailyTechWire</title>`.
+   `<title>DailyTechWire</title>`. *[SUPERSEDED 2026-09-09 — the expected
+   title is now `Opentechwire`, not `DailyTechWire`. See ledger D1.]*
 5. Write `apps/web/scripts/generate-og-default.mjs` per RFC-003's visual
    brief; run it to produce `apps/web/public/og-default.png`. Visually
    confirm the output.
