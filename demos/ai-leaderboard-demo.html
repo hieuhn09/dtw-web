@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AI Leaderboard · DTW Dashboards (demo)</title>
+<title>AI Leaderboard · OTW Dashboards (demo)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:ital,wght@0,400..900;1,400..900&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -304,8 +304,8 @@
 
 <header class="site">
   <div class="wrap site-inner">
-    <span class="logo-badge" aria-hidden="true">DTW</span>
-    <span class="wordmark">dailytechwire<span class="pulse-dot" aria-hidden="true"></span></span>
+    <span class="logo-badge" aria-hidden="true">OTW</span>
+    <span class="wordmark">opentechwire<span class="pulse-dot" aria-hidden="true"></span></span>
     <span class="crumb"><span class="sep">/</span> Dashboards <span class="sep">/</span> AI Leaderboard</span>
     <span class="demo-chip">Demo</span>
     <div class="head-right">
@@ -319,7 +319,7 @@
 
 <main class="wrap">
   <div class="page-head">
-    <div class="kicker">DTW Dashboards</div>
+    <div class="kicker">OTW Dashboards</div>
     <h1>AI Leaderboard</h1>
     <p class="lede">TrueSkill model rankings, benchmark scores and pricing across every model tracked by LLM Stats. Live data via the LLM Stats API.</p>
   </div>
@@ -421,7 +421,7 @@
 
 <footer class="site">
   <div class="wrap">
-    <span>DTW Dashboards demo · not a production page</span>
+    <span>OTW Dashboards demo · not a production page</span>
     <span>Data: <a href="https://llm-stats.com" target="_blank" rel="noopener">LLM Stats</a> Stats API v1</span>
     <span>Rate limits apply per key (rankings 120/min, models 60/min, scores 30/min)</span>
   </div>
@@ -433,8 +433,8 @@
 /* ================= constants & state ================= */
 
 const API_BASE = "https://api.llm-stats.com/stats/v1";
-const LS_KEY = "dtw-llmstats-key";
-const LS_THEME = "dtw-theme";
+const LS_KEY = "otw-llmstats-key";
+const LS_THEME = "otw-theme";
 
 const state = {
   mode: null,              // null | "live" | "sample"
