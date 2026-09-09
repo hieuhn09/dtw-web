@@ -28,7 +28,7 @@ export const Articles: CollectionConfig = {
     useAsTitle: "title",
     defaultColumns: ["title", "pillar", "status", "origin", "version", "publishedAt"],
     description:
-      "Every story DTW publishes. Engine drafts flow in via API; editors review here.",
+      "Every story Opentechwire publishes. Engine drafts flow in via API; editors review here.",
     listSearchableFields: ["title", "dek", "slug"],
     // "Preview" button → authenticated /preview route enables draft mode and
     // renders the unpublished draft exactly as it will look once published.

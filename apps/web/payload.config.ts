@@ -48,7 +48,7 @@ const r2Configured = Boolean(
 export default buildConfig({
   admin: {
     user: Users.slug,
-    meta: { titleSuffix: "— DailyTechWire" },
+    meta: { titleSuffix: "— Opentechwire" },
   },
   collections: [
     Users,

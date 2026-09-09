@@ -61,7 +61,7 @@ const AUTHORS: ReadonlyArray<{ name: string; role: string; city: string }> = [
   { name: "Jordan Chen", role: "Markets Editor", city: "Hong Kong" },
   { name: "Arif Rahman", role: "Startups Reporter", city: "Jakarta" },
   { name: "Ananya Iyer", role: "Policy Reporter", city: "Bengaluru" },
-  // Engine bylines — must match content-engine's DTW byline pool EXACTLY
+  // Engine bylines — must match content-engine's Opentechwire byline pool EXACTLY
   // (src/lib/publications/dtw/index.ts DTW_BYLINES). The intake endpoint
   // resolves a published byline to one of these Author rows by name. Roles +
   // cities below are editorial assignments — FLAG FOR REVIEW.
@@ -84,7 +84,7 @@ const AUTHORS: ReadonlyArray<{ name: string; role: string; city: string }> = [
 // `newsletter_subscriptions` table (no FK, string-value convention only).
 // name/cadence/description sourced verbatim from apps/web/src/lib/data.ts's
 // NEWSLETTERS fixture; the fixture's 2 non-canonical entries ("deep" / Deep
-// Dive, "awards" / DTW Awards) are deliberately NOT seeded here.
+// Dive, "awards" / OTW Awards) are deliberately NOT seeded here.
 const NEWSLETTERS: ReadonlyArray<{
   slug: string;
   name: string;
@@ -221,7 +221,7 @@ const ARTICLES: ReadonlyArray<ArticleFixture> = [
     authorName: "Mei Lin",
     title: "How an ASEAN insurer rebuilt its claims pipeline on serverless in 18 weeks",
     dek:
-      "A DTW Studio Presents feature, produced for AWS ASEAN. The DTW newsroom was not involved in writing or editing.",
+      "An OTW Studio Presents feature, produced for AWS ASEAN. The Opentechwire newsroom was not involved in writing or editing.",
     section: "Sponsored",
     readMin: 6,
     publishedAt: "2026-05-24T09:00:00+08:00",
@@ -230,7 +230,7 @@ const ARTICLES: ReadonlyArray<ArticleFixture> = [
     bodyBlocks: [
       ["p", "When a mid-sized ASEAN insurer set out to rebuild its claims pipeline, the brief was unglamorous: cut the 11-day median settlement time without adding headcount."],
       ["p", "The team rebuilt the pipeline on a serverless event architecture in 18 weeks, replacing a nightly batch job with per-event processing and a managed queue."],
-      ["p", "Median settlement fell to four days. This feature was produced by DTW Studio for AWS ASEAN; the DTW newsroom was not involved in its writing or editing."],
+      ["p", "Median settlement fell to four days. This feature was produced by OTW Studio for AWS ASEAN; the Opentechwire newsroom was not involved in its writing or editing."],
     ],
   },
   {
@@ -452,7 +452,7 @@ async function seed() {
       await payload.create({
         collection: "users",
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        data: { email: adminEmail, password: adminPassword, name: "DTW Admin", role: "admin" } as any,
+        data: { email: adminEmail, password: adminPassword, name: "OTW Admin", role: "admin" } as any,
         context: { disableRevalidate: true },
       });
       console.log(`[seed] admin user created: ${adminEmail}`);
