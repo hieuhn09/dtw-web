@@ -99,7 +99,7 @@ export function FundingTracker() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = "dtw-funding-tracker.csv";
+    a.download = "otw-funding-tracker.csv";
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);

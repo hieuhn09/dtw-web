@@ -16,14 +16,14 @@ import { CMS_URL } from "@/lib/central-api";
  * code had never been pushed.
  *
  * `mediaHost` catches the other silent one: Central returns RELATIVE media URLs,
- * which a browser resolves against dailytechwire.com and quietly keeps serving from
+ * which a browser resolves against opentechwire.com and quietly keeps serving from
  * the old storage. After the flip this must be Central's host; this site's own host
  * means the absolutize step at the fetch boundary is not running.
  *
  * `dashboardsStayLocal` is a reminder, not a fault: the AI Leaderboard reads
  * `aiModels` / `dashboardMethodology` / `sponsorSlots`, none of which exist in
  * Central's schema, so those three stay bound to the local Payload in both modes.
- * DTW therefore still needs its local Payload after cutover.
+ * Opentechwire therefore still needs its local Payload after cutover.
  *
  * Exposes no secrets: the read token is never echoed and CMS_URL is reduced to a host.
  */

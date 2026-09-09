@@ -26,7 +26,7 @@ export async function pillarMetadata(slug: string, page: number): Promise<Metada
   const heading = pillarDoc.heading || pillarDoc.title.en;
   // Site default description as the fallback for pillars with no
   // `description` set — matches layout.tsx's root description verbatim.
-  const description = pillarDoc.description ?? "Tech Intelligence, Wired Daily.";
+  const description = pillarDoc.description ?? "Tech Intelligence, Openly Wired.";
 
   return buildMetadata({
     // Paginated pages carry the page number in the title so they don't compete
@@ -42,7 +42,7 @@ export async function pillarMetadata(slug: string, page: number): Promise<Metada
     type: "website",
     feed: {
       url: `/${pillarDoc.slug}/rss.xml`,
-      title: `DailyTechWire — ${heading}`,
+      title: `Opentechwire — ${heading}`,
     },
   });
 }

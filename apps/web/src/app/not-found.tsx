@@ -62,7 +62,7 @@ export default function NotFound() {
         <input
           type="search"
           name="q"
-          aria-label={t("Search DailyTechWire", "Tìm kiếm DailyTechWire", "Cari DailyTechWire")}
+          aria-label={t("Search Opentechwire", "Tìm kiếm Opentechwire", "Cari Opentechwire")}
           placeholder={t("Search articles…", "Tìm bài viết…", "Cari artikel…")}
           style={{
             flex: 1,

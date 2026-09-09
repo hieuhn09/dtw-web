@@ -6,6 +6,7 @@ import {
   getDashboardMethodology,
   getDashboardSponsorSlot,
 } from "@/lib/cms-client";
+import { buildMetadata, DEFAULT_OG_IMAGE } from "@/lib/metadata";
 
 export const revalidate = 60;
 
@@ -21,14 +22,17 @@ export function generateStaticParams(): Array<{ sub?: string[] }> {
 
 // Fixed, English-only metadata (matches the root layout's English-only
 // metadata convention — see buildMetadata's other callers) — there's only
-// one page state now, no per-tab branching needed.
-export function generateMetadata(): Metadata {
-  return {
-    title: "AI Leaderboard | Dashboards | Dailytechwire",
-    description:
-      "Weekly-refreshed AI model leaderboard — general, reasoning, coding, math, search, and vision scores plus pricing, sourced from LLM Stats.",
-  };
-}
+// one page state now, no per-tab branching needed. Static (not
+// `generateMetadata()`) because nothing here depends on `params`/
+// `searchParams`, same pattern as `briefing/page.tsx`.
+export const metadata: Metadata = buildMetadata({
+  title: "AI Leaderboard | Dashboards",
+  description:
+    "Weekly-refreshed AI model leaderboard — general, reasoning, coding, math, search, and vision scores plus pricing, sourced from LLM Stats.",
+  canonicalPath: "/dashboards",
+  image: DEFAULT_OG_IMAGE,
+  type: "website",
+});
 
 /**
  * Sub-path validation (`sub` empty vs `["ai"]` vs anything else) happens in

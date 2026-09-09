@@ -18,7 +18,7 @@ export function Footer() {
 
   const cols: ReadonlyArray<{ title: string; links: ReadonlyArray<FooterLink> }> = [
     {
-      title: t("DTW", "DTW", "DTW"),
+      title: t("OTW", "OTW", "OTW"),
       links: [
         [t("About", "Giới thiệu", "Tentang"), "/about"],
         [t("Newsroom", "Toà soạn", "Redaksi"), "/newsroom"],
@@ -39,7 +39,7 @@ export function Footer() {
       title: t("Business", "Doanh nghiệp", "Bisnis"),
       links: [
         [t("Advertise", "Quảng cáo", "Iklan"), "/advertise"],
-        [t("DTW Studio", "DTW Studio", "DTW Studio"), "/studio"],
+        [t("OTW Studio", "OTW Studio", "OTW Studio"), "/studio"],
         [t("Awards", "Giải thưởng", "Penghargaan"), "/awards"],
         // [temp-hidden 2026-07-17] Newsletters hidden until sending pipeline ships.
         // [t("Newsletters", "Bản tin", "Newsletter"), "/newsletters"],
@@ -137,7 +137,7 @@ export function Footer() {
             className="mono text-mute"
             style={{ fontSize: 11, letterSpacing: ".08em", marginTop: 6, lineHeight: 1.5 }}
           >
-            Tech Intelligence, Wired Daily
+            Tech Intelligence, Openly Wired
           </div>
           <p
             className="text-mute"
@@ -231,7 +231,7 @@ export function Footer() {
           }}
         >
           <div className="mono text-mute" style={{ fontSize: 11 }}>
-            © 2026 Dailytechwire · Singapore
+            © 2026 Opentechwire · Singapore
           </div>
           <div style={{ display: "flex", gap: 14, fontSize: 11 }}>
             <span className="text-mute">Compliant with GDPR · PDPA (SG)</span>

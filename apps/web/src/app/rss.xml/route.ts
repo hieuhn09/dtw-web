@@ -14,8 +14,8 @@ export async function GET() {
   const articles = await getFeedArticles();
   const xml = buildAtomFeed(
     {
-      title: "DailyTechWire",
-      subtitle: "Tech Intelligence, Wired Daily.",
+      title: "Opentechwire",
+      subtitle: "Tech Intelligence, Openly Wired.",
       origin: siteOrigin(),
       sitePath: "/",
       feedPath: "/rss.xml",

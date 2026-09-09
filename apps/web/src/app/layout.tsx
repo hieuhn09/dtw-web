@@ -33,19 +33,19 @@ const plexMono = IBM_Plex_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(siteOrigin()),
   title: {
-    default: "DailyTechWire",
-    template: "%s – DailyTechWire",
+    default: "Opentechwire",
+    template: "%s – Opentechwire",
   },
-  description: "Tech Intelligence, Wired Daily.",
+  description: "Tech Intelligence, Openly Wired.",
   // Fallback feed autodiscovery for pages that don't call buildMetadata
   // (which re-declares this — page-level `alternates` replaces the layout's).
   alternates: {
     types: {
-      "application/atom+xml": [{ url: "/rss.xml", title: "DailyTechWire" }],
+      "application/atom+xml": [{ url: "/rss.xml", title: "Opentechwire" }],
     },
   },
   openGraph: {
-    siteName: "DailyTechWire",
+    siteName: "Opentechwire",
     type: "website",
     images: [
       {

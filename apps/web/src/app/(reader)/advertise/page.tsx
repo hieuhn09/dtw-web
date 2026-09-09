@@ -8,7 +8,7 @@ import { Icon, type IconName } from "@/components/icons";
 import { useT } from "@/lib/i18n";
 
 const EMAIL = "advertising@dailytechwire.com";
-const MAILTO = `mailto:${EMAIL}?subject=DTW%20media%20inquiry`;
+const MAILTO = `mailto:${EMAIL}?subject=OTW%20media%20inquiry`;
 
 // Markets are proper nouns — not localized.
 const MARKETS: ReadonlyArray<string> = [
@@ -150,11 +150,11 @@ export default function AdvertisePage() {
       icon: "feather",
       name: t("Branded content", "Nội dung thương hiệu", "Konten bermerek"),
       desc: t(
-        "Long-form features, research, and video told to a newsroom standard, produced and clearly labelled by DTW Studio.",
-        "Bài đặc tả dài, nghiên cứu và video theo chuẩn toà soạn, sản xuất và gắn nhãn rõ ràng bởi DTW Studio.",
-        "Fitur panjang, riset, dan video dengan standar redaksi, diproduksi dan diberi label jelas oleh DTW Studio."
+        "Long-form features, research, and video told to a newsroom standard, produced and clearly labelled by OTW Studio.",
+        "Bài đặc tả dài, nghiên cứu và video theo chuẩn toà soạn, sản xuất và gắn nhãn rõ ràng bởi OTW Studio.",
+        "Fitur panjang, riset, dan video dengan standar redaksi, diproduksi dan diberi label jelas oleh OTW Studio."
       ),
-      note: t("via DTW Studio →", "qua DTW Studio →", "lewat DTW Studio →"),
+      note: t("via OTW Studio →", "qua OTW Studio →", "lewat OTW Studio →"),
       to: "/studio",
     },
   ];
@@ -199,7 +199,7 @@ export default function AdvertisePage() {
         />
         <div style={{ position: "relative", maxWidth: 700 }}>
           <div className="kicker" style={{ color: "var(--accent)", marginBottom: 14 }}>
-            {t("Advertise with DTW", "Quảng cáo cùng DTW", "Beriklan dengan DTW")}
+            {t("Advertise with OTW", "Quảng cáo cùng OTW", "Beriklan dengan OTW")}
           </div>
           <h1
             className="serif"
@@ -231,9 +231,9 @@ export default function AdvertisePage() {
             }}
           >
             {t(
-              "Founders, engineers, investors, and policymakers read Dailytechwire to understand what is actually happening in technology. Put your brand in front of them, in a place built for attention, not impressions.",
-              "Nhà sáng lập, kỹ sư, nhà đầu tư và nhà hoạch định chính sách đọc Dailytechwire để hiểu điều thực sự đang diễn ra trong công nghệ. Đưa thương hiệu của bạn đến trước họ, ở một nơi được tạo ra cho sự chú tâm, không phải lượt hiển thị.",
-              "Founder, engineer, investor, dan pembuat kebijakan membaca Dailytechwire untuk memahami apa yang benar-benar terjadi di teknologi. Tempatkan merek Anda di depan mereka, di tempat yang dibangun untuk perhatian, bukan impresi."
+              "Founders, engineers, investors, and policymakers read Opentechwire to understand what is actually happening in technology. Put your brand in front of them, in a place built for attention, not impressions.",
+              "Nhà sáng lập, kỹ sư, nhà đầu tư và nhà hoạch định chính sách đọc Opentechwire để hiểu điều thực sự đang diễn ra trong công nghệ. Đưa thương hiệu của bạn đến trước họ, ở một nơi được tạo ra cho sự chú tâm, không phải lượt hiển thị.",
+              "Founder, engineer, investor, dan pembuat kebijakan membaca Opentechwire untuk memahami apa yang benar-benar terjadi di teknologi. Tempatkan merek Anda di depan mereka, di tempat yang dibangun untuk perhatian, bukan impresi."
             )}
           </p>
           <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
@@ -317,7 +317,7 @@ export default function AdvertisePage() {
       {/* Why advertise */}
       <Reveal>
         <div className="kicker muted" style={{ marginBottom: 16 }}>
-          {t("Why DTW", "Vì sao chọn DTW", "Kenapa DTW")}
+          {t("Why OTW", "Vì sao chọn OTW", "Kenapa OTW")}
         </div>
         <div
           style={{
@@ -493,7 +493,7 @@ export default function AdvertisePage() {
         >
           <div>
             <div className="kicker muted" style={{ marginBottom: 8 }}>
-              {t("Who reads DTW", "Ai đọc DTW", "Siapa pembaca DTW")}
+              {t("Who reads OTW", "Ai đọc OTW", "Siapa pembaca OTW")}
             </div>
             <h2
               className="serif"
@@ -619,9 +619,9 @@ export default function AdvertisePage() {
             </div>
             <p style={{ margin: 0, fontSize: 13.5, lineHeight: 1.6, color: "var(--ink-2)", maxWidth: 720 }}>
               {t(
-                "Buying a placement never buys coverage, and it never influences what we report. Paid content is clearly labelled and produced by DTW Studio, not our reporters. The rules are public.",
-                "Mua một vị trí quảng cáo không bao giờ mua được tin bài, và không bao giờ ảnh hưởng đến nội dung chúng tôi đưa tin. Nội dung trả phí được gắn nhãn rõ ràng và do DTW Studio sản xuất, không phải phóng viên của chúng tôi. Các quy tắc được công khai.",
-                "Membeli penempatan tak pernah membeli liputan, dan tak pernah memengaruhi apa yang kami beritakan. Konten berbayar diberi label jelas dan diproduksi DTW Studio, bukan reporter kami. Aturannya publik."
+                "Buying a placement never buys coverage, and it never influences what we report. Paid content is clearly labelled and produced by OTW Studio, not our reporters. The rules are public.",
+                "Mua một vị trí quảng cáo không bao giờ mua được tin bài, và không bao giờ ảnh hưởng đến nội dung chúng tôi đưa tin. Nội dung trả phí được gắn nhãn rõ ràng và do OTW Studio sản xuất, không phải phóng viên của chúng tôi. Các quy tắc được công khai.",
+                "Membeli penempatan tak pernah membeli liputan, dan tak pernah memengaruhi apa yang kami beritakan. Konten berbayar diberi label jelas dan diproduksi OTW Studio, bukan reporter kami. Aturannya publik."
               )}
             </p>
             <div style={{ marginTop: 12 }}>

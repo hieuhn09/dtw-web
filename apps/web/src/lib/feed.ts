@@ -18,7 +18,7 @@ import { pillarLabel as pillarLabelOf } from "@/lib/article-view";
  */
 
 export interface AtomChannel {
-  /** Feed display title, e.g. "DailyTechWire" or "DailyTechWire — AI". */
+  /** Feed display title, e.g. "Opentechwire" or "Opentechwire — AI". */
   title: string;
   subtitle: string;
   /** Absolute site origin, no trailing slash — `siteOrigin()`. */
@@ -119,7 +119,7 @@ export function buildAtomFeed(channel: AtomChannel, articles: FeedArticle[]): st
     `  <updated>${newest}</updated>`,
     // Feed-level author doubles as the Atom-required fallback for any entry
     // whose author relation didn't populate.
-    `  <author><name>DailyTechWire</name></author>`,
+    `  <author><name>Opentechwire</name></author>`,
     `  <rights>© Asia Press Centre Group (APCG)</rights>`,
     ...entries,
     `</feed>`,

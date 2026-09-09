@@ -95,7 +95,7 @@ export function ArticleContent({ article, body, related }: ArticleContentProps) 
           color: "var(--muted)",
         }}
       >
-        <Link href="/" className="linkish" style={{ color: "inherit" }}>DTW</Link>
+        <Link href="/" className="linkish" style={{ color: "inherit" }}>OTW</Link>
         <span>›</span>
         <Link
           href={pillarSlug}
@@ -282,9 +282,9 @@ export function ArticleContent({ article, body, related }: ArticleContentProps) 
               {t("Affiliate disclosure:", "Công bố affiliate:", "Pengungkapan afiliasi:")}
             </strong>{" "}
             {t(
-              "Some links in this review earn DTW a commission. Manufacturers do not approve our reviews, and we do not accept review units in exchange for coverage.",
-              "Một số liên kết trong bài đánh giá này mang lại hoa hồng cho DTW. Nhà sản xuất không duyệt bài đánh giá của chúng tôi, và chúng tôi không nhận sản phẩm dùng thử để đổi lấy bài viết.",
-              "Beberapa tautan dalam ulasan ini menghasilkan komisi untuk DTW. Produsen tidak menyetujui ulasan kami, dan kami tidak menerima unit ulasan sebagai imbalan liputan."
+              "Some links in this review earn Opentechwire a commission. Manufacturers do not approve our reviews, and we do not accept review units in exchange for coverage.",
+              "Một số liên kết trong bài đánh giá này mang lại hoa hồng cho Opentechwire. Nhà sản xuất không duyệt bài đánh giá của chúng tôi, và chúng tôi không nhận sản phẩm dùng thử để đổi lấy bài viết.",
+              "Beberapa tautan dalam ulasan ini menghasilkan komisi untuk Opentechwire. Produsen tidak menyetujui ulasan kami, dan kami tidak menerima unit ulasan sebagai imbalan liputan."
             )}
           </span>
         </div>

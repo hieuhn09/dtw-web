@@ -17,7 +17,7 @@ export interface DisclosureBoxProps {
 }
 
 const DEFAULT_SPONSORED_BODY =
-  "This is a sponsored feature produced by DTW Studio for the partner above. The DTW newsroom was not involved in writing or editing.";
+  "This is a sponsored feature produced by OTW Studio for the partner above. The Opentechwire newsroom was not involved in writing or editing.";
 
 const DEFAULT_AI_BODY =
   "This article uses AI tools for translation or transcription. All facts were verified, and all writing was done by a human reporter.";

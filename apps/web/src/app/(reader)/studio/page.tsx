@@ -8,7 +8,7 @@ import { Icon, type IconName } from "@/components/icons";
 import { useT } from "@/lib/i18n";
 
 const EMAIL = "partnership@dailytechwire.com";
-const MAILTO = `mailto:${EMAIL}?subject=DTW%20Studio%20inquiry`;
+const MAILTO = `mailto:${EMAIL}?subject=OTW%20Studio%20inquiry`;
 
 export default function StudioPage() {
   const t = useT();
@@ -37,7 +37,7 @@ export default function StudioPage() {
       label: t("Audio, video & events", "Âm thanh, video & sự kiện", "Audio, video & acara"),
       desc: t(
         "Branded podcast segments, short documentaries, and panels at our events, produced end to end, distributed across our channels.",
-        "Chuyên mục podcast thương hiệu, phim tài liệu ngắn và toạ đàm tại sự kiện của chúng tôi, sản xuất trọn gói, phân phối trên các kênh của DTW.",
+        "Chuyên mục podcast thương hiệu, phim tài liệu ngắn và toạ đàm tại sự kiện của chúng tôi, sản xuất trọn gói, phân phối trên các kênh của Opentechwire.",
         "Segmen podcast bermerek, dokumenter pendek, dan panel di acara kami, diproduksi menyeluruh, didistribusikan di seluruh kanal kami."
       ),
     },
@@ -89,7 +89,7 @@ export default function StudioPage() {
         <GridBackdrop color="rgba(255,255,255,.05)" size={40} fadeRadius="85%" />
         <div style={{ position: "relative", maxWidth: 680 }}>
           <div className="kicker" style={{ color: "var(--accent)", marginBottom: 14 }}>
-            {t("DTW Studio", "DTW Studio", "DTW Studio")}
+            {t("OTW Studio", "OTW Studio", "OTW Studio")}
           </div>
           <h1
             className="serif"
@@ -120,9 +120,9 @@ export default function StudioPage() {
             }}
           >
             {t(
-              "DTW Studio is our branded-content team. We work with partners to tell their story to an audience that reads us for tech across Asia and the world, researched, written, and produced with the same care as our journalism, and labelled clearly so trust stays intact on both sides.",
-              "DTW Studio là đội nội dung thương hiệu của chúng tôi. Chúng tôi đồng hành cùng đối tác để kể câu chuyện của họ tới những độc giả đọc DTW vì công nghệ khắp châu Á và thế giới, nghiên cứu, chấp bút và sản xuất kỹ lưỡng như báo chí của chúng tôi, và gắn nhãn minh bạch để giữ niềm tin cho cả hai phía.",
-              "DTW Studio adalah tim konten bermerek kami. Kami bekerja dengan mitra untuk menyampaikan kisah mereka kepada pembaca yang mengikuti DTW demi teknologi di Asia dan dunia, diriset, ditulis, dan diproduksi dengan kehati-hatian yang sama seperti jurnalisme kami, serta diberi label jelas agar kepercayaan tetap terjaga di kedua sisi."
+              "OTW Studio is our branded-content team. We work with partners to tell their story to an audience that reads us for tech across Asia and the world, researched, written, and produced with the same care as our journalism, and labelled clearly so trust stays intact on both sides.",
+              "OTW Studio là đội nội dung thương hiệu của chúng tôi. Chúng tôi đồng hành cùng đối tác để kể câu chuyện của họ tới những độc giả đọc Opentechwire vì công nghệ khắp châu Á và thế giới, nghiên cứu, chấp bút và sản xuất kỹ lưỡng như báo chí của chúng tôi, và gắn nhãn minh bạch để giữ niềm tin cho cả hai phía.",
+              "OTW Studio adalah tim konten bermerek kami. Kami bekerja dengan mitra untuk menyampaikan kisah mereka kepada pembaca yang mengikuti Opentechwire demi teknologi di Asia dan dunia, diriset, ditulis, dan diproduksi dengan kehati-hatian yang sama seperti jurnalisme kami, serta diberi label jelas agar kepercayaan tetap terjaga di kedua sisi."
             )}
           </p>
           <a
