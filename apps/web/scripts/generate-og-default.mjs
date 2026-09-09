@@ -9,7 +9,7 @@
 // Run with: `node scripts/generate-og-default.mjs` from `apps/web/`.
 //
 // Visual brief: navy background (`--banner` #1B2A52), lowercase
-// "dailytechwire" wordmark in white plus a terracotta pulse-dot, a
+// "opentechwire" wordmark in white plus a terracotta pulse-dot, a
 // muted-cream tagline, and a purely geometric (non-photographic) accent of
 // overlapping rounded rectangles in terracotta (`--accent` #D4623C) / amber
 // (`--amber` #F59E0B) in the right third of the canvas.
@@ -54,11 +54,11 @@ const svg = `
 
   <!-- Wordmark + pulse-dot: fixed white, since text on banner surfaces never
        uses a paper/ink-derived color-mix (per the Banner text rule). -->
-  <circle cx="492" cy="282" r="7" fill="${ACCENT}" />
-  <text x="72" y="300" font-family="${FONT_STACK}" font-size="56" font-weight="700" fill="#FFFFFF">dailytechwire</text>
+  <circle cx="460" cy="282" r="7" fill="${ACCENT}" />
+  <text x="72" y="300" font-family="${FONT_STACK}" font-size="56" font-weight="700" fill="#FFFFFF">opentechwire</text>
 
   <!-- Tagline: fixed muted cream, sentence case per invariant #11. -->
-  <text x="72" y="345" font-family="${FONT_STACK}" font-size="24" font-weight="400" fill="rgba(232,237,247,0.72)">Tech Intelligence, Wired Daily</text>
+  <text x="72" y="345" font-family="${FONT_STACK}" font-size="24" font-weight="400" fill="rgba(232,237,247,0.72)">Tech Intelligence, Openly Wired</text>
 </svg>
 `;
 
