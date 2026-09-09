@@ -17,7 +17,7 @@
   --hair-2: #D8D4C6;
 
   /* Brand */
-  --accent: #D4623C;      /* DTW coral, softened (design refresh 2026-06-14) */
+  --accent: #D4623C;      /* Opentechwire coral, softened (design refresh 2026-06-14) */
   --accent-ink: #B14A28;
   --amber: #F59E0B;
   --brand-navy: #1B2A52;  /* logo monogram, matches banner */
@@ -421,11 +421,11 @@ body {
    toward the inside of its container, never off either edge. The global
    `prefers-reduced-motion` rule above already collapses this transition to
    near-instant for users who request it. */
-.dtw-tip {
+.otw-tip {
   position: relative;
   cursor: help;
 }
-.dtw-tip::after {
+.otw-tip::after {
   content: attr(data-tip);
   position: absolute;
   top: calc(100% + 6px);
@@ -446,8 +446,8 @@ body {
   pointer-events: none;
   transition: opacity 0.15s ease, transform 0.15s ease;
 }
-.dtw-tip:hover::after,
-.dtw-tip:focus::after {
+.otw-tip:hover::after,
+.otw-tip:focus::after {
   opacity: 1;
   transform: translateY(0);
 }

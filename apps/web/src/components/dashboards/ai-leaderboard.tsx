@@ -130,7 +130,7 @@ function Th({
       </button>
       {info && (
         <span
-          className="dtw-tip"
+          className="otw-tip"
           data-tip={info}
           aria-label={info}
           tabIndex={0}
