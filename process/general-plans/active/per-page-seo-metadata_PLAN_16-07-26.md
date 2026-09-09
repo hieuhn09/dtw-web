@@ -23,7 +23,9 @@ larger follow-up), the dynamic per-article OG-image pipeline (unbuilt BullMQ
 stub), and any Payload schema change (no editor-facing SEO override fields
 this wave).
 
-**Status**: ⏳ PLANNED
+**Status**: 🚧 BLOCKED — superseded by the Opentechwire rebrand ledger (see banner below); do not execute until brand-casing and canonical-host values are reconciled
+
+> **SUPERSEDED (Phase 0 of the Opentechwire rebrand, 2026-09-09).** This plan's Decisions Log locks brand casing to `DailyTechWire` (items 1 and 7 below) and its production-origin decision (item 3) records the pre-rebrand apex domain. Both are superseded by `process/features/rebrand/active/rebrand-opentechwire-umbrella_PLAN_08-09-26.md` (ledger D1/D2/D5/D8): the publication is now **Opentechwire** (sentence case prose) / **opentechwire** (wordmark lockup only) / **OTW** (monogram), and the canonical production host is **`https://www.opentechwire.com`** (www). **Do not execute this plan as written.** Any future execution of its SEO/metadata work (RFCs 001-009) must first reconcile every brand-casing and canonical-host literal against the rebrand ledger, not the values recorded in this file's Decisions Log or RFC bodies.
 
 ---
 
@@ -150,6 +152,8 @@ These are user-approved and are **not** to be relitigated during EXECUTE:
    (`process/context/uxui/all-uxui.md:167`). `og:site_name = "DailyTechWire"`.
    JSON-LD `publisher` = **Asia Press Centre Group (APCG)**, Singapore,
    founded 2023 — no invented history, no other publication names.
+
+   *[SUPERSEDED 2026-09-09 — see the banner at the top of this file. Brand casing is now `Opentechwire`/`opentechwire`/`OTW`, not `DailyTechWire`. This item's original text above is preserved unmodified for history; do not implement it as written.]*
 2. **OG image = real hero + one static branded fallback.** Articles with a
    `heroImage` use `heroImage.sizes.hero` (falling back to the original
    `heroImage.url`/`width`/`height` if the 1600w derivative wasn't generated
@@ -359,6 +363,8 @@ an accurate, non-fabricated description.
    touches, matching existing precedent (`payload.config.ts:49`,
    `email.ts:13`) rather than the currently-inconsistent `layout.tsx:33` /
    `manifest.ts:13-15` `"Dailytechwire"`.
+
+   *[SUPERSEDED 2026-09-09 — see the banner at the top of this file. This item's original text above is preserved unmodified for history; do not implement it as written.]*
 8. **hreflang intentionally not implemented; canonical is.** i18n subpath
    routing (invariant #9) is structurally absent (no middleware, no
    `[locale]` segment). A self-referencing `alternates.canonical` is safe
