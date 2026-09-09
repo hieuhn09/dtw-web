@@ -231,7 +231,7 @@ export function Footer() {
           }}
         >
           <div className="mono text-mute" style={{ fontSize: 11 }}>
-            © 2026 Dailytechwire · Singapore · Member, Trust Project
+            © 2026 Dailytechwire · Singapore
           </div>
           <div style={{ display: "flex", gap: 14, fontSize: 11 }}>
             <span className="text-mute">Compliant with GDPR · PDPA (SG)</span>
