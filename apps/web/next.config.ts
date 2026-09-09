@@ -43,6 +43,19 @@ const config: NextConfig = {
         destination: "https://www.dailytechwire.com/:path*",
         permanent: true,
       },
+      // Same apex->www canonicalization, for the new domain ahead of the
+      // rebrand cutover (process/features/rebrand/). Dormant until
+      // opentechwire.com is attached to this Vercel project in Phase 6 — no
+      // request can arrive with this Host header before then. The
+      // dailytechwire.com rule above is intentionally left in place until
+      // Phase 6 decommissions that domain (see D4 in the rebrand umbrella
+      // plan — this is NOT a redirect from the old domain to the new one).
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "opentechwire.com" }],
+        destination: "https://www.opentechwire.com/:path*",
+        permanent: true,
+      },
     ];
   },
   webpack: (webpackConfig) => {

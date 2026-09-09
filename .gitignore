@@ -30,7 +30,7 @@ build/
 *.bin
 .vibecode-backup/
 
-# kit skill example screenshots — audit artifacts from other apps, not part of DTW (~14MB)
+# kit skill example screenshots — audit artifacts from other apps, not part of Opentechwire (~14MB)
 .claude/skills/*/screenshots/
 .codex/skills/*/screenshots/
 

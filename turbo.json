@@ -19,7 +19,8 @@
         "GITHUB_CLIENT_ID",
         "GITHUB_CLIENT_SECRET",
         "RESEND_API_KEY",
-        "RESEND_FROM_DOMAIN"
+        "RESEND_FROM_DOMAIN",
+        "NEXT_PUBLIC_SITE_URL"
       ]
     },
     "dev": {
