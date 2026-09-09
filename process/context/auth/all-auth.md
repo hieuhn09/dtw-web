@@ -49,7 +49,7 @@ Roles are stored as a string column on `users` (not many-to-many — keep it sim
 
 - **Reader login:** modal triggered from header "Log in". Inputs: email (magic link), OR Google / Apple / GitHub OAuth button. After login, header swaps "Log in" → user name + dropdown (Saved / Account / Log out).
 - **Editor / Admin login:** same magic-link flow, but the post-login redirect goes through a `/admin` gate that checks role and triggers 2FA setup if missing.
-- **Magic link emails:** sent via Resend with React Email templates. Subject: `Sign in to DailyTechWire`. Link expiry: 15 minutes. Single-use.
+- **Magic link emails:** sent via Resend with React Email templates. Subject: `Sign in to Opentechwire` (renamed from `Sign in to DailyTechWire` by rebrand decision D1 — this string ships at rebrand Phase 6 together with the `RESEND_FROM_DOMAIN` flip; the code today still sends the old subject line). Link expiry: 15 minutes. Single-use.
 - **Session cookie:** httpOnly, secure, SameSite=Lax. Rotates on privilege change.
 
 ## Middleware (Next.js)
@@ -64,7 +64,7 @@ Pillar / article reads are public; the paywall meter is enforced separately and 
 
 ## Auth ↔ paywall interaction
 
-The Phase 1 paywall is a **sign-in nudge**, not a hard gate. After ≥ 3 article reads from an unauthenticated visitor, the homepage / article header shows a banner inviting sign-in. The banner has a dismiss (×) that persists in `localStorage` (`dtw-nudge-dismissed`). Once authenticated (any role, including Reader), the banner never appears.
+The Phase 1 paywall is a **sign-in nudge**, not a hard gate. After ≥ 3 article reads from an unauthenticated visitor, the homepage / article header shows a banner inviting sign-in. The banner has a dismiss (×) that persists in `localStorage` (`dtw-nudge-dismissed`; → `otw-nudge-dismissed` at rebrand Phase 6/D14). Once authenticated (any role, including Reader), the banner never appears.
 
 Phase 2 will add real subscriber gating on `Pro` content — that's tracked in `process/features/articles/_GUIDE.md`.
 

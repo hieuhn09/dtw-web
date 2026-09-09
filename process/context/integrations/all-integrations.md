@@ -75,6 +75,8 @@ Auth: bearer token in `Authorization` header, token rotates quarterly. Stored as
 
 ### What lives in `dtw-engine` repo (NOT here)
 
+Note: the actual Content Engine repo on disk is named `content-engine`, not `dtw-engine` — `dtw-engine` here is this doc's conceptual/legacy name for the service (repo names are not part of the D1-D15 rebrand per D7; see `process/features/rebrand/active/rebrand-opentechwire-umbrella_PLAN_08-09-26.md`).
+
 - Source crawlers, RSS pollers
 - LLM summarisation pipeline
 - Editorial approval queue inside the Engine (pre-Payload)
@@ -133,7 +135,7 @@ subscriptions: {
 - Best of Reviews on the homepage and inline product mentions link out via `/r/[token]` — the redirect handler logs the click (PostHog event) and 302s to the upstream URL.
 - Each affiliate link gets an icon + disclosure tooltip on the source surface (invariant: no hidden affiliate links).
 - Tokens stored in Payload `AffiliateLinks` collection (Admin only writes).
-- Disclosure copy: "DTW may earn a commission on purchases made via this link." Localised.
+- Disclosure copy: "Opentechwire may earn a commission on purchases made via this link." Localised. (Renamed from "DTW may earn a commission..." by rebrand decision D1/§5.1.1 — full-name form because this is a complete sentence, not a standalone label. The live render at `article-content.tsx:285-287` and `best-of-reviews.tsx:70` still says "DTW" as of this Phase 0 note; that code is fixed in rebrand Phase 4 and must match this exact string.)
 
 ---
 
@@ -143,6 +145,20 @@ subscriptions: {
 - Server-side events (paywall meter increment, search query) reported from Next.js route handlers / server actions using the Node SDK.
 - `posthog.identify(user.id)` on login; `posthog.alias(anon_id, user.id)` to stitch pre-login behavior.
 - Feature flag `paywall_meter_threshold` (default: 3) — read at request time, falls back to 3 if PostHog is unreachable.
+
+---
+
+## 7. Rebrand Note — Frozen `dtw` Identifier (D11)
+
+The Opentechwire rebrand (2026-09, ledger at `process/features/rebrand/active/rebrand-opentechwire-umbrella_PLAN_08-09-26.md`) renamed the **public-facing** brand from Dailytechwire/DTW to Opentechwire/OTW, but it explicitly does **NOT** rename the internal join-key slug `dtw` used across this integration contract:
+
+- Payload `Tenants.slug` = `'dtw'` (Central/apcg-cms)
+- content-engine's `PublicationId` registry key = `'dtw'`
+- the Engine→Payload intake contract's `publicationId: 'dtw'` field value
+- env-var-name suffixes derived from the slug via `.toUpperCase()` (e.g. `FB_PAGE_ID_DTW`, `LI_ORG_URN_DTW`)
+- the `hero-images/dtw/...` Supabase Storage path prefix for every published article's hero image
+
+This is a **permanent** decision (D11), not a temporary compatibility shim — `dtw` stays `dtw` forever, even though every reader-facing mention of the brand becomes "Opentechwire"/"OTW". See the ledger's §5.2 (frozen identifiers) for the complete list. Do not attempt to rename this slug to `otw` in any future integration work.
 
 ---
 

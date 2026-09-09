@@ -1,6 +1,6 @@
 # dtw-web - All Context
 
-Last updated: 2026-07-17
+Last updated: 2026-09-09
 
 This file is the root context entrypoint for the repo.
 
@@ -15,7 +15,7 @@ Start here before loading deeper context files.
 
 ## Project Description
 
-**Dailytechwire (DTW)** — a global, digital-native technology publication with an Asian vantage point: funding and tech-stock coverage, AI benchmarks and rankings, and deep-dive editorial. (Repositioned from "Asia-tech focus" to global by product decision 2026-07-17 — see invariant #14.) The web app (`dtw-web`) is the **reading and presentation layer** of a three-service system:
+**Opentechwire (OTW)** — a global, digital-native technology publication with an Asian vantage point: funding and tech-stock coverage, AI benchmarks and rankings, and deep-dive editorial. (Repositioned from "Asia-tech focus" to global by product decision 2026-07-17 — see invariant #14. Renamed from Dailytechwire/DTW by rebrand decision 2026-09-08 — see invariant #15 and `process/features/rebrand/active/rebrand-opentechwire-umbrella_PLAN_08-09-26.md`.) The web app (`dtw-web`) is the **reading and presentation layer** of a three-service system:
 
 - `dtw-web` (this repo) — Next.js reader site + Payload CMS for editorial review
 - `dtw-engine` — the Content Engine that drafts and pre-approves articles (independent service, separate repo)
@@ -35,7 +35,7 @@ The web is NOT where articles are written — the Engine handles drafting. Edito
 
 ### Parent organisation
 
-Dailytechwire is published by **Asia Press Centre Group (APCG)** (independent newsroom, Singapore, founded **2023**; renamed from "Asia Press Corporation" in the 2026-06-14 design refresh). APCG operates several publications across Asian beats; do **not** invent or list other publication names in code or copy. Editor-in-Chief is Cheryl Tan (no specific career claims — earlier drafts were rejected for invented Reuters / Pulitzer history; do not reintroduce them). See `process/features/about-trust/_GUIDE.md`.
+Opentechwire is published by **Asia Press Centre Group (APCG)** (independent newsroom, Singapore, founded **2023**; renamed from "Asia Press Corporation" in the 2026-06-14 design refresh). APCG operates several publications across Asian beats; do **not** invent or list other publication names in code or copy. Editor-in-Chief is Cheryl Tan (no specific career claims — earlier drafts were rejected for invented Reuters / Pulitzer history; do not reintroduce them). See `process/features/about-trust/_GUIDE.md`.
 
 ---
 
@@ -46,6 +46,14 @@ When durable project facts conflict, this is the order of authority:
 1. **`DTW_WEBSITE_REQUEST.xlsx`** (at repo root) — the canonical feature spec sheet. 86 rows covering every page, button, link, backend integration, and CMS surface. Read with `python3 -c "import openpyxl; ..."` (openpyxl is installed user-local).
 2. **`design/`** — the Claude Design handoff bundle (visual reference, NOT code to port). See `design/README.md`. Contains `chats/chat1.md` which records every design iteration and the rationale behind it. The prototype uses React 18 + Babel standalone in-browser — not the production stack.
 3. **This repository** — code is authoritative once written; conflicts between spec and code should trigger a context update, not silent drift.
+
+---
+
+## Canonical Host (rebrand D3/D5)
+
+Production origin is **`https://www.opentechwire.com`** — `www`, not apex. This follows the same www-over-apex pattern the codebase already established for the old domain in commit `24bf005` (2026-07-17); `apps/web/.env.example:12` and `process/general-plans/active/per-page-seo-metadata_PLAN_16-07-26.md` still record the pre-rebrand **apex** value (`https://dailytechwire.com`) as production — that is now doubly stale (wrong domain AND wrong subdomain) and is corrected in `process/features/rebrand/active/` Phase 2 (canonical host), not in this Phase 0 context update.
+
+The old domain `dailytechwire.com` stays APCG-owned but **parked** — no A record, no redirect, no Change of Address filed with Google Search Console (ledger D4). See invariant #15.
 
 ---
 
@@ -128,14 +136,16 @@ Numbered, terse, load-bearing. Each one ties to a feature folder or context grou
 4. **Paywall = soft block.** Meter (cookie for guests, DB for users) — never block mid-article. Phase 1 has no payment, only a sign-in nudge after ≥ 3 reads. The "3" must be configurable in CMS, never hardcoded. See `process/features/articles/_GUIDE.md`.
 5. **Disclosure boxes (sponsored)** appear at top + middle + bottom of article and cannot be dismissed. **AI-assisted inline disclosure was removed by product decision 2026-06-05** (the header "AI-ASSISTED" badge + the 3 `kind="ai"` `DisclosureBox`es). The `aiAssisted` field still exists on Articles and the Engine still sets it `true` — it is just no longer surfaced inline. KNOWN GAP: the `/trust/ai` page still describes AI disclosure; reconcile that copy if/when the policy is finalised.
 6. **No popups. No mid-article ads.** Period.
-7. **Brand colors.** Pinned: sponsored bg `#FEF3C7` (dark `#3B2E0A`), up `#10B981`, down `#EF4444`, dark bg `#0F172A` / text `#E2E8F0`. **2026-06-14 design refresh:** DTW coral accent softened `#E04E1F` → `#D4623C` (terracotta), `--accent-ink` → `#B14A28`. New brand tokens `--banner`/`--brand-navy` deep navy `#1B2A52` (dark `#16223C` for `--banner`, `#E2E8F0` for `--brand-navy`), `--brand-amber` `#D4623C`, `--amber` `#F59E0B`. Six pillar colors re-toned to a muted earthy set (`--ai #3A4E8C`, `--startups #3E6E80`, `--latest #B0512E` (renamed from `--asia` when the asia pillar became latest; value unchanged), `--dev #46735C`, `--products #8F7238`, `--policy #5A6577`). See `uxui/`.
+7. **Brand colors.** Pinned: sponsored bg `#FEF3C7` (dark `#3B2E0A`), up `#10B981`, down `#EF4444`, dark bg `#0F172A` / text `#E2E8F0`. **2026-06-14 design refresh:** the brand's coral accent softened `#E04E1F` → `#D4623C` (terracotta), `--accent-ink` → `#B14A28`. New brand tokens `--banner`/`--brand-navy` deep navy `#1B2A52` (dark `#16223C` for `--banner`, `#E2E8F0` for `--brand-navy`), `--brand-amber` `#D4623C`, `--amber` `#F59E0B`. Six pillar colors re-toned to a muted earthy set (`--ai #3A4E8C`, `--startups #3E6E80`, `--latest #B0512E` (renamed from `--asia` when the asia pillar became latest; value unchanged), `--dev #46735C`, `--products #8F7238`, `--policy #5A6577`). **These hex values are unchanged by the 2026-09 Opentechwire rebrand (ledger D10) — only the old "DTW" name in this note's own wording was removed; no token, no asset, and no color changed.** See `uxui/`.
 8. **Pillar/Sub-section/Tag are CMS entities** — adding a new pillar is a CMS write, not a code deploy. Routes (`/[pillar]/[subsection]/[slug]`), sitemap, and RSS regenerate automatically within 5 minutes.
 9. **i18n year 1 = `en` / `id` / `vi`** with subpath routing `/en /id /vi`, `hreflang`, CSS logical properties (RTL-ready). Indonesian must work from day one — SEA tech market matters. CN/JP/KO planned for Year 3. Don't hardcode locale lists.
 10. **Body of articles stays in the source language** — only the chrome (nav, byline, paywall meter, section headers) is translated. Editorial copy belongs to the writer.
-11. **Tech stack veto list:** no Lucia (deprecated), no Bun runtime (Payload 3 ↔ Bun is unstable). **Header logo (changed 2026-06-14):** the design refresh reintroduced a brand mark — a navy `DTW` monogram + lowercase `dailytechwire` wordmark + terracotta pulse-dot (source asset `design/project/uploads/dtw-logo-primary.svg`), superseding the earlier wordmark-only rule. Tagline stays "Tech Intelligence, Wired Daily".
+11. **Tech stack veto list:** no Lucia (deprecated), no Bun runtime (Payload 3 ↔ Bun is unstable). **Header logo (changed 2026-06-14, mark updated 2026-09 rebrand — see invariant #15):** the design refresh reintroduced a brand mark — originally a navy `DTW` monogram + lowercase `dailytechwire` wordmark + terracotta pulse-dot (source asset `design/project/uploads/dtw-logo-primary.svg`), superseding the earlier wordmark-only rule. **Target state post-rebrand (ledger D1/D2/D8):** navy `OTW` monogram + lowercase `opentechwire` wordmark, same terracotta pulse-dot (color unchanged, D10). Tagline changes from "Tech Intelligence, Wired Daily" to **"Tech Intelligence, Openly Wired"** (D8). As of this Phase 0 context lock, the actual `wordmark.tsx`, `icon.svg`, and raster asset files still render the old `DTW`/`dailytechwire`/old-tagline mark — that code/asset work is Phase 3 (brand mark) and Phase 4 (display copy) of `process/features/rebrand/active/rebrand-opentechwire-umbrella_PLAN_08-09-26.md`, not yet done.
 12. **Reader-data residency / compliance:** GDPR + PDPA (Singapore) + Nghị định 13 (Vietnam). PostHog is **self-hosted** specifically for first-party analytics.
 13. **Awards page (year-one state):** no medallion, no "see previous winners", no specific categories. Just "Coming this year" with the shimmer hero. Year 1 = inaugural.
-14. **Global positioning (2026-07-17).** DTW is a global publication. "Asia" appears in copy only as: the APCG proper noun, Asia-angle features/content (Asia Funding Tracker, Asia Funding Weekly, "Asia, Decoded", bureau/beat roles, article content), or "…Asia and the world" phrasing. (The homepage's "Asia Spotlight" band was retired under this invariant on 2026-07-27 — it is now "Most Read".) Never scope the publication, newsroom, readership, newsletters, or awards to Asia-only. The About-page hero/mission describe APCG (the Asian parent), not DTW — they stay.
+14. **Global positioning (2026-07-17).** Opentechwire is a global publication. "Asia" appears in copy only as: the APCG proper noun, Asia-angle features/content (Asia Funding Tracker, Asia Funding Weekly, "Asia, Decoded", bureau/beat roles, article content), or "…Asia and the world" phrasing. (The homepage's "Asia Spotlight" band was retired under this invariant on 2026-07-27 — it is now "Most Read".) Never scope the publication, newsroom, readership, newsletters, or awards to Asia-only. The About-page hero/mission describe APCG (the Asian parent), not Opentechwire — they stay.
+
+15. **Brand rename: Dailytechwire/DTW → Opentechwire/OTW (locked 2026-09-08).** Three-tier casing (ledger D1/D2): `Opentechwire` (sentence case) for ALL prose, metadata, titles, and JSON-LD `name`; `opentechwire` (lowercase) ONLY inside the wordmark/OG-image lockup (the visual logotype itself); `OTW` (all-caps) for the monogram/short form. **Never** `OpenTechWire` (PascalCase) anywhere, in any context. Canonical production host is `https://www.opentechwire.com` (www, not apex — D3/D5). The old domain `dailytechwire.com` remains APCG-owned (to prevent third-party registration) but is deliberately **parked with no DNS A record, no redirect, and no Google Search Console Change of Address** (D4 — a deliberate deviation from typical domain-migration practice; do not add either mechanism without a fresh decision). **Frozen identifiers — NOT part of this rename, by design:** the internal Payload/content-engine join-key slug `dtw` (D11) and the Postgres schema `dtw_auth` / Cloudflare R2 bucket `dtw-media` (D12) all keep their `dtw`-prefixed names permanently. Full decision ledger (D1–D15), phased rollout status, and the frozen/forbidden identifier lists live at `process/features/rebrand/active/rebrand-opentechwire-umbrella_PLAN_08-09-26.md` — do not relitigate D1–D15 without an explicit new user decision.
 
 If a change appears to violate one of these, surface it explicitly and ask before proceeding.
 
@@ -282,6 +292,7 @@ dtw-web/
 | `account/` | Saved / Reading queue / History / Following pillars / Settings, IndexedDB ↔ DB sync, PWA offline cache rules. Auth flows live here (modal, magic link, OAuth callback) |
 | `engine-integration/` | Content Engine ↔ Payload API contract, `lockedFields` / `editedByHuman` / `origin` model, optimistic lock, `afterChange` hook (revalidate + Meilisearch index + OG generation) |
 | `about-trust/` | About page (Asia Press Centre Group / APCG, Cheryl Tan EIC, no fake history), `/newsroom` detail page (moved from `/about/newsroom` 2026-07-16; known fabricated-content cleanup backlogged), Editorial Standards, AI Disclosure, Corrections (public log), Transparency Report (auto-generated, Phase 2), Sponsored / Affiliate Policy |
+| `rebrand/` | Publication rename **Dailytechwire → Opentechwire** (decided 2026-09-08). 8-phase program: umbrella + phase plans in `active/`. Decision ledger D1-D15 lives in the umbrella plan — read it before touching any brand string. Load-bearing: casing is `Opentechwire` (never `OpenTechWire`), monogram `OTW`, new domain `www.opentechwire.com` with **no 301 and no Change of Address** from the old domain, and the identifiers `dtw` (tenant slug), `dtw_auth` (Postgres schema), `dtw-media` (R2 bucket) are **permanently frozen** — never rename them. |
 
 ---
 

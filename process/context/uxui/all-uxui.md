@@ -15,7 +15,7 @@ The `design/` directory at the repo root is the **canonical visual reference**. 
 - Dark mode rules + the `color-mix` discipline that prevents broken dark-mode contrast
 - Typography (Schibsted Grotesk / IBM Plex Sans / IBM Plex Mono — editorial face swapped from Source Serif 4 on 2026-06-14)
 - Cover-art system (editorial geometry per pillar — no fake photography)
-- The brand evolution (Dailytechwire wordmark + reintroduced navy DTW monogram logo 2026-06-14, "Tech Intelligence, Wired Daily" sentence-case tagline)
+- The brand evolution (pre-rebrand, tới 2026-09: Dailytechwire wordmark + reintroduced navy DTW monogram logo 2026-06-14, "Tech Intelligence, Wired Daily" sentence-case tagline; renamed to Opentechwire/OTW monogram + "Tech Intelligence, Openly Wired" tagline by rebrand decision 2026-09-08, ledger D1/D2/D8 — see `process/features/rebrand/active/rebrand-opentechwire-umbrella_PLAN_08-09-26.md`; asset files not yet redrawn as of this note)
 - i18n chrome translation strategy (`useT()` and pillar/nav translation tables)
 - Component primitives from the design prototype (canonical shape, not canonical code)
 
@@ -71,7 +71,7 @@ These live in the design's `index.html`. The production Tailwind v4 config shoul
 --muted-2:      #8C8B85;   /* faintest text */
 --hair:         #E5E2D8;   /* 1px dividers */
 --hair-2:       #D8D4C6;   /* 1px dividers (slightly stronger) */
---accent:       #D4623C;   /* DTW coral, softened 2026-06-14 (was #E04E1F) */
+--accent:       #D4623C;   /* Opentechwire coral, softened 2026-06-14 (was #E04E1F); hex unchanged by 2026-09 rebrand (D10). `apps/web/src/app/globals.css:20` carries the same comment, still says "DTW" — fixed in rebrand Phase 4. */
 --accent-ink:   #B14A28;   /* coral on hover/active (was #B83D14) */
 --amber:        #F59E0B;   /* warm highlight */
 --brand-navy:   #1B2A52;   /* logo monogram / structural rules (dark: #E2E8F0) */
@@ -141,7 +141,7 @@ Body: 15px / line-height 1.5. Article body: 17px / 1.6 (16px on mobile). `.serif
 
 This was fixed across `about.jsx`, `app.jsx` (Awards page), the cookie banner, the paid-partner box, the newsletter doom-scroll banner, and the search overlay — all in a single iteration. Don't reintroduce the bug.
 
-Theme persisted in `localStorage["dtw-theme"]` (key shape from prototype). Toggle lives in header — sun / moon icon.
+Theme persisted in `localStorage["dtw-theme"]` (key shape from prototype; → `otw-theme` at rebrand Phase 6/D14). Toggle lives in header — sun / moon icon.
 
 ---
 
@@ -149,9 +149,9 @@ Theme persisted in `localStorage["dtw-theme"]` (key shape from prototype). Toggl
 
 | Element | State | Notes |
 |---|---|---|
-| Site name | **DailyTechWire** | "DTW" is the short form (breadcrumbs, Studio, Pro). Earlier iterations used "Daily Tech Wire" with spaces or "Down To the Wire" — both rejected. |
-| Wordmark + logo | Navy `DTW` monogram + lowercase "dailytechwire" + terracotta pulse-dot (2026-06-14) | Logo badge **reintroduced** in the 2026-06-14 refresh (asset `design/project/uploads/dtw-logo-primary.svg`), superseding the earlier wordmark-only rule. Monogram `--brand-navy` (dark `#E2E8F0`), dot `--brand-amber #D4623C`. |
-| Tagline | "Tech Intelligence, Wired Daily" | Sentence case (NOT all-caps). Earlier all-caps version rejected. |
+| Site name | **Opentechwire** | "OTW" is the short form (breadcrumbs, Studio, Pro). Renamed from **DailyTechWire/DTW** by rebrand decision 2026-09-08 (ledger D1, `process/features/rebrand/active/rebrand-opentechwire-umbrella_PLAN_08-09-26.md`). Earlier iterations used "Daily Tech Wire" with spaces or "Down To the Wire" — both rejected before the DTW-era name shipped; `OpenTechWire` (PascalCase) is rejected for the new name (D1). |
+| Wordmark + logo | Navy `OTW` monogram + lowercase "opentechwire" + terracotta pulse-dot (target, per rebrand D1/D2 — **asset files not yet redrawn as of this Phase 0 note; see Phase 3 of the rebrand plan**) | Logo badge **reintroduced** in the 2026-06-14 refresh (asset `design/project/uploads/dtw-logo-primary.svg`, still the pre-rebrand `DTW` mark on disk), superseding the earlier wordmark-only rule. Monogram `--brand-navy` (dark `#E2E8F0`), dot `--brand-amber #D4623C` — colors unchanged by the rebrand (D10). |
+| Tagline | "Tech Intelligence, Openly Wired" | Sentence case (NOT all-caps). Earlier all-caps version rejected. Changed from "Tech Intelligence, Wired Daily" by rebrand decision D8 (2026-09-08) — the old tagline's "Daily" pun no longer fits the new name; code/asset still say the old tagline until rebrand Phase 4. |
 | Coral accent | `#D4623C` (softened 2026-06-14, was `#E04E1F`) | All accent buttons, emphasis links, logo pulse-dot, pillar nav active states. |
 | Pillar nav (header) | 6 items: AI, Startups, Asia, Dev, Products, Policy | Font 14px, icon 15px (settled after several iterations). |
 
@@ -261,7 +261,7 @@ const t = useT();
 
 **RTL readiness:** use CSS logical properties (`margin-inline`, `padding-inline`, `inset-inline`, `border-inline-start`) so adding Arabic in Year 3 is a config flip, not a rewrite.
 
-**Persistence:** `localStorage["dtw-lang"]` + `document.documentElement.lang`.
+**Persistence:** `localStorage["dtw-lang"]` (→ `otw-lang` at rebrand Phase 6/D14) + `document.documentElement.lang`.
 
 ---
 

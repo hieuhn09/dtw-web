@@ -32,7 +32,7 @@ Once the Turborepo + pnpm monorepo is scaffolded, each package gets its own runn
 ### `apps/web` — **Vitest** (jsdom)
 
 - React components, hooks, paywall meter logic, RSC server fragments where they don't depend on a live database
-- Mock Better-Auth via `vi.mock("@dtw/auth")` in test setup
+- Mock Better-Auth via `vi.mock("@dtw/db")` in test setup (`@dtw/auth` does not exist as a package — pre-existing doc error corrected here; `@dtw/` scope itself is unchanged, D6)
 - Mock Payload local API where used
 
 ### `packages/db` — **Vitest** (Node) + **PGlite** (in-memory Postgres)
