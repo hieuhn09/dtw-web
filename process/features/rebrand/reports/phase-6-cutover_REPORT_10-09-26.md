@@ -81,4 +81,14 @@ Hệ quả vẫn còn: đăng ký bằng email không dùng được. `auth.ts:1
 | GA4 data-stream URL + referral exclusion | user |
 | Cập nhật env Preview cho khớp Production | user, nếu có dùng preview để test auth |
 | Xoá `hero-images/logos/dtw-monogram.png` | sau khi 12 social post queued chạy hết |
-| Thử đăng nhập Google thật trên domain mới | **chỉ user làm được** — OAuth chỉ lộ lỗi ở lần sign-in thật đầu tiên; endpoint trả 200 không chứng minh redirect URI khớp |
+
+---
+
+## Xác nhận bổ sung (10-09-26)
+
+**Đăng nhập Google trên `https://www.opentechwire.com` — user đã thử thật và xác nhận hoạt động.**
+
+Đây là hạng mục duy nhất của cutover không kiểm chứng được từ xa: `/api/auth/ok` trả 200 chỉ chứng minh route sống, không chứng minh `redirect_uri` mới đã được Google chấp nhận. OAuth chỉ lộ `redirect_uri_mismatch` ở lần sign-in thật đầu tiên. Với xác nhận này, chuỗi `BETTER_AUTH_URL` → callback URL → Google OAuth Client đã khép kín trên domain mới.
+
+Ghi chú giữ lại cho sau: `NEXT_PUBLIC_GITHUB_ENABLED` không set trên production nên nút GitHub không render — cái bẫy "OAuth App classic chỉ có một ô callback" của plan gốc không bao giờ áp dụng. Nếu sau này bật GitHub, phải xử lý riêng vì không thể thêm callback song song như Google.
+
