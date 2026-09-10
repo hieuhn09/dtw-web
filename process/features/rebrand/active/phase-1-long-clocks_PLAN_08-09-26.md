@@ -47,6 +47,22 @@ Bắt đầu **ngay bây giờ**, song song với mọi phase khác của chươ
 
 ---
 
+## Cập nhật trạng thái 2026-09-10 (quyết định của user)
+
+**Nhóm A — XONG.** User xác nhận `opentechwire.com` đã có sẵn trong tài khoản registrar, và việc chỉnh DNS thực hiện qua người quản lý zone (không tự thao tác). Không cần A.1/A.2/A.3 như viết ban đầu — chỉ cần gửi đúng bộ bản ghi cho người đó khi tới lúc.
+
+**Nhóm D (Resend) — HOÃN theo quyết định của user.** Chuyển sang `process/features/account/backlog/reader-email-auth-deliverability_PLAN_09-09-26.md`.
+
+Hệ quả phải hiểu đúng: hoãn Nhóm D **không** làm Phase 6 tệ hơn hiện trạng. Không domain nào của tổ chức từng verify trên Resend — kể cả `dailytechwire.com` đang chạy production (bằng chứng: `dig TXT resend._domainkey.<mọi domain>` đều rỗng; SPF chỉ include `emg01.emailserver.net.vn`). Mail giao dịch **đang** không được xác thực. Lật `RESEND_FROM_DOMAIN` sang domain mới giữ nguyên mức hỏng đó, không tạo ra hỏng mới. Nhưng nó cũng **không tự khỏi** — sau cutover mail vẫn hỏng cho tới khi backlog kia được xử lý.
+
+**Nhóm E (OAuth) — đã thu hẹp còn một thao tác.** User xác nhận 2026-09-10: `NEXT_PUBLIC_GITHUB_ENABLED` KHÔNG được set trên production, nên nút GitHub không render và **cảnh báo E.3 (GitHub OAuth App classic chỉ có một ô callback) không còn áp dụng** — rủi ro nặng nhất của nhóm này đã biến mất. Còn lại: nếu `NEXT_PUBLIC_GOOGLE_ENABLED=true` trên production thì phải THÊM (không thay) `https://www.opentechwire.com/api/auth/callback/google` vào Authorized redirect URIs của Google OAuth Client. Google cho nhiều URI song song nên thao tác này additive, không ảnh hưởng domain đang chạy. Nếu Google cũng không bật thì Nhóm E bỏ hẳn và Phase 1 xong.
+
+Lưu ý cho phase sau (từ `auth-modal.tsx:14-19`): cổng client (`NEXT_PUBLIC_*_ENABLED`) và đăng ký provider phía server (`GOOGLE_CLIENT_ID`/`SECRET` trong `auth.ts:113-131`) là HAI thứ tách biệt. Bật cổng client mà thiếu credential server sẽ render một nút bấm vào là 500.
+
+**Nhóm B (trademark), C (GSC)** — chưa làm, đều không chặn code.
+
+---
+
 ## Implementation Checklist
 
 Toàn bộ 23 bước dưới đây là **việc thủ công của user** trên các dashboard bên ngoài repo. Agent (kể cả vc-execute-agent) **không tự thực hiện được** các bước này — vai trò của agent trong phase này là: nhắc đúng thứ tự, xác nhận tiền đề, và ghi lại bằng chứng THẬT vào report sau khi user đã làm xong từng bước, cộng với các lệnh `dig` (DNS, read-only) mà agent CÓ THể tự chạy để xác minh chéo.
