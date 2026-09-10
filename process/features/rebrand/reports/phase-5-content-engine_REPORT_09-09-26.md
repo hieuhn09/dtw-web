@@ -224,6 +224,31 @@ Vẫn trỏ `logos/dtw-monogram.png`, vẫn sống (200). → **Phase 3 chưa up
 
 ---
 
+## 6-bis. Kết quả thực thi checklist DB (2026-09-10)
+
+User đã chạy các bước ghi DB; tôi xác minh lại bằng truy vấn đọc trực tiếp cả hai hệ.
+
+**Đã xong — Nhóm C và Nhóm E:**
+
+| Hệ | Bảng | Trước | Sau |
+|---|---|---|---|
+| Neon (Central) | `authors` id 122 | `name='DTW Briefing Desk'`, `role='Dailytechwire Newsroom'` | `name='OTW Briefing Desk'`, `role='Opentechwire Newsroom'` |
+| Supabase (Engine) | `publications` id 3 | `name='DailyTechWire'` | `name='Opentechwire'` |
+| Supabase (Engine) | `brief_configs` id 1 | `byline='DTW Briefing Desk'` | `byline='OTW Briefing Desk'` |
+
+Xác minh sau khi ghi:
+- `authors` trong tenant `dtw` khớp `%briefing desk%` vẫn **đúng 1 hàng**, `id` không đổi (122) — không bị tách đôi.
+- `Central.authors.name` và `Engine.brief_configs.byline` **khớp byte** (`OTW Briefing Desk`).
+- `publications.slug` vẫn là `dtw` — định danh đóng băng D11 nguyên vẹn.
+
+**Ghi chú vận hành trong lúc thực thi:** `authors` sống ở **Neon** (`neondb`, schema `public`), còn `publications`/`brief_configs` sống ở **Supabase** — hai hệ tách biệt, không phải hai schema cùng một DB. Chạy nhầm console cho lỗi `42P01 relation does not exist`. Các checklist sau phải ghi rõ console cho từng câu lệnh.
+
+**Còn treo (không nằm trong khâu DB này):**
+- Nhóm F — dọn nội dung đã publish theo ranh giới D13. Central có 2 daily-brief đã publish (đếm được lúc audit).
+- Upload logo Supabase Storage treo từ Phase 3 và dòng `logoAssetUrl` phụ thuộc nó.
+
+---
+
 ## 6. CHECKLIST BÀN GIAO cho user
 
 **Nguyên tắc thứ tự (nhắc lại từ plan) — làm SAI thứ tự sẽ tách đôi kho brief hoặc gây link chết:**
