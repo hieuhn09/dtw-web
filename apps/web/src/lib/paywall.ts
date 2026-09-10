@@ -23,7 +23,7 @@ const PAYWALL_TZ = "Asia/Singapore"; // mirrors PUBLICATION_TZ in lib/i18n.tsx
 // restores the configured behaviour with no other change.
 export const PAYWALL_ENABLED = false;
 
-export const GUEST_METER_COOKIE = "dtw-read-count";
+export const GUEST_METER_COOKIE = "otw-read-count";
 
 /** Hard cap on tracked ids per period — bounds cookie size. Well above any
  *  realistic threshold value; once articlesRead >= threshold the nudge/

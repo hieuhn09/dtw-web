@@ -38,3 +38,9 @@ build/
 data-exports/
 dailytechwire.com-Coverage-*.zip
 news-p.v1.*.jpeg
+# Added by `vercel link` — .vercel holds project ids, .env* guards pulled secrets.
+# .env.example files stay tracked; they are templates, not secrets.
+.vercel
+.env*
+!.env.example
+!**/.env.example

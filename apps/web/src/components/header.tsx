@@ -17,7 +17,7 @@ import { PAYWALL_ENABLED } from "@/lib/paywall";
 import { useShell } from "@/lib/shell";
 import { authClient } from "@/lib/auth-client";
 
-const NUDGE_KEY = "dtw-nudge-dismissed";
+const NUDGE_KEY = "otw-nudge-dismissed";
 
 // [temp-hidden 2026-07-17] Language switcher hidden — multi-language (vi/id)
 // isn't shippable yet under current cost constraints, so the site runs
