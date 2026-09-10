@@ -7,7 +7,7 @@ import { GridBackdrop, Reveal } from "@/components/effects";
 import { Icon, type IconName } from "@/components/icons";
 import { useT } from "@/lib/i18n";
 
-const EMAIL = "advertising@dailytechwire.com";
+const EMAIL = "advertising@opentechwire.com";
 const MAILTO = `mailto:${EMAIL}?subject=OTW%20media%20inquiry`;
 
 // Markets are proper nouns — not localized.
