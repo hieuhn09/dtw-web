@@ -37,9 +37,9 @@ export default function LegalPage() {
       title: t("Privacy Policy", "Chính sách quyền riêng tư", "Kebijakan Privasi"),
       kicker: updated,
       intro: t(
-        "We built Opentechwire to be read, not to be mined. This policy explains, in plain language, what we collect, why, and the control you keep over it. If anything here is unclear, write to info@dailytechwire.com and a person, not a bot, will answer.",
-        "Chúng tôi xây Opentechwire để được đọc, không phải để khai thác dữ liệu. Chính sách này giải thích bằng ngôn ngữ rõ ràng: chúng tôi thu thập gì, vì sao, và quyền kiểm soát bạn giữ. Nếu có gì chưa rõ, hãy viết tới info@dailytechwire.com, một con người, không phải bot, sẽ trả lời.",
-        "Kami membangun Opentechwire untuk dibaca, bukan untuk ditambang. Kebijakan ini menjelaskan dengan bahasa sederhana: apa yang kami kumpulkan, mengapa, dan kendali yang Anda pegang. Jika ada yang kurang jelas, tulis ke info@dailytechwire.com, manusia, bukan bot, yang akan menjawab."
+        "We built Opentechwire to be read, not to be mined. This policy explains, in plain language, what we collect, why, and the control you keep over it. If anything here is unclear, write to info@opentechwire.com and a person, not a bot, will answer.",
+        "Chúng tôi xây Opentechwire để được đọc, không phải để khai thác dữ liệu. Chính sách này giải thích bằng ngôn ngữ rõ ràng: chúng tôi thu thập gì, vì sao, và quyền kiểm soát bạn giữ. Nếu có gì chưa rõ, hãy viết tới info@opentechwire.com, một con người, không phải bot, sẽ trả lời.",
+        "Kami membangun Opentechwire untuk dibaca, bukan untuk ditambang. Kebijakan ini menjelaskan dengan bahasa sederhana: apa yang kami kumpulkan, mengapa, dan kendali yang Anda pegang. Jika ada yang kurang jelas, tulis ke info@opentechwire.com, manusia, bukan bot, yang akan menjawab."
       ),
       body: [
         [
@@ -77,9 +77,9 @@ export default function LegalPage() {
         [
           t("Where your data lives", "Dữ liệu của bạn được lưu ở đâu", "Di mana data Anda berada"),
           t(
-            "On servers in Singapore, operated under our control. When the law of your country gives you stronger protections than ours, we apply the stronger standard. Questions about a specific jurisdiction go to info@dailytechwire.com.",
-            "Trên máy chủ tại Singapore, do chúng tôi vận hành. Khi luật nước bạn cho bạn mức bảo vệ mạnh hơn của chúng tôi, chúng tôi áp dụng chuẩn cao hơn. Câu hỏi về một khu vực pháp lý cụ thể, gửi tới info@dailytechwire.com.",
-            "Di server di Singapura, dioperasikan di bawah kendali kami. Bila hukum negara Anda memberi perlindungan lebih kuat dari kami, kami menerapkan standar yang lebih kuat. Pertanyaan tentang yurisdiksi tertentu kirim ke info@dailytechwire.com."
+            "On servers in Singapore, operated under our control. When the law of your country gives you stronger protections than ours, we apply the stronger standard. Questions about a specific jurisdiction go to info@opentechwire.com.",
+            "Trên máy chủ tại Singapore, do chúng tôi vận hành. Khi luật nước bạn cho bạn mức bảo vệ mạnh hơn của chúng tôi, chúng tôi áp dụng chuẩn cao hơn. Câu hỏi về một khu vực pháp lý cụ thể, gửi tới info@opentechwire.com.",
+            "Di server di Singapura, dioperasikan di bawah kendali kami. Bila hukum negara Anda memberi perlindungan lebih kuat dari kami, kami menerapkan standar yang lebih kuat. Pertanyaan tentang yurisdiksi tertentu kirim ke info@opentechwire.com."
           ),
         ],
       ],
@@ -112,9 +112,9 @@ export default function LegalPage() {
         [
           t("Our content", "Nội dung của chúng tôi", "Konten kami"),
           t(
-            "The journalism, data visualisations, and design on Opentechwire are owned by Asia Press Centre Group (APCG) or used under licence. Trademarks and the masthead remain ours. We license selected content for syndication, write to partnership@dailytechwire.com.",
-            "Nội dung báo chí, đồ hoạ dữ liệu và thiết kế trên Opentechwire thuộc sở hữu của Asia Press Centre Group (APCG) hoặc dùng theo giấy phép. Thương hiệu và măng-sét vẫn thuộc về chúng tôi. Chúng tôi cấp phép một số nội dung để đăng lại, viết tới partnership@dailytechwire.com.",
-            "Jurnalisme, visualisasi data, dan desain di Opentechwire dimiliki Asia Press Centre Group (APCG) atau dipakai berdasarkan lisensi. Merek dagang dan masthead tetap milik kami. Kami melisensikan konten tertentu untuk sindikasi, tulis ke partnership@dailytechwire.com."
+            "The journalism, data visualisations, and design on Opentechwire are owned by Asia Press Centre Group (APCG) or used under licence. Trademarks and the masthead remain ours. We license selected content for syndication, write to partnership@opentechwire.com.",
+            "Nội dung báo chí, đồ hoạ dữ liệu và thiết kế trên Opentechwire thuộc sở hữu của Asia Press Centre Group (APCG) hoặc dùng theo giấy phép. Thương hiệu và măng-sét vẫn thuộc về chúng tôi. Chúng tôi cấp phép một số nội dung để đăng lại, viết tới partnership@opentechwire.com.",
+            "Jurnalisme, visualisasi data, dan desain di Opentechwire dimiliki Asia Press Centre Group (APCG) atau dipakai berdasarkan lisensi. Merek dagang dan masthead tetap milik kami. Kami melisensikan konten tertentu untuk sindikasi, tulis ke partnership@opentechwire.com."
           ),
         ],
         [
@@ -128,9 +128,9 @@ export default function LegalPage() {
         [
           t("Changes & contact", "Thay đổi & liên hệ", "Perubahan & kontak"),
           t(
-            "If we change these terms materially, we will say so on this page and, for account holders, by email. Continued use after a change means acceptance. Governing law is Singapore. Questions: info@dailytechwire.com.",
-            "Nếu chúng tôi thay đổi các điều khoản này một cách đáng kể, chúng tôi sẽ thông báo trên trang này và, với chủ tài khoản, qua email. Tiếp tục sử dụng sau thay đổi nghĩa là chấp nhận. Luật điều chỉnh là Singapore. Câu hỏi: info@dailytechwire.com.",
-            "Jika kami mengubah ketentuan ini secara material, kami akan menyampaikannya di halaman ini dan, bagi pemilik akun, lewat email. Penggunaan berlanjut setelah perubahan berarti penerimaan. Hukum yang berlaku adalah Singapura. Pertanyaan: info@dailytechwire.com."
+            "If we change these terms materially, we will say so on this page and, for account holders, by email. Continued use after a change means acceptance. Governing law is Singapore. Questions: info@opentechwire.com.",
+            "Nếu chúng tôi thay đổi các điều khoản này một cách đáng kể, chúng tôi sẽ thông báo trên trang này và, với chủ tài khoản, qua email. Tiếp tục sử dụng sau thay đổi nghĩa là chấp nhận. Luật điều chỉnh là Singapore. Câu hỏi: info@opentechwire.com.",
+            "Jika kami mengubah ketentuan ini secara material, kami akan menyampaikannya di halaman ini dan, bagi pemilik akun, lewat email. Penggunaan berlanjut setelah perubahan berarti penerimaan. Hukum yang berlaku adalah Singapura. Pertanyaan: info@opentechwire.com."
           ),
         ],
       ],
@@ -218,9 +218,9 @@ export default function LegalPage() {
         [
           t("Making a request", "Gửi yêu cầu", "Mengajukan permintaan"),
           t(
-            "Email info@dailytechwire.com or use the export and deletion tools in your account. We respond within 30 days, usually far sooner, and we never charge for a reasonable request. We will verify your identity first, to protect you.",
-            "Gửi email tới info@dailytechwire.com hoặc dùng công cụ xuất và xoá trong tài khoản. Chúng tôi phản hồi trong 30 ngày, thường nhanh hơn nhiều, và không bao giờ tính phí cho yêu cầu hợp lý. Chúng tôi sẽ xác minh danh tính trước, để bảo vệ bạn.",
-            "Email info@dailytechwire.com atau gunakan alat ekspor dan penghapusan di akun Anda. Kami merespons dalam 30 hari, biasanya jauh lebih cepat, dan tak pernah memungut biaya untuk permintaan yang wajar. Kami akan memverifikasi identitas Anda dulu, demi melindungi Anda."
+            "Email info@opentechwire.com or use the export and deletion tools in your account. We respond within 30 days, usually far sooner, and we never charge for a reasonable request. We will verify your identity first, to protect you.",
+            "Gửi email tới info@opentechwire.com hoặc dùng công cụ xuất và xoá trong tài khoản. Chúng tôi phản hồi trong 30 ngày, thường nhanh hơn nhiều, và không bao giờ tính phí cho yêu cầu hợp lý. Chúng tôi sẽ xác minh danh tính trước, để bảo vệ bạn.",
+            "Email info@opentechwire.com atau gunakan alat ekspor dan penghapusan di akun Anda. Kami merespons dalam 30 hari, biasanya jauh lebih cepat, dan tak pernah memungut biaya untuk permintaan yang wajar. Kami akan memverifikasi identitas Anda dulu, demi melindungi Anda."
           ),
         ],
         [
@@ -234,9 +234,9 @@ export default function LegalPage() {
         [
           t("Our Data Protection Officer", "Cán bộ bảo vệ dữ liệu", "Petugas Perlindungan Data"),
           t(
-            "A named DPO oversees how we handle personal data and is your direct line for anything on this page. Reach them at info@dailytechwire.com.",
-            "Một DPO được chỉ định giám sát cách chúng tôi xử lý dữ liệu cá nhân và là đầu mối trực tiếp của bạn cho mọi điều trên trang này. Liên hệ tại info@dailytechwire.com.",
-            "Seorang DPO mengawasi cara kami menangani data pribadi dan menjadi saluran langsung Anda untuk apa pun di halaman ini. Hubungi di info@dailytechwire.com."
+            "A named DPO oversees how we handle personal data and is your direct line for anything on this page. Reach them at info@opentechwire.com.",
+            "Một DPO được chỉ định giám sát cách chúng tôi xử lý dữ liệu cá nhân và là đầu mối trực tiếp của bạn cho mọi điều trên trang này. Liên hệ tại info@opentechwire.com.",
+            "Seorang DPO mengawasi cara kami menangani data pribadi dan menjadi saluran langsung Anda untuk apa pun di halaman ini. Hubungi di info@opentechwire.com."
           ),
         ],
       ],
@@ -308,7 +308,7 @@ export default function LegalPage() {
               )}
             </div>
             <a
-              href="mailto:info@dailytechwire.com"
+              href="mailto:info@opentechwire.com"
               className="linkish mono"
               style={{
                 fontSize: 12,
@@ -317,7 +317,7 @@ export default function LegalPage() {
                 marginTop: 6,
               }}
             >
-              info@dailytechwire.com
+              info@opentechwire.com
             </a>
           </div>
         </nav>

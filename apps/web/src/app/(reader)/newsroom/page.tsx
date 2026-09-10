@@ -112,8 +112,8 @@ const BUREAUS: ReadonlyArray<{ city: string; role: string; tz: string; chief: st
 
 const BIZ_INFO: ReadonlyArray<readonly [k: string, v: string]> = [
   ["Registered office", "Asia Press Centre Group (APCG)\nBugis Cube\nSingapore 188735"],
-  ["Press inquiries", "media@dailytechwire.com"],
-  ["Partnerships", "partnership@dailytechwire.com\ndailytechwire.com"],
+  ["Press inquiries", "media@opentechwire.com"],
+  ["Partnerships", "partnership@opentechwire.com\nopentechwire.com"],
 ];
 
 // Fixed light values for text on the navy --banner surface (banner is navy

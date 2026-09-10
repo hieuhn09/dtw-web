@@ -63,7 +63,7 @@ export function Footer() {
     ["LinkedIn", "linkedin", "https://www.linkedin.com/company/dailytechwire/"],
     ["Facebook", "facebook", "https://www.facebook.com/apcgdailytechwire/"],
     ["Instagram", "instagram"],
-    ["Email", "mail", "mailto:info@dailytechwire.com"],
+    ["Email", "mail", "mailto:info@opentechwire.com"],
     ["RSS", "rss", "/rss.xml"],
   ];
 
