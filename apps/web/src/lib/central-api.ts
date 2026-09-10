@@ -20,6 +20,8 @@ import "server-only";
 
 export const CMS_URL = process.env.CMS_URL || "http://localhost:3508";
 export const CMS_READ_TOKEN = process.env.CMS_READ_TOKEN;
+/** Short-lived, HTTP-only handoff from /preview to the draft article render. */
+export const CENTRAL_PREVIEW_TOKEN_COOKIE = "dtw_preview_token";
 
 /** Payload list envelope returned by the article endpoints. */
 export interface CmsListEnvelope<T = unknown> {
@@ -198,13 +200,21 @@ export async function fetchMenus<T = unknown>(
   return menus ?? [];
 }
 
-/** Feature-gated content module. Disabled feature → `{}` (404 mapped to empty). */
+/**
+ * Feature-gated content module. Disabled feature → `{}` (404 mapped to empty).
+ *
+ * `sponsors` takes an extra `slot` to narrow server-side; Central already drops
+ * rows outside their startsAt/endsAt window, so a lapsed booking never arrives.
+ * The return type is deliberately loose (`unknown`, not `unknown[]`) because
+ * `dashboards` carries a `methodology` OBJECT alongside its row arrays.
+ */
 export async function fetchModule(
-  module: "podcasts" | "newsletters" | "corrections" | "wire" | "market" | "dashboards",
+  module: "podcasts" | "newsletters" | "corrections" | "wire" | "market" | "dashboards" | "sponsors",
   locale = "en",
-): Promise<Record<string, unknown[]>> {
-  const { data } = await cmsFetch<{ data: Record<string, unknown[]> }>(`/${module}`, {
-    searchParams: { locale },
+  extra: Record<string, string> = {},
+): Promise<Record<string, unknown>> {
+  const { data } = await cmsFetch<{ data: Record<string, unknown> }>(`/${module}`, {
+    searchParams: { locale, ...extra },
     empty: { data: {} },
   });
   return data ?? {};

@@ -1,9 +1,4 @@
-import path from "node:path";
-import { fileURLToPath } from "node:url";
 import type { NextConfig } from "next";
-import { withPayload } from "@payloadcms/next/withPayload";
-
-const dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const config: NextConfig = {
   reactStrictMode: true,
@@ -58,13 +53,6 @@ const config: NextConfig = {
       },
     ];
   },
-  webpack: (webpackConfig) => {
-    webpackConfig.resolve.alias = {
-      ...(webpackConfig.resolve.alias ?? {}),
-      "@payload-config": path.resolve(dirname, "./payload.config.ts"),
-    };
-    return webpackConfig;
-  },
 };
 
-export default withPayload(config);
+export default config;
