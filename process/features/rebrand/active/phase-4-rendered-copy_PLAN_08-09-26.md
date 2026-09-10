@@ -6,7 +6,7 @@
 **Plan file**: `process/features/rebrand/active/phase-4-rendered-copy_PLAN_08-09-26.md`
 **Umbrella plan**: `process/features/rebrand/active/rebrand-opentechwire-umbrella_PLAN_08-09-26.md`
 **Tài liệu nghiên cứu nền**: `process/general-plans/references/rebrand-opentechwire_REFERENCE_08-09-26.md` (752 dòng, §3.1 ui-components, §3.2 seo-metadata, §3.3 editorial-pages — mọi dòng trích dẫn dưới đây đều đối chiếu lại với repo thật vào 09-09-26, một ngày sau ngày ký tài liệu tham chiếu; **không có drift nào được phát hiện** ở các file đã đối chiếu, cộng thêm 6 dòng mới phát hiện qua live-grep mà bảng §3.2 gốc không liệt kê riêng — đánh dấu "**[MỚI, không có trong bảng tham chiếu]**" bên dưới)
-**Status**: ⏳ PLANNED — chưa implement gì
+**Status**: 🧪 TESTING — đã deploy; CÒN TREO Nhóm F2 (~20 mailbox, chờ Phase 1) và Nhóm H (/trust/ai, chờ quyết định sản phẩm) (cập nhật 10-09-26)
 
 ---
 

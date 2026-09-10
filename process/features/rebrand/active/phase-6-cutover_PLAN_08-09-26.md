@@ -7,7 +7,7 @@
 **Plan file**: `process/features/rebrand/active/phase-6-cutover_PLAN_08-09-26.md`
 **Umbrella plan** (đọc trước, chứa ledger D1–D15 đầy đủ — plan này KHÔNG lặp lại toàn bộ, chỉ trích đúng phần áp dụng): `process/features/rebrand/active/rebrand-opentechwire-umbrella_PLAN_08-09-26.md`
 **Tài liệu tham chiếu nền** (752 dòng, đã kiểm chứng file trích dẫn 08-09-26; mọi số dòng dưới đây đã được RE-VERIFY trực tiếp trên `dtw-web` và `apcg-cms`/`content-engine` ngày 09-09-26 — xem ghi chú "đã re-verify" ở từng bảng): `process/general-plans/references/rebrand-opentechwire_REFERENCE_08-09-26.md`
-**Status**: ⏳ PLANNED — chưa research lại lần cuối ngay trước khi mở cửa sổ cutover thật (bắt buộc theo Re-Research Rule của `phase-programs.md`), chưa implement gì trong phase này.
+**Status**: 🧪 TESTING — cutover đã đi qua 10-09-26 — xem reports/phase-6-cutover_REPORT_10-09-26.md; CÒN TREO sameAs, GA4, Central tenant row, Resend verify (cập nhật 10-09-26)
 
 **Ghi chú tương thích shape file** (không phải một cấu trúc `PLAN.md` + `phase-*.md` kiểu cũ): tên file bắt đầu bằng `phase-` vì đây là quy ước đặt tên phase-plan trong phase program `rebrand`, nhưng file này chính là **primary execute anchor** duy nhất cho Phase 6 — không tách rời implementation khỏi phần đặc tả. **Supporting phase files** liên quan để đọc kèm: umbrella plan (`rebrand-opentechwire-umbrella_PLAN_08-09-26.md`), tài liệu tham chiếu nghiên cứu (`rebrand-opentechwire_REFERENCE_08-09-26.md`), và report của Phase 1-5 tại `process/features/rebrand/reports/` khi đã tồn tại.
 

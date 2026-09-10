@@ -6,7 +6,7 @@
 **Feature**: `rebrand`
 **Plan file**: `process/features/rebrand/active/rebrand-opentechwire-umbrella_PLAN_08-09-26.md`
 **Tài liệu nghiên cứu nền**: `process/general-plans/references/rebrand-opentechwire_REFERENCE_08-09-26.md` (752 dòng, RESEARCH, đã kiểm chứng từng file trích dẫn; §3 = bảng blast radius theo surface, §7 = shape 8-phase gốc, §8 = ẩn số chưa kiểm chứng)
-**Status**: ⏳ PLANNED — đủ 8 phase plan, đã soát chéo, chưa implement gì
+**Status**: 🧪 TESTING — **cutover đã đi qua 10-09-26.** Canonical production là `https://www.opentechwire.com`. Phase 0/2/3 VERIFIED; Phase 4/5/6 đã deploy nhưng còn hạng mục treo; Phase 1 dở dang (Resend hoãn); Phase 7 chưa bắt đầu. Xem `reports/phase-6-cutover_REPORT_10-09-26.md`.
 
 > Ghi chú vị trí tài liệu: tài liệu tham chiếu hiện nằm ở `process/general-plans/references/`, không nằm trong `process/features/rebrand/references/`. Feature folder `rebrand` đã tồn tại (đủ điều kiện promote theo `plan-lifecycle.md`), nên một agent sau này nên di chuyển file tham chiếu đó vào `process/features/rebrand/references/` khi có dịp — việc đó nằm ngoài quyền ghi của PLAN mode ở phiên này nên chỉ ghi chú lại, không tự làm.
 

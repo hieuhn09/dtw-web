@@ -14,7 +14,7 @@
 - `process/context/all-context.md`, `process/context/uxui/all-uxui.md`, `process/context/infra/all-infra.md`, `process/context/integrations/all-integrations.md`, `process/context/tests/all-tests.md`
 - `design/project/uploads/DTW-Brand-Guideline-v1.0.pdf` (đọc trực tiếp toàn bộ trong phiên PLAN này — xem "Research Corrections" bên dưới)
 
-**Status**: 🧪 TESTING — EXECUTE hoàn tất 09-09-26 với bằng chứng đầy đủ tại `process/features/rebrand/reports/phase-0-lock-decisions_REPORT_09-09-26.md`; Nhóm 3 (`apcg-cms`) BLOCKED có chủ đích do phạm vi phiên EXECUTE (nội dung cần đổi đã ghi sẵn trong report để user tự áp); chờ user xem bằng chứng và xác nhận trước khi chuyển ✅ VERIFIED.
+**Status**: ✅ VERIFIED — context đã deploy và đang phục vụ production (cập nhật 10-09-26)
 **Sửa đổi 09-09-26 (soát nhất quán 9 plan)**: thêm **Nhóm 9** — phần còn lại của §3.9 process-docs (`auth/all-auth.md`, 5 dòng còn lại của `uxui/`, `infra/`, `integrations/`, `database/`, `tests/`, `planning/`, cả 9 `_GUIDE.md`, banner cho 8 plan/reference, `design/README.md`). Lý do: soát chéo phát hiện các file này **không được phase nào nhận** — bản gốc đẩy sang Phase 4/6 nhưng cả hai phase đó đều không liệt kê chúng. Xem umbrella §6b.1.
 
 ---

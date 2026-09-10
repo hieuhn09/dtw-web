@@ -6,7 +6,7 @@
 **Plan file**: `process/features/rebrand/active/phase-2-generators-and-config_PLAN_08-09-26.md`
 **Umbrella plan (đọc trước, ledger D1-D15 nằm ở đây)**: `process/features/rebrand/active/rebrand-opentechwire-umbrella_PLAN_08-09-26.md`
 **Tài liệu nghiên cứu nền**: `process/general-plans/references/rebrand-opentechwire_REFERENCE_08-09-26.md` (752 dòng — §3.2 và §3.4 là nguồn của bảng blast radius dùng trong phase này)
-**Status**: 🧪 TESTING — EXECUTE xong 09-09-26, xem `process/features/rebrand/reports/phase-2-generators-and-config_REPORT_09-09-26.md`; chờ user confirmation để chuyển ✅ VERIFIED
+**Status**: ✅ VERIFIED — canonical www.opentechwire.com xác minh trên production 10-09-26 (cập nhật 10-09-26)
 
 ---
 
