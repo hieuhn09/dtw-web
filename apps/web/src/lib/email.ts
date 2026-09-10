@@ -9,8 +9,8 @@ import { Resend } from "resend";
  */
 
 const apiKey = process.env.RESEND_API_KEY;
-const fromDomain = process.env.RESEND_FROM_DOMAIN || "dailytechwire.com";
-const FROM = `DailyTechWire <no-reply@${fromDomain}>`;
+const fromDomain = process.env.RESEND_FROM_DOMAIN || "opentechwire.com";
+const FROM = `Opentechwire <no-reply@${fromDomain}>`;
 
 const resend = apiKey ? new Resend(apiKey) : null;
 

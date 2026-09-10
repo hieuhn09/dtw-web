@@ -75,13 +75,13 @@ export const auth = betterAuth({
       const { html, text } = actionEmail({
         heading: "Reset your password",
         intro:
-          "We received a request to reset your DailyTechWire password. This link expires in 1 hour.",
+          "We received a request to reset your Opentechwire password. This link expires in 1 hour.",
         buttonLabel: "Reset password",
         url,
       });
       await sendAuthEmailSafe("reset-password", {
         to: user.email,
-        subject: "Reset your DailyTechWire password",
+        subject: "Reset your Opentechwire password",
         html,
         text,
       });
@@ -94,13 +94,13 @@ export const auth = betterAuth({
       const { html, text } = actionEmail({
         heading: "Confirm your email",
         intro:
-          "Welcome to DailyTechWire. Confirm your email to activate your account.",
+          "Welcome to Opentechwire. Confirm your email to activate your account.",
         buttonLabel: "Verify email",
         url,
       });
       await sendAuthEmailSafe("verify-email", {
         to: user.email,
-        subject: "Confirm your DailyTechWire account",
+        subject: "Confirm your Opentechwire account",
         html,
         text,
       });

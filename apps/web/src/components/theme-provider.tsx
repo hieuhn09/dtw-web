@@ -13,7 +13,7 @@ interface ThemeContextValue {
 
 const ThemeContext = createContext<ThemeContextValue | null>(null);
 
-const STORAGE_KEY = "dtw-theme";
+const STORAGE_KEY = "otw-theme";
 
 function readInitialTheme(): Theme {
   if (typeof window === "undefined") return "light";

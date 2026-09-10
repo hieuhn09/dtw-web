@@ -28,7 +28,7 @@
 
 const VIEW_TZ = "Asia/Singapore"; // mirrors PUBLICATION_TZ in lib/i18n.tsx
 
-const STORAGE_KEY = "dtw-viewed";
+const STORAGE_KEY = "otw-viewed";
 
 /** Hard cap on ids tracked per day — bounds the localStorage entry. A reader
  *  who opens more than this in one day starts re-counting their earliest

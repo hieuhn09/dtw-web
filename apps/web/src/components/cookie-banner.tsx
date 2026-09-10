@@ -5,7 +5,7 @@ import { Button } from "@dtw/ui";
 import { Icon } from "@/components/icons";
 import { useT } from "@/lib/i18n";
 
-const STORAGE_KEY = "dtw-cookies";
+const STORAGE_KEY = "otw-cookies";
 
 export function CookieBanner() {
   const t = useT();

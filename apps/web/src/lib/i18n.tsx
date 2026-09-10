@@ -24,7 +24,7 @@ const LangContext = createContext<LangContextValue>({
   setLang: () => undefined,
 });
 
-const STORAGE_KEY = "dtw-lang";
+const STORAGE_KEY = "otw-lang";
 
 function isLang(v: unknown): v is Lang {
   return v === "en" || v === "vi" || v === "id";
