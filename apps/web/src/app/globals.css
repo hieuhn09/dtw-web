@@ -43,7 +43,9 @@
 
   --font-serif: var(--font-serif-loaded, "Schibsted Grotesk"), "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-sans: var(--font-sans-loaded, "IBM Plex Sans"), system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-mono: var(--font-mono-loaded, "IBM Plex Mono"), ui-monospace, "SF Mono", Menlo, monospace;
+  /* Mono face retired by user request (2026-09-10) — aliased to sans so the
+     ~95 existing .mono call sites keep working. */
+  --font-mono: var(--font-sans);
 
   --maxw: 1280px;
 }
