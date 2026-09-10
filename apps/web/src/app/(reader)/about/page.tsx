@@ -28,7 +28,7 @@ const TRUST_LINKS: ReadonlyArray<readonly [slug: string, title: string, desc: st
   ["editorial", "Editorial Standards", "How we report. What we will and won't publish."],
   ["ai", "AI Disclosure", "What 'AI-assisted' means in our newsroom."],
   ["corrections", "Corrections Log", "Public record. Most recent first."],
-  ["sponsored", "Sponsored & Affiliate", "DTW Studio rules + commission disclosure."],
+  ["sponsored", "Sponsored & Affiliate", "OTW Studio rules + commission disclosure."],
 ];
 
 const BIZ_INFO: ReadonlyArray<readonly [k: string, v: string]> = [
@@ -72,19 +72,19 @@ export default function AboutPage() {
   const heroIntro =
     lang === "vi" ? (
       <>
-        Dailytechwire là ấn phẩm công nghệ của{" "}
+        Opentechwire là ấn phẩm công nghệ của{" "}
         <strong style={{ color: "#FFFFFF" }}>Asia Press Centre Group (APCG)</strong>, mạng lưới
         truyền thông có trụ sở tại Singapore, làm báo chí uy tín.
       </>
     ) : lang === "id" ? (
       <>
-        Dailytechwire adalah publikasi teknologi dari{" "}
+        Opentechwire adalah publikasi teknologi dari{" "}
         <strong style={{ color: "#FFFFFF" }}>Asia Press Centre Group (APCG)</strong>, jaringan media
         yang berbasis di Singapura dengan jurnalisme tepercaya.
       </>
     ) : (
       <>
-        Dailytechwire is the technology title of{" "}
+        Opentechwire is the technology title of{" "}
         <strong style={{ color: "#FFFFFF" }}>Asia Press Centre Group (APCG)</strong>, a Singapore-based
         media network of trusted journalism.
       </>
@@ -282,7 +282,7 @@ export default function AboutPage() {
                 <strong style={{ color: "var(--ink)" }}>Asia Press Centre Group (APCG)</strong> is a
                 Singapore-headquartered media network, a family of trusted multilingual titles
                 spanning business, finance, geopolitics, technology, travel, lifestyle and design.
-                Dailytechwire is its technology title.
+                Opentechwire is its technology title.
               </p>
               <p style={{ margin: "0 0 18px" }}>
                 The conviction behind the network is a simple one: the most consequential business,

@@ -1,4 +1,4 @@
-// DTW sample data — ported from design/project/src/data.jsx
+// Opentechwire sample data — ported from design/project/src/data.jsx
 // This is reference / fixture data for the static site. It will be replaced by
 // Payload CMS reads in Phase 2.
 
@@ -124,7 +124,7 @@ export const AUTHORS: Record<string, Author> = {
 };
 
 export function authorOf(id: string): Author {
-  return AUTHORS[id] ?? { id, name: "Staff", role: "DTW", city: "" };
+  return AUTHORS[id] ?? { id, name: "Staff", role: "OTW", city: "" };
 }
 
 export interface ArticleImage {
@@ -246,12 +246,12 @@ export const ARTICLES: ReadonlyArray<Article> = [
   },
   {
     id: "a8",
-    slug: "dtw-studio-aws-asean",
+    slug: "otw-studio-aws-asean",
     pillar: "latest",
     section: "Sponsored",
     title: "How an ASEAN insurer rebuilt its claims pipeline on serverless in 18 weeks",
     dek:
-      "A DTW Studio Presents feature, produced for AWS ASEAN. The DTW newsroom was not involved in writing or editing.",
+      "An OTW Studio Presents feature, produced for AWS ASEAN. The Opentechwire newsroom was not involved in writing or editing.",
     author: "mlin",
     published: "2026-05-24T09:00:00+08:00",
     readMin: 6,
@@ -594,7 +594,7 @@ export const NEWSLETTERS: ReadonlyArray<Newsletter> = [
   { id: "dev", name: "Dev Digest", cadence: "Weekly · Fri", desc: "What practitioners are actually shipping.", subs: "19,300", pillar: "dev" },
   { id: "prod", name: "Products & Deals", cadence: "Bi-weekly", desc: "Reviews and buy-or-skip calls. Affiliate-disclosed.", subs: "14,100", pillar: "products" },
   { id: "deep", name: "Deep Dive", cadence: "Weekly · Sun", desc: "One long-form investigation or data story, in full, every weekend.", subs: "17,600", pillar: "policy" },
-  { id: "awards", name: "DTW Awards", cadence: "Occasional", desc: "Updates on the upcoming DTW Awards, plus nominations and winners when they land.", subs: "3,100", pillar: "latest" },
+  { id: "awards", name: "OTW Awards", cadence: "Occasional", desc: "Updates on the upcoming OTW Awards, plus nominations and winners when they land.", subs: "3,100", pillar: "latest" },
 ];
 
 export interface Podcast {
@@ -606,7 +606,7 @@ export interface Podcast {
 }
 
 export const PODCASTS: ReadonlyArray<Podcast> = [
-  { id: "daily", title: "DTW Daily Brief", len: "6:42", date: "Today", host: "Mei Lin" },
+  { id: "daily", title: "OTW Daily Brief", len: "6:42", date: "Today", host: "Mei Lin" },
   { id: "asia", title: "Asia, Decoded", len: "38:11", date: "Yesterday", host: "Mei Lin & Ravi Kim" },
   { id: "build", title: "Building in Public, EM", len: "44:50", date: "2 days ago", host: "Arif Rahman" },
 ];

@@ -35,13 +35,13 @@ Does NOT cover: the homepage hero (`homepage/`), CMS authoring UI (`cms/`), Bett
 
 Phase 1 behaviour (Phase 2 will add Pro gating on top):
 
-- Anonymous visitor: count cookie-keyed (`dtw-read-count`)
+- Anonymous visitor: count cookie-keyed (`dtw-read-count`; → `otw-read-count` at rebrand Phase 6/D14)
 - Authenticated visitor: count on user row (`reading_history` table)
 - Threshold: read from PostHog feature flag `paywall_meter_threshold` (default 3) — **never hardcode `3`**
 - When threshold hit AND user not authenticated AND nudge not dismissed:
   - Sign-in nudge banner shown in header (in-flow, pushes content down)
-  - Banner copy: "Enjoying DailyTechWire? Sign in to save articles, follow topics, and pick up where you left off — across every device." CTA: "Sign in — it's free →"
-  - Dismiss (×) on right edge, subtle (opacity 0.55, no border, 18×18). Persists in `localStorage["dtw-nudge-dismissed"]`.
+  - Banner copy: "Enjoying Opentechwire? Sign in to save articles, follow topics, and pick up where you left off — across every device." CTA: "Sign in — it's free →" (renamed from "Enjoying DailyTechWire?" by rebrand decision D1 — the live render at `header.tsx:633-635` still says "DailyTechWire" as of this Phase 0 note; fixed in rebrand Phase 4, must match this exact string)
+  - Dismiss (×) on right edge, subtle (opacity 0.55, no border, 18×18). Persists in `localStorage["dtw-nudge-dismissed"]` (→ `otw-nudge-dismissed` at rebrand Phase 6/D14).
 - **Never blocks mid-article.** Reader can still finish whatever they started.
 - Article body is always served — only the nudge surface changes.
 
@@ -51,7 +51,7 @@ Phase 2 adds real Pro gating with a different banner, but the soft-block rule st
 
 From `design/project/src/ui.jsx::DisclosureBox`:
 
-- **Sponsored:** `var(--sponsored)` bg, `#E0B900` border, title "Paid Partner · {sponsor}", body "This is a sponsored feature produced by DTW Studio for the partner above. The DTW newsroom was not involved in writing or editing."
+- **Sponsored:** `var(--sponsored)` bg, `#E0B900` border, title "Paid Partner · {sponsor}", body "This is a sponsored feature produced by OTW Studio for the partner above. The Opentechwire newsroom was not involved in writing or editing." (renamed from "DTW Studio"/"The DTW newsroom..." by rebrand decision D1/§5.1.1 — the live render at `article-body.tsx:139-141` still says "DTW" as of this Phase 0 note; fixed in rebrand Phase 4, must match this exact string)
 - **AI-assisted:** `var(--surface-2)` bg, `var(--hair-2)` border, title "AI-assisted reporting", body "This article uses AI tools for translation or transcription. All facts were verified, and all writing was done by a human reporter."
 - Top + middle + bottom placement — `position` prop adjusts the "reminder" subtitle ("· reminder (middle)" / "· reminder (bottom)")
 - 24×24 ink badge with `$` or `AI` mono caps icon

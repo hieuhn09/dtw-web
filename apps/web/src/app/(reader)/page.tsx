@@ -48,19 +48,19 @@ const MOST_READ_SLOTS = 4;
 export const revalidate = 60;
 
 // Deliberately omits `title` so the route inherits the root layout's
-// `title.default` ("DailyTechWire") verbatim rather than re-stating brand
-// copy through the "%s – DailyTechWire" template (which would otherwise
-// render "DailyTechWire – DailyTechWire"). Static object, not
+// `title.default` ("Opentechwire") verbatim rather than re-stating brand
+// copy through the "%s – Opentechwire" template (which would otherwise
+// render "Opentechwire – Opentechwire"). Static object, not
 // `generateMetadata` — the homepage has no dynamic route params.
 export const metadata: Metadata = buildMetadata({
   canonicalPath: "/",
-  // 157 chars (SEO audit finding: the old 31-char tagline was too short for
+  // 156 chars (SEO audit finding: the old 31-char tagline was too short for
   // Google to use verbatim, so it was synthesizing a snippet from the footer
-  // instead). Describes what DTW actually publishes; "Asia and the world"
-  // phrasing matches invariant #14 — DTW is global, Asia is a beat within
-  // that, not the scope.
+  // instead). Describes what Opentechwire actually publishes; "Asia and the
+  // world" phrasing matches invariant #14 — Opentechwire is global, Asia is a
+  // beat within that, not the scope.
   description:
-    "DailyTechWire tracks global tech and AI: funding rounds, tech-stock moves, AI model benchmarks and rankings, and deep-dive reporting from Asia and the world.",
+    "Opentechwire tracks global tech and AI: funding rounds, tech-stock moves, AI model benchmarks and rankings, and deep-dive reporting from Asia and the world.",
   image: DEFAULT_OG_IMAGE,
   type: "website",
 });

@@ -30,9 +30,9 @@ export async function GET() {
     })
     .join("\n");
 
-  const body = `# DailyTechWire
+  const body = `# Opentechwire
 
-DailyTechWire is a global, digital-native technology publication with an Asian vantage point — funding and tech-stock coverage, AI benchmarks and rankings, and deep-dive editorial. Published by Asia Press Centre Group (APCG), an independent newsroom based in Singapore, founded 2023.
+Opentechwire is a global, digital-native technology publication with an Asian vantage point — funding and tech-stock coverage, AI benchmarks and rankings, and deep-dive editorial. Published by Asia Press Centre Group (APCG), an independent newsroom based in Singapore, founded 2023. Formerly published as DailyTechWire.
 
 ## Sections
 

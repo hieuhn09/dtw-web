@@ -76,7 +76,7 @@ export function actionEmail(opts: {
   const text = `${opts.heading}\n\n${opts.intro}\n\n${opts.buttonLabel}: ${opts.url}\n\n${footer}`;
   const html = `<!doctype html><html><body style="margin:0;background:#FDFCF8;font-family:-apple-system,'Segoe UI',sans-serif;color:#111111">
   <div style="max-width:480px;margin:0 auto;padding:32px 24px">
-    <div style="font-weight:800;font-size:22px;margin-bottom:24px;letter-spacing:-0.5px"><span style="color:#1B2A52">DTW</span> <span style="font-style:italic;font-weight:700;color:#D4623C">dailytechwire</span></div>
+    <div style="font-weight:800;font-size:22px;margin-bottom:24px;letter-spacing:-0.5px"><span style="color:#1B2A52">OTW</span> <span style="font-style:italic;font-weight:700;color:#D4623C">opentechwire</span></div>
     <h1 style="font-size:20px;margin:0 0 12px;color:#111111">${opts.heading}</h1>
     <p style="font-size:14px;line-height:1.6;color:#5B5B58;margin:0 0 24px">${opts.intro}</p>
     <a href="${opts.url}" style="display:inline-block;background:#D4623C;color:#ffffff;text-decoration:none;font-weight:700;font-size:14px;padding:12px 22px;border-radius:6px">${opts.buttonLabel}</a>

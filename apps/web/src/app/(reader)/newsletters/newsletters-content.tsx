@@ -70,9 +70,9 @@ export function NewslettersContent({ newsletters }: { newsletters: ReadonlyArray
           }}
         >
           {t(
-            "Read Dailytechwire the way you read.",
-            "Đọc Dailytechwire theo cách của bạn.",
-            "Baca Dailytechwire sesuai keinginan."
+            "Read Opentechwire the way you read.",
+            "Đọc Opentechwire theo cách của bạn.",
+            "Baca Opentechwire sesuai keinginan."
           )}
         </h1>
         <p

@@ -82,8 +82,8 @@ export async function cmsFetch<T>(
  * Rewrite Central's RELATIVE media URLs to absolute URLs pointing at Central.
  *
  * Central returns `url: "/api/media/file/<name>?prefix=<tenant>"`. Left as-is,
- * the browser resolves that against the site being viewed — dailytechwire.com —
- * so every image request lands on DTW's own Payload instead of Central.
+ * the browser resolves that against the site being viewed — opentechwire.com —
+ * so every image request lands on Opentechwire's own Payload instead of Central.
  *
  * The failure is deceptive rather than loud: the local Payload still holds those
  * files, so images keep rendering and the migration looks complete while the site

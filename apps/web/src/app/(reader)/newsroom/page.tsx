@@ -91,7 +91,7 @@ const CREDENTIALS: ReadonlyArray<{ k: string; v: string }> = [
 ];
 
 const MASTHEAD: ReadonlyArray<{ name: string; role: string; city: string }> = [
-  { name: "Cheryl Tan", role: "Editor-in-Chief, Dailytechwire / Group Editor", city: "Singapore" },
+  { name: "Cheryl Tan", role: "Editor-in-Chief, Opentechwire / Group Editor", city: "Singapore" },
   { name: "Aravind Subramanian", role: "Managing Editor", city: "Bengaluru" },
   { name: "Hiroko Yamamoto", role: "Executive Editor, Newsroom", city: "Tokyo" },
   { name: "Daniel Park", role: "Standards Editor & Ombudsperson", city: "Seoul" },
@@ -130,21 +130,21 @@ export default function NewsroomAboutPage() {
   const heroSub: ReactNode =
     lang === "vi" ? (
       <>
-        Dailytechwire là ấn phẩm công nghệ của{" "}
+        Opentechwire là ấn phẩm công nghệ của{" "}
         <strong style={{ color: BANNER_HEADING }}>Asia Press Centre Group (APCG)</strong>.{" "}
         <strong style={{ color: BANNER_HEADING }}>Đây là cách bài báo thực sự được tạo ra</strong>,
         ngay tại khu vực, bằng ngôn ngữ bản địa, công khai minh bạch.
       </>
     ) : lang === "id" ? (
       <>
-        Dailytechwire adalah publikasi teknologi dari{" "}
+        Opentechwire adalah publikasi teknologi dari{" "}
         <strong style={{ color: BANNER_HEADING }}>Asia Press Centre Group (APCG)</strong>.{" "}
         <strong style={{ color: BANNER_HEADING }}>Beginilah liputan benar-benar dibuat</strong>, di
         kawasan, dalam bahasa setempat, secara terbuka.
       </>
     ) : (
       <>
-        Dailytechwire is the technology title of{" "}
+        Opentechwire is the technology title of{" "}
         <strong style={{ color: BANNER_HEADING }}>Asia Press Centre Group (APCG)</strong>.{" "}
         <strong style={{ color: BANNER_HEADING }}>Here is how the reporting actually gets made</strong>,
         in-region, in-language, on the record.
@@ -433,7 +433,7 @@ export default function NewsroomAboutPage() {
                 className="text-mute"
                 style={{ fontSize: 15, marginBottom: 24, fontFamily: "var(--font-serif)" }}
               >
-                Editor-in-Chief, Dailytechwire · Asia Press Centre Group
+                Editor-in-Chief, Opentechwire · Asia Press Centre Group
               </div>
 
               <p
@@ -446,7 +446,7 @@ export default function NewsroomAboutPage() {
                 }}
               >
                 Cheryl Tan is a founding editor of Asia Press Centre Group and the Editor-in-Chief of
-                dailytechwire, where she sets the title&apos;s editorial direction and the standards
+                Opentechwire, where she sets the title&apos;s editorial direction and the standards
                 framework that governs it.
               </p>
               <p
@@ -703,9 +703,9 @@ export default function NewsroomAboutPage() {
         <div style={{ marginTop: 48 }}>
           <Link href="/about" className="linkish" style={{ color: "var(--accent)", fontSize: 14 }}>
             {t(
-              "← The trust & standards view of dailytechwire",
-              "← Trang minh bạch & chuẩn mực của dailytechwire",
-              "← Tampilan kepercayaan & standar dailytechwire"
+              "← The trust & standards view of Opentechwire",
+              "← Trang minh bạch & chuẩn mực của Opentechwire",
+              "← Tampilan kepercayaan & standar Opentechwire"
             )}
           </Link>
         </div>

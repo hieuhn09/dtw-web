@@ -5,6 +5,8 @@
 **Goal:** A complete, usable Dailytechwire site a **human editorial team** can operate end-to-end — author + publish real articles with images, manage taxonomy, run a public corrections log, be discoverable (SEO/RSS) — **without** the AI Content Engine.
 **Source:** multi-agent readiness audit (workflow `dtw-human-ops-readiness`, 2026-05-30). Readiness at audit time: **42%**.
 
+> **[REBRAND 2026-09] Every "Dailytechwire" mention in this plan is stale.** The publication is now **Opentechwire/OTW** (ledger at `process/features/rebrand/active/rebrand-opentechwire-umbrella_PLAN_08-09-26.md`). Dated workflow/audit identifiers containing `dtw` (e.g. `dtw-human-ops-readiness`, `dtw-project-review`) are historical run names, not the brand — left unchanged.
+
 ---
 
 ## Verdict from audit

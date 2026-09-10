@@ -7,6 +7,8 @@
 
 **Path convention in this doc:** brief-asia paths are relative to `/home/hieunc/Code/brief-asia-web/`; dtw paths are relative to `/home/hieunc/Code/dtw-web/`.
 
+> **[REBRAND 2026-09] Brand/domain strings quoted below (`dailytechwire.com`, "Sign in to DailyTechWire", etc.) are pre-rebrand.** This is background research for the ACTIVE `reader-auth-account-simple_PLAN_03-07-26.md` plan — reconcile any brand/domain literal against `process/features/rebrand/active/rebrand-opentechwire-umbrella_PLAN_08-09-26.md` (ledger D1-D15) before porting.
+
 ---
 
 ## 1. brief-asia-web findings

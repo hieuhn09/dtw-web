@@ -13,6 +13,8 @@
 
 **Status**: 🧪 TESTING (Groups A-H code-complete + verified against the live Neon dev DB and a real LLM Stats cron write; awaiting user review of the manual-test evidence before archival)
 
+> **[REBRAND 2026-09] Brand/domain strings in this plan predate the Opentechwire rebrand** (ledger at `process/features/rebrand/active/rebrand-opentechwire-umbrella_PLAN_08-09-26.md`). **`DTW_DASHBOARD_REFRESH_TOKEN` keeps its exact name** (umbrella §6b.2) — only its value changes, and only if/when it is rotated on Vercel; do not rename this env var during the rebrand.
+
 **Amended 2026-07-30 (2nd)**: final column set confirmed by owner against live data — General/Reasoning/Coding/Math/Search/Vision + dual pricing + Released; Speed/Context/Writing dropped.
 
 **EXECUTE progress (2026-07-31, Groups A-C pass)**: Checklist items 1-17 (Groups A "Shared plumbing", B "Payload schema", C "Read helpers") implemented, migrated, seeded, and verified against the live Neon dev DB — see the EXECUTE session report for full evidence. Two adaptations were required (both documented, not silent):

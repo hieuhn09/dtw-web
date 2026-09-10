@@ -23,11 +23,11 @@ import type { Metadata } from "next";
  *
  * Fallback order: explicit `NEXT_PUBLIC_SITE_URL` → `https://${VERCEL_URL}`
  * (automatic on Vercel preview deploys) → `http://localhost:3000` (dev
- * default). Production sets `NEXT_PUBLIC_SITE_URL=https://www.dailytechwire.com`
+ * default). Production sets `NEXT_PUBLIC_SITE_URL=https://www.opentechwire.com`
  * explicitly (a Vercel dashboard env var, not code — see Ops Runbook).
  *
  * MUST stay on the www host: next.config.ts 301s the bare apex
- * (dailytechwire.com) to www. Pointing this at the apex would make every
+ * (opentechwire.com) to www. Pointing this at the apex would make every
  * canonical/OG/sitemap URL resolve through a redirect.
  */
 export function siteOrigin(): string {
@@ -66,7 +66,7 @@ export const DEFAULT_OG_IMAGE: OgImage = {
   url: "/og-default.png",
   width: 1200,
   height: 630,
-  alt: "DailyTechWire – Tech Intelligence, Wired Daily",
+  alt: "Opentechwire – Tech Intelligence, Openly Wired",
 };
 
 /**
@@ -98,7 +98,7 @@ export const ORGANIZATION = {
 
 export interface BuildMetadataInput {
   /** Omit to inherit the root layout's `title.default` verbatim (not run
-   *  through the `%s – DailyTechWire` template) — this is the mechanism the
+   *  through the `%s – Opentechwire` template) — this is the mechanism the
    *  homepage (RFC-006) uses. */
   title?: string;
   description: string;
@@ -150,7 +150,7 @@ export function buildMetadata(input: BuildMetadataInput): Metadata {
       ? {
           type: "article",
           url: canonicalPath,
-          siteName: "DailyTechWire",
+          siteName: "Opentechwire",
           images: [ogImageDescriptor],
           publishedTime,
           modifiedTime,
@@ -160,7 +160,7 @@ export function buildMetadata(input: BuildMetadataInput): Metadata {
       : {
           type: "website",
           url: canonicalPath,
-          siteName: "DailyTechWire",
+          siteName: "Opentechwire",
           images: [ogImageDescriptor],
         };
 
@@ -175,7 +175,7 @@ export function buildMetadata(input: BuildMetadataInput): Metadata {
       // feed <link>.
       types: {
         "application/atom+xml": [
-          { url: "/rss.xml", title: "DailyTechWire" },
+          { url: "/rss.xml", title: "Opentechwire" },
           ...(feed ? [feed] : []),
         ],
       },

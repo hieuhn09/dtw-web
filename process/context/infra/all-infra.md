@@ -51,6 +51,12 @@ Payload `/admin` is embedded in the same Next.js app on Vercel — not a separat
 
 ---
 
+## Canonical Host (rebrand D3/D4/D5)
+
+Production origin target: **`https://www.opentechwire.com`** (www, not apex). `dailytechwire.com` remains APCG-owned but parked — no A record, no redirect, no Search Console Change of Address (D4, deliberate). DKIM/SPF/DMARC must be provisioned on the **new** domain before any Resend send goes out under it (rebrand Phase 1, external prerequisite — see `process/features/rebrand/active/rebrand-opentechwire-umbrella_PLAN_08-09-26.md`). Do not add a redirect rule or file a Change of Address for the old domain at any point in this rebrand.
+
+---
+
 ## ISR + Revalidation (single source of truth)
 
 There is ONE revalidation path: the Payload `afterChange` hook (documented in `database/all-database.md`).
@@ -103,7 +109,7 @@ Pages must call `unstable_cache` / `fetch` with the matching `next.tags` array t
 - **Magic link emails:** see `auth/all-auth.md`. Sent through the same Resend domain.
 - **Transactional:** correction notifications (Phase 2), purchase receipts (Phase 2).
 
-DKIM + SPF + DMARC on `dailytechwire.com` before any send.
+DKIM + SPF + DMARC on `opentechwire.com` before any send (rebrand target domain — D3/D5; see the Canonical Host note above). The old domain `dailytechwire.com`'s existing DKIM/SPF/DMARC records are left as-is — not migrated, not redirected (D4).
 
 ---
 
@@ -211,7 +217,7 @@ Names only — never commit values. Grouped logically.
 
 ### Email
 - `RESEND_API_KEY`
-- `RESEND_FROM_DOMAIN` (`dailytechwire.com`)
+- `RESEND_FROM_DOMAIN` (`opentechwire.com` — rebrand target domain, D3/D5; was `dailytechwire.com`)
 
 ### Realtime
 - `SOKETI_HOST`, `SOKETI_PORT`, `SOKETI_KEY`, `SOKETI_SECRET` (or `PUSHER_APP_ID` / `PUSHER_KEY` / `PUSHER_SECRET` / `PUSHER_CLUSTER`)
@@ -252,7 +258,7 @@ Names only — never commit values. Grouped logically.
 
 The cookie banner (`components/cookie-banner.tsx`) is intentionally a dismiss-only banner:
 both "Decline" and "Accept" call the same `dismiss()` function and store the same
-localStorage key (`dtw-cookies = "1"`). This is acceptable **only** because the site
+localStorage key (`dtw-cookies = "1"`; → `otw-cookies` at rebrand Phase 6/D14). This is acceptable **only** because the site
 ships NO non-essential tracking. Banner copy: "No ads, no tracking, no data sale."
 Only essential cookies are set (login/auth, theme, locale).
 

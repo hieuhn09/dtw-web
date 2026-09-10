@@ -30,6 +30,11 @@ build/
 *.bin
 .vibecode-backup/
 
-# kit skill example screenshots — audit artifacts from other apps, not part of DTW (~14MB)
+# kit skill example screenshots — audit artifacts from other apps, not part of Opentechwire (~14MB)
 .claude/skills/*/screenshots/
 .codex/skills/*/screenshots/
+
+# rebrand hygiene — research/export artifacts, not part of the tracked repo
+data-exports/
+dailytechwire.com-Coverage-*.zip
+news-p.v1.*.jpeg

@@ -135,7 +135,7 @@ export function PillarContent({
               textTransform: "uppercase",
             }}
           >
-            DTW · {pillarLabel}
+            OTW · {pillarLabel}
           </span>
         </div>
         <h1

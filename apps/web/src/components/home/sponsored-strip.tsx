@@ -41,7 +41,7 @@ export function SponsoredStrip({ article: s }: SponsoredStripProps) {
                 textTransform: "uppercase",
               }}
             >
-              ⬢ Paid Partner Content · DTW Studio Presents
+              ⬢ Paid Partner Content · OTW Studio Presents
             </div>
             <div
               className="serif"
@@ -50,7 +50,7 @@ export function SponsoredStrip({ article: s }: SponsoredStripProps) {
                 color: "color-mix(in oklab, var(--ink) 80%, transparent)",
               }}
             >
-              Produced by DTW Studio for the partner below. The DTW newsroom was not involved.
+              Produced by OTW Studio for the partner below. The Opentechwire newsroom was not involved.
             </div>
           </div>
           <span

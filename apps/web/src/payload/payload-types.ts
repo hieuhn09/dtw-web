@@ -315,7 +315,7 @@ export interface Tag {
   createdAt: string;
 }
 /**
- * Every story DTW publishes. Engine drafts flow in via API; editors review here.
+ * Every story Opentechwire publishes. Engine drafts flow in via API; editors review here.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "articles".

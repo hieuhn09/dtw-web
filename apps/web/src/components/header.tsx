@@ -232,9 +232,9 @@ export function Header({ pillars }: { pillars: NavPillar[] }) {
               style={{ letterSpacing: ".08em", margin: "2px 0 0", fontSize: 11 }}
             >
               {t(
-                "Tech Intelligence, Wired Daily",
-                "Tin tức công nghệ, cập nhật hàng ngày",
-                "Intelijen Teknologi, Setiap Hari"
+                "Tech Intelligence, Openly Wired",
+                "Tin tức công nghệ, kết nối cởi mở",
+                "Intelijen Teknologi, Terhubung Terbuka"
               )}
             </div>
           </div>
@@ -630,9 +630,9 @@ export function Header({ pillars }: { pillars: NavPillar[] }) {
           >
             <span>
               {t(
-                "Enjoying DailyTechWire? Sign in to save articles, follow topics, and pick up where you left off — across every device.",
-                "Bạn đang thích DailyTechWire? Đăng nhập để lưu bài, theo dõi chủ đề, và đọc tiếp ở bất kỳ thiết bị nào.",
-                "Suka DailyTechWire? Masuk untuk menyimpan artikel, mengikuti topik, dan lanjut membaca di perangkat mana pun."
+                "Enjoying Opentechwire? Sign in to save articles, follow topics, and pick up where you left off — across every device.",
+                "Bạn đang thích Opentechwire? Đăng nhập để lưu bài, theo dõi chủ đề, và đọc tiếp ở bất kỳ thiết bị nào.",
+                "Suka Opentechwire? Masuk untuk menyimpan artikel, mengikuti topik, dan lanjut membaca di perangkat mana pun."
               )}
             </span>
             <button

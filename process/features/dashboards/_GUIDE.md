@@ -4,7 +4,7 @@
 
 ## Scope
 
-Two data-driven product surfaces that differentiate DTW from generic tech news:
+Two data-driven product surfaces that differentiate Opentechwire from generic tech news: (renamed from "DTW" by rebrand decision D1/§5.1.1)
 
 - `/dashboards/funding` — **Asia Funding Tracker** (venture funding + tech-stock movement across Asia)
 - `/dashboards/ai` — **AI Leaderboard** (model rankings with per-dimension sort: reasoning, coding, speed, price)

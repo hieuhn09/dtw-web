@@ -67,7 +67,7 @@ export function BestOfReviews() {
               gap: 6,
               cursor: "help",
             }}
-            title="Some links earn DTW a commission. Reviews are independent and never paid for by manufacturers."
+            title="Some links earn Opentechwire a commission. Reviews are independent and never paid for by manufacturers."
           >
             <span
               className="mono"

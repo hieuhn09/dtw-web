@@ -13,14 +13,14 @@ import { CMS_URL } from "@/lib/central-api";
  * reports what came back, so "the site renders empty" gets a one-request answer
  * (bad token? wrong host? Central down?).
  *
- * Why not a view-counter probe: dailytechwire counts views in its OWN database, so a
+ * Why not a view-counter probe: Opentechwire counts views in its OWN database, so a
  * view write proves nothing about the read path — and the one Central write helper
  * swallows every error, so a rejection is indistinguishable from success. The
  * cutover is a READ-path change, so the probe is a read.
  *
  * It also surfaces the media-URL trap that cost the WTB cutover a round: Central
  * returns RELATIVE media paths, which the browser would resolve against
- * dailytechwire.com and quietly 404. `mediaHost` below must be the Central
+ * opentechwire.com and quietly 404. `mediaHost` below must be the Central
  * host — if it echoes this site's own domain, the absolutize step at the fetch
  * boundary is not running.
  *

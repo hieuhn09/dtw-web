@@ -30,7 +30,7 @@ export function HomeHero({ lead, aside }: HomeHeroProps) {
         href={`/article/${lead.slug}`}
         style={{ cursor: "pointer", color: "inherit", textDecoration: "none" }}
       >
-        <CoverArt pillar={lead.pillar} seed={lead.id} src={lead.heroImageUrl} variant={0} height={410} label="DTW HERO" />
+        <CoverArt pillar={lead.pillar} seed={lead.id} src={lead.heroImageUrl} variant={0} height={410} label="OTW HERO" />
         <div style={{ marginTop: 10, display: "flex", alignItems: "center", gap: 10 }}>
           <PillarTag id={lead.pillar} label={localizedPillarLabel(lead.pillar, lang)} />
           <span className="mono text-mute-2" style={{ fontSize: 11 }}>{lead.section}</span>

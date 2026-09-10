@@ -34,7 +34,9 @@ const SITE_JSON_LD = toJsonLdScript([
   {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    name: "DailyTechWire",
+    name: "Opentechwire",
+    // TODO(rebrand): remove alternateName after ~12mo post-cutover, see reference doc §3.2
+    alternateName: "DailyTechWire",
     url: siteOrigin(),
     publisher: { "@type": "Organization", ...ORGANIZATION },
   },

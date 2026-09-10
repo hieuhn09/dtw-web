@@ -187,7 +187,7 @@ export function AuthModal() {
         </button>
 
         <div className="kicker" style={{ marginBottom: 8 }}>
-          {t("Welcome to DTW", "Chào mừng đến DTW", "Selamat datang di DTW")}
+          {t("Welcome to OTW", "Chào mừng đến OTW", "Selamat datang di OTW")}
         </div>
         <h2
           className="serif"
@@ -357,7 +357,7 @@ export function AuthModal() {
                 {t("Forgot password?", "Quên mật khẩu?", "Lupa kata sandi?")}
               </button>
               <br />
-              {t("New to DailyTechWire?", "Mới biết DailyTechWire?", "Baru di DailyTechWire?")}{" "}
+              {t("New to Opentechwire?", "Mới biết Opentechwire?", "Baru di Opentechwire?")}{" "}
               <button onClick={() => switchMode("signup")} style={linkBtn}>
                 {t("Create an account", "Tạo tài khoản", "Buat akun")}
               </button>

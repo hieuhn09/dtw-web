@@ -82,7 +82,7 @@ function ResetInner() {
             )}
           </p>
           <Link href="/" style={{ color: "var(--accent)", fontWeight: 600 }}>
-            {t("Back to DailyTechWire →", "Về DailyTechWire →", "Kembali ke DailyTechWire →")}
+            {t("Back to Opentechwire →", "Về Opentechwire →", "Kembali ke Opentechwire →")}
           </Link>
         </div>
       ) : (

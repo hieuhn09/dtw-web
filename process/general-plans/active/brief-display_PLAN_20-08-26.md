@@ -4,6 +4,9 @@
 **Repo:** `dtw-web` — HEAD tham chiếu `b8941da`
 **Complexity:** SIMPLE (một execute pass)
 **Status:** ✅ CODE COMPLETE 20-08-26 — chưa deploy, chưa verify runtime (xem `process/general-plans/reports/brief-display_REPORT_20-08-26.md`)
+
+> **[REBRAND 2026-09] `dtw` trong `BRIEF_PUBLISH_PUBS` là slug legacy đóng băng vĩnh viễn (D11) — KHÔNG đổi.** Chỉ tên hiển thị publication đổi (Dailytechwire/DTW → Opentechwire/OTW, ledger tại `process/features/rebrand/active/rebrand-opentechwire-umbrella_PLAN_08-09-26.md`), giá trị slug `dtw` trong mọi env/config CSV giữ nguyên vĩnh viễn.
+
 **Nghiên cứu:** `process/general-plans/references/brief-display-research_REFERENCE_20-08-26.md`
 **Phụ thuộc:** `apcg-cms/process/general-plans/active/brief-content-type_PLAN_20-08-26.md` phải **deploy xong trước**. Không có tham số `content_type` trên Central thì plan này không chạy được.
 

@@ -1,6 +1,9 @@
 # Tip Line Removal + Newsroom Route Move
 
 Status: A: 🧪 TESTING (shipped via PR #24, merged to `main` 2026-07-16 — D1-D4 surfaced to the user before and twice after EXECUTE, deferred by the user's own choice, satisfied; sole remaining blocker: no human visual/dark-mode confirmation of A3's revived Business info block on `/about`) — B: ✅ VERIFIED (shipped via PR #24; route move + 301 redirect + sitemap + footer confirmed via curl/grep against a running instance, no outstanding blocker)
+
+> **[REBRAND 2026-09] The grep verification command at line ~304 of this file (`tips@dailytechwire`) will give a false green after the rebrand** — the domain in that literal is stale. See `process/features/rebrand/active/rebrand-opentechwire-umbrella_PLAN_08-09-26.md` for the current brand/domain ledger before trusting this file's verification commands.
+
 Date: 16-07-26
 Feature: about-trust
 Complexity: SIMPLE-to-MEDIUM (single session, two independently-verifiable workstreams, no schema/DB/auth changes)

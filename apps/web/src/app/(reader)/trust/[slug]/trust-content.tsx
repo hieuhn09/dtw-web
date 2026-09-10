@@ -150,9 +150,9 @@ export function TrustContent({ slug, corrections }: TrustContentProps) {
         [
           t("Independence", "Tính độc lập", "Independensi"),
           t(
-            "DTW does not accept review units, free travel, or paid trips. Our editorial budget is separate from DTW Studio (sponsored work) and from membership revenue.",
-            "DTW không nhận sản phẩm dùng thử, chuyến đi miễn phí hay tài trợ đi lại. Ngân sách biên tập tách biệt với DTW Studio (bài tài trợ) và doanh thu thành viên.",
-            "DTW tidak menerima unit ulasan, perjalanan gratis, atau trip berbayar. Anggaran editorial terpisah dari DTW Studio (konten bersponsor) dan pendapatan keanggotaan."
+            "Opentechwire does not accept review units, free travel, or paid trips. Our editorial budget is separate from OTW Studio (sponsored work) and from membership revenue.",
+            "Opentechwire không nhận sản phẩm dùng thử, chuyến đi miễn phí hay tài trợ đi lại. Ngân sách biên tập tách biệt với OTW Studio (bài tài trợ) và doanh thu thành viên.",
+            "Opentechwire tidak menerima unit ulasan, perjalanan gratis, atau trip berbayar. Anggaran editorial terpisah dari OTW Studio (konten bersponsor) dan pendapatan keanggotaan."
           ),
         ],
         [
@@ -265,13 +265,13 @@ export function TrustContent({ slug, corrections }: TrustContentProps) {
         "Kebijakan Sponsor & Afiliasi"
       ),
       kicker: t(
-        "DTW Studio and review rules",
-        "Quy tắc DTW Studio và đánh giá",
-        "Aturan DTW Studio dan ulasan"
+        "OTW Studio and review rules",
+        "Quy tắc OTW Studio và đánh giá",
+        "Aturan OTW Studio dan ulasan"
       ),
       body: [
         [
-          t("DTW Studio", "DTW Studio", "DTW Studio"),
+          t("OTW Studio", "OTW Studio", "OTW Studio"),
           t(
             "Sponsored content is produced by a separate studio team. Articles carry a yellow background, a 'Paid Partner' label, and a top/middle/end disclosure that cannot be turned off.",
             "Nội dung tài trợ do nhóm studio riêng sản xuất. Bài có nền vàng, nhãn 'Đối tác trả phí', và công bố ở đầu/giữa/cuối không thể tắt.",

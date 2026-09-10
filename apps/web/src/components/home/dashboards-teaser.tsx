@@ -195,7 +195,7 @@ export function DashboardsTeaser({ aiRows }: DashboardsTeaserProps) {
                     {h.label}
                     {h.info && (
                       <span
-                        className="dtw-tip"
+                        className="otw-tip"
                         data-tip={h.info}
                         aria-label={h.info}
                         tabIndex={0}

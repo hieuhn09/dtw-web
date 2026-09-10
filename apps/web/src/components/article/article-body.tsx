@@ -136,9 +136,9 @@ function SponsoredBox({
       position={position}
       title={`${label}${article.sponsor ? ` · ${article.sponsor}` : ""}`}
       body={t(
-        "This is a sponsored feature produced by DTW Studio for the partner above. The DTW newsroom was not involved in writing or editing.",
-        "Đây là nội dung tài trợ do DTW Studio sản xuất cho đối tác nêu trên. Toà soạn DTW không tham gia viết hay biên tập.",
-        "Ini adalah konten bersponsor yang diproduksi oleh DTW Studio untuk mitra di atas. Ruang redaksi DTW tidak terlibat dalam penulisan atau penyuntingan."
+        "This is a sponsored feature produced by OTW Studio for the partner above. The Opentechwire newsroom was not involved in writing or editing.",
+        "Đây là nội dung tài trợ do OTW Studio sản xuất cho đối tác nêu trên. Toà soạn Opentechwire không tham gia viết hay biên tập.",
+        "Ini adalah konten bersponsor yang diproduksi oleh OTW Studio untuk mitra di atas. Ruang redaksi Opentechwire tidak terlibat dalam penulisan atau penyuntingan."
       )}
     />
   );
