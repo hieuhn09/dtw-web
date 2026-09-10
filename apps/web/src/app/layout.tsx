@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Schibsted_Grotesk, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
+import { Schibsted_Grotesk, IBM_Plex_Sans } from "next/font/google";
 import { DEFAULT_OG_IMAGE, siteOrigin } from "@/lib/metadata";
 import "./globals.css";
 
@@ -21,13 +21,6 @@ const plexSans = IBM_Plex_Sans({
   variable: "--font-sans-loaded",
   display: "swap",
   weight: ["400", "500", "600", "700"],
-});
-
-const plexMono = IBM_Plex_Mono({
-  subsets: ["latin"],
-  variable: "--font-mono-loaded",
-  display: "swap",
-  weight: ["400", "500", "600"],
 });
 
 export const metadata: Metadata = {
@@ -70,7 +63,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${sourceSerif.variable} ${plexSans.variable} ${plexMono.variable}`}
+      className={`${sourceSerif.variable} ${plexSans.variable}`}
       suppressHydrationWarning
     >
       <body>{children}</body>
