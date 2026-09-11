@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition, type MouseEvent } from "react";
+import { useEffect, useState, useTransition, type MouseEvent } from "react";
 import Link from "next/link";
 import { Button, PillarTag } from "@dtw/ui";
 import { CoverArt } from "@/components/cover-art";
@@ -63,6 +63,20 @@ export function PillarContent({
   const [hasMore, setHasMore] = useState<boolean>(hasMoreInitial);
   const [batches, setBatches] = useState<number>(0);
   const [pending, startTransition] = useTransition();
+
+  // A reload replays the browser's default scroll restoration against this
+  // page's *server* render, which only ever holds this page's own 25
+  // articles — never the taller, append-grown DOM the reader had scrolled
+  // through before reloading. The remembered offset gets clamped to the
+  // bottom of that shorter document, stranding the reader there. Gated to
+  // `"reload"` only, so pressing Back still restores the reader's actual
+  // scroll position instead of jumping them to the top.
+  useEffect(() => {
+    const nav = performance.getEntriesByType("navigation")[0] as
+      | PerformanceNavigationTiming
+      | undefined;
+    if (nav?.type === "reload") window.scrollTo({ top: 0 });
+  }, []);
 
   // Appends add plain cards only — no second lead card — so the grid grows
   // 24 + 24 + 24. Every one of those totals divides by 4, 3, 2 and 1, which is
