@@ -76,7 +76,7 @@ Hệ quả vẫn còn: đăng ký bằng email không dùng được. `auth.ts:1
 | Việc | Chặn bởi |
 |---|---|
 | Resend verify `opentechwire.com` | user — đây là thứ mở khoá lại đăng ký bằng email |
-| `tenant.domain` + `frontendUrl` bên Central `/admin` | user |
+| ~~`tenant.domain` + `frontendUrl` bên Central `/admin`~~ → ✅ XONG 14-09-26 | ~~user~~ — ĐÃ SỬA, nhưng lần sửa tay 10-09-26 VÔ Ý đổi luôn `slug` `dtw`→`otw` (trái D11) → content-engine 400 `unknown publicationId` 4 ngày, 31 bài `publish_failed`; khôi phục `slug` + đăng bù 14-09-26, xem `content-engine` `process/features/dtw-integration/reports/central-tenant-slug-outage_REPORT_14-09-26.md` |
 | Đổi tên profile LinkedIn/Facebook → rồi `footer.tsx:63-64` + `metadata.ts:90-91` (`sameAs`) | phải đổi handle trước, nếu không là trỏ vào profile không tồn tại |
 | GA4 data-stream URL + referral exclusion | user |
 | Cập nhật env Preview cho khớp Production | user, nếu có dùng preview để test auth |
