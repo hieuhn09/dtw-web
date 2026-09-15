@@ -33,7 +33,7 @@ export async function GET(
 
   const xml = buildAtomFeed(
     {
-      title: `Opentechwire — ${heading}`,
+      title: `Opentechwire – ${heading}`,
       subtitle: pillarDoc.description ?? "Tech Intelligence, Openly Wired.",
       origin: siteOrigin(),
       sitePath: `/${pillarDoc.slug}`,

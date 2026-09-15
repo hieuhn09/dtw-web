@@ -100,9 +100,9 @@ export default function PressPage() {
             }}
           >
             {t(
-              "For interviews, story tips, or permission to cite our reporting, write to one address — it reaches an editor, not a queue. We read every message and reply quickly.",
-              "Để phỏng vấn, gửi mật báo hay xin phép trích dẫn nội dung của chúng tôi, hãy viết tới một địa chỉ duy nhất — thư đến tay biên tập viên, không phải hàng chờ. Chúng tôi đọc mọi thư và phản hồi nhanh.",
-              "Untuk wawancara, tip berita, atau izin mengutip liputan kami, tulis ke satu alamat — langsung ke editor, bukan antrean. Kami membaca setiap pesan dan membalas cepat."
+              "For interviews, story tips, or permission to cite our reporting, write to one address. It reaches an editor, not a queue. We read every message and reply quickly.",
+              "Để phỏng vấn, gửi mật báo hay xin phép trích dẫn nội dung của chúng tôi, hãy viết tới một địa chỉ duy nhất. Thư đến tay biên tập viên, không phải hàng chờ. Chúng tôi đọc mọi thư và phản hồi nhanh.",
+              "Untuk wawancara, tip berita, atau izin mengutip liputan kami, tulis ke satu alamat. Langsung ke editor, bukan antrean. Kami membaca setiap pesan dan membalas cepat."
             )}
           </p>
           <a
@@ -138,7 +138,7 @@ export default function PressPage() {
           <a
             key={label}
             href={`mailto:${PRESS_EMAIL}`}
-            aria-label={`${label} — ${t("email", "gửi email", "email")} ${PRESS_EMAIL}`}
+            aria-label={`${label}: ${t("email", "gửi email", "email")} ${PRESS_EMAIL}`}
             className="card-hover"
             style={{
               display: "flex",

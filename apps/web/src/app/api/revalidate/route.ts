@@ -65,7 +65,7 @@ function verifySigned(token: string, secret: string, nowSeconds: number): Revali
 export async function POST(request: Request): Promise<Response> {
   const secret = process.env.REVALIDATE_SECRET;
   if (!secret) {
-    console.warn("[revalidate] REVALIDATE_SECRET unset — ignoring webhook");
+    console.warn("[revalidate] REVALIDATE_SECRET unset, ignoring webhook");
     return NextResponse.json({ ok: false, reason: "not_configured" }, { status: 503 });
   }
 

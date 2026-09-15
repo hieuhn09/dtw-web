@@ -68,7 +68,7 @@ export const getMostReadArticles = unstable_cache(
       // exists. Fail open to "no ranking yet" rather than failing the build —
       // same pattern as getPinnedLatest in payload-server.ts.
       console.warn(
-        "[getMostReadArticles] query failed — table not migrated yet?",
+        "[getMostReadArticles] query failed, table not migrated yet?",
         (err as Error)?.message
       );
       return [];

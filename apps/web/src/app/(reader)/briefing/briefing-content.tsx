@@ -132,7 +132,7 @@ export function BriefingContent({ editions, page, hasNextPage, totalDocs }: Brie
       >
         {page === 1
           ? t("AM Brief · PM Brief", "Bản tin Sáng · Bản tin Tối", "AM Brief · PM Brief")
-          : t(`The Brief — Page ${page}`, `Bản tin — Trang ${page}`, `Brief — Halaman ${page}`)}
+          : t(`The Brief – Page ${page}`, `Bản tin – Trang ${page}`, `Brief – Halaman ${page}`)}
       </h1>
       <p
         className="serif text-mute"

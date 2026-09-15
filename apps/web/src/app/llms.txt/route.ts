@@ -25,14 +25,14 @@ export async function GET() {
     .map((pillar) => {
       const label = pillar.title?.en ?? pillar.slug;
       const url = `${origin}/${pillar.slug}`;
-      const description = pillar.description ? ` — ${pillar.description}` : "";
+      const description = pillar.description ? ` (${pillar.description})` : "";
       return `- ${label}: ${url}${description}`;
     })
     .join("\n");
 
   const body = `# Opentechwire
 
-Opentechwire is a global, digital-native technology publication with an Asian vantage point — funding and tech-stock coverage, AI benchmarks and rankings, and deep-dive editorial. Published by Asia Press Centre Group (APCG), an independent newsroom based in Singapore, founded 2023. Formerly published as DailyTechWire.
+Opentechwire is a global, digital-native technology publication with an Asian vantage point: funding and tech-stock coverage, AI benchmarks and rankings, and deep-dive editorial. Published by Asia Press Centre Group (APCG), an independent newsroom based in Singapore, founded 2023. Formerly published as DailyTechWire.
 
 ## Sections
 

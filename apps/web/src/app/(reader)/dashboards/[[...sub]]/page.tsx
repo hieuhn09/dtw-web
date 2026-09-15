@@ -28,7 +28,7 @@ export function generateStaticParams(): Array<{ sub?: string[] }> {
 export const metadata: Metadata = buildMetadata({
   title: "AI Leaderboard | Dashboards",
   description:
-    "Weekly-refreshed AI model leaderboard — general, reasoning, coding, math, search, and vision scores plus pricing, sourced from LLM Stats.",
+    "Weekly-refreshed AI model leaderboard: general, reasoning, coding, math, search, and vision scores plus pricing, sourced from LLM Stats.",
   canonicalPath: "/dashboards",
   image: DEFAULT_OG_IMAGE,
   type: "website",

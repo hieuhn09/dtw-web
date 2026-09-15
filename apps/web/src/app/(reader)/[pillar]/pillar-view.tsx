@@ -34,7 +34,7 @@ export async function pillarMetadata(slug: string, page: number): Promise<Metada
     // and self-canonical — Google's own guidance for paginated series is to
     // treat each page as distinct content, not to canonicalize them onto the
     // first page.
-    title: page === 1 ? heading : `${heading} — Page ${page}`,
+    title: page === 1 ? heading : `${heading} – Page ${page}`,
     description:
       page === 1 ? description : `${description} Page ${page} of the archive.`,
     canonicalPath: pillarPath(slug, page),
@@ -42,7 +42,7 @@ export async function pillarMetadata(slug: string, page: number): Promise<Metada
     type: "website",
     feed: {
       url: `/${pillarDoc.slug}/rss.xml`,
-      title: `Opentechwire — ${heading}`,
+      title: `Opentechwire – ${heading}`,
     },
   });
 }
