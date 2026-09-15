@@ -297,7 +297,7 @@ export function AILeaderboard({ rows, asOfScores, methodology, sponsor }: AILead
     });
   }, [rows, sortKey, sortDir]);
 
-  const asOfLabel = asOfScores ? fmtDateUTC(asOfScores, lang) : "—";
+  const asOfLabel = asOfScores ? fmtDateUTC(asOfScores, lang) : "–";
 
   // Mobile scroll affordance: show a right-edge fade hint whenever the table
   // overflows its scroll container and hasn't been scrolled all the way to

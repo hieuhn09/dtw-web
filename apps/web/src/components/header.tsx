@@ -630,7 +630,7 @@ export function Header({ pillars }: { pillars: NavPillar[] }) {
           >
             <span>
               {t(
-                "Enjoying Opentechwire? Sign in to save articles, follow topics, and pick up where you left off — across every device.",
+                "Enjoying Opentechwire? Sign in to save articles, follow topics, and pick up where you left off on every device.",
                 "Bạn đang thích Opentechwire? Đăng nhập để lưu bài, theo dõi chủ đề, và đọc tiếp ở bất kỳ thiết bị nào.",
                 "Suka Opentechwire? Masuk untuk menyimpan artikel, mengikuti topik, dan lanjut membaca di perangkat mana pun."
               )}
@@ -649,7 +649,7 @@ export function Header({ pillars }: { pillars: NavPillar[] }) {
                 border: "none",
               }}
             >
-              {t("Sign in — it's free →", "Đăng nhập — miễn phí →", "Masuk — gratis →")}
+              {t("Sign in · it's free →", "Đăng nhập · miễn phí →", "Masuk · gratis →")}
             </button>
             <button
               onClick={dismissNudge}

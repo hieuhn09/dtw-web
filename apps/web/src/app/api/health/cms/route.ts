@@ -58,7 +58,7 @@ export async function GET(): Promise<Response> {
           publishedAt: article.publishedAt ?? null,
           // Absolute + Central host after the flip; this site's host or a bare
           // relative path means absolutizeMediaUrls is not doing its job.
-          mediaHost: hostOf(heroUrl) ?? (heroUrl ? "RELATIVE — not absolutized" : null),
+          mediaHost: hostOf(heroUrl) ?? (heroUrl ? "RELATIVE (not absolutized)" : null),
         }
       : { ok: false, reason: "no articles returned" };
   } catch (err) {

@@ -312,9 +312,9 @@ export function PillarContent({
           }}
         >
           {t(
-            `End of feed — ${totalCount} stories.`,
-            `Hết bài — ${totalCount} bài.`,
-            `Akhir feed — ${totalCount} artikel.`
+            `End of feed. ${totalCount} stories.`,
+            `Hết bài. ${totalCount} bài.`,
+            `Akhir feed. ${totalCount} artikel.`
           )}
         </div>
       )}

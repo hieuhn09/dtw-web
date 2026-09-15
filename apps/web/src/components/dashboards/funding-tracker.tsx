@@ -132,9 +132,9 @@ export function FundingTracker() {
           </h2>
           <div className="text-mute mono" style={{ fontSize: 11 }}>
             {t(
-              "Sample data — live market feed coming soon",
-              "Dữ liệu mẫu — nguồn thị trường trực tiếp sắp có",
-              "Data sampel — feed pasar langsung segera hadir"
+              "Sample data · live market feed coming soon",
+              "Dữ liệu mẫu · nguồn thị trường trực tiếp sắp có",
+              "Data sampel · feed pasar langsung segera hadir"
             )}
           </div>
         </div>

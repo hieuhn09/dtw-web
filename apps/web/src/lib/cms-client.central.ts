@@ -602,7 +602,7 @@ export const getAiModels = unstable_cache(
     const data = await fetchModule("dashboards", "en");
     const docs = (data.aiLeaderboardRows as CentralLeaderboardRow[] | undefined) ?? [];
     if (!docs.length) {
-      console.warn("[getAiModels] Central returned no rows — falling back to static data");
+      console.warn("[getAiModels] Central returned no rows, falling back to static data");
       return { rows: [...AI_LEADERBOARD], asOfScores: null };
     }
 

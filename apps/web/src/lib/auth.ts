@@ -22,7 +22,7 @@ async function sendAuthEmailSafe(
     await sendEmail(msg);
   } catch (err) {
     console.error(
-      `[auth] ${context} email send failed for ${msg.to} — account flow continues. ` +
+      `[auth] ${context} email send failed for ${msg.to}; account flow continues. ` +
         `User can request a resend. Cause:`,
       err
     );

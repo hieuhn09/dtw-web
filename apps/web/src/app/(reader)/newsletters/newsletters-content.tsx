@@ -209,9 +209,9 @@ export function NewslettersContent({ newsletters }: { newsletters: ReadonlyArray
           </div>
           <div className="serif" style={{ fontSize: 18, fontWeight: 650, color: "#FFFFFF" }}>
             {t(
-              "You'll start receiving these right away — no confirmation email needed.",
-              "Bạn sẽ bắt đầu nhận ngay — không cần email xác nhận.",
-              "Anda akan langsung menerimanya — tanpa email konfirmasi."
+              "You'll start receiving these right away. No confirmation email needed.",
+              "Bạn sẽ bắt đầu nhận ngay. Không cần email xác nhận.",
+              "Anda akan langsung menerimanya. Tanpa email konfirmasi."
             )}
           </div>
         </div>
