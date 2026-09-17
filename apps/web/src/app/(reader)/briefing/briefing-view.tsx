@@ -19,12 +19,12 @@ export function briefingPath(page: number): string {
 
 export function briefingMetadata(page: number): Metadata {
   const description =
-    "The Opentechwire Brief — twice-daily editions rounding up the tech day, morning and evening SGT, each item linking through to the full report.";
+    "The Opentechwire Brief: twice-daily editions rounding up the tech day, morning and evening SGT, each item linking through to the full report.";
   return buildMetadata({
     // Paginated pages carry the number so they don't compete with page 1 as
     // duplicate titles; each stays indexable and self-canonical, per Google's
     // own guidance for paginated series.
-    title: page === 1 ? "The Brief" : `The Brief — Page ${page}`,
+    title: page === 1 ? "The Brief" : `The Brief – Page ${page}`,
     description: page === 1 ? description : `${description} Page ${page} of the archive.`,
     canonicalPath: briefingPath(page),
     image: DEFAULT_OG_IMAGE,

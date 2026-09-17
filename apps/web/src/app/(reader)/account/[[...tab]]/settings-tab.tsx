@@ -84,9 +84,9 @@ export function SettingsTab({ email }: { email: string }) {
     "Terjadi kesalahan. Silakan coba lagi."
   );
   const noPasswordAccount = t(
-    "This account signed in with Google or GitHub and has no password set — password changes and password-confirmed deletion aren't available for it yet. Contact support if you need to delete this account.",
-    "Tài khoản này đăng nhập bằng Google hoặc GitHub và chưa có mật khẩu — chưa hỗ trợ đổi mật khẩu hoặc xoá tài khoản bằng mật khẩu. Liên hệ hỗ trợ nếu bạn cần xoá tài khoản này.",
-    "Akun ini masuk lewat Google atau GitHub dan belum punya kata sandi — ubah kata sandi atau hapus akun dengan kata sandi belum tersedia. Hubungi dukungan jika perlu menghapus akun ini."
+    "This account signed in with Google or GitHub and has no password set, so password changes and password-confirmed deletion aren't available for it yet. Contact support if you need to delete this account.",
+    "Tài khoản này đăng nhập bằng Google hoặc GitHub và chưa có mật khẩu, nên chưa hỗ trợ đổi mật khẩu hoặc xoá tài khoản bằng mật khẩu. Liên hệ hỗ trợ nếu bạn cần xoá tài khoản này.",
+    "Akun ini masuk lewat Google atau GitHub dan belum punya kata sandi, sehingga ubah kata sandi atau hapus akun dengan kata sandi belum tersedia. Hubungi dukungan jika perlu menghapus akun ini."
   );
 
   // ---- Change email ----

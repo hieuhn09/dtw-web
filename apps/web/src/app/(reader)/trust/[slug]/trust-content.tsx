@@ -57,9 +57,9 @@ function CorrectionsLog({
         }}
       >
         {t(
-          "No corrections have been issued yet. When we correct a published article, the change is logged here in full — date, original text, and corrected text — with the editor who signed it off.",
-          "Chưa có đính chính nào được phát hành. Khi chúng tôi đính chính một bài đã đăng, thay đổi được ghi lại đầy đủ ở đây — ngày, văn bản gốc và văn bản đã sửa — kèm biên tập viên đã duyệt.",
-          "Belum ada koreksi yang dikeluarkan. Saat kami mengoreksi artikel yang terbit, perubahan dicatat lengkap di sini — tanggal, teks asli, dan teks yang dikoreksi — beserta editor yang menyetujuinya."
+          "No corrections have been issued yet. When we correct a published article, the change is logged here in full: the date, the original text, the corrected text, and the editor who signed it off.",
+          "Chưa có đính chính nào được phát hành. Khi chúng tôi đính chính một bài đã đăng, thay đổi được ghi lại đầy đủ ở đây: ngày, văn bản gốc, văn bản đã sửa và biên tập viên đã duyệt.",
+          "Belum ada koreksi yang dikeluarkan. Saat kami mengoreksi artikel yang terbit, perubahan dicatat lengkap di sini: tanggal, teks asli, teks yang dikoreksi, dan editor yang menyetujuinya."
         )}
       </div>
     );
@@ -251,9 +251,9 @@ export function TrustContent({ slug, corrections }: TrustContentProps) {
         [
           t("Coming soon", "Sắp ra mắt", "Segera hadir"),
           t(
-            "Our first transparency report — headcount, revenue mix, government requests, removed posts, and newsletter deliverability — will be published once we have a full reporting period to draw on. First report drops Q1 2027.",
-            "Báo cáo minh bạch đầu tiên của chúng tôi — nhân sự, cơ cấu doanh thu, yêu cầu từ chính phủ, bài đã gỡ và khả năng gửi bản tin — sẽ được công bố khi chúng tôi có trọn một kỳ báo cáo. Báo cáo đầu tiên ra mắt quý 1 năm 2027.",
-            "Laporan transparansi pertama kami — jumlah staf, komposisi pendapatan, permintaan pemerintah, posting yang dihapus, dan keterkiriman newsletter — akan diterbitkan setelah kami memiliki satu periode pelaporan penuh. Laporan pertama terbit Q1 2027."
+            "Our first transparency report (headcount, revenue mix, government requests, removed posts, and newsletter deliverability) will be published once we have a full reporting period to draw on. First report drops Q1 2027.",
+            "Báo cáo minh bạch đầu tiên của chúng tôi (nhân sự, cơ cấu doanh thu, yêu cầu từ chính phủ, bài đã gỡ và khả năng gửi bản tin) sẽ được công bố khi chúng tôi có trọn một kỳ báo cáo. Báo cáo đầu tiên ra mắt quý 1 năm 2027.",
+            "Laporan transparansi pertama kami (jumlah staf, komposisi pendapatan, permintaan pemerintah, posting yang dihapus, dan keterkiriman newsletter) akan diterbitkan setelah kami memiliki satu periode pelaporan penuh. Laporan pertama terbit Q1 2027."
           ),
         ],
       ],

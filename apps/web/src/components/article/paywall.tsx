@@ -70,9 +70,9 @@ export function Paywall({ onLogin, threshold }: PaywallProps) {
         }}
       >
         {t(
-          `You've read your ${threshold} free articles this month. Sign in to keep reading — it's free.`,
-          `Bạn đã đọc hết ${threshold} bài miễn phí trong tháng này. Đăng nhập để tiếp tục đọc — hoàn toàn miễn phí.`,
-          `Anda telah membaca ${threshold} artikel gratis bulan ini. Masuk untuk terus membaca — gratis.`
+          `You've read your ${threshold} free articles this month. Sign in to keep reading. It's free.`,
+          `Bạn đã đọc hết ${threshold} bài miễn phí trong tháng này. Đăng nhập để tiếp tục đọc. Hoàn toàn miễn phí.`,
+          `Anda telah membaca ${threshold} artikel gratis bulan ini. Masuk untuk terus membaca. Gratis.`
         )}
       </p>
       <div
@@ -84,7 +84,7 @@ export function Paywall({ onLogin, threshold }: PaywallProps) {
         }}
       >
         <Button variant="primary" size="lg" onClick={onLogin}>
-          {t("Sign in — it's free →", "Đăng nhập — miễn phí →", "Masuk — gratis →")}
+          {t("Sign in · it's free →", "Đăng nhập · miễn phí →", "Masuk · gratis →")}
         </Button>
       </div>
       <div className="mono text-mute-2" style={{ fontSize: 11 }}>
