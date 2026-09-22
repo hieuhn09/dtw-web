@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { PillarTag } from "@dtw/ui";
 import { Avatar, CoverArt } from "@/components/cover-art";
@@ -11,6 +12,7 @@ import { RelatedRow } from "@/components/article/related-row";
 import { BRIEF_CONTENT_TYPE } from "@/lib/brief";
 import { isBookmarked, recordView, toggleBookmark } from "@/lib/account-actions";
 import { claimViewCount } from "@/lib/article-views";
+import { canOptimizeImage } from "@/lib/image-hosts";
 import { recordArticleView } from "@/lib/view-actions";
 import type { ArticleBodyState, ArticleView } from "@/lib/article-view";
 import { fmtDateL, localizedPillarLabel, useLang, useT } from "@/lib/i18n";
@@ -191,18 +193,55 @@ export function ArticleContent({ article, body, related }: ArticleContentProps) 
 
       <div style={{ maxWidth: 1100, margin: "0 auto 8px" }}>
         {isBrief ? null : article.heroImageFullUrl ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={article.heroImageFullUrl}
-            alt={article.heroImageAlt ?? article.title}
-            style={{
-              width: "100%",
-              height: "clamp(220px, 50vw, 520px)",
-              objectFit: "cover",
-              borderRadius: 8,
-              display: "block",
-            }}
-          />
+          canOptimizeImage(article.heroImageFullUrl) ? (
+            // The article page's LCP element. `priority` preloads it with
+            // fetchpriority=high — the fix PageSpeed asked for (65.7% of LCP was
+            // "resource load delay"). `next/image` with `fill` needs a
+            // positioned parent that owns the height, so the responsive height
+            // and the rounding move from the <img> onto this wrapper
+            // (border-radius + overflow:hidden clips the same corners). Same
+            // height curve, same crop, same corners as the raw <img> below.
+            // `sizes` is measured, not guessed: this box is maxWidth 1100 inside
+            // `.container` (max-width var(--maxw)=1280px, 24px side padding,
+            // 16px at <=720px), so it renders at 1100px from 1148px up and at
+            // the container width below that.
+            <div
+              style={{
+                position: "relative",
+                height: "clamp(220px, 50vw, 520px)",
+                borderRadius: 8,
+                overflow: "hidden",
+              }}
+            >
+              <Image
+                src={article.heroImageFullUrl}
+                alt={article.heroImageAlt ?? article.title}
+                fill
+                priority
+                // `priority` alone does NOT emit fetchpriority on the preload
+                // link in Next 15.4.11 — see the note in cover-art.tsx.
+                fetchPriority="high"
+                sizes="(max-width: 720px) calc(100vw - 32px), (max-width: 1148px) 100vw, 1100px"
+                style={{ objectFit: "cover" }}
+              />
+            </div>
+          ) : (
+            // Not on an allow-listed host, so the optimizer would reject it:
+            // keep today's markup, but still hint the priority.
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={article.heroImageFullUrl}
+              alt={article.heroImageAlt ?? article.title}
+              fetchPriority="high"
+              style={{
+                width: "100%",
+                height: "clamp(220px, 50vw, 520px)",
+                objectFit: "cover",
+                borderRadius: 8,
+                display: "block",
+              }}
+            />
+          )
         ) : (
           <CoverArt
             pillar={article.pillar}

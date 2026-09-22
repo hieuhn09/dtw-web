@@ -30,7 +30,24 @@ export function HomeHero({ lead, aside }: HomeHeroProps) {
         href={`/article/${lead.slug}`}
         style={{ cursor: "pointer", color: "inherit", textDecoration: "none" }}
       >
-        <CoverArt pillar={lead.pillar} seed={lead.id} src={lead.heroImageUrl} variant={0} height={410} label="OTW HERO" />
+        {/* The home page's LCP element. `priority` preloads it with
+            fetchpriority=high — the fix PageSpeed asked for (55.8% of LCP was
+            "resource load delay"). `sizes` is measured from globals.css, not
+            guessed: `.container` is max-width var(--maxw)=1280px with 24px side
+            padding (16px at <=720px), and `.r-hero` is `1.7fr 1fr` with gap 32
+            until it collapses to one column at <=900px. So the lead column is
+            (min(100vw,1280) - 48 - 32) * 1.7/2.7 = 756px at >=1280px, ~63vw
+            between 900px and 1280px, and the full container width below that. */}
+        <CoverArt
+          pillar={lead.pillar}
+          seed={lead.id}
+          src={lead.heroImageUrl}
+          variant={0}
+          height={410}
+          label="OTW HERO"
+          priority
+          sizes="(max-width: 720px) calc(100vw - 32px), (max-width: 900px) calc(100vw - 48px), (max-width: 1280px) 63vw, 756px"
+        />
         <div style={{ marginTop: 10, display: "flex", alignItems: "center", gap: 10 }}>
           <PillarTag id={lead.pillar} label={localizedPillarLabel(lead.pillar, lang)} />
           <span className="mono text-mute-2" style={{ fontSize: 11 }}>{lead.section}</span>
