@@ -1,8 +1,26 @@
 import type { NextConfig } from "next";
+// Relative, not `@/lib/...`: the tsconfig path alias does not resolve inside
+// next.config.ts. Source of truth for the host list is that module — CoverArt
+// imports the same one, so the component and the optimizer can never disagree
+// about which URLs are optimizable.
+import { OPTIMIZABLE_IMAGE_HOSTS } from "./src/lib/image-hosts";
 
 const config: NextConfig = {
   reactStrictMode: true,
   transpilePackages: ["@dtw/ui", "@dtw/db"],
+  // Hero images live on the Central CMS, so they must be allow-listed before
+  // `next/image` will touch them (LCP work, 2026-09: PageSpeed measured 55-66%
+  // of LCP spent in "resource load delay" because nothing preloaded the hero).
+  // `pathname` is deliberately wide: `canOptimizeImage` matches on hostname
+  // only, and a narrower pattern here would let a component hand the optimizer
+  // a URL it then rejects with a 400.
+  images: {
+    remotePatterns: OPTIMIZABLE_IMAGE_HOSTS.map((hostname) => ({
+      protocol: "https" as const,
+      hostname,
+      pathname: "/**",
+    })),
+  },
   // Lint is a CI concern, not a deploy gate — a lint hiccup must never block a
   // production build. Run `pnpm lint` separately. (The flat config also needs
   // `@eslint/eslintrc` as a direct devDep to resolve under pnpm; add it when

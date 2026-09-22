@@ -1,4 +1,6 @@
 import type { CSSProperties } from "react";
+import Image from "next/image";
+import { canOptimizeImage } from "@/lib/image-hosts";
 import type { PillarId } from "@/lib/data";
 
 // ============================================================================
@@ -60,6 +62,14 @@ export interface CoverArtProps {
   /** Real uploaded image URL. When set, the photo is shown instead of the
    *  generative SVG (which becomes the fallback for articles without a hero). */
   src?: string | null;
+  /** Marks this as the page's LCP image: preloads it and sets
+   *  `fetchpriority="high"` so the browser starts fetching immediately instead
+   *  of after layout. At most ONE CoverArt per page may set this. */
+  priority?: boolean;
+  /** CSS `sizes` — the rendered width of this instance, measured from the call
+   *  site's own CSS. Passing it is also what opts the instance into the Next
+   *  image optimizer (see the `src` branch below). */
+  sizes?: string;
 }
 
 export function CoverArt({
@@ -70,14 +80,44 @@ export function CoverArt({
   variant,
   style = {},
   src,
+  priority,
+  sizes,
 }: CoverArtProps) {
   if (src) {
+    // Optimization is OPT-IN via `sizes`, and deliberately so: CoverArt also
+    // renders 110px-wide thumbnails, so a default `sizes` of `100vw` would make
+    // those fetch LARGER images than the plain <img> does today. Only call sites
+    // that measured their own rendered width get the optimizer. Do not
+    // "helpfully" flip this default.
+    if (sizes && canOptimizeImage(src)) {
+      return (
+        // `fill` needs this relative parent (it already was one) for its height.
+        <div style={{ position: "relative", height, overflow: "hidden", ...style }}>
+          <Image
+            src={src}
+            alt={label ?? ""}
+            fill
+            sizes={sizes}
+            priority={priority}
+            // Measured on Next 15.4.11 + React 19: `priority` alone emits the
+            // <link rel="preload" as="image"> but WITHOUT fetchpriority, and the
+            // failing Lighthouse check is literally "fetchpriority=high should
+            // be applied to the image preload request". Passing it explicitly is
+            // what puts fetchPriority="high" on both the preload link and the
+            // <img>. Do not drop it on the assumption `priority` covers it.
+            fetchPriority={priority ? "high" : undefined}
+            style={{ objectFit: "cover" }}
+          />
+        </div>
+      );
+    }
     return (
       <div style={{ position: "relative", height, overflow: "hidden", ...style }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={src}
           alt={label ?? ""}
+          fetchPriority={priority ? "high" : undefined}
           style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
         />
       </div>
