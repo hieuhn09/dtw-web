@@ -7,6 +7,7 @@ import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { AuthModal } from "@/components/auth-modal";
 import { SearchOverlay } from "@/components/search-overlay";
+import { WebVitalsBeacon } from "@/components/web-vitals-beacon";
 import { ORGANIZATION, siteOrigin, toJsonLdScript } from "@/lib/metadata";
 // Temporarily hidden — cookie banner disabled. Restore this import and the
 // <CookieBanner /> render below to bring it back.
@@ -71,6 +72,18 @@ export default async function ReaderLayout({
           <SearchOverlay />
           {/* Temporarily hidden: <CookieBanner /> */}
           {GA_ID ? <GoogleAnalytics gaId={GA_ID} /> : null}
+          {/* RUM beacon — reader routes ONLY, deliberately not /admin, for the
+              same reason GA4 above is reader-only. The `web_vitals` table
+              exists to measure the p75 LCP a READER experiences: that is what
+              Google's Core Web Vitals ranks and what we compare against a
+              PageSpeed baseline. Payload's /admin is a different application
+              with a far heavier bundle, and because it shares this
+              deployment its page loads would be written under the same
+              site='dtw' and drag that p75 around for reasons that have
+              nothing to do with the reader-facing site. Do NOT "fix" this by
+              hoisting it to app/layout.tsx — that silently corrupts the
+              measurement this table was built for. */}
+          <WebVitalsBeacon />
         </ShellProvider>
       </ThemeProvider>
     </I18nProvider>
