@@ -3,6 +3,7 @@
 import { RichText, type JSXConvertersFunction } from "@payloadcms/richtext-lexical/react";
 import { DisclosureBox } from "@dtw/ui";
 import type { ArticleBodyState, ArticleView } from "@/lib/article-view";
+import { creditLabel } from "@/lib/credit";
 import { useT } from "@/lib/i18n";
 
 type EditorState = NonNullable<ArticleBodyState>;
@@ -24,14 +25,14 @@ type UploadDoc = {
 
 /**
  * Figcaption for inline body images, mirroring the hero credit chrome in
- * article-content.tsx (localized "Credit" label, text-mute 11px). Credits are
- * stored bare ("AFP") by the engine but editors sometimes type their own label
- * ("Photo: ezCloud", "Render: Hyatt") — only prefix the localized label when
- * the value carries none of its own, so neither style doubles up.
+ * article-content.tsx (text-mute 11px). Exactly one label: any generic label
+ * the editor typed ("Photo: ezCloud") is stripped and the localized "Credit"
+ * label added; a meaningful one ("Render: Hyatt") is kept instead of ours.
+ * See lib/credit.
  */
 function BodyFigcaption({ caption, credit }: { caption?: string; credit?: string }) {
   const t = useT();
-  const label = credit && !/^[a-z]+\s*:/i.test(credit) ? `${t("Credit", "Nguồn ảnh", "Kredit foto")}: ${credit}` : credit;
+  const label = credit ? creditLabel(credit, t("Credit", "Nguồn ảnh", "Kredit foto")) : "";
   return (
     <figcaption
       className="text-mute"

@@ -13,6 +13,7 @@ import { BRIEF_CONTENT_TYPE } from "@/lib/brief";
 import { isBookmarked, recordView, toggleBookmark } from "@/lib/account-actions";
 import { claimViewCount } from "@/lib/article-views";
 import { canOptimizeImage } from "@/lib/image-hosts";
+import { creditLabel } from "@/lib/credit";
 import { recordArticleView } from "@/lib/view-actions";
 import type { ArticleBodyState, ArticleView } from "@/lib/article-view";
 import { fmtDateL, localizedPillarLabel, useLang, useT } from "@/lib/i18n";
@@ -251,7 +252,11 @@ export function ArticleContent({ article, body, related }: ArticleContentProps) 
             label={article.image?.label ?? "HERO"}
           />
         )}
-        {(article.heroImageAlt || article.heroImageCredit) && (
+        {/* Caption/credit describe the photograph shown above, so nothing under a
+            brief or cover art. The caption is Media.caption ONLY — alt is
+            screen-reader text and is never printed here (no fallback). The
+            credit carries exactly one label; see lib/credit. */}
+        {!isBrief && article.heroImageFullUrl && (article.heroImageCaption || article.heroImageCredit) && (
           <div
             className="text-mute"
             style={{
@@ -263,13 +268,11 @@ export function ArticleContent({ article, body, related }: ArticleContentProps) 
               gap: 8,
             }}
           >
-            {article.heroImageAlt && (
-              <span style={{ fontStyle: "italic" }}>{article.heroImageAlt}</span>
+            {article.heroImageCaption && (
+              <span style={{ fontStyle: "italic" }}>{article.heroImageCaption}</span>
             )}
             {article.heroImageCredit && (
-              <span>
-                {t("Credit", "Nguồn ảnh", "Kredit foto")}: {article.heroImageCredit}
-              </span>
+              <span>{creditLabel(article.heroImageCredit, t("Credit", "Nguồn ảnh", "Kredit foto"))}</span>
             )}
           </div>
         )}

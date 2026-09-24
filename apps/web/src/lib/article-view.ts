@@ -8,6 +8,7 @@
  * components receive the flat shape and stay unchanged.
  */
 
+import { stripCreditLabel } from "./credit";
 import type { PillarId } from "./data";
 import type { Article } from "../payload/payload-types";
 
@@ -73,7 +74,12 @@ export interface ArticleView {
    *  and pillar fronts. Everything else must use `heroImageUrl`. */
   heroImageFullUrl: string | null;
   heroImageAlt: string | null;
-  /** Photographer / source credit for the hero image, shown beneath it. */
+  /** Editor-written visible caption (Media.caption). Distinct from
+   *  `heroImageAlt`, which is screen-reader text and must never be printed as
+   *  the caption — no fallback chain; blank means no caption. */
+  heroImageCaption: string | null;
+  /** Photographer / source credit for the hero image, shown beneath it. Stored
+   *  with any editor-typed generic label ("Photo:") stripped — see lib/credit. */
   heroImageCredit: string | null;
 }
 
@@ -170,6 +176,7 @@ export function toArticleView(a: Article): ArticleView {
     id: string | number;
     url?: string | null;
     alt?: string | null;
+    caption?: string | null;
     credit?: string | null;
     filesize?: number | null;
     sizes?: MediaSizes;
@@ -202,6 +209,7 @@ export function toArticleView(a: Article): ArticleView {
     heroImageUrl: mediaSizeUrl(hero, ["card", "hero"]),
     heroImageFullUrl: mediaSizeUrl(hero, ["hero"]),
     heroImageAlt: hero?.alt ?? null,
-    heroImageCredit: hero?.credit ?? null,
+    heroImageCaption: typeof hero?.caption === "string" ? hero.caption.trim() || null : null,
+    heroImageCredit: (hero?.credit ? stripCreditLabel(hero.credit) : "") || null,
   };
 }
