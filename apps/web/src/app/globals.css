@@ -655,3 +655,25 @@ button[data-glow="1"]:hover {
   text-decoration: underline;
   text-underline-offset: 2px;
 }
+
+/* ---------------------------------------------------------------------------
+   Copy protection — pairs with <CopyGuard /> in the reader layout.
+   Reader text can't be selected, and a long-press on phones shows no
+   copy/save callout. Form fields opt back in so search, sign-in and newsletter
+   inputs keep working (in Safari user-select inherits into fields and can
+   make them impossible to type in).
+   --------------------------------------------------------------------------- */
+body {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+input,
+textarea,
+select,
+[contenteditable]:not([contenteditable="false"]) {
+  -webkit-user-select: text;
+  user-select: text;
+  -webkit-touch-callout: default;
+}
