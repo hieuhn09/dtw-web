@@ -12,8 +12,9 @@
  * Production Central CMS host, hardcoded on purpose.
  *
  * `CMS_URL` is a server-only env var, so in the browser bundle it reads as
- * `undefined` — this literal is what the client side actually matches hero
- * URLs against. Production hero URLs look like
+ * `undefined` — this literal (with `PRODUCTION_MEDIA_HOST` below) is what the
+ * client side actually matches hero URLs against. Until the CMS moves media
+ * to R2, production hero URLs look like
  * `https://apcg-cms.vercel.app/api/media/file/<slug>.jpeg`, so server and
  * client agree there. They can diverge when the CMS env var points somewhere
  * else (e.g. a local CMS in dev): the server would optimize a URL the client
@@ -21,6 +22,16 @@
  * that one image — but do not rely on a non-production CMS host here.
  */
 const PRODUCTION_CMS_HOST = "apcg-cms.vercel.app";
+
+/**
+ * Public Cloudflare R2 domain that Central CMS media URLs point at once the
+ * CMS sets `R2_PUBLIC_BASE_URL`; hero URLs then look like
+ * `https://media.asiapresscentre.org/<prefix>/<file>`. Hardcoded for the same
+ * reason as `PRODUCTION_CMS_HOST` — the client bundle cannot read server env.
+ * Listed alongside the CMS host, not instead of it: URLs already issued on
+ * the CMS host stay valid (the CMS redirects them here).
+ */
+const PRODUCTION_MEDIA_HOST = "media.asiapresscentre.org";
 
 function hostOf(url: string | undefined): string | null {
   if (!url) return null;
@@ -41,7 +52,7 @@ function configuredCmsUrl(): string | undefined {
 /** Hostnames allowed through the optimizer, de-duplicated. */
 export const OPTIMIZABLE_IMAGE_HOSTS: ReadonlyArray<string> = Array.from(
   new Set(
-    [hostOf(configuredCmsUrl()), PRODUCTION_CMS_HOST].filter(
+    [hostOf(configuredCmsUrl()), PRODUCTION_CMS_HOST, PRODUCTION_MEDIA_HOST].filter(
       (h): h is string => h !== null
     )
   )
