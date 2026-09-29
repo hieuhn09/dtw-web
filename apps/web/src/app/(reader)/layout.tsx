@@ -8,6 +8,7 @@ import { Footer } from "@/components/footer";
 import { AuthModal } from "@/components/auth-modal";
 import { SearchOverlay } from "@/components/search-overlay";
 import { WebVitalsBeacon } from "@/components/web-vitals-beacon";
+import { CopyGuard } from "@/components/copy-guard";
 import { ORGANIZATION, siteOrigin, toJsonLdScript } from "@/lib/metadata";
 // Temporarily hidden — cookie banner disabled. Restore this import and the
 // <CookieBanner /> render below to bring it back.
@@ -84,6 +85,7 @@ export default async function ReaderLayout({
               hoisting it to app/layout.tsx — that silently corrupts the
               measurement this table was built for. */}
           <WebVitalsBeacon />
+          <CopyGuard />
         </ShellProvider>
       </ThemeProvider>
     </I18nProvider>
