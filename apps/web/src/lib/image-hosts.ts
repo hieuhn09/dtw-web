@@ -24,14 +24,15 @@
 const PRODUCTION_CMS_HOST = "apcg-cms.vercel.app";
 
 /**
- * Public Cloudflare R2 domain that Central CMS media URLs point at once the
- * CMS sets `R2_PUBLIC_BASE_URL`; hero URLs then look like
- * `https://media.asiapresscentre.org/<prefix>/<file>`. Hardcoded for the same
+ * Public Cloudflare R2 domain, on the dedicated media domain apcgmedia.com,
+ * that Central CMS media URLs point at once the CMS sets
+ * `R2_PUBLIC_BASE_URL`; hero URLs then look like
+ * `https://img.apcgmedia.com/<prefix>/<file>`. Hardcoded for the same
  * reason as `PRODUCTION_CMS_HOST` — the client bundle cannot read server env.
  * Listed alongside the CMS host, not instead of it: URLs already issued on
  * the CMS host stay valid (the CMS redirects them here).
  */
-const PRODUCTION_MEDIA_HOST = "media.asiapresscentre.org";
+const PRODUCTION_MEDIA_HOST = "img.apcgmedia.com";
 
 function hostOf(url: string | undefined): string | null {
   if (!url) return null;
