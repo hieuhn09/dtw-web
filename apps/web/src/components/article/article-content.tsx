@@ -198,18 +198,21 @@ export function ArticleContent({ article, body, related }: ArticleContentProps) 
             // The article page's LCP element. `priority` preloads it with
             // fetchpriority=high — the fix PageSpeed asked for (65.7% of LCP was
             // "resource load delay"). `next/image` with `fill` needs a
-            // positioned parent that owns the height, so the responsive height
-            // and the rounding move from the <img> onto this wrapper
-            // (border-radius + overflow:hidden clips the same corners). Same
-            // height curve, same crop, same corners as the raw <img> below.
+            // positioned parent that owns the box size, so the 16:9 aspect
+            // ratio and the rounding live on this wrapper rather than on the
+            // <img> (border-radius + overflow:hidden clips the same corners).
+            // The box is sized by its width, not a height curve, so a wide
+            // image is no longer cropped top/bottom. Same ratio, same crop,
+            // same corners as the raw <img> below.
             // `sizes` is measured, not guessed: this box is maxWidth 1100 inside
             // `.container` (max-width var(--maxw)=1280px, 24px side padding,
             // 16px at <=720px), so it renders at 1100px from 1148px up and at
-            // the container width below that.
+            // the container width below that (the width is unchanged by the
+            // aspect ratio, so these measurements still hold).
             <div
               style={{
                 position: "relative",
-                height: "clamp(220px, 50vw, 520px)",
+                aspectRatio: "16 / 9",
                 borderRadius: 8,
                 overflow: "hidden",
               }}
@@ -236,7 +239,7 @@ export function ArticleContent({ article, body, related }: ArticleContentProps) 
               fetchPriority="high"
               style={{
                 width: "100%",
-                height: "clamp(220px, 50vw, 520px)",
+                aspectRatio: "16 / 9",
                 objectFit: "cover",
                 borderRadius: 8,
                 display: "block",
@@ -248,7 +251,10 @@ export function ArticleContent({ article, body, related }: ArticleContentProps) 
             pillar={article.pillar}
             seed={article.id}
             variant={0}
-            height={520}
+            // Same 16:9 box as the photo branches above: height is derived from
+            // the width via aspect-ratio (CoverArt spreads `style` after `height`).
+            height="auto"
+            style={{ aspectRatio: "16 / 9" }}
             label={article.image?.label ?? "HERO"}
           />
         )}
