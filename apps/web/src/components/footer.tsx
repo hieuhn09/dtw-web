@@ -60,8 +60,8 @@ export function Footer() {
   // so X and Instagram already carry their brand glyph and only await a URL.
   const socials: ReadonlyArray<readonly [label: string, icon: IconName, href?: string]> = [
     ["X", "x"],
-    ["LinkedIn", "linkedin", "https://www.linkedin.com/company/dailytechwire/"],
-    ["Facebook", "facebook", "https://www.facebook.com/apcgdailytechwire/"],
+    ["LinkedIn", "linkedin", "https://www.linkedin.com/company/opentechwire/"],
+    ["Facebook", "facebook", "https://www.facebook.com/apcgopentechwire/"],
     ["Instagram", "instagram"],
     ["Email", "mail", "mailto:info@opentechwire.com"],
     ["RSS", "rss", "/rss.xml"],
