@@ -1,4 +1,4 @@
-import { GoogleAnalytics } from "@next/third-parties/google";
+import { AnalyticsGate } from "@/components/analytics-gate";
 import { ThemeProvider } from "@/components/theme-provider";
 import { I18nProvider } from "@/lib/i18n";
 import { ShellProvider } from "@/lib/shell";
@@ -17,6 +17,9 @@ import { ORGANIZATION, siteOrigin, toJsonLdScript } from "@/lib/metadata";
 // GA4 — NEXT_PUBLIC_GA_ID overrides; otherwise the id is inlined only on Vercel
 // production builds (team env vars need owner permissions to set). Local dev and
 // previews send nothing. Reader layout only, so /admin (Payload) stays untracked.
+// AnalyticsGate loads GA only for clients that do not look automated (headless /
+// UA-spoofed Chromium dominates bot traffic on this network); it fails open, so
+// any error or unknown browser still gets GA. See lib/bot-detect.ts.
 const GA_ID =
   process.env.NEXT_PUBLIC_GA_ID ||
   (process.env.VERCEL_ENV === "production" ? "G-5H175FPLGR" : undefined);
@@ -72,7 +75,7 @@ export default async function ReaderLayout({
           <AuthModal />
           <SearchOverlay />
           {/* Temporarily hidden: <CookieBanner /> */}
-          {GA_ID ? <GoogleAnalytics gaId={GA_ID} /> : null}
+          {GA_ID ? <AnalyticsGate gaId={GA_ID} /> : null}
           {/* RUM beacon — reader routes ONLY, deliberately not /admin, for the
               same reason GA4 above is reader-only. The `web_vitals` table
               exists to measure the p75 LCP a READER experiences: that is what
