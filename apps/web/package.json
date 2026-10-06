@@ -10,7 +10,8 @@
     "migrate:prod": "node scripts/migrate-prod.mjs",
     "start": "next start",
     "lint": "next lint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test:bot-detect": "tsx --test src/lib/bot-detect.test.ts"
   },
   "dependencies": {
     "@dtw/db": "workspace:*",
