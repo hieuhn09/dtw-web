@@ -87,8 +87,8 @@ export const ORGANIZATION = {
   logo: { url: absoluteUrl(DEFAULT_OG_IMAGE.url) },
   foundingDate: "2023",
   sameAs: [
-    "https://www.linkedin.com/company/dailytechwire/",
-    "https://www.facebook.com/apcgdailytechwire/",
+    "https://www.linkedin.com/company/opentechwire/",
+    "https://www.facebook.com/apcgopentechwire/",
   ],
 };
 
