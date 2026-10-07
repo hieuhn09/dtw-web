@@ -13,6 +13,7 @@ export default function AwardsPage() {
   const t = useT();
   return (
     <div className="container" style={{ paddingTop: 40, paddingBottom: 64 }}>
+      <style>{`@font-face{font-family:ATADisplay;src:url(/awards/ata-display.otf) format("opentype");font-weight:700;font-display:swap}`}</style>
       {/* ATA banner. The surface is ATA's own dark artwork in BOTH themes, so
           every text/border value here is a FIXED light value — never
           var(--ink)/var(--paper). The whole banner is one link out to ATA. */}
@@ -49,14 +50,17 @@ export default function AwardsPage() {
             gap: "clamp(28px, 5vw, 56px)",
           }}
         >
-          <Image
-            src="/awards/ata-logo.png"
-            priority
-            alt="Asia Tech Awards"
-            width={276}
-            height={166}
-            style={{ width: "clamp(150px, 24vw, 276px)", height: "auto", flexShrink: 0 }}
-          />
+          <h1 style={{ margin: 0, flexShrink: 0, lineHeight: 0 }}>
+            <Image
+              src="/awards/ata-logo.svg"
+              alt="Asia Tech Awards"
+              width={104}
+              height={59}
+              priority
+              unoptimized
+              style={{ width: "clamp(150px, 22vw, 260px)", height: "auto" }}
+            />
+          </h1>
 
           <div style={{ flex: "1 1 320px", maxWidth: 560 }}>
             <div
@@ -76,19 +80,23 @@ export default function AwardsPage() {
               )}
             </div>
 
-            <h1
-              className="serif"
+            <h2
               style={{
                 margin: "0 0 16px",
-                fontSize: "clamp(34px, 6vw, 54px)",
-                fontWeight: 650,
-                letterSpacing: "-0.03em",
-                lineHeight: 1.05,
+                fontFamily: "ATADisplay, var(--font-sans)",
+                fontSize: "clamp(30px, 5vw, 46px)",
+                fontWeight: 700,
+                letterSpacing: "-0.01em",
+                lineHeight: 1.1,
                 textWrap: "balance",
               }}
             >
-              Asia Tech Awards
-            </h1>
+              {t(
+                "Built in Asia. Judged by the people who build.",
+                "Xây dựng tại châu Á. Chấm giải bởi chính người làm sản phẩm.",
+                "Dibangun di Asia. Dinilai oleh para pembangun."
+              )}
+            </h2>
 
             <p
               style={{
