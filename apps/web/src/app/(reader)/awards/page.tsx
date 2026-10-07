@@ -39,7 +39,7 @@ export default function AwardsPage() {
             "linear-gradient(100deg, rgba(26, 6, 5, 0.92) 0%, rgba(26, 6, 5, 0.78) 45%, rgba(26, 6, 5, 0.35) 100%), url(/awards/ata-bg.jpg)",
           backgroundSize: "cover",
           backgroundPosition: "center",
-          padding: "clamp(36px, 7vw, 72px) clamp(24px, 6vw, 64px)",
+          padding: "clamp(36px, 7vw, 72px) clamp(24px, 6vw, 64px) clamp(36px, 7vw, 72px) clamp(24px, 11vw, 160px)",
         }}
       >
         <div
@@ -54,11 +54,11 @@ export default function AwardsPage() {
             <Image
               src="/awards/ata-logo.svg"
               alt="Asia Tech Awards"
-              width={104}
-              height={59}
+              width={552}
+              height={332}
               priority
               unoptimized
-              style={{ width: "clamp(150px, 22vw, 260px)", height: "auto" }}
+              style={{ width: "clamp(170px, 24vw, 300px)", height: "auto" }}
             />
           </h1>
 
