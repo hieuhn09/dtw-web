@@ -175,7 +175,12 @@ export function DashboardsTeaser({ aiRows }: DashboardsTeaserProps) {
               {t("This week's top models", "Mô hình hàng đầu tuần này", "Model teratas minggu ini")}
             </div>
           </div>
-          <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
+          {/* 7 columns can't fit a phone-width card, so the table scrolls inside
+              the card (min-width) instead of widening the whole page. */}
+          <div style={{ overflowX: "auto", WebkitOverflowScrolling: "touch" }}>
+          <table
+            style={{ width: "100%", minWidth: 560, borderCollapse: "collapse", fontSize: 13 }}
+          >
             <thead>
               <tr style={{ borderBottom: "1px solid var(--hair)" }}>
                 {headers.map((h, i) => (
@@ -289,6 +294,7 @@ export function DashboardsTeaser({ aiRows }: DashboardsTeaserProps) {
               ))}
             </tbody>
           </table>
+          </div>
         </div>
       </Link>
     </section>
