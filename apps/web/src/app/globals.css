@@ -198,6 +198,7 @@ h4 {
 
 /* Safety net: clip (not hidden) keeps the sticky header working while still
    preventing a stray wide child from creating a horizontal scrollbar. */
+html,
 body {
   overflow-x: clip;
 }
