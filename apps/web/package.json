@@ -11,7 +11,8 @@
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
-    "test:bot-detect": "tsx --test src/lib/bot-detect.test.ts"
+    "test:bot-detect": "tsx --test src/lib/bot-detect.test.ts",
+    "test:signup-guard": "tsx --test src/lib/signup-guard.test.ts"
   },
   "dependencies": {
     "@dtw/db": "workspace:*",

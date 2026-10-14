@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "@dtw/ui";
 import { Icon } from "@/components/icons";
 import { useT } from "@/lib/i18n";
 import { useShell } from "@/lib/shell";
 import { authClient, signIn, signUp, authCallbackUrl } from "@/lib/auth-client";
+import { SIGNUP_HEADERS } from "@/lib/signup-guard";
 
 type Mode = "signin" | "signup" | "forgot";
 
@@ -50,6 +51,13 @@ export function AuthModal() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
+  // Bot signals the server checks (src/lib/signup-guard.ts): a hidden field real
+  // people never see, and how long the sign-up form was open before submit.
+  const [honeypot, setHoneypot] = useState("");
+  const signupShownAt = useRef(Date.now());
+  useEffect(() => {
+    if (mode === "signup") signupShownAt.current = Date.now();
+  }, [mode]);
 
   if (!authOpen) return null;
 
@@ -80,7 +88,17 @@ export function AuthModal() {
     e.preventDefault();
     setBusy(true);
     setError(null);
-    const { error } = await signUp.email({ email, password, name });
+    const { error } = await signUp.email({
+      email,
+      password,
+      name,
+      fetchOptions: {
+        headers: {
+          [SIGNUP_HEADERS.elapsed]: String(Date.now() - signupShownAt.current),
+          [SIGNUP_HEADERS.honeypot]: honeypot,
+        },
+      },
+    });
     setBusy(false);
     if (error) {
       setError(
@@ -233,6 +251,22 @@ export function AuthModal() {
               onSubmit={mode === "signin" ? handleSignin : mode === "signup" ? handleSignup : handleForgot}
               style={{ display: "grid", gap: 10, marginBottom: 12 }}
             >
+              {mode === "signup" && (
+                /* Honeypot: off-screen, skipped by keyboard and screen readers. */
+                <div aria-hidden="true" style={{ position: "absolute", left: -9999, width: 0, height: 0, overflow: "hidden" }}>
+                  <label>
+                    Website
+                    <input
+                      type="text"
+                      name="website"
+                      tabIndex={-1}
+                      autoComplete="off"
+                      value={honeypot}
+                      onChange={(e) => setHoneypot(e.target.value)}
+                    />
+                  </label>
+                </div>
+              )}
               {mode === "signup" && (
                 <input
                   name="name"
