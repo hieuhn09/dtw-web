@@ -2,9 +2,16 @@ import "server-only";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { nextCookies } from "better-auth/next-js";
+import { APIError, createAuthMiddleware } from "better-auth/api";
+import { sql } from "drizzle-orm";
 import { db } from "@dtw/db/client";
 import { users, sessions, accounts, verifications } from "@dtw/db";
 import { sendEmail, actionEmail } from "@/lib/email";
+import {
+  checkFormSignals,
+  gmailCanonicalLocal,
+  looksLikeDottedGmailBot,
+} from "@/lib/signup-guard";
 
 /**
  * Send an auth email without ever hard-failing the surrounding flow. A mail
@@ -54,6 +61,25 @@ const googleConfigured = Boolean(
 const githubConfigured = Boolean(
   process.env.GITHUB_CLIENT_ID && process.env.GITHUB_CLIENT_SECRET
 );
+
+/**
+ * True when a Gmail address that normalises to the same mailbox (dots and
+ * `+tag` ignored) is already registered — one inbox must not mint unlimited
+ * accounts via `a.b@` / `ab@` / `a.b.c@` variants.
+ */
+async function gmailMailboxTaken(email: string): Promise<boolean> {
+  const canon = gmailCanonicalLocal(email);
+  if (!canon) return false;
+  const [row] = await db
+    .select({ id: users.id })
+    .from(users)
+    .where(
+      sql`split_part(lower(${users.email}), '@', 2) in ('gmail.com', 'googlemail.com')
+        and replace(split_part(split_part(lower(${users.email}), '@', 1), '+', 1), '.', '') = ${canon}`
+    )
+    .limit(1);
+  return Boolean(row);
+}
 
 export const auth = betterAuth({
   baseURL: process.env.BETTER_AUTH_URL,
@@ -147,6 +173,34 @@ export const auth = betterAuth({
   session: {
     expiresIn: 60 * 60 * 24 * 7, // 7 days
     updateAge: 60 * 60 * 24, // refresh at most once a day
+  },
+  // Bot defence for email sign-up (OAuth never hits this path). Messages are
+  // deliberately generic — they must not tell a script which signal failed.
+  hooks: {
+    before: createAuthMiddleware(async (ctx) => {
+      if (ctx.path !== "/sign-up/email") return;
+
+      const verdict = checkFormSignals(ctx.headers ?? ctx.request?.headers);
+      if (!verdict.ok) {
+        throw new APIError("BAD_REQUEST", {
+          message: "We couldn't create your account. Please reload the page and try again.",
+        });
+      }
+
+      const email = typeof ctx.body?.email === "string" ? ctx.body.email : "";
+      if (looksLikeDottedGmailBot(email) || (await gmailMailboxTaken(email))) {
+        throw new APIError("BAD_REQUEST", {
+          message: "Please use a different email address.",
+        });
+      }
+    }),
+  },
+  // In-memory per instance, so only a speed bump on serverless — the hook above
+  // does the real work. Tighter cap than the 100/10s default for account creation.
+  rateLimit: {
+    customRules: {
+      "/sign-up/email": { window: 3600, max: 5 },
+    },
   },
   plugins: [
     nextCookies(), // MUST be last in the plugin chain.
