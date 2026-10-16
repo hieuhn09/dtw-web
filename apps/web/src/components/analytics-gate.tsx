@@ -18,6 +18,12 @@ const FVL_TIMEOUT_MS = 1500;
 const GTAG_POLL_MS = 250;
 const GTAG_MAX_WAIT_MS = 15_000;
 const INPUT_EVENTS = ["pointerdown", "keydown", "touchstart", "wheel"] as const;
+/** Wait-for-human gate (see AnalyticsGate). */
+const HUMAN_KEY = "ba-human";
+const SCROLL_MIN_PX = 100;
+const SCROLL_IGNORE_MS = 500;
+const DWELL_MS = 15_000;
+type Trigger = "input" | "scroll" | "dwell" | "session";
 
 async function fullVersionListLength(uaData: UaData | undefined): Promise<number | null> {
   if (!uaData || typeof uaData.getHighEntropyValues !== "function") return null;
@@ -49,11 +55,20 @@ async function collectSignals(): Promise<ClientSignals> {
 }
 
 /**
- * GA4, mounted only for clients that do not look automated (see bot-detect.ts).
+ * GA4, mounted only for clients that do not look automated (see bot-detect.ts)
+ * AND that then show evidence of a real human.
+ *
+ * Wait-for-human gate: after a non-blocked verdict, GA mounts on the FIRST of
+ * a trusted input (pointerdown/keydown/touchstart/wheel), a trusted scroll of
+ * >= 100px at least 500ms after the wait began (skips scroll restoration and
+ * anchor jumps), or 15s of VISIBLE dwell time. Admission is remembered per tab
+ * in sessionStorage ("ba-human"), so later pages mount GA immediately. Bots that
+ * scroll programmatically with trusted events, or drive CDP-trusted input,
+ * still pass — this raises the bar, it is not a wall.
  *
  * Renders nothing until its effect decides, so SSR HTML is unchanged. Every
- * failure path — a throw, a hung hint, an unknown browser — ends in "on":
- * a lost real reader is worse than a counted bot.
+ * failure path — a throw, a hung hint, an unknown browser — ends in "on"
+ * immediately: a lost real reader is worse than a counted bot.
  *
  * Events are sent by polling for `window.gtag` rather than via `sendGAEvent`:
  * the `@next/third-parties` inline script defines `gtag` and queues
@@ -61,8 +76,9 @@ async function collectSignals(): Promise<ClientSignals> {
  * after `config`. `sendGAEvent` instead drops calls made before init. The poll
  * is bounded (15s) and is safe under either init ordering.
  *
- * Debug flag: `document.documentElement.dataset.baAnalytics` =
- * `on` | `on:suspect:<weak>` | `off:<reasons>` | `on:error`.
+ * Debug flags on `document.documentElement.dataset`:
+ * `baAnalytics` = `wait` | `on` | `on:suspect:<weak>` | `off:<reasons>` | `on:error`;
+ * `baTrigger` = `input` | `scroll` | `dwell` | `session`.
  */
 export function AnalyticsGate({ gaId }: { gaId: string }) {
   const [state, setState] = useState<"pending" | "on" | "off">("pending");
@@ -95,30 +111,6 @@ export function AnalyticsGate({ gaId }: { gaId: string }) {
       tick();
     };
 
-    const listenForHuman = () => {
-      const onInput = (e: Event) => {
-        // Synthetic dispatchEvent() calls are untrusted; only real input counts.
-        if (!e.isTrusted) return;
-        removeListeners();
-        waitForGtag((gtag) => gtag("event", "human_interaction"));
-      };
-      for (const type of INPUT_EVENTS) {
-        window.addEventListener(type, onInput, { passive: true, capture: true });
-      }
-      removeListeners = () => {
-        for (const type of INPUT_EVENTS) {
-          window.removeEventListener(type, onInput, { capture: true });
-        }
-        removeListeners = () => {};
-      };
-    };
-
-    const turnOn = (flag: string) => {
-      document.documentElement.dataset.baAnalytics = flag;
-      setState("on");
-      listenForHuman();
-    };
-
     (async () => {
       try {
         const verdict = assessClient(await collectSignals());
@@ -129,20 +121,75 @@ export function AnalyticsGate({ gaId }: { gaId: string }) {
           setState("off");
           return;
         }
-        if (verdict.suspect) {
-          const signals = verdict.weak.join(",");
-          turnOn(`on:suspect:${signals}`);
-          waitForGtag((gtag) => gtag("event", "suspect_client", { signals }));
-        } else {
-          turnOn("on");
+        const signals = verdict.weak.join(",");
+        let admitted = false;
+        const admit = (trigger: Trigger) => {
+          if (admitted || cancelled) return;
+          admitted = true;
+          removeListeners();
+          try {
+            sessionStorage.setItem(HUMAN_KEY, "1");
+          } catch {
+            // Storage can be disabled; admission still stands for this page.
+          }
+          const root = document.documentElement.dataset;
+          root.baAnalytics = verdict.suspect ? `on:suspect:${signals}` : "on";
+          root.baTrigger = trigger;
+          setState("on");
+          waitForGtag((gtag) => {
+            gtag("event", "human_interaction", { trigger });
+            if (verdict.suspect) gtag("event", "suspect_client", { signals });
+          });
+        };
+
+        let remembered = false;
+        try {
+          remembered = sessionStorage.getItem(HUMAN_KEY) !== null;
+        } catch {
+          remembered = false;
         }
+        if (remembered) {
+          admit("session");
+          return;
+        }
+
+        document.documentElement.dataset.baAnalytics = "wait";
+        const waitStarted = Date.now();
+        // Synthetic dispatchEvent() calls are untrusted; only real input counts.
+        const onInput = (e: Event) => {
+          if (e.isTrusted) admit("input");
+        };
+        const onScroll = (e: Event) => {
+          if (!e.isTrusted || Date.now() - waitStarted < SCROLL_IGNORE_MS) return;
+          if (Math.abs(window.scrollY) >= SCROLL_MIN_PX) admit("scroll");
+        };
+        let visibleMs = 0;
+        const dwell = setInterval(() => {
+          if (document.visibilityState !== "visible") return;
+          visibleMs += 1000;
+          if (visibleMs >= DWELL_MS) admit("dwell");
+        }, 1000);
+        for (const type of INPUT_EVENTS) {
+          window.addEventListener(type, onInput, { passive: true, capture: true });
+        }
+        window.addEventListener("scroll", onScroll, { passive: true });
+        removeListeners = () => {
+          clearInterval(dwell);
+          for (const type of INPUT_EVENTS) {
+            window.removeEventListener(type, onInput, { capture: true });
+          }
+          window.removeEventListener("scroll", onScroll);
+          removeListeners = () => {};
+        };
       } catch {
         if (cancelled) return;
+        // Fail open, immediately: no waiting on the error path.
         try {
-          turnOn("on:error");
+          document.documentElement.dataset.baAnalytics = "on:error";
         } catch {
-          setState("on");
+          // ignore
         }
+        setState("on");
       }
     })();
 
