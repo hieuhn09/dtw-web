@@ -1,6 +1,6 @@
 # dtw-web - All Integrations
 
-Last updated: 2026-05-28
+Last updated: 2026-10-20
 
 Attach this file when the task touches any boundary with an external system: the Content Engine, Meilisearch, the realtime broker, Stripe / VNPay / Momo, affiliate redirect tracker, or PostHog ingestion.
 
@@ -159,6 +159,12 @@ The Opentechwire rebrand (2026-09, ledger at `process/features/rebrand/active/re
 - the `hero-images/dtw/...` Supabase Storage path prefix for every published article's hero image
 
 This is a **permanent** decision (D11), not a temporary compatibility shim — `dtw` stays `dtw` forever, even though every reader-facing mention of the brand becomes "Opentechwire"/"OTW". See the ledger's §5.2 (frozen identifiers) for the complete list. Do not attempt to rename this slug to `otw` in any future integration work.
+
+---
+
+## 8. Exclusive Flag (Central CMS)
+
+The reader site lists Exclusive articles with the Central public API filter `?flag=exclusive` (`/api/public/articles`). The flag is the checkbox `Articles.exclusive` in apcg-cms (tenant-neutral since apcg-cms#46; also used by brief-asia; unrelated to GCV's `exclusive` pillar). Only editors and website admins can tick it in /admin. The content engine and APCGHub cannot set it, so Exclusive status is always a human decision. Reader-side rules: `apps/web/src/lib/exclusive.ts`.
 
 ---
 

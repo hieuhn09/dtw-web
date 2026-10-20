@@ -482,3 +482,14 @@ Validate contract: inline in the plan (## Validate Contract).
 Execute start: record BASE_SHA in each repo; pnpm install --frozen-lockfile (dtw-web) / npm ci (apcg-cms); pnpm --filter web test:exclusive (red stubs first) | pnpm typecheck | pnpm --filter web lint vs baseline | hardened G-HEX vs BASE_SHA | P1-P10 probes on local dev server + mock Central | apcg-cms: npm run typecheck; npm run lint; git status --porcelain -- src/migrations | wc -l = 0 | high-risk pack: no
 
 Next Step: orchestrator may route to EXECUTE (opus vc-execute-agent, dtw-web Groups A-F,H; separate opus vc-execute-agent for apcg-cms Group G) under mechanical rule (b), then spawn a sonnet vc-tester for the EVL confirmation run.
+
+## Closeout (UPDATE PROCESS, 2026-10-20)
+
+Status: COMPLETE_WITH_GAPS. Shipped and merged; residuals accepted by the owner and tracked in `process/general-plans/backlog/otw-exclusive-residuals_NOTE_20-10-26.md`.
+
+- Merged: hieuhn09/dtw-web#60 (squash `013f887` on main) and hieuhn09/apcg-cms#46 (merge commit `aa0e692` on main; copy only, no migration).
+- Model: an article keeps its topical pillar and carries the editor-set `exclusive` flag from Central CMS (`?flag=exclusive`). It is not a separate pillar (the GCV approach was rejected).
+- Gates green: scope (34 files), `test:exclusive` 9/9, `test:bot-detect` 31/31, `test:signup-guard` 6/6, typecheck, lint with no new findings, single `#FFFFFF` hex gate, casing grep, `SHOW_DEEP_DIVE` unchanged, `next build`, probes P1 P2 P3 P6 P7 P10; apcg-cms typecheck, lint, `test:single-home` 276/276, migrations untouched; PR CI typecheck green; Vercel preview ready.
+- Known gaps (R-a..R-d and others): see the backlog note.
+- Deviations: `trust-content.tsx` scrolls to `location.hash` after mount so `#exclusive` clears the sticky header; band card order is PillarTag then chip (per design); `pickBandArticles` compares ids as strings.
+- Lessons: probes ran against a throwaway mock Central, so real CMS data, the revalidation webhook and production ISR remain unproven until the first real exclusive is ticked.
