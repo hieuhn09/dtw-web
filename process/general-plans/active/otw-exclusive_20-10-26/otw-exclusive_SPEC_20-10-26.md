@@ -131,6 +131,16 @@ Test grounding: research found no automated tests for these surfaces (only bot-d
 5. Editorial Standards wording: as proposed, plus the rule that Sponsored (Paid Partner) articles must not be flagged Exclusive.
 6. RSS URL: `/exclusive/rss.xml` (replaces the `/feed/exclusive.xml` default).
 7. CMS checkbox wording: as proposed (neutral, "this publication").
+
+### Design review 20-10-26 (owner approved)
+
+Visual mockups are saved at `design/` in this task folder (see `design/README.md`).
+
+- D1. Homepage Exclusive band must not repeat the hero lead story (fetch 4, drop the hero lead, show 3).
+- D2. Chip on dark navy surfaces (Most Read band) uses an on-dark variant: white text, accent border, to keep contrast at 4.5:1 or better.
+- D3. Pillar showcase cards: chip on its own line directly above the title.
+- D4. `/exclusive` header: flag icon + "OTW · EXCLUSIVE" kicker, h1, tagline, "RSS feed" button, "What this label means →" link, 4px accent bottom border.
+- Confirmed: no chip on cards inside `/exclusive`; page 1 pager shows only "Older stories →"; article-page chip links to the definition.
 8. Sponsored + Exclusive: forbidden by editorial rule; if it happens, render both labels, no code block.
 9. Empty state: "No exclusives published yet. Check back soon."
 10. Page size: 12.

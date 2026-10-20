@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Opentechwire homepage with Exclusive</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=Schibsted+Grotesk:wght@400..900&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.otw{--paper:#FDFCF8;--surface:#FFFFFF;--surface-2:#F2EFE5;--ink:#111111;--ink-2:#2A2A28;--muted:#5B5B58;--muted-2:#8C8B85;--hair:#E5E2D8;--hair-2:#D8D4C6;--accent:#D4623C;--accent-ink:#B14A28;--chip-ink:#B14A28;--brand-navy:#1B2A52;--brand-amber:#D4623C;--banner:#1B2A52;--sponsored:#FEF3C7;--sponsored-border:#E0B900;--ai:#3A4E8C;--startups:#3E6E80;--latest:#B0512E;--dev:#46735C;--products:#8F7238;--policy:#5A6577;background:var(--paper);color:var(--ink);font:15px/1.5 'IBM Plex Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased;min-height:100%}
+.otw.dark{--paper:#0F172A;--surface:#111C30;--surface-2:#15223A;--ink:#E2E8F0;--ink-2:#CBD5E1;--muted:#94A3B8;--muted-2:#64748B;--hair:#1E2B45;--hair-2:#243453;--brand-navy:#E2E8F0;--banner:#16223C;--sponsored:#3B2E0A;--sponsored-border:#D9A62E;--chip-ink:#D4623C}
+.serif{font-family:'Schibsted Grotesk','IBM Plex Sans',system-ui,sans-serif}
+a{color:inherit;text-decoration:none}
+a:hover{color:var(--accent)}
+.wrap{max-width:1280px;margin:0 auto;padding-left:24px;padding-right:24px;box-sizing:border-box}
+.ptag{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;line-height:1.4}
+.ptag i{width:6px;height:6px;display:inline-block;background:currentColor}
+.xchip{display:inline-flex;align-items:center;padding:1px 6px;border:1px solid var(--accent);color:var(--chip-ink);font-size:10px;font-weight:600;line-height:1.4;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap}
+.kicker{font-size:11px;font-weight:600;line-height:1;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+.meta{font-size:12px;color:var(--muted);margin:0}
+.sep{margin:0 8px;color:var(--hair-2)}
+.cover{display:block;width:100%}
+.plink{display:flex;align-items:center;gap:8px;padding:0 18px;font-size:14px;font-weight:500;color:var(--ink)}
+.xlink{display:flex;align-items:center;padding:0 19px;border-left:1px solid var(--hair);font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.mob{display:none;gap:8px;align-items:center}
+.ibtn{width:38px;height:38px;border:1px solid var(--hair);border-radius:5px;background:transparent;color:var(--ink);display:grid;place-items:center;cursor:pointer;padding:0}
+@media (max-width:900px){.desk{display:none !important}.mob{display:flex !important}.hero{grid-template-columns:1fr !important}.hero-aside{border-left:0 !important;padding-left:0 !important}.brief{grid-template-columns:1fr 1fr !important}}
+@media (max-width:640px){.brief{grid-template-columns:1fr !important}.wrap{padding-left:16px;padding-right:16px}}
+</style>
+</helmet>
+<div class="otw {{themeClass}}">
+<header style="background: var(--paper); border-bottom: 1px solid var(--hair)">
+  <div style="background: var(--surface); border-bottom: 1px solid var(--hair)">
+    <div class="wrap" style="height: 32px; display: flex; align-items: center; justify-content: space-between; font-size: 11px; color: var(--muted)">
+      <span>Tuesday, 20 October 2026</span>
+      <span class="desk" style="display: flex; gap: 8px; align-items: center"><a href="Editorial.dc.html">Editorial Standards</a><span style="color: var(--hair-2)">·</span><a href="#">AI Disclosure</a></span>
+    </div>
+  </div>
+  <div class="wrap" style="display: flex; align-items: center; justify-content: space-between; gap: 24px; padding-top: 14px; padding-bottom: 14px">
+    <a href="Main.dc.html" aria-label="Opentechwire home" style="display: block; color: var(--ink)">
+      <svg viewBox="0 18 270 64" style="height: 54px; width: 228px; display: block" role="img" aria-label="Opentechwire">
+        <rect x="0" y="20" width="60" height="60" rx="8" style="fill: var(--brand-navy)"></rect>
+        <text x="30" y="59" text-anchor="middle" font-size="22" font-weight="600" letter-spacing="0.4" font-family="'IBM Plex Mono',ui-monospace,Menlo,monospace" style="fill: var(--paper)">OTW</text>
+        <text x="76" y="51" font-size="26" font-weight="700" letter-spacing="-0.5" font-family="'IBM Plex Sans',sans-serif" style="fill: var(--brand-navy)">opentechwire</text>
+        <g transform="translate(76,67)" stroke-width="1.8" stroke-linecap="round" style="stroke: var(--brand-navy)">
+          <line x1="7" y1="0" x2="24" y2="0"></line><line x1="34" y1="0" x2="51" y2="0"></line><line x1="61" y1="0" x2="78" y2="0"></line><line x1="88" y1="0" x2="105" y2="0"></line><line x1="115" y1="0" x2="132" y2="0"></line>
+        </g>
+        <g transform="translate(76,67)">
+          <circle cx="2" cy="0" r="2.5" style="fill: var(--brand-navy)"></circle><circle cx="29" cy="0" r="2.5" style="fill: var(--brand-amber)"></circle><circle cx="56" cy="0" r="2.5" style="fill: var(--brand-navy)"></circle><circle cx="83" cy="0" r="2.5" style="fill: var(--brand-navy)"></circle><circle cx="110" cy="0" r="2.5" style="fill: var(--brand-navy)"></circle><circle cx="137" cy="0" r="2.5" style="fill: var(--brand-navy)"></circle>
+        </g>
+      </svg>
+      <p style="margin: 2px 0 0; font-size: 11px; letter-spacing: .08em; color: var(--muted)">Tech Intelligence, Openly Wired</p>
+    </a>
+    <button type="button" class="desk" style="flex: 1; max-width: 520px; display: flex; align-items: center; gap: 10px; padding: 10px 14px; background: var(--surface); border: 1px solid var(--hair); border-radius: 6px; font: inherit; font-size: 13px; color: var(--muted); text-align: left; cursor: pointer">
+      <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="7" cy="7" r="5"></circle><path d="M11 11l3.5 3.5"></path></svg>
+      <span>Search stories, awards…</span>
+      <span style="margin-left: auto; font-size: 10px; border: 1px solid var(--hair); border-radius: 3px; padding: 2px 6px; background: var(--paper); color: var(--muted-2)">⌘K</span>
+    </button>
+    <div class="desk" style="display: flex; gap: 10px; align-items: center">
+      <button type="button" class="ibtn" aria-label="Toggle dark mode"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><path d="M13.5 9.5A6 6 0 1 1 6.5 2.5a5 5 0 0 0 7 7z"></path></svg></button>
+      <button type="button" style="padding: 9px 14px; border: 1px solid var(--hair-2); background: transparent; color: var(--ink); border-radius: 5px; font: inherit; font-size: 12px; font-weight: 500; cursor: pointer">Log in</button>
+    </div>
+    <div class="mob">
+      <button type="button" class="ibtn" aria-label="Search"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="7" cy="7" r="5"></circle><path d="M11 11l3.5 3.5"></path></svg></button>
+      <a class="ibtn" href="Mobile-menu.dc.html" aria-label="Open menu"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M3 5h12M3 9h12M3 13h12"></path></svg></a>
+    </div>
+  </div>
+  <nav class="desk" aria-label="Sections" style="border-top: 1px solid var(--hair); border-bottom: 3px solid var(--brand-navy)">
+    <div class="wrap" style="height: 46px; display: flex; justify-content: space-between; align-items: stretch; padding-left: 26px; overflow: hidden">
+      <div style="display: flex; align-items: stretch">
+        <a class="plink" href="#"><svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true" style="color: var(--ai)"><path d="M8 1.5v4M8 10.5v4M1.5 8h4M10.5 8h4M3.5 3.5l2 2M10.5 10.5l2 2M12.5 3.5l-2 2M5.5 10.5l-2 2"></path></svg>AI</a>
+        <a class="plink" href="#"><svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--startups)"><path d="M3 13L13 3M6 3h7v7"></path></svg>Startups</a>
+        <a class="plink" href="#"><svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true" style="color: var(--latest)"><circle cx="8" cy="8" r="6"></circle><path d="M8 4.5V8l2.5 1.5"></path></svg>Latest</a>
+        <a class="plink" href="#"><svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--dev)"><path d="M5.5 4L2 8l3.5 4M10.5 4L14 8l-3.5 4"></path></svg>Dev</a>
+        <a class="plink" href="#"><svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true" style="color: var(--products)"><path d="M8 1.5l6 3v7l-6 3-6-3v-7zM2 4.5l6 3 6-3M8 7.5v7"></path></svg>Products</a>
+        <a class="plink" href="#"><svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--policy)"><path d="M8 2v12M4 14h8M3 5h10M3 5l-2 5h4zM13 5l-2 5h4z"></path></svg>Policy</a>
+      </div>
+      <div style="display: flex; align-items: stretch">
+        <a class="xlink" href="Exclusive-page.dc.html">Exclusive</a>
+        <a class="xlink" href="#">Briefing</a>
+        <a class="xlink" href="#">Awards</a>
+        <a class="xlink" href="#">Studio</a>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<main class="wrap">
+  <section class="hero" style="display: grid; grid-template-columns: 1.7fr 1fr; gap: 32px; padding: 25px 0 32px">
+    <article>
+      <a href="Article.dc.html" style="display: block">
+        <svg viewBox="0 0 800 480" preserveAspectRatio="xMidYMid slice" class="cover" style="height: 410px" aria-hidden="true"><rect width="800" height="480" fill="#1E1B4B"></rect><g transform="rotate(-14 400 240)"><rect x="-100" y="210" width="760" height="64" fill="#7C3AED"></rect><rect x="140" y="300" width="820" height="34" fill="#C4B5FD"></rect><rect x="-60" y="130" width="380" height="22" fill="#FEF3C7"></rect></g></svg>
+      </a>
+      <div style="margin-top: 10px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap">
+        <span class="ptag" style="color: var(--ai)"><i></i>AI</span>
+        <span class="xchip">Exclusive</span>
+        <span style="font-size: 11px; color: var(--muted-2)">Frontier</span>
+        <span style="color: var(--hair-2)">·</span>
+        <span style="font-size: 11px; color: var(--muted-2)">3h ago</span>
+      </div>
+      <h2 class="serif" style="font-size: 44px; font-weight: 650; line-height: 1.05; letter-spacing: -0.025em; margin: 5px 0 10px"><a href="Article.dc.html">Singapore quietly built Southeast Asia's largest sovereign AI cluster – and Jakarta wants in</a></h2>
+      <p class="serif" style="font-size: 18px; line-height: 1.45; color: var(--muted); max-width: 680px; margin: 0">Inside a 220-megawatt build-out that has rewired regional capital flows, ministerial visits, and the careers of a dozen researchers nobody had heard of six months ago.</p>
+      <p style="margin: 14px 0 0; font-size: 13px; color: var(--muted)">By Mei Lin and Ravi Kim<span class="sep">·</span>26 May 2026<span class="sep">·</span>14 min read</p>
+    </article>
+    <aside class="hero-aside" style="border-left: 1px solid var(--hair); padding-left: 24px; display: flex; flex-direction: column; gap: 18px">
+      <p style="margin: 0; font-size: 10px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--muted)">Also leading today</p>
+      <a href="Article.dc.html" style="display: grid; grid-template-columns: 1fr 110px; gap: 14px; padding-bottom: 18px; border-bottom: 1px solid var(--hair)">
+        <div>
+          <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 6px"><span class="ptag" style="color: var(--startups)"><i></i>Startups</span><span class="xchip">Exclusive</span><span style="font-size: 11px; color: var(--muted-2)">5h ago</span></div>
+          <h3 class="serif" style="font-size: 18px; font-weight: 600; line-height: 1.25; letter-spacing: -0.01em; margin: 0 0 6px">One year on, the Tokopedia–Grab merger is finally producing the layoffs nobody promised</h3>
+          <p class="meta">By Arif Rahman · 9 min</p>
+        </div>
+        <svg viewBox="0 0 800 480" preserveAspectRatio="xMidYMid slice" class="cover" style="height: 86px" aria-hidden="true"><rect width="800" height="480" fill="#082F49"></rect><rect x="60" y="60" width="300" height="360" fill="#38BDF8"></rect><rect x="390" y="200" width="350" height="220" fill="#F97316"></rect><rect x="390" y="60" width="160" height="110" fill="#FAFAF7"></rect></svg>
+      </a>
+      <a href="Article.dc.html" style="display: grid; grid-template-columns: 1fr 110px; gap: 14px; padding-bottom: 18px; border-bottom: 1px solid var(--hair)">
+        <div>
+          <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 6px"><span class="ptag" style="color: var(--ai)"><i></i>AI</span><span style="font-size: 11px; color: var(--muted-2)">6h ago</span></div>
+          <h3 class="serif" style="font-size: 18px; font-weight: 600; line-height: 1.25; letter-spacing: -0.01em; margin: 0 0 6px">Baidu releases open-weights model that beats GPT-class on Chinese-language reasoning</h3>
+          <p class="meta">By Ravi Kim · 8 min</p>
+        </div>
+        <svg viewBox="0 0 800 480" preserveAspectRatio="xMidYMid slice" class="cover" style="height: 86px" aria-hidden="true"><rect width="800" height="480" fill="#0F172A"></rect><circle cx="560" cy="240" r="200" fill="none" stroke="#A78BFA" stroke-width="36"></circle><circle cx="560" cy="240" r="120" fill="none" stroke="#FBBF24" stroke-width="24"></circle><circle cx="560" cy="240" r="48" fill="#FFFFFF"></circle></svg>
+      </a>
+      <a href="Article.dc.html" style="display: grid; grid-template-columns: 1fr 110px; gap: 14px">
+        <div>
+          <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 6px"><span class="ptag" style="color: var(--policy)"><i></i>Policy</span><span style="font-size: 11px; color: var(--muted-2)">8h ago</span></div>
+          <h3 class="serif" style="font-size: 18px; font-weight: 600; line-height: 1.25; letter-spacing: -0.01em; margin: 0 0 6px">UPI's cross-border push lands in Vietnam – and the central bank is watching the FX flow, not the apps</h3>
+          <p class="meta">By Ananya Iyer · 8 min</p>
+        </div>
+        <svg viewBox="0 0 800 480" preserveAspectRatio="xMidYMid slice" class="cover" style="height: 86px" aria-hidden="true"><rect width="800" height="480" fill="#0F172A"></rect><polyline points="40,380 160,330 280,350 400,240 520,270 640,150 760,110" fill="none" stroke="#475569" stroke-width="14" stroke-linejoin="round"></polyline><polyline points="40,420 160,400 280,410 400,350 520,370 640,300 760,280" fill="none" stroke="#94A3B8" stroke-width="6"></polyline><circle cx="640" cy="150" r="18" fill="#F1F5F9"></circle></svg>
+      </a>
+    </aside>
+  </section>
+
+  <section style="margin: 0 0 40px">
+    <div class="brief" style="display: grid; grid-template-columns: 200px 1fr 1fr 150px; background: var(--surface); border: 1px solid var(--hair); border-radius: 10px; overflow: hidden">
+      <div style="padding: 22px; border-right: 1px solid var(--hair)">
+        <div class="kicker" style="color: var(--ink)">The Brief</div>
+        <p style="margin: 6px 0 0; font-size: 11px; line-height: 1.4; color: var(--muted)">Twice daily · morning &amp; evening SGT</p>
+      </div>
+      <div style="padding: 22px; border-right: 1px solid var(--hair)">
+        <div style="font-size: 10px; font-weight: 600; letter-spacing: .1em; color: var(--accent); margin-bottom: 6px">AM · 20 OCT</div>
+        <p class="serif" style="margin: 0; font-size: 14.5px; font-weight: 600; line-height: 1.35">[Morning Brief headline]</p>
+        <p style="margin: 4px 0 0; font-size: 12px; line-height: 1.5; color: var(--muted)">[Two-line summary of the morning edition]</p>
+      </div>
+      <div style="padding: 22px; border-right: 1px solid var(--hair)">
+        <div style="font-size: 10px; font-weight: 600; letter-spacing: .1em; color: var(--accent); margin-bottom: 6px">PM · 19 OCT</div>
+        <p class="serif" style="margin: 0; font-size: 14.5px; font-weight: 600; line-height: 1.35">[Evening Brief headline]</p>
+        <p style="margin: 4px 0 0; font-size: 12px; line-height: 1.5; color: var(--muted)">[Two-line summary of the evening edition]</p>
+      </div>
+      <div style="padding: 22px; display: flex; align-items: center">
+        <a href="#" style="padding: 9px 14px; border: 1px solid var(--hair-2); border-radius: 5px; font-size: 12px; font-weight: 500">Read →</a>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="exclusive-band" style="margin: 0 0 48px">
+    <div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; margin-bottom: 18px; padding-bottom: 10px; border-bottom: 2px solid var(--brand-navy)">
+      <div>
+        <div class="kicker" style="margin-bottom: 4px">Original reporting by Opentechwire</div>
+        <h2 id="exclusive-band" class="serif" style="margin: 0; font-size: 28px; font-weight: 650; letter-spacing: -0.02em">Exclusive</h2>
+      </div>
+      <a href="Exclusive-page.dc.html" style="font-size: 12px; font-weight: 500; color: var(--muted)">See all →</a>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 32px">
+      <a href="Article.dc.html" style="display: block">
+        <svg viewBox="0 0 800 480" preserveAspectRatio="xMidYMid slice" class="cover" style="height: 200px; margin-bottom: 14px" aria-hidden="true"><rect width="800" height="480" fill="#082F49"></rect><rect x="60" y="60" width="300" height="360" fill="#38BDF8"></rect><rect x="390" y="200" width="350" height="220" fill="#F97316"></rect><rect x="390" y="60" width="160" height="110" fill="#FAFAF7"></rect></svg>
+        <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap"><span class="ptag" style="color: var(--startups)"><i></i>Startups</span><span class="xchip">Exclusive</span></div>
+        <h3 class="serif" style="font-size: 21px; font-weight: 600; line-height: 1.25; letter-spacing: -0.01em; margin: 8px 0">One year on, the Tokopedia–Grab merger is finally producing the layoffs nobody promised</h3>
+        <p class="meta">By Arif Rahman · 9 min</p>
+      </a>
+      <a href="Article.dc.html" style="display: block">
+        <svg viewBox="0 0 800 480" preserveAspectRatio="xMidYMid slice" class="cover" style="height: 200px; margin-bottom: 14px" aria-hidden="true"><rect width="800" height="480" fill="#111827"></rect><circle cx="560" cy="240" r="200" fill="none" stroke="#64748B" stroke-width="36"></circle><circle cx="560" cy="240" r="120" fill="none" stroke="#CBD5E1" stroke-width="24"></circle><circle cx="560" cy="240" r="48" fill="#FFFFFF"></circle></svg>
+        <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap"><span class="ptag" style="color: var(--policy)"><i></i>Policy</span><span class="xchip">Exclusive</span></div>
+        <h3 class="serif" style="font-size: 21px; font-weight: 600; line-height: 1.25; letter-spacing: -0.01em; margin: 8px 0">Tokyo's new active-cyber-defence law just passed, and three CISOs we talked to are nervous</h3>
+        <p class="meta">By Ananya Iyer · 9 min</p>
+      </a>
+      <a href="Article.dc.html" style="display: block">
+        <svg viewBox="0 0 800 480" preserveAspectRatio="xMidYMid slice" class="cover" style="height: 200px; margin-bottom: 14px" aria-hidden="true"><rect width="800" height="480" fill="#111827"></rect><g transform="rotate(-14 400 240)"><rect x="-100" y="210" width="760" height="64" fill="#64748B"></rect><rect x="140" y="300" width="820" height="34" fill="#CBD5E1"></rect><rect x="-60" y="130" width="380" height="22" fill="#FFFFFF"></rect></g></svg>
+        <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap"><span class="ptag" style="color: var(--policy)"><i></i>Policy</span><span class="xchip">Exclusive</span></div>
+        <h3 class="serif" style="font-size: 21px; font-weight: 600; line-height: 1.25; letter-spacing: -0.01em; margin: 8px 0">Taipei's new chip export schedule reshapes who gets advanced packaging in 2026</h3>
+        <p class="meta">By Ananya Iyer · 7 min</p>
+      </a>
+    </div>
+  </section>
+
+  <section style="padding-top: 24px; margin-bottom: 56px">
+    <div style="display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 18px; padding-bottom: 10px; border-bottom: 2px solid var(--brand-navy)">
+      <div>
+        <div class="kicker" style="margin-bottom: 4px">Fresh in each section</div>
+        <h2 class="serif" style="margin: 0; font-size: 28px; font-weight: 650; letter-spacing: -0.02em">Across the pillars</h2>
+      </div>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 32px">
+      <div>
+        <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 8px; margin-bottom: 14px; border-bottom: 2px solid var(--ai)">
+          <span style="display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 650; letter-spacing: .14em; text-transform: uppercase; color: var(--ai)">AI</span>
+          <a href="#" style="font-size: 11px; color: var(--muted-2)">See all →</a>
+        </div>
+        <a href="Article.dc.html" style="display: block; padding: 12px 0; border-bottom: 1px solid var(--hair)">
+          <svg viewBox="0 0 800 480" preserveAspectRatio="xMidYMid slice" class="cover" style="height: 120px; margin-bottom: 10px" aria-hidden="true"><rect width="800" height="480" fill="#0F172A"></rect><circle cx="560" cy="240" r="200" fill="none" stroke="#A78BFA" stroke-width="36"></circle><circle cx="560" cy="240" r="120" fill="none" stroke="#FBBF24" stroke-width="24"></circle><circle cx="560" cy="240" r="48" fill="#FFFFFF"></circle></svg>
+          <p class="serif" style="margin: 0 0 4px; font-size: 17px; font-weight: 600; line-height: 1.3">Baidu releases open-weights model that beats GPT-class on Chinese-language reasoning</p>
+          <p style="margin: 0; font-size: 11px; color: var(--muted)">Ravi Kim · 6h ago · 8m</p>
+        </a>
+        <a href="Article.dc.html" style="display: grid; grid-template-columns: 1fr 60px; gap: 12px; padding: 12px 0">
+          <div>
+            <div style="margin-bottom: 6px"><span class="xchip">Exclusive</span></div>
+            <p class="serif" style="margin: 0 0 4px; font-size: 15px; font-weight: 600; line-height: 1.3">Singapore quietly built Southeast Asia's largest sovereign AI cluster – and Jakarta wants in</p>
+            <p style="margin: 0; font-size: 11px; color: var(--muted)">Mei Lin · 3h ago · 14m</p>
+          </div>
+          <svg viewBox="0 0 800 480" preserveAspectRatio="xMidYMid slice" class="cover" style="height: 48px" aria-hidden="true"><rect width="800" height="480" fill="#1E1B4B"></rect><g transform="rotate(-14 400 240)"><rect x="-100" y="210" width="760" height="64" fill="#7C3AED"></rect><rect x="140" y="300" width="820" height="34" fill="#C4B5FD"></rect></g></svg>
+        </a>
+      </div>
+      <div>
+        <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 8px; margin-bottom: 14px; border-bottom: 2px solid var(--startups)">
+          <span style="display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 650; letter-spacing: .14em; text-transform: uppercase; color: var(--startups)">Startups</span>
+          <a href="#" style="font-size: 11px; color: var(--muted-2)">See all →</a>
+        </div>
+        <a href="Article.dc.html" style="display: block; padding: 12px 0; border-bottom: 1px solid var(--hair)">
+          <svg viewBox="0 0 800 480" preserveAspectRatio="xMidYMid slice" class="cover" style="height: 120px; margin-bottom: 10px" aria-hidden="true"><rect width="800" height="480" fill="#0C4A6E"></rect><polyline points="40,380 160,330 280,350 400,240 520,270 640,150 760,110" fill="none" stroke="#0EA5E9" stroke-width="14" stroke-linejoin="round"></polyline><polyline points="40,420 160,400 280,410 400,350 520,370 640,300 760,280" fill="none" stroke="#FED7AA" stroke-width="6"></polyline><circle cx="640" cy="150" r="18" fill="#FFFFFF"></circle></svg>
+          <p class="serif" style="margin: 0 0 4px; font-size: 17px; font-weight: 600; line-height: 1.3">VNG cloud arm files for a Singapore listing as Vietnam's tech IPO window cracks open</p>
+          <p style="margin: 0; font-size: 11px; color: var(--muted)">Thao Nguyen · 7h ago · 6m</p>
+        </a>
+        <a href="Article.dc.html" style="display: grid; grid-template-columns: 1fr 60px; gap: 12px; padding: 12px 0">
+          <div>
+            <div style="margin-bottom: 6px"><span class="xchip">Exclusive</span></div>
+            <p class="serif" style="margin: 0 0 4px; font-size: 15px; font-weight: 600; line-height: 1.3">One year on, the Tokopedia–Grab merger is finally producing the layoffs nobody promised</p>
+            <p style="margin: 0; font-size: 11px; color: var(--muted)">Arif Rahman · 5h ago · 9m</p>
+          </div>
+          <svg viewBox="0 0 800 480" preserveAspectRatio="xMidYMid slice" class="cover" style="height: 48px" aria-hidden="true"><rect width="800" height="480" fill="#082F49"></rect><rect x="60" y="60" width="300" height="360" fill="#38BDF8"></rect><rect x="390" y="200" width="350" height="220" fill="#F97316"></rect></svg>
+        </a>
+      </div>
+      <div>
+        <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 8px; margin-bottom: 14px; border-bottom: 2px solid var(--policy)">
+          <span style="display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 650; letter-spacing: .14em; text-transform: uppercase; color: var(--policy)">Policy</span>
+          <a href="#" style="font-size: 11px; color: var(--muted-2)">See all →</a>
+        </div>
+        <a href="Article.dc.html" style="display: block; padding: 12px 0; border-bottom: 1px solid var(--hair)">
+          <svg viewBox="0 0 800 480" preserveAspectRatio="xMidYMid slice" class="cover" style="height: 120px; margin-bottom: 10px" aria-hidden="true"><rect width="800" height="480" fill="#111827"></rect><g transform="rotate(-14 400 240)"><rect x="-100" y="210" width="760" height="64" fill="#64748B"></rect><rect x="140" y="300" width="820" height="34" fill="#CBD5E1"></rect><rect x="-60" y="130" width="380" height="22" fill="#FFFFFF"></rect></g></svg>
+          <div style="margin-bottom: 6px"><span class="xchip">Exclusive</span></div>
+          <p class="serif" style="margin: 0 0 4px; font-size: 17px; font-weight: 600; line-height: 1.3">Taipei's new chip export schedule reshapes who gets advanced packaging in 2026</p>
+          <p style="margin: 0; font-size: 11px; color: var(--muted)">Ananya Iyer · 9h ago · 7m</p>
+        </a>
+        <a href="Article.dc.html" style="display: grid; grid-template-columns: 1fr 60px; gap: 12px; padding: 12px 0">
+          <div>
+            <p class="serif" style="margin: 0 0 4px; font-size: 15px; font-weight: 600; line-height: 1.3">UPI's cross-border push lands in Vietnam – and the central bank is watching the FX flow, not the apps</p>
+            <p style="margin: 0; font-size: 11px; color: var(--muted)">Ananya Iyer · 8h ago · 8m</p>
+          </div>
+          <svg viewBox="0 0 800 480" preserveAspectRatio="xMidYMid slice" class="cover" style="height: 48px" aria-hidden="true"><rect width="800" height="480" fill="#0F172A"></rect><polyline points="40,380 160,330 280,350 400,240 520,270 640,150 760,110" fill="none" stroke="#475569" stroke-width="14"></polyline></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false},"$preview":{"width":1440,"height":2050}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return { themeClass: this.props.dark ? 'dark' : '' };
+  }
+}
+</script>
+</body>
+</html>
