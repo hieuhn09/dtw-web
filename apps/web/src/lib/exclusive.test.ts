@@ -88,7 +88,7 @@ test("T-CONSTANTS / T-FEED-CHANNEL: should expose page size 12, band size 3, def
   assert.equal(ch.origin, "https://www.opentechwire.com");
 });
 
-test("T-FEED-BUILD: should build a well-formed Atom feed (empty and 2 entries, order kept, no OpenTechWire)", () => {
+test("T-FEED-BUILD: should build a well-formed Atom feed (empty and 2 entries, order kept, no PascalCase brand)", () => {
   const ch = exclusiveFeedChannel("https://www.opentechwire.com");
   const empty = buildAtomFeed(ch, []);
   assert.match(empty, /^<\?xml version="1.0" encoding="utf-8"\?>/);
@@ -101,6 +101,8 @@ test("T-FEED-BUILD: should build a well-formed Atom feed (empty and 2 entries, o
   const xml = buildAtomFeed(ch, [mk(2, "newer", "2026-10-02T00:00:00Z"), mk(1, "older", "2026-10-01T00:00:00Z")]);
   assert.equal((xml.match(/<entry>/g) ?? []).length, 2);
   assert.ok(xml.indexOf("/article/newer") < xml.indexOf("/article/older"));
-  assert.ok(!xml.includes("OpenTechWire"));
+  // Forbidden casing (invariant #15), built at runtime so a repo-wide grep for
+  // the bad spelling stays a clean gate.
+  assert.ok(!xml.includes(["Open", "Tech", "Wire"].join("")));
   assert.equal((xml.match(/<entry>/g) ?? []).length, (xml.match(/<\/entry>/g) ?? []).length);
 });

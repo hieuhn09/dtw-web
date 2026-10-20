@@ -682,7 +682,7 @@ select,
 /* ---------------------------------------------------------------------------
    "Exclusive" chip (packages/ui ExclusiveChip). Existing tokens only:
    --accent-ink on light (accent alone is below 4.5:1 on white), --accent on
-   dark (accent-ink is below 4.5:1 on #0F172A). The on-dark variant is for the
+   dark (accent-ink is below 4.5:1 on the dark paper). The on-dark variant is for the
    navy Most Read band, where the default chip fails AA; it reuses the same
    white that band already hard-codes (no theme-stable white token exists).
    --------------------------------------------------------------------------- */
