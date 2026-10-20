@@ -1,4 +1,5 @@
 export { PillarTag, type PillarTagProps } from "./pillar-tag";
+export { ExclusiveChip, type ExclusiveChipProps } from "./exclusive-chip";
 export { Button, type ButtonProps, type ButtonVariant, type ButtonSize } from "./button";
 export { Byline, type BylineProps, type BylineLabels } from "./byline";
 export {

@@ -678,3 +678,27 @@ select,
   user-select: text;
   -webkit-touch-callout: default;
 }
+
+/* ---------------------------------------------------------------------------
+   "Exclusive" chip (packages/ui ExclusiveChip). Existing tokens only:
+   --accent-ink on light (accent alone is below 4.5:1 on white), --accent on
+   dark (accent-ink is below 4.5:1 on #0F172A). The on-dark variant is for the
+   navy Most Read band, where the default chip fails AA; it reuses the same
+   white that band already hard-codes (no theme-stable white token exists).
+   --------------------------------------------------------------------------- */
+.exclusive-chip {
+  color: var(--accent-ink);
+  border: 1px solid var(--accent);
+}
+html[data-theme="dark"] .exclusive-chip {
+  color: var(--accent);
+}
+.exclusive-chip.exclusive-chip--on-dark,
+html[data-theme="dark"] .exclusive-chip.exclusive-chip--on-dark {
+  color: #FFFFFF;
+  border-color: var(--accent);
+}
+a.exclusive-chip:hover,
+a.exclusive-chip:focus-visible {
+  background: color-mix(in oklab, var(--accent) 12%, transparent);
+}
