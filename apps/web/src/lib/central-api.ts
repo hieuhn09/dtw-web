@@ -120,7 +120,7 @@ export interface FetchArticlesParams {
   tag?: string;
   q?: string;
   ids?: string;
-  flag?: "deepDive" | "sponsored" | "pinnedToLatest" | "breaking";
+  flag?: "deepDive" | "sponsored" | "pinnedToLatest" | "breaking" | "exclusive";
   /**
    * Narrow by what the document IS. Omitted = everything, which is why every
    * news surface has to opt in with "article" — see ARTICLE_ONLY in

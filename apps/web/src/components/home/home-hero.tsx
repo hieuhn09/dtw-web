@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { PillarTag } from "@dtw/ui";
 import { CoverArt } from "@/components/cover-art";
+import { ExclusiveChip } from "@/components/exclusive-chip";
 import { BylineWired } from "@/components/byline-wired";
 import { TimeAgo } from "@/components/time-ago";
 import type { ArticleView } from "@/lib/article-view";
@@ -50,6 +51,7 @@ export function HomeHero({ lead, aside }: HomeHeroProps) {
         />
         <div style={{ marginTop: 10, display: "flex", alignItems: "center", gap: 10 }}>
           <PillarTag id={lead.pillar} label={localizedPillarLabel(lead.pillar, lang)} />
+          <ExclusiveChip article={lead} />
           <span className="mono text-mute-2" style={{ fontSize: 11 }}>{lead.section}</span>
           <span className="text-mute-2" style={{ fontSize: 11 }}>·</span>
           <span className="mono text-mute-2" style={{ fontSize: 11 }}>
@@ -114,6 +116,7 @@ export function HomeHero({ lead, aside }: HomeHeroProps) {
               <div>
                 <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 6 }}>
                   <PillarTag id={a.pillar} label={localizedPillarLabel(a.pillar, lang)} />
+                  <ExclusiveChip article={a} />
                   <span className="mono text-mute-2" style={{ fontSize: 11 }}>
                     <TimeAgo iso={a.published} />
                   </span>

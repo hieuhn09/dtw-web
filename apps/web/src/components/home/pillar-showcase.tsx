@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { Icon, type IconName } from "@/components/icons";
 import { CoverArt } from "@/components/cover-art";
+import { ExclusiveChip } from "@/components/exclusive-chip";
+import { shouldShowExclusiveChip } from "@/lib/exclusive";
 import { SectionHeader } from "./section-header";
 import { TimeAgo } from "@/components/time-ago";
 import { type NavPillar, type PillarId } from "@/lib/data";
@@ -108,6 +110,12 @@ export function PillarShowcase({ pillars, byPillar }: PillarShowcaseProps) {
                       }}
                     >
                       <div>
+                        {/* No label row on these cards: the chip gets its own line above the title. */}
+                        {shouldShowExclusiveChip(a) && (
+                          <div style={{ marginBottom: 6 }}>
+                            <ExclusiveChip article={a} />
+                          </div>
+                        )}
                         <h4
                           className="serif"
                           style={{

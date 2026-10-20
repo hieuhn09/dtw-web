@@ -63,6 +63,8 @@ export interface ArticleView {
   sponsor?: string;
   aiAssisted: boolean;
   deepDive: boolean;
+  /** Editor-set cross-pillar "Exclusive" flag (Central field `exclusive`). */
+  exclusive: boolean;
   affiliate: boolean;
   image?: { label: string };
   /** Uploaded hero image URL (R2-backed), or null to fall back to cover art. */
@@ -156,7 +158,9 @@ function asPillarId(slug: string | undefined): PillarId {
   }
 }
 
-export function toArticleView(a: Article): ArticleView {
+// `exclusive` is served by Central but absent from the generated (do-not-edit)
+// payload-types.ts, so the parameter type is widened locally.
+export function toArticleView(a: Article & { exclusive?: boolean | null }): ArticleView {
   const pillar = pickRelationship<{
     id: string | number;
     slug: string;
@@ -204,6 +208,7 @@ export function toArticleView(a: Article): ArticleView {
     sponsor: a.sponsor ?? undefined,
     aiAssisted: Boolean(a.aiAssisted),
     deepDive: Boolean(a.deepDive),
+    exclusive: Boolean(a.exclusive),
     affiliate: Boolean(a.affiliate),
     image: a.imageLabel ? { label: a.imageLabel } : undefined,
     heroImageUrl: mediaSizeUrl(hero, ["card", "hero"]),

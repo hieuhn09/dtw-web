@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button, PillarTag } from "@dtw/ui";
 import { CoverArt } from "@/components/cover-art";
+import { ExclusiveChip } from "@/components/exclusive-chip";
 import { Icon } from "@/components/icons";
 import { TimeAgo } from "@/components/time-ago";
 import type { NavPillar } from "@/lib/data";
@@ -266,7 +267,10 @@ function AccountSaved({ saved }: { saved: ArticleView[] }) {
                 >
                   <CoverArt pillar={a.pillar} seed={a.id} variant={(i + 1) % 6} height={66} />
                   <div>
-                    <PillarTag id={a.pillar} label={a.pillarLabel} />
+                    <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
+                      <PillarTag id={a.pillar} label={a.pillarLabel} />
+                      <ExclusiveChip article={a} />
+                    </div>
                     <div
                       className="serif"
                       style={{ fontSize: 16, fontWeight: 600, marginTop: 4, lineHeight: 1.3 }}
@@ -374,6 +378,7 @@ function AccountHistory({ history }: { history: ArticleView[] }) {
             >
               <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
                 <PillarTag id={a.pillar} label={a.pillarLabel} />
+                <ExclusiveChip article={a} />
                 <span style={{ fontSize: 13 }}>{a.title}</span>
               </div>
               <span className="mono text-mute" style={{ fontSize: 11 }}>

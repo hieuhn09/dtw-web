@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { PillarTag } from "@dtw/ui";
 import { CoverArt } from "@/components/cover-art";
+import { ExclusiveChip } from "@/components/exclusive-chip";
 import { TimeAgo } from "@/components/time-ago";
 import { PILLARS, pillarOf, type PillarId } from "@/lib/data";
 import type { ArticleView } from "@/lib/article-view";
@@ -253,6 +254,7 @@ function SearchInner() {
                       }}
                     >
                       <PillarTag id={a.pillar} label={localizedPillarLabel(a.pillar, lang)} />
+                      <ExclusiveChip article={a} />
                       <span className="mono text-mute-2" style={{ fontSize: 11 }}>
                         {a.section}
                       </span>

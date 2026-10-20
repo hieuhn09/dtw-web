@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { PillarTag } from "@dtw/ui";
 import { CoverArt } from "@/components/cover-art";
+import { ExclusiveChip } from "@/components/exclusive-chip";
 import { BylineWired } from "@/components/byline-wired";
 import { SectionHeader } from "./section-header";
 import type { ArticleView } from "@/lib/article-view";
@@ -45,6 +46,7 @@ export function DeepDive({ article }: DeepDiveProps) {
           <div>
             <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
               <PillarTag id={article.pillar} label={localizedPillarLabel(article.pillar, lang)} />
+              <ExclusiveChip article={article} />
               <span className="mono text-mute" style={{ fontSize: 11 }}>{article.section}</span>
               <span className="text-mute" style={{ fontSize: 11 }}>·</span>
               <span className="mono" style={{ fontSize: 11, color: "var(--accent)" }}>

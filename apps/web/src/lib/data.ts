@@ -82,6 +82,7 @@ export interface NavItem {
 }
 
 export const NAV_EXTRA: ReadonlyArray<NavItem> = [
+  { id: "exclusive", label: "Exclusive", slug: "/exclusive" },
   { id: "briefing", label: "Briefing", slug: "/briefing" },
   { id: "awards", label: "Awards", slug: "/awards" },
   { id: "studio", label: "Studio", slug: "/studio" },

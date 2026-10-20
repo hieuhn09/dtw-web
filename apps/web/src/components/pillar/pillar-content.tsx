@@ -4,6 +4,7 @@ import { useEffect, useState, useTransition, type MouseEvent } from "react";
 import Link from "next/link";
 import { Button, PillarTag } from "@dtw/ui";
 import { CoverArt } from "@/components/cover-art";
+import { ExclusiveChip } from "@/components/exclusive-chip";
 import { Icon } from "@/components/icons";
 import { BylineWired } from "@/components/byline-wired";
 import { TimeAgo } from "@/components/time-ago";
@@ -207,8 +208,11 @@ export function PillarContent({
               label="FEATURED"
             />
             <div style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
-              <div className="kicker" style={{ color: pillarColor, marginBottom: 10 }}>
-                {t("Featured", "Nổi bật", "Unggulan")} · {featured.section}
+              <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap", marginBottom: 10 }}>
+                <div className="kicker" style={{ color: pillarColor }}>
+                  {t("Featured", "Nổi bật", "Unggulan")} · {featured.section}
+                </div>
+                <ExclusiveChip article={featured} />
               </div>
               <h2
                 className="serif"
@@ -254,7 +258,10 @@ export function PillarContent({
                 height={210}
                 style={{ marginBottom: 14 }}
               />
-              <PillarTag id={a.pillar} label={localizedPillarLabel(a.pillar, lang)} />
+              <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
+                <PillarTag id={a.pillar} label={localizedPillarLabel(a.pillar, lang)} />
+                <ExclusiveChip article={a} />
+              </div>
               <h3
                 className="serif"
                 style={{

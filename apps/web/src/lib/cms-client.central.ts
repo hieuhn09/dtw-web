@@ -14,6 +14,7 @@ import type {
 import type { AiLeaderboardRow, NavPillar } from "./data";
 import { AI_LEADERBOARD, BRIEFS_PAGE_SIZE } from "./data";
 import { BRIEF_CONTENT_TYPE, briefEdition } from "./brief";
+import { EXCLUSIVE_PAGE_SIZE, exclusiveQuery } from "./exclusive";
 import {
   CENTRAL_PREVIEW_TOKEN_COOKIE,
   fetchArticles,
@@ -284,6 +285,30 @@ export const getDeepDive = unstable_cache(
   },
   ["articles:deep-dive"],
   { tags: ["articles:all"], revalidate: 60 }
+);
+
+/**
+ * Cross-pillar "Exclusive" listing (editor-set flag). Serves `/exclusive`
+ * (12 per page), the homepage band (page 1, size 4 before hero de-dup) and
+ * the sitemap. Same envelope and cache tag as the pillar pages.
+ */
+export const getExclusiveArticlesPage = unstable_cache(
+  async (page = 1, pageSize = EXCLUSIVE_PAGE_SIZE): Promise<ArticlesPage> => {
+    const r = await fetchArticles<Article>(exclusiveQuery(page, pageSize));
+    return { docs: r.docs, totalDocs: r.totalDocs, hasNextPage: r.hasNextPage, page: r.page ?? page };
+  },
+  ["articles:exclusive-page"],
+  { tags: ["articles:all"], revalidate: 60 }
+);
+
+/** Atom payload for `/exclusive/rss.xml`, newest 50. */
+export const getExclusiveFeedArticles = unstable_cache(
+  async (): Promise<Article[]> => {
+    const { docs } = await fetchArticles<Article>(exclusiveQuery(1, 50));
+    return docs;
+  },
+  ["articles:exclusive-feed"],
+  { tags: ["articles:all"], revalidate: 300 }
 );
 
 export const getSponsoredArticle = unstable_cache(

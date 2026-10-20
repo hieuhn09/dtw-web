@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>Exclusive chip states</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=Schibsted+Grotesk:wght@400..900&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.otw{--paper:#FDFCF8;--surface:#FFFFFF;--surface-2:#F2EFE5;--ink:#111111;--ink-2:#2A2A28;--muted:#5B5B58;--muted-2:#8C8B85;--hair:#E5E2D8;--hair-2:#D8D4C6;--accent:#D4623C;--accent-ink:#B14A28;--chip-ink:#B14A28;--banner:#1B2A52;--ai:#3A4E8C;--startups:#3E6E80;--latest:#B0512E;--dev:#46735C;--products:#8F7238;--policy:#5A6577;background:var(--paper);color:var(--ink);font:15px/1.5 'IBM Plex Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+.panel{background:var(--paper);color:var(--ink)}
+.panel.dark{--paper:#0F172A;--surface:#111C30;--surface-2:#15223A;--ink:#E2E8F0;--ink-2:#CBD5E1;--muted:#94A3B8;--muted-2:#64748B;--hair:#1E2B45;--hair-2:#243453;--banner:#16223C;--chip-ink:#D4623C}
+.serif{font-family:'Schibsted Grotesk','IBM Plex Sans',system-ui,sans-serif}
+a{color:inherit;text-decoration:none}
+a:hover{color:var(--accent)}
+.ptag{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;line-height:1.4}
+.ptag i{width:6px;height:6px;display:inline-block;background:currentColor}
+.xchip{display:inline-flex;align-items:center;padding:1px 6px;border:1px solid var(--accent);color:var(--chip-ink);font-size:10px;font-weight:600;line-height:1.4;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap}
+.xchip.hov{background:color-mix(in oklab,var(--accent) 12%,transparent)}
+.cap{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted-2);margin:0 0 8px}
+.row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.cover{display:block;width:100%}
+</style>
+</helmet>
+<div class="otw" style="width: 1280px; height: 1000px; box-sizing: border-box; padding: 48px; display: flex; flex-direction: column; gap: 28px">
+  <div>
+    <h1 class="serif" style="margin: 0; font-size: 30px; font-weight: 650; letter-spacing: -0.02em">Chip Exclusive</h1>
+    <p style="margin: 6px 0 0; font-size: 13px; color: var(--muted)">Viền --accent, chữ --accent-ink (sáng) và --accent (tối). Cỡ chữ 10px, đậm 600, chữ hoa, giãn chữ .12em, không bo góc.</p>
+  </div>
+  <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px">
+    <div class="panel" style="border: 1px solid var(--hair); border-radius: 8px; padding: 28px; display: flex; flex-direction: column; gap: 22px">
+      <p style="margin: 0; font-size: 13px; font-weight: 600">Nền sáng</p>
+      <div><p class="cap">Ba ngôn ngữ</p><div class="row"><span class="xchip" lang="en">Exclusive</span><span class="xchip" lang="vi">Độc quyền</span><span class="xchip" lang="id">Eksklusif</span></div></div>
+      <div><p class="cap">Trên thẻ bài, sau nhãn pillar</p><div class="row"><span class="ptag" style="color: var(--startups)"><i></i>Startups</span><span class="xchip">Exclusive</span></div></div>
+      <div><p class="cap">Trang bài: là link, trạng thái hover</p><div class="row"><span class="ptag" style="color: var(--ai); font-size: 11px"><i></i>AI</span><a class="xchip" href="Editorial.dc.html">Exclusive</a><span class="xchip hov">Exclusive</span><span style="font-size: 11px; color: var(--muted)">Frontier</span></div></div>
+      <div><p class="cap">Ghép với Sponsored (không nên xảy ra)</p><div class="row"><span class="ptag" style="color: var(--latest)"><i></i>Latest</span><span class="xchip">Exclusive</span><span style="font-size: 10px; font-weight: 600; letter-spacing: .08em; padding: 2px 8px; border-radius: 3px; background: #FEF3C7; color: #7A5800; border: 1px solid #E0B900">PAID PARTNER · SPONSOR</span></div></div>
+      <div><p class="cap">Ghép với Deep Dive</p><div class="row"><span class="ptag" style="color: var(--latest)"><i></i>Latest</span><span class="xchip">Exclusive</span><span style="font-size: 10px; font-weight: 600; letter-spacing: .08em; padding: 2px 8px; border-radius: 3px; background: var(--ink); color: var(--paper)">DEEP DIVE</span></div></div>
+      <div>
+        <p class="cap">Dòng kết quả tìm kiếm</p>
+        <div style="display: grid; grid-template-columns: 140px 1fr; gap: 18px; padding: 16px 0; border-top: 1px solid var(--hair); border-bottom: 1px solid var(--hair)">
+          <svg viewBox="0 0 800 480" preserveAspectRatio="xMidYMid slice" class="cover" style="height: 96px" aria-hidden="true"><rect width="800" height="480" fill="#111827"></rect><circle cx="560" cy="240" r="200" fill="none" stroke="#64748B" stroke-width="36"></circle><circle cx="560" cy="240" r="120" fill="none" stroke="#CBD5E1" stroke-width="24"></circle><circle cx="560" cy="240" r="48" fill="#FFFFFF"></circle></svg>
+          <div>
+            <div class="row" style="margin-bottom: 6px"><span class="ptag" style="color: var(--policy)"><i></i>Policy</span><span class="xchip">Exclusive</span><span style="font-size: 11px; color: var(--muted-2)">Cyber</span></div>
+            <p class="serif" style="margin: 0 0 4px; font-size: 17px; font-weight: 600; line-height: 1.3">Tokyo's new active-cyber-defence law just passed, and three CISOs we talked to are nervous</p>
+            <p style="margin: 0; font-size: 12px; color: var(--muted)">By Ananya Iyer · 9 min · 1d ago</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel dark" style="border: 1px solid var(--hair); border-radius: 8px; padding: 28px; display: flex; flex-direction: column; gap: 22px">
+      <p style="margin: 0; font-size: 13px; font-weight: 600">Nền tối</p>
+      <div><p class="cap">Ba ngôn ngữ</p><div class="row"><span class="xchip" lang="en">Exclusive</span><span class="xchip" lang="vi">Độc quyền</span><span class="xchip" lang="id">Eksklusif</span></div></div>
+      <div><p class="cap">Trên thẻ bài, sau nhãn pillar</p><div class="row"><span class="ptag" style="color: var(--startups)"><i></i>Startups</span><span class="xchip">Exclusive</span></div></div>
+      <div><p class="cap">Trang bài: là link, trạng thái hover</p><div class="row"><span class="ptag" style="color: var(--ai); font-size: 11px"><i></i>AI</span><a class="xchip" href="Editorial.dc.html">Exclusive</a><span class="xchip hov">Exclusive</span><span style="font-size: 11px; color: var(--muted)">Frontier</span></div></div>
+      <div><p class="cap">Ghép với Sponsored (không nên xảy ra)</p><div class="row"><span class="ptag" style="color: var(--latest)"><i></i>Latest</span><span class="xchip">Exclusive</span><span style="font-size: 10px; font-weight: 600; letter-spacing: .08em; padding: 2px 8px; border-radius: 3px; background: #FEF3C7; color: #7A5800; border: 1px solid #E0B900">PAID PARTNER · SPONSOR</span></div></div>
+      <div><p class="cap">Ghép với Deep Dive</p><div class="row"><span class="ptag" style="color: var(--latest)"><i></i>Latest</span><span class="xchip">Exclusive</span><span style="font-size: 10px; font-weight: 600; letter-spacing: .08em; padding: 2px 8px; border-radius: 3px; background: var(--ink); color: var(--paper)">DEEP DIVE</span></div></div>
+      <div>
+        <p class="cap">Dòng kết quả tìm kiếm</p>
+        <div style="display: grid; grid-template-columns: 140px 1fr; gap: 18px; padding: 16px 0; border-top: 1px solid var(--hair); border-bottom: 1px solid var(--hair)">
+          <svg viewBox="0 0 800 480" preserveAspectRatio="xMidYMid slice" class="cover" style="height: 96px" aria-hidden="true"><rect width="800" height="480" fill="#111827"></rect><circle cx="560" cy="240" r="200" fill="none" stroke="#64748B" stroke-width="36"></circle><circle cx="560" cy="240" r="120" fill="none" stroke="#CBD5E1" stroke-width="24"></circle><circle cx="560" cy="240" r="48" fill="#FFFFFF"></circle></svg>
+          <div>
+            <div class="row" style="margin-bottom: 6px"><span class="ptag" style="color: var(--policy)"><i></i>Policy</span><span class="xchip">Exclusive</span><span style="font-size: 11px; color: var(--muted-2)">Cyber</span></div>
+            <p class="serif" style="margin: 0 0 4px; font-size: 17px; font-weight: 600; line-height: 1.3">Tokyo's new active-cyber-defence law just passed, and three CISOs we talked to are nervous</p>
+            <p style="margin: 0; font-size: 12px; color: var(--muted)">By Ananya Iyer · 9 min · 1d ago</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <p class="cap">Trên dải xanh navy "Most Read": hai phương án</p>
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px">
+      <div style="background: #1B2A52; color: #FFFFFF; border-radius: 8px; padding: 24px 28px; display: flex; align-items: center; gap: 14px">
+        <span style="font-size: 10px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: #D4623C">Policy</span>
+        <span style="display: inline-flex; padding: 1px 6px; border: 1px solid #D4623C; color: #B14A28; font-size: 10px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; line-height: 1.4">Exclusive</span>
+        <span style="font-size: 12px; color: rgba(232,237,247,.75)">A · Màu chip mặc định: chữ khó đọc</span>
+      </div>
+      <div style="background: #1B2A52; color: #FFFFFF; border-radius: 8px; padding: 24px 28px; display: flex; align-items: center; gap: 14px">
+        <span style="font-size: 10px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: #D4623C">Policy</span>
+        <span style="display: inline-flex; padding: 1px 6px; border: 1px solid #D4623C; color: #FFFFFF; font-size: 10px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; line-height: 1.4">Exclusive</span>
+        <span style="font-size: 12px; color: rgba(232,237,247,.75)">B · Chữ trắng, viền cam: đề xuất</span>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1000}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>
