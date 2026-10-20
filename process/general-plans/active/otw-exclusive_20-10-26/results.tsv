@@ -1,3 +1,4 @@
 iteration	timestamp	gaps_found	fail_count	concern_count	applied	saturation_status	loop_status	notes
 0	2026-10-20T00:00:00Z	9	0	9	0	-	baseline	PVL first pass: Gate CONDITIONAL, 9 CONCERN, 0 FAIL
 1	2026-10-20T00:00:00Z	9	0	9	9	-	CONTINUE	Supplement cycle 1 applied all 9 CONCERNs; re-validate from V1
+2	2026-10-20T00:00:00Z	4	0	4	0	-	CONTINUE	Re-validate: 9/9 prior CONCERNs resolved; 4 residuals (R-a..R-d) not closable by plan text; awaiting owner acceptance
