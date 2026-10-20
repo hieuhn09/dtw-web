@@ -1,7 +1,13 @@
 import type { MetadataRoute } from "next";
-import { getArticlesPage, getPillars, getSitemapArticles } from "@/lib/cms-client";
+import {
+  getArticlesPage,
+  getExclusiveArticlesPage,
+  getPillars,
+  getSitemapArticles,
+} from "@/lib/cms-client";
 import { isBriefSlug } from "@/lib/brief";
 import { ARTICLES_PAGE_SIZE } from "@/lib/data";
+import { EXCLUSIVE_PAGE_SIZE, exclusivePageCount, exclusivePagePath } from "@/lib/exclusive";
 import { siteOrigin } from "@/lib/metadata";
 
 // News-sitemap-class cadence (15 min), matching infra/all-infra.md, riding on
@@ -77,6 +83,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       }))
   );
 
+  // Cross-pillar Exclusive listing: a live feed like a pillar page (not a
+  // static route), so it gets pillar weights rather than STATIC_ROUTES'.
+  const exclusiveFirst = await getExclusiveArticlesPage(1, EXCLUSIVE_PAGE_SIZE);
+  const exclusivePages = exclusivePageCount(exclusiveFirst.totalDocs, EXCLUSIVE_PAGE_SIZE);
+  const exclusiveEntries: MetadataRoute.Sitemap = [
+    { url: `${origin}${exclusivePagePath(1)}`, priority: 0.8, changeFrequency: "hourly" },
+    ...Array.from({ length: exclusivePages - 1 }, (_, i) => ({
+      url: `${origin}${exclusivePagePath(i + 2)}`,
+      priority: 0.4,
+      changeFrequency: "daily" as const,
+    })),
+  ];
+
   // Briefs stay in the sitemap — they are real pages with their own hub at
   // /briefing, and two a day is ~730 URLs a year that would otherwise be
   // reachable from nowhere. They just don't compete with reporting for crawl
@@ -99,6 +118,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...home,
     ...pillarEntries,
     ...pillarPageEntries,
+    ...exclusiveEntries,
     ...articleEntries,
     ...staticEntries,
   ];
