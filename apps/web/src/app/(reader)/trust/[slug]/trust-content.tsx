@@ -127,16 +127,16 @@ export function TrustContent({ slug, corrections }: TrustContentProps) {
   interface TrustPageContent {
     title: string;
     kicker: string;
-    body: ReadonlyArray<readonly [heading: string, text: string]> | null;
+    body: ReadonlyArray<readonly [heading: string, text: string, anchorId?: string]> | null;
   }
 
   const PAGES: Record<TrustSlug, TrustPageContent> = {
     editorial: {
       title: t("Editorial Standards", "Tiêu chuẩn biên tập", "Standar Editorial"),
       kicker: t(
-        "Last updated · 12 May 2026",
-        "Cập nhật lần cuối · 12/05/2026",
-        "Diperbarui · 12 Mei 2026"
+        "Last updated · 20 October 2026",
+        "Cập nhật lần cuối · 20/10/2026",
+        "Diperbarui · 20 Oktober 2026"
       ),
       body: [
         [
@@ -146,6 +146,16 @@ export function TrustContent({ slug, corrections }: TrustContentProps) {
             "Chúng tôi theo dõi con người, dòng tiền và chính sách trong công nghệ, ở châu Á và toàn cầu. Mỗi bài nêu nguồn khi có thể, dẫn tài liệu gốc, và công bố cách phóng viên biết điều họ viết.",
             "Kami mengikuti orang, uang, dan kebijakan di teknologi, di Asia dan dunia. Setiap artikel menyebut sumber bila memungkinkan, menautkan dokumen utama, dan mengungkap dari mana reporter tahu."
           ),
+        ],
+        [
+          t("Exclusive", "Độc quyền", "Eksklusif"),
+          t(
+            "Apply this label only when the story rests on reporting Opentechwire did itself: a story we broke, a document we obtained, or an interview we conducted. Aggregation, translation, wire copy and press releases do not qualify. Sponsored (Paid Partner) content is never labeled Exclusive.",
+            "Chỉ gắn nhãn này khi bài viết dựa trên việc đưa tin do chính Opentechwire thực hiện: một tin chúng tôi phát hiện trước, một tài liệu chúng tôi có được, hoặc một cuộc phỏng vấn chúng tôi thực hiện. Tin tổng hợp, bản dịch, tin hãng thông tấn và thông cáo báo chí không đủ điều kiện. Nội dung tài trợ (Paid Partner) không bao giờ được gắn nhãn Độc quyền.",
+            "Gunakan label ini hanya bila artikel bertumpu pada liputan yang dikerjakan sendiri oleh Opentechwire: berita yang kami ungkap lebih dulu, dokumen yang kami peroleh, atau wawancara yang kami lakukan. Agregasi, terjemahan, naskah kantor berita, dan siaran pers tidak memenuhi syarat. Konten bersponsor (Paid Partner) tidak pernah diberi label Eksklusif."
+          ),
+          // Stable anchor: the article-page Exclusive chip links here.
+          "exclusive",
         ],
         [
           t("Independence", "Tính độc lập", "Independensi"),
@@ -382,8 +392,12 @@ export function TrustContent({ slug, corrections }: TrustContentProps) {
             <CorrectionsLog items={corrections} />
           ) : (
             <div style={{ fontFamily: "var(--font-serif)" }}>
-              {page.body?.map(([h, text]) => (
-                <section key={h} style={{ marginBottom: 32 }}>
+              {page.body?.map(([h, text, anchorId]) => (
+                <section
+                  key={h}
+                  id={anchorId}
+                  style={{ marginBottom: 32, scrollMarginTop: "calc(var(--header-h, 96px) + 16px)" }}
+                >
                   <h2
                     style={{
                       margin: "0 0 8px",
