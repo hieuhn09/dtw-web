@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import Link from "next/link";
 import { useT, useLang, fmtDateL } from "@/lib/i18n";
 
@@ -123,6 +124,19 @@ function CorrectionsLog({
 
 export function TrustContent({ slug, corrections }: TrustContentProps) {
   const t = useT();
+
+  // The browser jumps to a hash (e.g. #exclusive from the article chip) before
+  // the sticky header has published --header-h, so scroll-margin-top used its
+  // 96px fallback and the heading landed under the header. Re-align once after
+  // mount, when the real header height is known.
+  useEffect(() => {
+    const id = decodeURIComponent(window.location.hash.slice(1));
+    if (!id) return;
+    const frame = window.requestAnimationFrame(() => {
+      document.getElementById(id)?.scrollIntoView({ block: "start" });
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [slug]);
 
   interface TrustPageContent {
     title: string;
