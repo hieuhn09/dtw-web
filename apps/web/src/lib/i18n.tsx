@@ -97,6 +97,7 @@ export function localizedPillarLabel(id: PillarId, lang: Lang): string {
 }
 
 export const NAV_I18N: Record<string, { vi: string; id: string }> = {
+  exclusive: { vi: "Độc quyền", id: "Eksklusif" },
   awards: { vi: "Giải thưởng", id: "Penghargaan" },
   studio: { vi: "Studio", id: "Studio" },
   dashboards: { vi: "Bảng dữ liệu", id: "Dasbor" },

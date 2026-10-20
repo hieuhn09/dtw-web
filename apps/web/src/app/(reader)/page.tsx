@@ -7,6 +7,7 @@ import { PillarShowcase } from "@/components/home/pillar-showcase";
 import { MostRead } from "@/components/home/most-read";
 import { DashboardsTeaser } from "@/components/home/dashboards-teaser";
 import { DeepDive } from "@/components/home/deep-dive";
+import { ExclusiveBand } from "@/components/home/exclusive-band";
 import { AwardsBanner } from "@/components/home/awards-banner";
 import { BestOfReviews } from "@/components/home/best-of-reviews";
 import { PodcastStrip } from "@/components/home/podcast-strip";
@@ -17,6 +18,7 @@ import {
   getAiModels,
   getArticlesByPillar,
   getDeepDive,
+  getExclusiveArticlesPage,
   getNavPillars,
   getPinnedLatest,
   getLatestBriefs,
@@ -24,6 +26,7 @@ import {
   getWireDrops,
 } from "@/lib/cms-client";
 import type { PillarId } from "@/lib/data";
+import { EXCLUSIVE_BAND_SIZE, pickBandArticles } from "@/lib/exclusive";
 import { buildMetadata, DEFAULT_OG_IMAGE } from "@/lib/metadata";
 
 // [temp-hidden 2026-07-17] Homepage sections hidden at product request.
@@ -71,7 +74,7 @@ export default async function HomePage() {
   // unstable_cache-backed, so it's a cache hit rather than a real round trip.
   const pillars = await getNavPillars();
 
-  const [recent, pinnedDoc, deepDive, wireDrops, mostReadDocs, aiModels, briefs, perPillar] =
+  const [recent, pinnedDoc, deepDive, wireDrops, mostReadDocs, aiModels, briefs, perPillar, exclusive] =
     await Promise.all([
       getRecentArticles(40),
       getPinnedLatest(),
@@ -93,6 +96,8 @@ export default async function HomePage() {
           .filter((p) => p.slug !== "latest")
           .map(async (p) => [p.slug, await getArticlesByPillar(p.slug, 4)] as const),
       ),
+      // One extra so the band still has 3 after dropping the hero lead.
+      getExclusiveArticlesPage(1, EXCLUSIVE_BAND_SIZE + 1),
     ]);
 
   const articles = recent.map(toArticleView);
@@ -144,6 +149,20 @@ export default async function HomePage() {
   ].slice(0, MOST_READ_SLOTS);
 
   const deepDiveView = deepDive ? toArticleView(deepDive) : null;
+  const deepDiveRendered = SHOW_DEEP_DIVE && deepDiveView !== null;
+
+  // Exclusive band: never repeats the hero LEAD (aside items may appear).
+  // Sits after Deep Dive when that band renders, otherwise after the Brief.
+  const exclusiveView = pickBandArticles(
+    exclusive.docs.map(toArticleView),
+    lead?.id ?? null,
+    EXCLUSIVE_BAND_SIZE
+  );
+  const exclusiveBand = (
+    <Reveal>
+      <ExclusiveBand articles={exclusiveView} />
+    </Reveal>
+  );
 
   const wireDropsInitial = wireDrops.map((w) => ({
     id: String(w.id),
@@ -164,6 +183,7 @@ export default async function HomePage() {
           pm={briefs.pm ? toArticleView(briefs.pm) : null}
         />
       )}
+      {!deepDiveRendered && exclusiveBand}
       {SHOW_WIRE_DROPS && (
         <Reveal>
           <WireDrops initial={wireDropsInitial} />
@@ -185,6 +205,7 @@ export default async function HomePage() {
           <DeepDive article={deepDiveView} />
         </Reveal>
       )}
+      {deepDiveRendered && exclusiveBand}
       <Reveal>
         <AwardsBanner />
       </Reveal>
