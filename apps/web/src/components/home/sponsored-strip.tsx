@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { BrandMark, CoverArt } from "@/components/cover-art";
+import { ExclusiveChip } from "@/components/exclusive-chip";
 import type { ArticleView } from "@/lib/article-view";
 
 export interface SponsoredStripProps {
@@ -109,6 +110,8 @@ export function SponsoredStrip({ article: s }: SponsoredStripProps) {
                 >
                   Sponsor
                 </span>
+                {/* Both labels render when a sponsored story is also flagged (editorial rule says don't). */}
+                <ExclusiveChip article={s} />
               </div>
               <h4
                 className="serif"

@@ -9,6 +9,8 @@ import { ArticleBody } from "@/components/article/article-body";
 import { ShareBar } from "@/components/article/share-bar";
 import { Paywall } from "@/components/article/paywall";
 import { RelatedRow } from "@/components/article/related-row";
+import { ExclusiveChip } from "@/components/exclusive-chip";
+import { EXCLUSIVE_DEFINITION_HREF } from "@/lib/exclusive";
 import { BRIEF_CONTENT_TYPE } from "@/lib/brief";
 import { isBookmarked, recordView, toggleBookmark } from "@/lib/account-actions";
 import { claimViewCount } from "@/lib/article-views";
@@ -114,6 +116,7 @@ export function ArticleContent({ article, body, related }: ArticleContentProps) 
       <header style={{ maxWidth: 780, margin: "0 auto 28px" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 14 }}>
           <PillarTag id={article.pillar} label={localizedPillarLabel(article.pillar, lang)} />
+          <ExclusiveChip article={article} href={EXCLUSIVE_DEFINITION_HREF} />
           <span className="mono text-mute" style={{ fontSize: 11 }}>{article.section}</span>
           {article.deepDive && (
             <span

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Button } from "@dtw/ui";
 import { CoverArt } from "@/components/cover-art";
+import { ExclusiveChip } from "@/components/exclusive-chip";
 import { SpotlightCard, GridBackdrop } from "@/components/effects";
 import type { ArticleView } from "@/lib/article-view";
 import { useT } from "@/lib/i18n";
@@ -109,18 +110,21 @@ export function MostRead({ articles }: MostReadProps) {
                 height={150}
                 style={{ marginBottom: 12 }}
               />
-              <div
-                className="upper"
-                style={{
-                  fontSize: 10,
-                  fontWeight: 600,
-                  letterSpacing: ".14em",
-                  color: "var(--accent)",
-                  marginBottom: 6,
-                  textTransform: "uppercase",
-                }}
-              >
-                {a.pillarLabel}
+              <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap", marginBottom: 6 }}>
+                <div
+                  className="upper"
+                  style={{
+                    fontSize: 10,
+                    fontWeight: 600,
+                    letterSpacing: ".14em",
+                    color: "var(--accent)",
+                    textTransform: "uppercase",
+                  }}
+                >
+                  {a.pillarLabel}
+                </div>
+                {/* Navy band: the default chip is below 4.5:1 here, so use the on-dark tone. */}
+                <ExclusiveChip article={a} tone="onDark" />
               </div>
               <h4
                 className="serif"

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { PillarTag } from "@dtw/ui";
 import { CoverArt } from "@/components/cover-art";
+import { ExclusiveChip } from "@/components/exclusive-chip";
 import type { ArticleView } from "@/lib/article-view";
 import { localizedPillarLabel, useLang, useT } from "@/lib/i18n";
 
@@ -56,7 +57,10 @@ export function RelatedRow({ articles }: RelatedRowProps) {
                 height={160}
                 style={{ marginBottom: 12 }}
               />
-              <PillarTag id={a.pillar} label={localizedPillarLabel(a.pillar, lang)} />
+              <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
+                <PillarTag id={a.pillar} label={localizedPillarLabel(a.pillar, lang)} />
+                <ExclusiveChip article={a} />
+              </div>
               <h4
                 className="serif"
                 style={{

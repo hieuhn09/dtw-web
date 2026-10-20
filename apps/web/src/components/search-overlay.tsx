@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Icon } from "@/components/icons";
+import { ExclusiveChip } from "@/components/exclusive-chip";
 import { useT } from "@/lib/i18n";
 import { useShell } from "@/lib/shell";
 import { runSearch } from "@/app/(reader)/search/search-action";
@@ -169,7 +170,10 @@ export function SearchOverlay() {
                   cursor: "pointer",
                 }}
               >
-                <div style={{ fontWeight: 600, marginBottom: 4 }}>{a.title}</div>
+                <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap", marginBottom: 4 }}>
+                  <span style={{ fontWeight: 600 }}>{a.title}</span>
+                  <ExclusiveChip article={a} />
+                </div>
                 <div className="text-mute" style={{ fontSize: 12, lineHeight: 1.4 }}>
                   {a.dek.slice(0, 130)}…
                 </div>
