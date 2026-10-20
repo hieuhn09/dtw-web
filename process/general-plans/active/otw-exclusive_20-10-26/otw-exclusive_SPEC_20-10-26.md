@@ -122,6 +122,20 @@ Test grounding: research found no automated tests for these surfaces (only bot-d
 10. Page size. Default: 12 per page.
 11. Should an article flagged both Exclusive and Deep Dive appear in both bands? Default: yes, no de-duplication (chip still shown).
 
+### Resolved 20-10-26 (owner: ok)
+
+1. Band: 3 cards, directly after the Deep Dive band (after the Brief band if Deep Dive is absent).
+2. Nav: first item after the pillar links, before Briefing in `NAV_EXTRA` (desktop + mobile).
+3. Chip color: existing `--accent` / `--accent-ink`, outlined, light + dark; no new token family.
+4. Labels: en "Exclusive", vi "Độc quyền", id "Eksklusif" (id is no longer left in English).
+5. Editorial Standards wording: as proposed, plus the rule that Sponsored (Paid Partner) articles must not be flagged Exclusive.
+6. RSS URL: `/exclusive/rss.xml` (replaces the `/feed/exclusive.xml` default).
+7. CMS checkbox wording: as proposed (neutral, "this publication").
+8. Sponsored + Exclusive: forbidden by editorial rule; if it happens, render both labels, no code block.
+9. Empty state: "No exclusives published yet. Check back soon."
+10. Page size: 12.
+11. Exclusive + Deep Dive: appears in both bands, no de-duplication. Exclusive articles may also be the homepage hero.
+
 ## Risks / Known Gaps
 
 - No existing automated test coverage on these surfaces; verification partly manual probe (see criteria).
