@@ -22,6 +22,30 @@ import { fmtDateL, localizedPillarLabel, useLang, useT } from "@/lib/i18n";
 import { PAYWALL_ENABLED } from "@/lib/paywall";
 import { useShell } from "@/lib/shell";
 
+/** Max width of the article title/header column. The hero is sized to the SAME
+ *  value so its left/right edges line up with the title's at every breakpoint
+ *  (both are auto-margined blocks directly inside `.container`). One constant
+ *  feeds the header, the hero wrapper and the hero `sizes` below, so they can
+ *  not drift apart. */
+const ARTICLE_COLUMN_MAX_WIDTH = 780;
+
+/** Horizontal `.container` padding per side (globals.css `.container`: 24px,
+ *  16px at <=720px). Used only to derive the hero `sizes` breakpoints. */
+const CONTAINER_PAD = 24;
+const CONTAINER_PAD_MOBILE = 16;
+
+/** `sizes` for the hero `next/image` (also what the `priority` preload link
+ *  carries — Next derives that from this prop, there is no hand-written
+ *  preload, so one string keeps the preload and the <img> on the same srcset
+ *  candidate). The box renders at the column width from
+ *  ARTICLE_COLUMN_MAX_WIDTH + 2*CONTAINER_PAD (828px) up, and at the container
+ *  content width (viewport minus padding) below that. */
+const HERO_IMAGE_SIZES = [
+  `(max-width: 720px) calc(100vw - ${2 * CONTAINER_PAD_MOBILE}px)`,
+  `(max-width: ${ARTICLE_COLUMN_MAX_WIDTH + 2 * CONTAINER_PAD}px) calc(100vw - ${2 * CONTAINER_PAD}px)`,
+  `${ARTICLE_COLUMN_MAX_WIDTH}px`,
+].join(", ");
+
 export interface ArticleContentProps {
   article: ArticleView;
   body: ArticleBodyState;
@@ -113,7 +137,7 @@ export function ArticleContent({ article, body, related }: ArticleContentProps) 
         <span>{article.section}</span>
       </nav>
 
-      <header style={{ maxWidth: 780, margin: "0 auto 28px" }}>
+      <header style={{ maxWidth: ARTICLE_COLUMN_MAX_WIDTH, margin: "0 auto 28px" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 14 }}>
           <PillarTag id={article.pillar} label={localizedPillarLabel(article.pillar, lang)} />
           <ExclusiveChip article={article} href={EXCLUSIVE_DEFINITION_HREF} />
@@ -195,7 +219,7 @@ export function ArticleContent({ article, body, related }: ArticleContentProps) 
         </div>
       </header>
 
-      <div style={{ maxWidth: 1100, margin: "0 auto 8px" }}>
+      <div style={{ maxWidth: ARTICLE_COLUMN_MAX_WIDTH, margin: "0 auto 8px" }}>
         {isBrief ? null : article.heroImageFullUrl ? (
           canOptimizeImage(article.heroImageFullUrl) ? (
             // The article page's LCP element. `priority` preloads it with
@@ -207,11 +231,13 @@ export function ArticleContent({ article, body, related }: ArticleContentProps) 
             // The box is sized by its width, not a height curve, so a wide
             // image is no longer cropped top/bottom. Same ratio, same crop,
             // same corners as the raw <img> below.
-            // `sizes` is measured, not guessed: this box is maxWidth 1100 inside
+            // `sizes` is measured, not guessed: this box is maxWidth
+            // ARTICLE_COLUMN_MAX_WIDTH (same as the title column above) inside
             // `.container` (max-width var(--maxw)=1280px, 24px side padding,
-            // 16px at <=720px), so it renders at 1100px from 1148px up and at
-            // the container width below that (the width is unchanged by the
-            // aspect ratio, so these measurements still hold).
+            // 16px at <=720px), so it renders at that width from
+            // width + 2*24 up and at the container content width below that
+            // (see HERO_IMAGE_SIZES). The width is unchanged by the aspect
+            // ratio, so these measurements still hold.
             <div
               style={{
                 position: "relative",
@@ -228,7 +254,7 @@ export function ArticleContent({ article, body, related }: ArticleContentProps) 
                 // `priority` alone does NOT emit fetchpriority on the preload
                 // link in Next 15.4.11 — see the note in cover-art.tsx.
                 fetchPriority="high"
-                sizes="(max-width: 720px) calc(100vw - 32px), (max-width: 1148px) 100vw, 1100px"
+                sizes={HERO_IMAGE_SIZES}
                 style={{ objectFit: "cover" }}
               />
             </div>
