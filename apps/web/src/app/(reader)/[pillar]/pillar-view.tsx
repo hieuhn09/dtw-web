@@ -89,7 +89,6 @@ export async function PillarView({ slug, page }: { slug: string; page: number })
       pillarColor={pillarDoc.color}
       pillarIcon={pillarDoc.icon}
       pillarHeading={pillarDoc.heading || pillarDoc.title?.en || pillarDoc.slug}
-      pillarDescription={pillarDoc.description ?? ""}
       initialArticles={articles}
       totalCount={feedPage.totalDocs}
       currentPage={page}

@@ -21,7 +21,6 @@ export interface PillarContentProps {
   /** Icon name from the CMS pillar doc. */
   pillarIcon: string;
   pillarHeading: string;
-  pillarDescription: string;
   /** This page of the feed, server-rendered. `initialArticles[0]` becomes the
    *  oversized lead card; the remaining 24 fill the grid. Every route page has
    *  its own lead — appends do not add more of them. */
@@ -41,7 +40,6 @@ export function PillarContent({
   pillarColor,
   pillarIcon,
   pillarHeading,
-  pillarDescription,
   initialArticles,
   totalCount,
   currentPage,
@@ -166,12 +164,6 @@ export function PillarContent({
         >
           {pillarHeading}
         </h1>
-        <p
-          className="serif text-mute"
-          style={{ margin: 0, fontSize: 19, lineHeight: 1.45, maxWidth: 760 }}
-        >
-          {pillarDescription}
-        </p>
         <div style={{ display: "flex", gap: 8, alignItems: "center", marginTop: 20 }}>
           <Button variant="outline" size="sm">
             {t("Follow", "Theo dõi", "Ikuti")} {pillarLabel}
