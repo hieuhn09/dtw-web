@@ -1,6 +1,6 @@
 # dtw-web - All Context
 
-Last updated: 2026-09-09
+Last updated: 2026-10-20
 
 This file is the root context entrypoint for the repo.
 
@@ -293,6 +293,7 @@ dtw-web/
 | `engine-integration/` | Content Engine ↔ Payload API contract, `lockedFields` / `editedByHuman` / `origin` model, optimistic lock, `afterChange` hook (revalidate + Meilisearch index + OG generation) |
 | `about-trust/` | About page (Asia Press Centre Group / APCG, Cheryl Tan EIC, no fake history), `/newsroom` detail page (moved from `/about/newsroom` 2026-07-16; known fabricated-content cleanup backlogged), Editorial Standards, AI Disclosure, Corrections (public log), Transparency Report (auto-generated, Phase 2), Sponsored / Affiliate Policy |
 | `rebrand/` | Publication rename **Dailytechwire → Opentechwire** (decided 2026-09-08). 8-phase program: umbrella + phase plans in `active/`. Decision ledger D1-D15 lives in the umbrella plan — read it before touching any brand string. Load-bearing: casing is `Opentechwire` (never `OpenTechWire`), monogram `OTW`, new domain `www.opentechwire.com` with **no 301 and no Change of Address** from the old domain, and the identifiers `dtw` (tenant slug), `dtw_auth` (Postgres schema), `dtw-media` (R2 bucket) are **permanently frozen** — never rename them. |
+| `exclusive/` (no folder; shipped via a general plan, archived at `process/general-plans/completed/otw-exclusive_20-10-26/`) | Opentechwire "Exclusive" section (dtw-web#60, 2026-10-20). **Not a pillar:** an article keeps its topical pillar and carries an editor-set `exclusive` flag from Central CMS (`?flag=exclusive`; `Articles.exclusive`, tenant-neutral since apcg-cms#46). Pure rules in `apps/web/src/lib/exclusive.ts` (+ `exclusive.test.ts`, `pnpm --filter web test:exclusive`). Surfaces: `/exclusive` (+ `/exclusive/page/[n]`; page 1 redirects to `/exclusive`, past-end 404), `/exclusive/rss.xml` (Atom), sitemap entries, a chip on card surfaces, a homepage band, a nav link before Briefing, and an "Exclusive" section on Editorial Standards (`/trust/editorial#exclusive`). Static `/exclusive` routes win over the dynamic `[pillar]` route, so "exclusive" can never be a pillar slug. Residuals: `process/general-plans/backlog/otw-exclusive-residuals_NOTE_20-10-26.md`. |
 
 ---
 

@@ -1,6 +1,6 @@
 # dtw-web - All UX/UI
 
-Last updated: 2026-05-28
+Last updated: 2026-10-20
 
 Attach this file when the task touches design tokens, theme behavior, component primitives, dark mode, i18n chrome, or any decision that affects visible surface area.
 
@@ -113,6 +113,10 @@ Re-toned to a muted earthy set in the 2026-06-14 refresh (was a brighter rainbow
 --products:     #8F7238;   /* was #D97706 */
 --policy:       #5A6577;   /* was #475569 */
 ```
+
+### Exclusive chip (2026-10-20)
+
+Small outlined label marking an article that carries the editor-set `exclusive` flag. Uses existing tokens only: `--accent` border, text `--accent-ink` in light theme and `--accent` in dark. On the navy Most Read band it uses an on-dark variant (white `#FFFFFF` border and text, the single allowlisted literal). It is hidden inside `/exclusive` itself, and on the article page it links to `/trust/editorial#exclusive`. Never introduce a new token or colour for it. Pillar tag then chip is the card order (flex row, wrap).
 
 ### Type scale
 
