@@ -2,7 +2,7 @@
 
 **Date**: 04-11-26
 **Complexity**: COMPLEX (2 vấn đề độc lập, 6 pha, một phần việc thuộc owner và một phần thuộc repo khác)
-**Status**: A1 🔨 CODE DONE (04-11-26, chưa ✅ VERIFIED; chờ preview/PSI production + xác nhận user). A2, A3, B*, C chưa làm. Chi tiết: mục 'Ghi chú tiến độ A1' cuối bảng Verification Evidence.
+**Status**: A1 + A1.6 🔨 CODE DONE, A-V trên Preview ĐẠT (04-11-26); chưa ✅ VERIFIED: chờ merge, PSI production 2 lượt thứ Hai liên tiếp (A1.8) và xác nhận user. A2, A3, B*, C chưa làm. Chi tiết: mục 'Ghi chú tiến độ A1' và 'Ghi chú A-V trên Preview' cuối Verification Evidence.
 **Feature**: general (xuyên suốt, không thuộc feature folder nào; `rebrand/` chỉ là ràng buộc D4)
 **Primary execute anchor**: chính file này. Không có file phase phụ.
 **Context đã đọc**: `process/context/all-context.md` (invariant #8, #11, #15), `uxui/all-uxui.md`, `infra/all-infra.md`, `tests/all-tests.md`; umbrella `process/features/rebrand/active/rebrand-opentechwire-umbrella_PLAN_08-09-26.md` (D3, D4, D5, D11).
@@ -395,6 +395,31 @@ Quyết định đã nhận: D1 = lazy cho mọi thẻ không priority (prop `ea
 **Đếm preload local (mock Central, 12 thẻ trang chủ, ảnh phục vụ từ mock cục bộ, `next build` + `next start`):** trang chủ trước 11 `<link rel=preload as=image>` / 12 `<img>` (0 lazy), sau 1 (hero) / 12 `<img>` (11 lazy + decoding async, hero không lazy); `/exclusive` trước 9 / sau 0, 9/9 lazy. Mock chỉ có 12 thẻ nên số tuyệt đối thấp hơn production (~26-35); xu hướng khớp AC1 (<= 3 preload).
 
 **CHƯA kiểm:** đo LCP/CLS/load event (A-V, Moto G4 throttle) và baseline 4 trang; screenshot A1.5 desktop/mobile (ô trống above-the-fold, LCP pillar/exclusive); trang pillar (mock chưa có route chạy được); preview Vercel với dữ liệu thật; PSI production 2 lượt thứ Hai (A1.8); xác nhận của user. Cho tới khi có A1.5 và đo pillar/exclusive, điều kiện chặn merge ở bảng rủi ro A1 (LCP pillar xấu đi) vẫn chưa được loại trừ.
+
+### Ghi chú A-V trên Preview Vercel (04-11-26, dữ liệu thật)
+
+**Cách đo:** hai Preview của cùng nhánh, cùng hạ tầng `sin1`: A = `9b094f3` (code giống `main`), B = `26c2114` (A1), C = `a126dc6` (A1 + A1.6). Playwright, Moto G4, CPU 4x, ~1,6 Mbps, latency 150 ms, xoá cache mỗi lượt, A/B xen kẽ, 5 lượt mỗi bên; LCP là entry cuối của PerformanceObserver. Script ngoài repo (`scratchpad/lcp/ab.cjs`, `shots.cjs`). Lần build đầu của B lỗi do `next/font/google` tải IBM Plex Sans thất bại (lỗi mạng tạm thời, không liên quan); redeploy cùng commit qua Vercel thì đạt.
+
+**Vòng 1 (A vs B = A1), trung vị LCP:** `/` 1.980 → 1.496 ms (load 10.388 → 3.707 ms); `/ai` 1.720 → **2.120 ms (+23%, TRƯỢT cổng 10%)**; `/exclusive` 3.204 → 3.464 ms (+8%); bài 1.180 → 972 ms. Nguyên nhân: phần tử LCP của pillar (ảnh featured 440 px) và `/exclusive` (thẻ đầu) bị lazy.
+
+**A1.6 (đã áp, 2 call site, trong giới hạn tối đa 4):** `pillar-content.tsx` ảnh featured `priority`; `exclusive-content.tsx` thẻ đầu `priority={i === 0}`. Mỗi trang đúng một CoverArt priority. `tsc --noEmit` và eslint 2 file: sạch.
+
+**Vòng 2 (A vs C = A1 + A1.6), trung vị LCP (5 lượt):**
+
+| Trang | A (gốc) | C (A1 + A1.6) | Load event A → C | Preload ảnh A → C |
+|---|---|---|---|---|
+| `/` | 1.880 | 1.592 (−15%) | 10.357 → 3.719 | 26 → 1 |
+| `/ai` | 1.616 | 1.160 (−28%) | 8.426 → 3.150 | 25 → 1 |
+| `/exclusive` | 3.124 | 1.948 (−38%) | 15.736 → 3.665 | 8 → 1 |
+| bài | 1.044 | 984 (−6%) | 3.775 → 2.975 | 4 → 1 |
+
+CLS không đổi (tối đa 0,022 trang danh sách, 0,042 trang bài, ở cả A và C). Lượt đầu mỗi bên thường cao hơn (cold cache CDN), trung vị đã loại bỏ.
+
+**A1.5 (ảnh trong khung nhìn đầu, sau `load`):** C ở mobile (Moto G4) và desktop 1280×800 cho `/`, `/ai`, `/exclusive`: mọi `<img>` trong khung nhìn đã tải xong (0 ô trống); ảnh chụp kiểm bằng mắt trang chủ desktop/mobile không có ô trống.
+
+**Cổng A-V: ĐẠT** (preload ảnh ≤ 3, không trang nào xấu hơn baseline > 10%, CLS ~0). Lưu ý: đây là đo lab mô phỏng trên Preview, chưa phải PSI production; số tuyệt đối thấp hơn PSI (PSI dùng profile chậm hơn).
+
+**Còn lại trước ✅ VERIFIED:** merge PR #64; PSI production của hub (`site_vitals`) 2 lượt thứ Hai liên tiếp sau merge cho thấy LCP trang chủ < 2,5 s; xác nhận của user.
 
 ## 19. Resume and Execution Handoff
 
