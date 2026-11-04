@@ -6,6 +6,7 @@ import { CoverArt } from "@/components/cover-art";
 import { ExclusiveChip } from "@/components/exclusive-chip";
 import type { ArticleView } from "@/lib/article-view";
 import { localizedPillarLabel, useLang, useT } from "@/lib/i18n";
+import { cardByline } from "@/lib/single-home-pillars";
 
 export interface RelatedRowProps {
   articles: ReadonlyArray<ArticleView>;
@@ -75,7 +76,7 @@ export function RelatedRow({ articles }: RelatedRowProps) {
                 {a.title}
               </h4>
               <div className="text-mute" style={{ fontSize: 12 }}>
-                {a.author} · {a.readMin} min
+                {cardByline(a) ? <>{cardByline(a)} · </> : null}{a.readMin} min
               </div>
             </article>
           </Link>

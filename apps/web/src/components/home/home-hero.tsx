@@ -8,6 +8,7 @@ import { BylineWired } from "@/components/byline-wired";
 import { TimeAgo } from "@/components/time-ago";
 import type { ArticleView } from "@/lib/article-view";
 import { localizedPillarLabel, useLang, useT } from "@/lib/i18n";
+import { cardByline } from "@/lib/single-home-pillars";
 
 export interface HomeHeroProps {
   lead: ArticleView;
@@ -134,7 +135,7 @@ export function HomeHero({ lead, aside }: HomeHeroProps) {
                   {a.title}
                 </h3>
                 <div className="text-mute" style={{ fontSize: 12 }}>
-                  {t("By", "Bởi", "Oleh")} {a.author} · {a.readMin} {t("min", "phút", "menit")}
+                  {cardByline(a) ? <>{t("By", "Bởi", "Oleh")} {cardByline(a)} · </> : null}{a.readMin} {t("min", "phút", "menit")}
                 </div>
               </div>
               <CoverArt pillar={a.pillar} seed={a.id} src={a.heroImageUrl} variant={2 + (i % 3)} height={86} />

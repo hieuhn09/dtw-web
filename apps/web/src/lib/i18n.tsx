@@ -11,6 +11,7 @@ import {
 import type { ReactNode } from "react";
 import type { PillarId } from "./data";
 import { PILLARS, NAV_EXTRA } from "./data";
+import { pressroomLabel } from "./single-home-pillars";
 
 export type Lang = "en" | "vi" | "id";
 
@@ -87,9 +88,14 @@ export const PILLAR_I18N: Record<PillarId, { vi: string; id: string }> = {
   dev: { vi: "Lập trình", id: "Pengembang" },
   products: { vi: "Sản phẩm", id: "Produk" },
   policy: { vi: "Chính sách", id: "Kebijakan" },
+  pressroom: { vi: "Phòng báo chí", id: "Ruang Pers" },
 };
 
 export function localizedPillarLabel(id: PillarId, lang: Lang): string {
+  // Pressroom is a single-home pillar deliberately kept out of PILLARS (so it
+  // never joins follow lists/facets/footer); without this every breadcrumb and
+  // PillarTag for it would render an empty label.
+  if (id === "pressroom") return pressroomLabel(lang);
   const p = PILLARS.find((x) => x.id === id);
   if (!p) return "";
   if (lang === "en") return p.label;
@@ -98,6 +104,7 @@ export function localizedPillarLabel(id: PillarId, lang: Lang): string {
 
 export const NAV_I18N: Record<string, { vi: string; id: string }> = {
   exclusive: { vi: "Độc quyền", id: "Eksklusif" },
+  pressroom: { vi: "Phòng báo chí", id: "Ruang Pers" },
   awards: { vi: "Giải thưởng", id: "Penghargaan" },
   studio: { vi: "Studio", id: "Studio" },
   dashboards: { vi: "Bảng dữ liệu", id: "Dasbor" },

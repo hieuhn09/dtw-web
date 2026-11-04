@@ -8,6 +8,7 @@ import { SectionHeader } from "./section-header";
 import type { ArticleView } from "@/lib/article-view";
 import { EXCLUSIVE_PATH } from "@/lib/exclusive";
 import { localizedPillarLabel, useLang, useT } from "@/lib/i18n";
+import { cardByline } from "@/lib/single-home-pillars";
 
 export interface ExclusiveBandProps {
   /** Up to 3 flagged stories, already de-duplicated against the hero lead. */
@@ -68,7 +69,7 @@ export function ExclusiveBand({ articles }: ExclusiveBandProps) {
                 {a.title}
               </h3>
               <div className="text-mute" style={{ fontSize: 12 }}>
-                {t("By", "Bởi", "Oleh")} {a.author} · {a.readMin} {t("min", "phút", "menit")}
+                {cardByline(a) ? <>{t("By", "Bởi", "Oleh")} {cardByline(a)} · </> : null}{a.readMin} {t("min", "phút", "menit")}
               </div>
             </article>
           </Link>

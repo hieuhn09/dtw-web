@@ -10,6 +10,7 @@
 
 import { stripCreditLabel } from "./credit";
 import type { PillarId } from "./data";
+import { DISTRIBUTED_AUTHOR, isDistributedPillar, toPillarId } from "./single-home-pillars";
 import type { Article } from "../payload/payload-types";
 
 /** Lexical editor state for an article body. Passed only to the article detail
@@ -52,6 +53,10 @@ export interface ArticleView {
   authorCity: string;
   authorRole: string;
   coAuthors: ReadonlyArray<string>;
+  /** True for single-home (Pressroom) items: distributed releases bylined
+   *  "Distributed by Opentechwire", never a staff byline. Author fields then
+   *  carry no person (author = "Opentechwire", no role/city/co-authors). */
+  distributed: boolean;
   title: string;
   dek: string;
   section: string;
@@ -141,23 +146,6 @@ function pickRelationshipArray<T extends { id: string | number }>(
   return v.filter((x): x is T => typeof x === "object");
 }
 
-function asPillarId(slug: string | undefined): PillarId {
-  switch (slug) {
-    case "ai":
-    case "startups":
-    case "latest":
-    case "dev":
-    case "products":
-    case "policy":
-      return slug;
-    // Backward-compat: the "asia" pillar was renamed to "latest" (2026-06-14).
-    // Resolve legacy data/slugs until the CMS pillar doc is renamed.
-    case "asia":
-    default:
-      return "latest";
-  }
-}
-
 // `exclusive` is served by Central but absent from the generated (do-not-edit)
 // payload-types.ts, so the parameter type is widened locally.
 export function toArticleView(a: Article & { exclusive?: boolean | null }): ArticleView {
@@ -186,16 +174,21 @@ export function toArticleView(a: Article & { exclusive?: boolean | null }): Arti
     sizes?: MediaSizes;
   }>(a.heroImage);
 
+  // Pressroom items are distributed releases: never show a staff byline,
+  // whichever author the editor picked in the CMS.
+  const distributed = isDistributedPillar(pillar?.slug);
+
   return {
     id: String(a.id),
     slug: a.slug,
-    pillar: asPillarId(pillar?.slug),
+    pillar: toPillarId(pillar?.slug),
     pillarColor: pillar?.color ?? "var(--latest)",
     pillarLabel: pillarLabel(pillar),
-    author: author?.name ?? "Staff",
-    authorCity: author?.city ?? "",
-    authorRole: author?.role ?? "",
-    coAuthors: coAuthors.map((c) => c.name),
+    author: distributed ? DISTRIBUTED_AUTHOR : (author?.name ?? "Staff"),
+    authorCity: distributed ? "" : (author?.city ?? ""),
+    authorRole: distributed ? "" : (author?.role ?? ""),
+    coAuthors: distributed ? [] : coAuthors.map((c) => c.name),
+    distributed,
     title: a.title,
     dek: a.dek,
     section: a.section ?? "",

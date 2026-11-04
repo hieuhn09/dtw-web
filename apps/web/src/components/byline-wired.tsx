@@ -11,6 +11,8 @@ export interface BylineWiredProps {
     /** ISO date string. */
     published: string;
     readMin: number;
+    /** Single-home (Pressroom) release: "Distributed by Opentechwire", no co-authors. */
+    distributed?: boolean;
   };
   size?: "sm" | "lg";
 }
@@ -25,12 +27,14 @@ export function BylineWired({ article, size = "sm" }: BylineWiredProps) {
   return (
     <Byline
       authorName={article.author}
-      coAuthorNames={[...(article.coAuthors ?? [])]}
+      coAuthorNames={article.distributed ? [] : [...(article.coAuthors ?? [])]}
       dateLabel={fmtDateL(article.published, lang)}
       readMinutes={article.readMin}
       size={size}
       labels={{
-        by: t("By", "Bởi", "Oleh"),
+        by: article.distributed
+          ? t("Distributed by", "Phân phối bởi", "Didistribusikan oleh")
+          : t("By", "Bởi", "Oleh"),
         and: t("and", "và", "dan"),
         minRead: t("min read", "phút đọc", "menit baca"),
       }}

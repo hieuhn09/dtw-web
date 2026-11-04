@@ -10,6 +10,7 @@ import { TimeAgo } from "@/components/time-ago";
 import { type NavPillar, type PillarId } from "@/lib/data";
 import type { ArticleView } from "@/lib/article-view";
 import { useLang, useT } from "@/lib/i18n";
+import { cardByline } from "@/lib/single-home-pillars";
 
 export interface PillarShowcaseProps {
   /** CMS pillars, ordered by `order`. Drives which bands show and their order. */
@@ -129,7 +130,7 @@ export function PillarShowcase({ pillars, byPillar }: PillarShowcaseProps) {
                           {a.title}
                         </h4>
                         <div className="text-mute" style={{ fontSize: 11 }}>
-                          {a.author} · <TimeAgo iso={a.published} /> · {a.readMin}m
+                          {cardByline(a) ? <>{cardByline(a)} · </> : null}<TimeAgo iso={a.published} /> · {a.readMin}m
                         </div>
                       </div>
                       {i !== 0 && (

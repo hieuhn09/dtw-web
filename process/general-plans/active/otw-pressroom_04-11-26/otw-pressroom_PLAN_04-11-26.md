@@ -132,27 +132,27 @@ Rollout order:
 
 ## Implementation Checklist
 ### Stream A (apcg-cms), execute agent records baselines FIRST (typecheck, lint warning count, test:single-home, test:media-redirect, test:hub-media, test:hub-live, test:hub-p56, test:hub-direct-upload, test:migrate-gtp, test:booths, test:migrate-network) before editing
-- [ ] A0 Record baselines (do not assume numbers).
-- [ ] A1 `constants.ts` both maps + comments.
-- [ ] A2 `single-home-pillars.test.ts` flips + wtb control (reuse existing wtb fixture if present).
-- [ ] A3 `single-home-pillar.test.ts` flips + fixtures.
-- [ ] A4 `hub-taxonomy-blocks.test.ts:33` control -> `world-travel-brief`.
-- [ ] A5 `single-home-probe.ts` `[DTW]` block placed so dtw has no pressroom ROW during MOVE checks.
-- [ ] A6 `docs/08`, `docs/11` bullet + dtw violator SQL.
-- [ ] A7 context docs with exact counts.
-- [ ] A8 gates (Verification Evidence), then probe on throwaway native PG16 (`/usr/lib/postgresql/16/bin/initdb`, random localhost port, `db:seed` first, recipe in `process/context/tests/all-tests.md`; cluster in `/tmp`, `postgres` user cannot enter scratchpad); stop and delete cluster after. If PG16 is unavailable record probe as Known Gap (hook unit tests still cover AC1-3).
+- [x] A0 Record baselines (do not assume numbers).
+- [x] A1 `constants.ts` both maps + comments.
+- [x] A2 `single-home-pillars.test.ts` flips + wtb control (reuse existing wtb fixture if present).
+- [x] A3 `single-home-pillar.test.ts` flips + fixtures.
+- [x] A4 `hub-taxonomy-blocks.test.ts:33` control -> `world-travel-brief`.
+- [x] A5 `single-home-probe.ts` `[DTW]` block placed so dtw has no pressroom ROW during MOVE checks.
+- [x] A6 `docs/08`, `docs/11` bullet + dtw violator SQL.
+- [x] A7 context docs with exact counts.
+- [x] A8 gates (Verification Evidence), then probe on throwaway native PG16 (`/usr/lib/postgresql/16/bin/initdb`, random localhost port, `db:seed` first, recipe in `process/context/tests/all-tests.md`; cluster in `/tmp`, `postgres` user cannot enter scratchpad); stop and delete cluster after. If PG16 is unavailable record probe as Known Gap (hook unit tests still cover AC1-3).
 ### Stream B (dtw-web), record baselines FIRST (`pnpm --filter web typecheck`, `lint` warning count, `test:exclusive`, `test:bot-detect`, `test:signup-guard`, build)
-- [ ] B0 Record baselines.
-- [ ] B1 `single-home-pillars.ts` + test + `test:single-home` script.
-- [ ] B2 `PillarId`/icons/NAV_EXTRA; `asPillarId` + `distributed` + `cardByline`; fix all `ArticleView` literals.
-- [ ] B3 i18n labels.
-- [ ] B4 cover-art + `--pressroom` CSS vars (light + dark).
-- [ ] B5 header: filter pillars + gated nav link (desktop + drawer).
-- [ ] B6 article header byline; B7 OG + JSON-LD (+ metadata builder option).
-- [ ] B8 card/row byline sites via `cardByline`.
-- [ ] B9 aggregates: home, pinned Latest, per-pillar bands, `/latest` + load-more, root RSS, most-read, account follow.
-- [ ] B10 context doc note.
-- [ ] B11 gates; grep that every call site listed in B8/B9 was handled (`grep -rn "getRecentArticles\|getPinnedLatest\|getFeedArticles\|getArticlesAfter\|getArticlesPage" apps/web/src`).
+- [x] B0 Record baselines.
+- [x] B1 `single-home-pillars.ts` + test + `test:single-home` script.
+- [x] B2 `PillarId`/icons/NAV_EXTRA; `asPillarId` + `distributed` + `cardByline`; fix all `ArticleView` literals.
+- [x] B3 i18n labels.
+- [x] B4 cover-art + `--pressroom` CSS vars (light + dark).
+- [x] B5 header: filter pillars + gated nav link (desktop + drawer).
+- [x] B6 article header byline; B7 OG + JSON-LD (+ metadata builder option).
+- [x] B8 card/row byline sites via `cardByline`.
+- [x] B9 aggregates: home, pinned Latest, per-pillar bands, `/latest` + load-more, root RSS, most-read, account follow.
+- [x] B10 context doc note.
+- [x] B11 gates; grep that every call site listed in B8/B9 was handled (`grep -rn "getRecentArticles\|getPinnedLatest\|getFeedArticles\|getArticlesAfter\|getArticlesPage" apps/web/src`).
 ### Stream C
 - [ ] C1 n/a; record follow-up in UPDATE PROCESS backlog note.
 
@@ -287,3 +287,30 @@ Gate: PASS (no FAILs; every CONCERN found by VALIDATE was fixed in the plan text
 Accepted by: owner (session 04-11-26, D5 "execute straight after validate"; known gaps pre-accepted: no render tests, nav clip unmeasured, owner post-deploy probes) - accepted concerns by name: Test coverage (no DOM runner / nav clip), Breaking changes (new dtw engine 422, hub `blocked_pillar`/`blocked:true`, unverified engine 4xx handling).
 
 Next instruction: `ENTER EXECUTE MODE` for this plan path (Stream A and Stream B as two parallel opus execute agents; EVL = spawned vc-tester per repo re-running the gate commands above).
+
+## Stream B Execute Record (dtw-web, 04-11-26)
+Baselines re-recorded at B0 (match VALIDATE): typecheck 0 errors; lint 1 warning (article-body.tsx:78) / 0 errors; test:exclusive 9/0; test:bot-detect 31/0; test:signup-guard 6/0.
+
+| Gate | Result |
+|---|---|
+| `pnpm --filter web typecheck` | 0 errors |
+| `pnpm --filter web lint` | 1 warning (same pre-existing), 0 errors |
+| `pnpm --filter web test:single-home` (new) | 6 pass / 0 fail (red-first: failed with module-not-found before the helper existed) |
+| `test:exclusive` / `test:bot-detect` / `test:signup-guard` | 9/0, 31/0, 6/0 (= baseline) |
+| root `pnpm typecheck` / `pnpm lint` (turbo) | 3/3 tasks successful each; lint same 1 warning |
+| offline build (E10 env) | exit 0, compiled in 36 s; `apps/web/.next` deleted afterwards |
+| mock-Central Hybrid probe (`next dev`, mock in session scratchpad, not committed) | WITH row: pillar tabs `/ai /latest` only, extras `/exclusive /briefing /pressroom /awards /studio`; `/pressroom` 200; Pressroom article shows "Distributed by Opentechwire", no CMS author/co-author names, no `article:author` meta, JSON-LD `{"@type":"Organization","name":"Opentechwire"}`, labels "Pressroom"; pinned Pressroom story skipped (home lead = pinned non-Pressroom); Pressroom article absent from `/`, `/latest`, `/rss.xml`, `/latest/rss.xml`; present in `/pressroom/rss.xml`; ordinary article keeps Person JSON-LD + OG authors. WITHOUT row: no `/pressroom` link. Drawer not in SSR (renders on open), same `navExtra` list as desktop. Search/most-read/account not probed (need DB/session). |
+
+Call-site audit (B11 grep): `getRecentArticles` home filtered, health route deliberately raw; `getPinnedLatest` filtered at source (limit 5, `firstNonSingleHome`); `getFeedArticles` filtered when `pillarId == null` (root + `/latest` RSS), own-pillar feeds raw; `getArticlesPage` filtered in `pillar-view.tsx` only for `latest`, `sitemap.ts` raw; `getArticlesAfter` filtered in `load-more-action.ts` only for `latest`.
+
+Deviations (within blast radius):
+- `cardByline(a)` lives in `lib/single-home-pillars.ts` and returns the author segment or `null` (not a full string), because the 8 sites use different JSX formats (TimeAgo, `t()` "By"); each site drops "author ·" when null. `most-read.tsx` (prints `authorCity`) checks `a.distributed` directly.
+- `asPillarId` moved into the helper as `toPillarId` (import-free, unit-tested); `pressroomLabel` likewise. Nav gate is generic `NavItem.gatedOnPillar` instead of a pressroom-specific predicate.
+- Pressroom icon `wire` (existing); cover-art palette reuses the policy palette (no new colors); `--color-pressroom` added to `@theme inline`.
+- Article-page header and `BylineWired` use the `t()` triple for "Distributed by" (en/vi/id); brand name stays "Opentechwire".
+- `/latest` load-more `hasMore` reflects the raw feed; `totalDocs` badge still counts Pressroom (accepted known gap).
+
+## EVL Record (04-11-26)
+- Stream A (apcg-cms): independent vc-tester re-run, 11/11 gates green (test:single-home 365, typecheck 0, lint 20 warnings/0 errors). Pushed as hieuhn09/apcg-cms#57 (draft).
+- Stream B (dtw-web): independent vc-tester re-run, all gates green (typecheck 0, lint 1 baseline warning, test:single-home 6/6, exclusive 9, bot-detect 31, signup-guard 6, offline build exit 0).
+- Status: CODE DONE, EVL GREEN. Not VERIFIED until deploy + owner creates the dtw `pressroom` row in /admin + owner post-deploy probes. Plan stays in `active/`.

@@ -3,6 +3,7 @@ import { draftMode } from "next/headers";
 import { notFound } from "next/navigation";
 import { ArticleContent } from "@/components/article/article-content";
 import { toArticleView, pillarLabel } from "@/lib/article-view";
+import { DISTRIBUTED_AUTHOR, isDistributedPillar } from "@/lib/single-home-pillars";
 import {
   getArticleBySlug,
   getArticleBySlugDraft,
@@ -102,7 +103,12 @@ export async function generateMetadata({
     type: "article",
     publishedTime: article.publishedAt,
     modifiedTime: article.updatedAt,
-    authors: author ? [author.name, ...coAuthors.map((a) => a.name)] : coAuthors.map((a) => a.name),
+    // Pressroom (distributed) articles carry no person byline: omit OG authors.
+    authors: isDistributedPillar(pillar?.slug)
+      ? undefined
+      : author
+        ? [author.name, ...coAuthors.map((a) => a.name)]
+        : coAuthors.map((a) => a.name),
     // `heading` first (the editor's explicit override), then the pillar title in
     // whichever shape the CMS served it — Central sends a plain string, local
     // Payload an {en,vi,id} group.
@@ -151,6 +157,7 @@ export default async function ArticlePage({
     const coAuthors = Array.isArray(article.coAuthors)
       ? article.coAuthors.map((a) => expand<Author>(a)).filter((a): a is Author => a !== null)
       : [];
+    const distributed = isDistributedPillar(expand<Pillar>(article.pillar)?.slug);
     const image = resolveHeroImage(article);
     const canonicalPath = `/article/${article.slug}`;
 
@@ -163,9 +170,11 @@ export default async function ArticlePage({
       imageHeight: image.height,
       datePublished: article.publishedAt,
       dateModified: article.updatedAt,
-      authorName: author?.name ?? "Staff",
-      authorRole: author?.role,
-      coAuthorNames: coAuthors.map((a) => a.name),
+      authorName: distributed ? DISTRIBUTED_AUTHOR : (author?.name ?? "Staff"),
+      authorRole: distributed ? undefined : author?.role,
+      coAuthorNames: distributed ? [] : coAuthors.map((a) => a.name),
+      // Pressroom releases are attributed to the publication, not a person.
+      authorOrganization: distributed,
     });
     jsonLdScript = toJsonLdScript(jsonLd);
   }

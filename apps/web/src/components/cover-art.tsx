@@ -44,6 +44,11 @@ const ART_PALETTES: Record<PillarId | "policy", ReadonlyArray<Palette>> = {
     ["#0F172A", "#475569", "#94A3B8", "#F1F5F9"],
     ["#111827", "#64748B", "#CBD5E1", "#FFFFFF"],
   ],
+  // Pressroom reuses the policy palette: no new colors (invariant #7).
+  pressroom: [
+    ["#0F172A", "#475569", "#94A3B8", "#F1F5F9"],
+    ["#111827", "#64748B", "#CBD5E1", "#FFFFFF"],
+  ],
 };
 
 function pickPalette(pillar: string, seed: number): Palette {

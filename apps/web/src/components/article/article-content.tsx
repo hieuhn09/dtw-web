@@ -203,13 +203,23 @@ export function ArticleContent({ article, body, related }: ArticleContentProps) 
             borderBottom: "1px solid var(--hair)",
           }}
         >
-          <Avatar name={article.author} size={44} />
-          <div style={{ flex: 1 }}>
-            <div style={{ fontSize: 13, fontWeight: 600 }}>{article.author}</div>
-            <div className="text-mute" style={{ fontSize: 11 }}>
-              {article.authorRole} · {article.authorCity}
+          {article.distributed ? (
+            // Pressroom release: no person, so no avatar/role/city/link/"By".
+            <div style={{ flex: 1, fontSize: 13 }}>
+              <span className="text-mute">{t("Distributed by", "Phân phối bởi", "Didistribusikan oleh")}</span>{" "}
+              <span style={{ fontWeight: 600 }}>{article.author}</span>
             </div>
-          </div>
+          ) : (
+            <>
+              <Avatar name={article.author} size={44} />
+              <div style={{ flex: 1 }}>
+                <div style={{ fontSize: 13, fontWeight: 600 }}>{article.author}</div>
+                <div className="text-mute" style={{ fontSize: 11 }}>
+                  {article.authorRole} · {article.authorCity}
+                </div>
+              </div>
+            </>
+          )}
           <div className="text-mute mono" style={{ fontSize: 11, textAlign: "right" }}>
             <div>{fmtDateL(article.published, lang)}</div>
             <div>

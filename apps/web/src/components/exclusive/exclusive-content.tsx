@@ -9,6 +9,7 @@ import { TimeAgo } from "@/components/time-ago";
 import type { ArticleView } from "@/lib/article-view";
 import { EXCLUSIVE_DEFINITION_HREF, EXCLUSIVE_FEED_PATH, exclusivePagePath } from "@/lib/exclusive";
 import { localizedPillarLabel, useLang, useT } from "@/lib/i18n";
+import { cardByline } from "@/lib/single-home-pillars";
 
 export interface ExclusiveContentProps {
   articles: ReadonlyArray<ArticleView>;
@@ -151,7 +152,7 @@ export function ExclusiveContent({ articles, page, hasNextPage }: ExclusiveConte
                   {a.dek.length > 140 ? `${a.dek.slice(0, 140)}…` : a.dek}
                 </p>
                 <div className="text-mute" style={{ fontSize: 12 }}>
-                  {a.author} · <TimeAgo iso={a.published} /> · {a.readMin}m
+                  {cardByline(a) ? <>{cardByline(a)} · </> : null}<TimeAgo iso={a.published} /> · {a.readMin}m
                 </div>
               </article>
             </Link>

@@ -36,6 +36,7 @@
   --dev: #46735C;
   --products: #8F7238;
   --policy: #5A6577;
+  --pressroom: var(--accent); /* single-home Pressroom pillar: alias only, no new color (invariant #7) */
 
   --shadow:
     0 1px 0 rgba(17, 17, 17, 0.04),
@@ -100,6 +101,7 @@ html[data-theme="dark"] {
   --color-dev: var(--dev);
   --color-products: var(--products);
   --color-policy: var(--policy);
+  --color-pressroom: var(--pressroom);
 
   --font-serif: var(--font-serif);
   --font-sans: var(--font-sans);

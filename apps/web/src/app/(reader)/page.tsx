@@ -28,6 +28,7 @@ import {
 import type { PillarId } from "@/lib/data";
 import { EXCLUSIVE_BAND_SIZE, pickBandArticles } from "@/lib/exclusive";
 import { buildMetadata, DEFAULT_OG_IMAGE } from "@/lib/metadata";
+import { isSingleHomePillar, withoutSingleHome } from "@/lib/single-home-pillars";
 
 // [temp-hidden 2026-07-17] Homepage sections hidden at product request.
 // Flip any flag back to `true` to restore that band (imports and data-fetch
@@ -93,14 +94,17 @@ export default async function HomePage() {
       // Pillar list is CMS-driven (invariant #8), not hardcoded.
       Promise.all(
         pillars
-          .filter((p) => p.slug !== "latest")
+          // Single-home Pressroom gets no homepage band (it is a nav link only).
+          .filter((p) => p.slug !== "latest" && !isSingleHomePillar(p.slug))
           .map(async (p) => [p.slug, await getArticlesByPillar(p.slug, 4)] as const),
       ),
       // One extra so the band still has 3 after dropping the hero lead.
       getExclusiveArticlesPage(1, EXCLUSIVE_BAND_SIZE + 1),
     ]);
 
-  const articles = recent.map(toArticleView);
+  // Pressroom releases never reach the hero, aside, Latest band or most-read
+  // top-up: they live on their own pillar page only.
+  const articles = withoutSingleHome(recent).map(toArticleView);
   const pinned = pinnedDoc ? toArticleView(pinnedDoc) : null;
   const heroPool = articles.filter((a) => !a.sponsored);
   // A pinned story headlines the big hero slot (top-left of the homepage);

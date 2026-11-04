@@ -17,6 +17,7 @@ All commands run from the repo root with pnpm. Scoped scripts live in `apps/web/
 | Typecheck | `pnpm typecheck` (turbo, `tsc --noEmit`) | whole workspace; the only gate CI runs |
 | Lint | `pnpm --filter web lint` (`next lint`) | compare against the baseline; not a build gate and not run in CI |
 | Exclusive rules | `pnpm --filter web test:exclusive` | `src/lib/exclusive.ts` pure rules (9 tests: band selection, paging, chip hiding) |
+| Pressroom single-home rules | `pnpm --filter web test:single-home` | `src/lib/single-home-pillars.ts` (6 tests: exact-slug match, aggregate filters, pinned pick, card byline, `toPillarId`, en/vi/id label) |
 | GA bot gate | `pnpm --filter web test:bot-detect` | `src/lib/bot-detect.ts` (31 tests) |
 | Signup guard | `pnpm --filter web test:signup-guard` | `src/lib/signup-guard.ts` (6 tests) |
 | Build | `pnpm --filter web build` | catches server/client boundary and route errors |

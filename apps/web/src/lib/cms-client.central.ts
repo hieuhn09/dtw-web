@@ -23,6 +23,7 @@ import {
   fetchSite,
   fetchModule,
 } from "./central-api";
+import { firstNonSingleHome, withoutSingleHome } from "@/lib/single-home-pillars";
 
 /**
  * Drop-in replacement for `payload-server.ts`, backed by the Central CMS public
@@ -331,13 +332,15 @@ export const getSponsoredArticle = unstable_cache(
  */
 export const getPinnedLatest = unstable_cache(
   async (): Promise<Article | null> => {
+    // Fetch a few: a pinned single-home (Pressroom) story must not lead the
+    // shared Latest surfaces, so take the newest pin outside Pressroom.
     const { docs } = await fetchArticles<Article>({
       flag: "pinnedToLatest",
-      limit: 1,
+      limit: 5,
       sort: "-publishedAt",
       ...ARTICLE_ONLY,
     });
-    return docs[0] ?? null;
+    return firstNonSingleHome(docs);
   },
   ["articles:pinned-latest"],
   { tags: ["articles:all"], revalidate: 60 }
@@ -502,7 +505,9 @@ export const getFeedArticles = unstable_cache(
       params.pillar = slug;
     }
     const { docs } = await fetchArticles<Article>(params);
-    return docs;
+    // The cross-beat feed (root /rss.xml, /latest/rss.xml) excludes single-home
+    // Pressroom releases; a pillar's own feed (/pressroom/rss.xml) keeps them.
+    return pillarId == null ? withoutSingleHome(docs) : docs;
   },
   ["articles:feed"],
   { tags: ["articles:all"], revalidate: 300 }
