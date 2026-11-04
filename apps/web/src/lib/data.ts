@@ -2,7 +2,7 @@
 // This is reference / fixture data for the static site. It will be replaced by
 // Payload CMS reads in Phase 2.
 
-export type PillarId = "ai" | "startups" | "latest" | "dev" | "products" | "policy";
+export type PillarId = "ai" | "startups" | "latest" | "dev" | "products" | "policy" | "pressroom";
 
 /**
  * Articles per page on the pillar listing feed, shared by the route, the
@@ -79,11 +79,18 @@ export interface NavItem {
   label: string;
   slug: string;
   badge?: boolean;
+  /**
+   * Render only when the CMS serves a pillar with this slug (single-home
+   * Pressroom: the row is created by hand in /admin, so the link must not 404
+   * before it exists).
+   */
+  gatedOnPillar?: string;
 }
 
 export const NAV_EXTRA: ReadonlyArray<NavItem> = [
   { id: "exclusive", label: "Exclusive", slug: "/exclusive" },
   { id: "briefing", label: "Briefing", slug: "/briefing" },
+  { id: "pressroom", label: "Pressroom", slug: "/pressroom", gatedOnPillar: "pressroom" },
   { id: "awards", label: "Awards", slug: "/awards" },
   { id: "studio", label: "Studio", slug: "/studio" },
   // [temp-hidden 2026-07-17] Dashboards + Newsletters pulled from nav until
@@ -106,6 +113,7 @@ export const PILLAR_ICONS: Record<PillarId, string> = {
   dev: "code",
   products: "product",
   policy: "policy",
+  pressroom: "wire",
 };
 
 export interface Author {

@@ -218,6 +218,9 @@ export interface BuildArticleJsonLdInput {
   /** Maps to schema.org `Person.jobTitle`. */
   authorRole?: string;
   coAuthorNames?: string[];
+  /** When true, `author` is `{ "@type": "Organization", name: authorName }`
+   *  (distributed Pressroom releases); role and co-authors are ignored. */
+  authorOrganization?: boolean;
 }
 
 export function buildArticleJsonLd(input: BuildArticleJsonLdInput) {
@@ -233,6 +236,7 @@ export function buildArticleJsonLd(input: BuildArticleJsonLdInput) {
     authorName,
     authorRole,
     coAuthorNames,
+    authorOrganization,
   } = input;
 
   const primaryAuthor: JsonLdPerson = {
@@ -241,8 +245,10 @@ export function buildArticleJsonLd(input: BuildArticleJsonLdInput) {
     ...(authorRole ? { jobTitle: authorRole } : {}),
   };
 
-  const author: JsonLdPerson | JsonLdPerson[] =
-    coAuthorNames && coAuthorNames.length > 0
+  const author: JsonLdPerson | JsonLdPerson[] | { "@type": "Organization"; name: string } =
+    authorOrganization
+      ? { "@type": "Organization", name: authorName }
+      : coAuthorNames && coAuthorNames.length > 0
       ? [primaryAuthor, ...coAuthorNames.map((name) => ({ "@type": "Person" as const, name }))]
       : primaryAuthor;
 

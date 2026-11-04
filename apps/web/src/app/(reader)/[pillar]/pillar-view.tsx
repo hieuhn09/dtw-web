@@ -5,6 +5,7 @@ import { toArticleView } from "@/lib/article-view";
 import { getArticlesPage, getPillars, getPinnedLatest } from "@/lib/cms-client";
 import { ARTICLES_PAGE_SIZE } from "@/lib/data";
 import { buildMetadata, DEFAULT_OG_IMAGE } from "@/lib/metadata";
+import { withoutSingleHome } from "@/lib/single-home-pillars";
 
 /**
  * Shared body for the two routes that render a pillar feed: `/[pillar]`
@@ -73,7 +74,11 @@ export async function PillarView({ slug, page }: { slug: string; page: number })
   // A pinned story leads the feed as the featured card. PillarContent takes
   // initialArticles[0] as the lead and keeps it out of the grid, so prepending
   // here is enough — no double render and no extra paging logic.
-  const feed = feedPage.docs.map(toArticleView);
+  // The cross-beat /latest firehose drops single-home Pressroom releases (a page
+  // may then show fewer cards; accepted). Pressroom's own page keeps them.
+  const feed = (slug === "latest" ? withoutSingleHome(feedPage.docs) : feedPage.docs).map(
+    toArticleView,
+  );
   const pinned = pinnedDoc ? toArticleView(pinnedDoc) : null;
   const articles = pinned
     ? [pinned, ...feed.filter((a) => a.id !== pinned.id)]

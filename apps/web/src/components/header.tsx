@@ -13,6 +13,7 @@ import {
   useT,
 } from "@/lib/i18n";
 import { NAV_EXTRA, type NavPillar } from "@/lib/data";
+import { isSingleHomePillar } from "@/lib/single-home-pillars";
 import { PAYWALL_ENABLED } from "@/lib/paywall";
 import { useShell } from "@/lib/shell";
 import { authClient } from "@/lib/auth-client";
@@ -36,7 +37,13 @@ const SHOW_NEWSLETTER = false;
 // literal for a real count. Flip to `true` to restore.
 const SHOW_WIRE_DROPS_TICKER = false;
 
-export function Header({ pillars }: { pillars: NavPillar[] }) {
+export function Header({ pillars: cmsPillars }: { pillars: NavPillar[] }) {
+  // Single-home pillars (Pressroom) are not pillar tabs: they render as a
+  // NAV_EXTRA link instead, and only when the CMS actually serves the row
+  // (the owner creates it by hand, so the link must not 404 before then).
+  const pillars = cmsPillars.filter((p) => !isSingleHomePillar(p.slug));
+  const cmsPillarSlugs = new Set(cmsPillars.map((p) => p.slug));
+  const navExtra = NAV_EXTRA.filter((n) => !n.gatedOnPillar || cmsPillarSlugs.has(n.gatedOnPillar));
   const router = useRouter();
   const pathname = usePathname() || "/";
   const { theme, setTheme } = useTheme();
@@ -558,7 +565,7 @@ export function Header({ pillars }: { pillars: NavPillar[] }) {
             })}
           </nav>
           <nav style={{ display: "flex", alignItems: "stretch" }}>
-            {NAV_EXTRA.map((n) => {
+            {navExtra.map((n) => {
               const active = pathname.startsWith(n.slug);
               return (
                 <Link
@@ -770,7 +777,7 @@ export function Header({ pillars }: { pillars: NavPillar[] }) {
 
               <div className="divider" style={{ margin: "8px 12px" }} />
 
-              {NAV_EXTRA.map((n) => (
+              {navExtra.map((n) => (
                 <Link
                   key={n.id}
                   href={n.slug}

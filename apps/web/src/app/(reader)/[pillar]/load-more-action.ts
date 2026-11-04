@@ -3,6 +3,7 @@
 import { getArticlesAfter } from "@/lib/cms-client";
 import { toArticleView, type ArticleView } from "@/lib/article-view";
 import { APPEND_BATCH_SIZE } from "@/lib/data";
+import { withoutSingleHome } from "@/lib/single-home-pillars";
 
 export interface AppendResult {
   articles: ArticleView[];
@@ -34,5 +35,8 @@ export async function loadArticlesAfter(
     afterId,
     APPEND_BATCH_SIZE
   );
-  return { articles: r.docs.map(toArticleView), hasMore: r.hasMore };
+  // Same rule as the /latest page: the firehose drops Pressroom releases (a batch
+  // may come back short; `hasMore` still reflects the raw feed).
+  const docs = pillarSlug === "latest" ? withoutSingleHome(r.docs) : r.docs;
+  return { articles: docs.map(toArticleView), hasMore: r.hasMore };
 }

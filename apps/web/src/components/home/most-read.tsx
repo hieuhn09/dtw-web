@@ -144,7 +144,7 @@ export function MostRead({ articles }: MostReadProps) {
                   color: "rgba(232,237,247,0.60)",
                 }}
               >
-                {a.authorCity} · {a.readMin} min
+                {a.distributed ? null : <>{a.authorCity} · </>}{a.readMin} min
               </div>
             </article>
           </Link>

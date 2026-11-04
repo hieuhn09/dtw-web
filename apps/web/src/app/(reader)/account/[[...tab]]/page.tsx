@@ -9,6 +9,7 @@ import { getArticlesByIds, getNavPillars, getNewsletters } from "@/lib/cms-clien
 import { toArticleView, type ArticleView } from "@/lib/article-view";
 import { AccountShell, AccountSignInPrompt } from "./account-tabs";
 import { isAccountTab, type AccountTab } from "./tabs";
+import { isSingleHomePillar } from "@/lib/single-home-pillars";
 
 /**
  * Real, server-verified `/account` — converted from a client component gated
@@ -69,7 +70,8 @@ export default async function AccountPage({
       active={active}
       saved={saved}
       history={history}
-      navPillars={navPillars}
+      // Pressroom is a single-home release desk, not a beat to follow.
+      navPillars={navPillars.filter((p) => !isSingleHomePillar(p.slug))}
       followedSlugs={followedSlugs}
       newsletters={newsletters}
       subscribedNewsletterIds={subscribedNewsletterIds}

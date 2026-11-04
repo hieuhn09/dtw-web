@@ -12,6 +12,7 @@ import type { ArticleView } from "@/lib/article-view";
 import { ARTICLES_PAGE_SIZE, type PillarId } from "@/lib/data";
 import { localizedPillarLabel, useLang, useT } from "@/lib/i18n";
 import { loadArticlesAfter } from "@/app/(reader)/[pillar]/load-more-action";
+import { cardByline } from "@/lib/single-home-pillars";
 
 export interface PillarContentProps {
   /** Pillar slug from the CMS (not constrained to the 6 known ids). Also the
@@ -274,7 +275,7 @@ export function PillarContent({
                 {a.dek.slice(0, 140)}…
               </p>
               <div className="text-mute" style={{ fontSize: 12 }}>
-                {a.author} · <TimeAgo iso={a.published} /> · {a.readMin}m
+                {cardByline(a) ? <>{cardByline(a)} · </> : null}<TimeAgo iso={a.published} /> · {a.readMin}m
               </div>
             </article>
           </Link>

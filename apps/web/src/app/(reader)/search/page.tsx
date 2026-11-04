@@ -11,6 +11,7 @@ import { PILLARS, pillarOf, type PillarId } from "@/lib/data";
 import type { ArticleView } from "@/lib/article-view";
 import { fmtDateL, localizedPillarLabel, useLang, useT } from "@/lib/i18n";
 import { runSearch } from "./search-action";
+import { cardByline } from "@/lib/single-home-pillars";
 
 const SUGGESTED = [
   "sovereign AI",
@@ -284,7 +285,7 @@ function SearchInner() {
                       {a.dek}
                     </p>
                     <div className="text-mute" style={{ fontSize: 12 }}>
-                      {t("By", "Bởi", "Oleh")} {a.author} · {a.readMin} min · <TimeAgo iso={a.published} />
+                      {cardByline(a) ? <>{t("By", "Bởi", "Oleh")} {cardByline(a)} · </> : null}{a.readMin} min · <TimeAgo iso={a.published} />
                     </div>
                   </div>
                 </article>

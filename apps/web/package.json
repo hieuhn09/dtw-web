@@ -13,7 +13,8 @@
     "typecheck": "tsc --noEmit",
     "test:bot-detect": "tsx --test src/lib/bot-detect.test.ts",
     "test:signup-guard": "tsx --test src/lib/signup-guard.test.ts",
-    "test:exclusive": "tsx --test src/lib/exclusive.test.ts"
+    "test:exclusive": "tsx --test src/lib/exclusive.test.ts",
+    "test:single-home": "tsx --test src/lib/single-home-pillars.test.ts"
   },
   "dependencies": {
     "@dtw/db": "workspace:*",
