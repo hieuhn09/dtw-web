@@ -9,6 +9,8 @@ feature: none
 
 Found while shipping `otw-lcp-and-indexing` A1 (PR #64). Deferred: not part of that plan.
 
+**RESOLVED 04-11-26 (same day, user request "tự host font, đúng font đấy"):** fonts self-hosted as plain `@font-face` CSS (`apps/web/src/app/fonts.css`) + `apps/web/public/fonts/`, not `next/font/local` (it cannot give each subset file its own `unicode-range`, so it could not reproduce Google's subsetting exactly). The 8 WOFF2 files were downloaded from production and are byte-identical; the 28 rules match production exactly (descriptors, unicode-ranges, fallback metrics); a text sample rendered on production vs the self-hosted build is pixel-identical (0 differing pixels). The build no longer contacts Google.
+
 ## Evidence
 
 - 2 of 4 Vercel builds on 04-11-26 failed at the font step: `TypeError: Cannot read properties of null (reading '1')` in `nextFontGoogleFontLoader` (fetch of IBM Plex Sans from Google Fonts returned nothing usable).

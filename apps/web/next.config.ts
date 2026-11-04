@@ -26,6 +26,17 @@ const config: NextConfig = {
   // `@eslint/eslintrc` as a direct devDep to resolve under pnpm; add it when
   // wiring CI lint.)
   eslint: { ignoreDuringBuilds: true },
+  // Self-hosted fonts (app/fonts.css). Every filename carries a content hash,
+  // so a font update is a new URL and the old one can be cached forever — the
+  // same immutable policy next/font gave them under /_next/static/media.
+  async headers() {
+    return [
+      {
+        source: "/fonts/:file(.*\\.woff2)",
+        headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
+      },
+    ];
+  },
   // The "asia" pillar was renamed to "latest" (2026-06-14). Preserve old links.
   async redirects() {
     return [
