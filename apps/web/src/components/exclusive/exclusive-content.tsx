@@ -132,6 +132,9 @@ export function ExclusiveContent({ articles, page, hasNextPage }: ExclusiveConte
                   variant={(i + 2) % 6}
                   height={210}
                   style={{ marginBottom: 14 }}
+                  // First card is the LCP image on /exclusive (measured on the A1
+                  // preview); every other card stays lazy.
+                  priority={i === 0}
                 />
                 <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
                   <PillarTag id={a.pillar} label={localizedPillarLabel(a.pillar, lang)} />
