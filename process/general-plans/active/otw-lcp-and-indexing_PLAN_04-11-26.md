@@ -2,7 +2,7 @@
 
 **Date**: 04-11-26
 **Complexity**: COMPLEX (2 vấn đề độc lập, 6 pha, một phần việc thuộc owner và một phần thuộc repo khác)
-**Status**: ⏳ PLANNED (chưa code; chờ owner duyệt và chọn quyết định ở mục 9)
+**Status**: A1 🔨 CODE DONE (04-11-26, chưa ✅ VERIFIED; chờ preview/PSI production + xác nhận user). A2, A3, B*, C chưa làm. Chi tiết: mục 'Ghi chú tiến độ A1' cuối bảng Verification Evidence.
 **Feature**: general (xuyên suốt, không thuộc feature folder nào; `rebrand/` chỉ là ràng buộc D4)
 **Primary execute anchor**: chính file này. Không có file phase phụ.
 **Context đã đọc**: `process/context/all-context.md` (invariant #8, #11, #15), `uxui/all-uxui.md`, `infra/all-infra.md`, `tests/all-tests.md`; umbrella `process/features/rebrand/active/rebrand-opentechwire-umbrella_PLAN_08-09-26.md` (D3, D4, D5, D11).
@@ -375,12 +375,26 @@ Lưu ý: Playwright và Lighthouse chưa là phần của repo (Known Gaps trong
 | Mục | Bằng chứng cần có | Trạng thái |
 |---|---|---|
 | Baseline A | Bảng số trước thay đổi (LCP, load, bytes, preload) 4 trang, >= 5 lượt | ⏳ |
-| Sau A1 | Cùng bảng sau thay đổi + HTML đếm preload + screenshot | ⏳ |
-| Typecheck/lint/build | Đầu ra lệnh | ⏳ |
+| Sau A1 | Cùng bảng sau thay đổi + HTML đếm preload + screenshot | 🔨 một phần: đếm preload local xong (xem ghi chú), chưa đo LCP/screenshot |
+| Typecheck/lint/build | Đầu ra lệnh | ✅ typecheck + build đạt; lint 1 warning có sẵn (xem ghi chú) |
 | PSI production | 2 lượt thứ Hai liên tiếp sau deploy | ⏳ |
 | B0 | Ảnh/số GSC (sitemap status, Pages report, Crawl stats, Manual actions) | ⏳ |
 | B1 (nếu làm) | curl `/sitemap.xml`, tổng `<loc>`, kết quả phân tích `lastmod` | ⏳ |
 | User Confirmation | Xác nhận của user trước khi ghi ✅ VERIFIED | ⏳ |
+
+### Ghi chú tiến độ A1 (04-11-26)
+
+Quyết định đã nhận: D1 = lazy cho mọi thẻ không priority (prop `eager` có nhưng không call site nào dùng); D2 = không đổi optimizer.
+
+**Đã làm:** chỉ `apps/web/src/components/cover-art.tsx` nhánh `<img>` trần: không-priority thêm `loading="lazy"` + `decoding="async"`; `priority` giữ nguyên (eager, `fetchPriority="high"`); prop mới `eager?: boolean` (mặc định false; khi true và không priority: không lazy, `fetchPriority="low"`). Nhánh `next/image`, mặc định `sizes` opt-in, nhánh SVG không đổi.
+
+**Cổng A1.4 (giả định React 19 không preload ảnh lazy) ĐÃ KIỂM, ĐÚNG:** react/react-dom 19.2.6, `renderToString` một `<img>`: lazy 0 preload; eager 1 preload; `fetchPriority="low"` không lazy 0 preload; `fetchPriority="high"` 1 preload. (Lưu ý: nhánh `eager` có `fetchPriority="low"` nên cũng KHÔNG phát preload.)
+
+**Lệnh và kết quả:** `pnpm install --frozen-lockfile` OK. `pnpm typecheck` 3/3 task đạt. `pnpm --filter web lint`: 1 warning ở `src/components/article/article-body.tsx:78` (unused eslint-disable), file không thuộc thay đổi, có sẵn. `pnpm --filter web build` KHÔNG chạy được nếu thiếu env (`AUTH_DATABASE_URL`/`DATABASE_URL`, lỗi thu thập page data `/api/auth/[...all]`, không liên quan thay đổi); với env giữ chỗ (`CMS_URL`, `CMS_READ_TOKEN`, `DATABASE_URL`, `BETTER_AUTH_SECRET`, `BETTER_AUTH_URL`, `NEXT_PUBLIC_SITE_URL`) build đạt.
+
+**Đếm preload local (mock Central, 12 thẻ trang chủ, ảnh phục vụ từ mock cục bộ, `next build` + `next start`):** trang chủ trước 11 `<link rel=preload as=image>` / 12 `<img>` (0 lazy), sau 1 (hero) / 12 `<img>` (11 lazy + decoding async, hero không lazy); `/exclusive` trước 9 / sau 0, 9/9 lazy. Mock chỉ có 12 thẻ nên số tuyệt đối thấp hơn production (~26-35); xu hướng khớp AC1 (<= 3 preload).
+
+**CHƯA kiểm:** đo LCP/CLS/load event (A-V, Moto G4 throttle) và baseline 4 trang; screenshot A1.5 desktop/mobile (ô trống above-the-fold, LCP pillar/exclusive); trang pillar (mock chưa có route chạy được); preview Vercel với dữ liệu thật; PSI production 2 lượt thứ Hai (A1.8); xác nhận của user. Cho tới khi có A1.5 và đo pillar/exclusive, điều kiện chặn merge ở bảng rủi ro A1 (LCP pillar xấu đi) vẫn chưa được loại trừ.
 
 ## 19. Resume and Execution Handoff
 
