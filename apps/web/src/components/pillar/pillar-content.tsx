@@ -198,6 +198,10 @@ export function PillarContent({
               variant={5}
               height={440}
               label="FEATURED"
+              // The featured card is this page's LCP image (measured on the
+              // A1 preview): without `priority` it would inherit the default
+              // `loading="lazy"` and start late. The only priority CoverArt here.
+              priority
             />
             <div style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
               <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap", marginBottom: 10 }}>

@@ -70,6 +70,12 @@ export interface CoverArtProps {
    *  site's own CSS. Passing it is also what opts the instance into the Next
    *  image optimizer (see the `src` branch below). */
   sizes?: string;
+  /** Above-the-fold card that is NOT the LCP image: skip `loading="lazy"` so it
+   *  starts early, but pair it with `fetchpriority="low"` so it does not compete
+   *  with the `priority` hero. Only affects the plain <img> branch. Default
+   *  false; unused at every call site unless a measured above-the-fold gap
+   *  requires it. */
+  eager?: boolean;
 }
 
 export function CoverArt({
@@ -82,6 +88,7 @@ export function CoverArt({
   src,
   priority,
   sizes,
+  eager = false,
 }: CoverArtProps) {
   if (src) {
     // Optimization is OPT-IN via `sizes`, and deliberately so: CoverArt also
@@ -117,7 +124,13 @@ export function CoverArt({
         <img
           src={src}
           alt={label ?? ""}
-          fetchPriority={priority ? "high" : undefined}
+          // Non-priority card images are lazy: React 19 emits a
+          // <link rel="preload" as="image"> for every eager <img> in the SSR
+          // HTML, which made ~26 card images compete with the hero for
+          // bandwidth. Lazy images get no preload. `priority` stays eager/high.
+          loading={priority || eager ? undefined : "lazy"}
+          decoding={priority ? undefined : "async"}
+          fetchPriority={priority ? "high" : eager ? "low" : undefined}
           style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
         />
       </div>
