@@ -1,6 +1,6 @@
 # dtw-web - All UX/UI
 
-Last updated: 2026-10-20
+Last updated: 2026-11-04
 
 Attach this file when the task touches design tokens, theme behavior, component primitives, dark mode, i18n chrome, or any decision that affects visible surface area.
 
@@ -237,6 +237,15 @@ Deterministic: same article ID → same composition forever. This prevents UI th
 Used wherever the design has a "hero image slot": Home Hero, Pillar Showcase, Most Read, Deep Dive, Best of Reviews, Sponsored Strip, Article Hero, Search results, Account Saved list.
 
 Author monogram avatars use the same deterministic accent-color rule.
+
+### CoverArt image loading rule (LCP; shipped 2026-11-04, PR #64)
+
+`apps/web/src/components/cover-art.tsx` has two image branches: `next/image` (only when a call site passes `sizes`; this opt-in default must not be flipped) and a plain `<img>`.
+
+- The plain `<img>` is **lazy by default** (`loading="lazy"` + `decoding="async"`). Reason: React 19 SSR auto-emits `<link rel="preload" as="image">` for every eager `<img>`, so ~35 cards on the home page meant ~26 preloads fighting the hero for bandwidth. Verified with react-dom 19.2.6: lazy → 0 preloads, eager → 1, eager + `fetchPriority="low"` → 0, `fetchPriority="high"` → 1.
+- **Exactly one `priority` CoverArt per page**, for that page's LCP image: home hero, pillar featured card (`pillar-content.tsx`), first card on `/exclusive` (`exclusive-content.tsx`, `priority={i === 0}`). A new list page must mark its LCP candidate `priority`, otherwise it becomes lazy and LCP regresses (seen: `/ai` +23% before the pillar fix).
+- Optional `eager?: boolean` prop (default false; no call site uses it): not lazy but `fetchPriority="low"`, for above-the-fold non-LCP cards if a blank slot is ever observed.
+- Measure LCP (Preview A/B, Moto G4 profile) before adding or removing `priority`. Evidence: `process/general-plans/active/otw-lcp-and-indexing_PLAN_04-11-26.md`.
 
 ---
 

@@ -1,6 +1,6 @@
 # dtw-web - All Infrastructure
 
-Last updated: 2026-05-28
+Last updated: 2026-11-04
 
 Attach this file when the task touches deployment, hosting, CDN, ISR, image / video pipelines, analytics, email delivery, or compliance.
 
@@ -158,6 +158,12 @@ These ship in CI as a regression gate:
 - Streaming RSC for article body
 - Deferred load for Related Articles row (lazy)
 - Strict CSP — no inline `<script>` outside Next.js bootstrap
+
+### Measurement sources and known build flake (added 2026-11-04)
+
+- **Weekly lab vitals and index sampling for this site come from the content-engine hub-analytics lane** (Mondays): `site_vitals` (PSI mobile LCP/CLS/TBT per URL) and `site_index_status` (URL Inspection on a 25-URL sample), publication slug `dtw`. There is no CrUX field data (traffic too low). Lab LCP swings up to ~750 ms, so conclude only from 2 consecutive weeks.
+- **The index sample is ~76% pre-rebrand archive** (about 2,000 of ~2,800 sitemap URLs date from Jul-Aug 2026 on the new host), so a low "% indexed" mostly reflects the archive, not new articles. D4 (no 301, no Change of Address) means those URLs get no signal from the old domain. LCP is not a cause of low indexing. Plan: `process/general-plans/active/otw-lcp-and-indexing_PLAN_04-11-26.md`.
+- **Transient Vercel build failure:** `next/font/google` can fail to fetch IBM Plex Sans (`TypeError: Cannot read properties of null (reading '1')` in `nextFontGoogleFontLoader`); 2 of 4 builds failed this way on 2026-11-04. A failed build is never promoted (production stays safe) but the release does not go live. Remedy: redeploy the same commit. Proposed permanent fix (`next/font/local`): `process/general-plans/backlog/vercel-google-fonts-build-flake_NOTE_04-11-26.md`.
 
 ---
 
