@@ -2,7 +2,7 @@
 
 **Date**: 05-11-26
 **Complexity**: SIMPLE (one session, ~12 files, no schema/API)
-**Status**: 🔨 CODE DONE (05-11-26) — Fully-Automated gates green; Agent-Probe rows + owner Preview sign-off pending
+**Status**: 🧪 TESTING (05-11-26) — merged-pending-live-verification: PR #68 merged to main by owner decision before the visual check; Fully-Automated gates green; Agent-Probe rows (AC1-AC6) + owner confirmation against `mockup-otw.png` on the live site still pending. Plan stays in `active/` until then.
 **Feature**: general (articles surface; `process/features/articles/_GUIDE.md` updated)
 **Branch**: `claude/eager-hamilton-4wz5cf` (PR from/into it)
 **Primary execute anchor**: this file.
@@ -289,3 +289,9 @@ Hard stop conditions / safety constraints:
 Next phase: EXECUTE: /home/user/dtw-web/process/general-plans/active/disclosure-redesign_05-11-26/disclosure-redesign_PLAN_05-11-26.md
 Validate contract: inline in plan (## Validate Contract, Gate: PASS, E1-E7)
 Execute start: pnpm install --frozen-lockfile; lint baseline; checklist 0→9; gates: pnpm typecheck | lint no new findings | pnpm --filter web build | test:exclusive && test:single-home | grep guards 0/0/0/3/0 | mock-Central probe light/dark en/vi/id | high-risk pack: no
+
+## UPDATE PROCESS summary (05-11-26)
+- Closeout classification: WITH_GAPS -> keep in `active/` (TESTING). Archival is blocked by the vacuous-green rule: AC1-AC6 rest on Agent-Probe only (no automated DOM test), so the plan is not archivable until the owner confirms live.
+- Merge: owner chose to merge PR #68 before the browser probe; CI typecheck + Vercel Preview build green.
+- Invariant #5 text in `process/context/all-context.md` verified consistent with the shipped behaviour (one end note, plain-text kicker, affiliate end note).
+- Follow-ups captured: `process/general-plans/backlog/disclosure-redesign-followups_NOTE_05-11-26.md`.
