@@ -2,12 +2,10 @@
 
 import Image from "next/image";
 import { useT } from "@/lib/i18n";
+import { ATA_URL } from "@/lib/asia-tech-awards";
 
 // TODO: metadata — add generateMetadata once these client marketing pages
 // move to a server-component shell.
-
-// The Asia Tech Awards run as a section of BriefAsia.com, not on this site.
-const ATA_URL = "https://www.briefasia.com/asia-tech-awards";
 
 export default function AwardsPage() {
   const t = useT();
