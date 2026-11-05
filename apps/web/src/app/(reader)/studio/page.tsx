@@ -48,9 +48,9 @@ export default function StudioPage() {
       icon: "check",
       head: t("Always labelled", "Luôn gắn nhãn", "Selalu diberi label"),
       body: t(
-        "Every Studio piece carries a yellow background, a 'Paid Partner' tag, and a disclosure at the top, middle, and end. Readers never have to guess.",
-        "Mỗi bài Studio đều có nền vàng, nhãn 'Paid Partner' và phần minh bạch ở đầu, giữa và cuối. Độc giả không bao giờ phải đoán.",
-        "Setiap karya Studio memiliki latar kuning, label 'Paid Partner', dan pengungkapan di awal, tengah, dan akhir. Pembaca tak perlu menebak."
+        "Every Studio piece carries a 'Paid Partner' label at the top and a yellow disclosure note at the end. Readers never have to guess.",
+        "Mỗi bài Studio đều có nhãn 'Paid Partner' ở phần đầu và một ghi chú minh bạch nền vàng ở cuối bài. Độc giả không bao giờ phải đoán.",
+        "Setiap karya Studio memiliki label 'Paid Partner' di bagian atas dan catatan pengungkapan berlatar kuning di akhir. Pembaca tak perlu menebak."
       ),
     },
     {

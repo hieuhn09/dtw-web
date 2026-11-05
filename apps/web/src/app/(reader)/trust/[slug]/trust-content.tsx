@@ -297,9 +297,9 @@ export function TrustContent({ slug, corrections }: TrustContentProps) {
         [
           t("OTW Studio", "OTW Studio", "OTW Studio"),
           t(
-            "Sponsored content is produced by a separate studio team. Articles carry a yellow background, a 'Paid Partner' label, and a top/middle/end disclosure that cannot be turned off.",
-            "Nội dung tài trợ do nhóm studio riêng sản xuất. Bài có nền vàng, nhãn 'Đối tác trả phí', và công bố ở đầu/giữa/cuối không thể tắt.",
-            "Konten bersponsor diproduksi tim studio terpisah. Artikel berlatar kuning, berlabel 'Mitra Berbayar', dan pengungkapan atas/tengah/akhir yang tak bisa dimatikan."
+            "Sponsored content is produced by a separate studio team. Articles carry a 'Paid Partner' label at the top and a yellow-background disclosure note at the end of the article; it cannot be switched off.",
+            "Nội dung tài trợ do nhóm studio riêng sản xuất. Bài có nhãn 'Đối tác trả phí' ở phần đầu và một ghi chú công bố nền vàng ở cuối bài; ghi chú này không thể tắt.",
+            "Konten bersponsor diproduksi tim studio terpisah. Artikel berlabel 'Mitra Berbayar' di bagian atas dan catatan pengungkapan berlatar kuning di akhir artikel; catatan ini tak bisa dimatikan."
           ),
         ],
         [
@@ -325,9 +325,9 @@ export function TrustContent({ slug, corrections }: TrustContentProps) {
         [
           t("Affiliate links", "Liên kết affiliate", "Tautan afiliasi"),
           t(
-            "Some product reviews carry affiliate links. They are marked with a $ icon and a tooltip on hover. Commission rates and partners are listed in our transparency report.",
-            "Một số bài đánh giá có liên kết affiliate, được đánh dấu bằng biểu tượng $ và chú thích khi rê chuột. Tỷ lệ hoa hồng và đối tác có trong báo cáo minh bạch.",
-            "Beberapa ulasan produk memuat tautan afiliasi, ditandai ikon $ dan tooltip saat hover. Tarif komisi dan mitra ada di laporan transparansi."
+            "Some product reviews carry affiliate links. They are disclosed in a note at the end of the article. Commission rates and partners are listed in our transparency report.",
+            "Một số bài đánh giá có liên kết affiliate, được công bố trong một ghi chú ở cuối bài. Tỷ lệ hoa hồng và đối tác có trong báo cáo minh bạch.",
+            "Beberapa ulasan produk memuat tautan afiliasi, diungkapkan dalam catatan di akhir artikel. Tarif komisi dan mitra ada di laporan transparansi."
           ),
         ],
         [

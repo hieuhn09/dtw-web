@@ -2,7 +2,7 @@
 
 **Date**: 05-11-26
 **Complexity**: SIMPLE (one session, ~12 files, no schema/API)
-**Status**: ⏳ PLANNED
+**Status**: 🔨 CODE DONE (05-11-26) — Fully-Automated gates green; Agent-Probe rows + owner Preview sign-off pending
 **Feature**: general (articles surface; `process/features/articles/_GUIDE.md` updated)
 **Branch**: `claude/eager-hamilton-4wz5cf` (PR from/into it)
 **Primary execute anchor**: this file.
@@ -55,16 +55,16 @@ In: files listed in Touchpoints. Out (follow-up only): homepage `SponsoredStrip`
 - NOT touched: homepage sponsored/deep-dive/best-of bands, `--sponsored-border` token (still used by AI leaderboard).
 
 ## Implementation Checklist
-1. Rewrite `packages/ui/src/disclosure-box.tsx` → `DisclosureNote` per spec B; update `packages/ui/src/index.ts` exports.
-2. Simplify `article-body.tsx`: drop `splitBody`, `SponsoredBox`, import, and the unused `article` prop; single `RichText`. Update the call at `article-content.tsx:327` to `<ArticleBody body={body} />`.
-3. `article-content.tsx` header: replace two chips with text kickers `Deep Dive` / `Paid Partner` (no sponsor suffix), `var(--muted)` (translations kept).
-4. `article-content.tsx`: insert sponsored note after `<ArticleBody>`; replace affiliate band with affiliate note directly after it; remove old band.
-0. BEFORE step 1: capture lint baseline `pnpm --filter web lint > "$SCRATCH/lint-baseline.txt" 2>&1 || true` (scratchpad, not committed).
-5. Add `apps/web/src/components/sponsored-kicker.tsx` (color `var(--muted)`); mount in pillar-content (2), pillar-showcase (1), related-row (1). Do NOT mount in home-hero.
-6. Update trust-content sponsored + affiliate copy (en/vi/id); studio page copy; re-grep advertise.
-7. Update invariant #5 docs (date 05-11-26, "owner decision"): `all-context.md:26` and `:137`, `uxui/all-uxui.md:192-195`, `integrations/all-integrations.md:136`, `articles/_GUIDE.md:17-19`, `:48-58`, `:70`, `about-trust/_GUIDE.md:99-100`.
-8. Run the 4 grep guards from the Verification Evidence fenced block (expected 0 / 0 / 3 / 0).
-9. Run verification gates; manual check; commit; push branch; open PR into `claude/eager-hamilton-4wz5cf` (or PR from it to main, per owner — EXECUTE confirms target from git remote state).
+- [x] 1. Rewrite `packages/ui/src/disclosure-box.tsx` → `DisclosureNote` per spec B; update `packages/ui/src/index.ts` exports.
+- [x] 2. Simplify `article-body.tsx`: drop `splitBody`, `SponsoredBox`, import, and the unused `article` prop; single `RichText`. Update the call at `article-content.tsx:327` to `<ArticleBody body={body} />`.
+- [x] 3. `article-content.tsx` header: replace two chips with text kickers `Deep Dive` / `Paid Partner` (no sponsor suffix), `var(--muted)` (translations kept).
+- [x] 4. `article-content.tsx`: insert sponsored note after `<ArticleBody>`; replace affiliate band with affiliate note directly after it; remove old band.
+- [x] 0. BEFORE step 1: capture lint baseline `pnpm --filter web lint > "$SCRATCH/lint-baseline.txt" 2>&1 || true` (scratchpad, not committed).
+- [x] 5. Add `apps/web/src/components/sponsored-kicker.tsx` (color `var(--muted)`); mount in pillar-content (2), pillar-showcase (1), related-row (1). Do NOT mount in home-hero.
+- [x] 6. Update trust-content sponsored + affiliate copy (en/vi/id); studio page copy; re-grep advertise.
+- [x] 7. Update invariant #5 docs (date 05-11-26, "owner decision"): `all-context.md:26` and `:137`, `uxui/all-uxui.md:192-195`, `integrations/all-integrations.md:136`, `articles/_GUIDE.md:17-19`, `:48-58`, `:70`, `about-trust/_GUIDE.md:99-100`.
+- [x] 8. Run the 4 grep guards from the Verification Evidence fenced block (expected 0 / 0 / 3 / 0).
+- [~] 9. Run verification gates; manual check; commit; push branch; open PR into `claude/eager-hamilton-4wz5cf` (or PR from it to main, per owner — EXECUTE confirms target from git remote state).
 
 ## Verification Evidence
 | Gate / Scenario | Strategy | Proves SPEC criterion |
@@ -267,6 +267,12 @@ What this coverage does NOT prove:
 
 Gate: PASS (no FAILs; all 6 first-pass concerns resolved in plan via PVL cycle 1; E4 reconciled to the plan)
 Accepted by: n/a (PASS). Prior CONDITIONAL concerns closed: dark-label-contrast, header-kicker-sponsor-suffix, unused-ArticleBody-prop, pillar-showcase-mount, missing-doc-touchpoints, gate precision.
+
+## Execution Log (05-11-26)
+- Gates: `pnpm typecheck` 0; lint = baseline (same single pre-existing warning in article-body.tsx, line shifted 78→75); build 0 (placeholder DATABASE_URL/AUTH_DATABASE_URL/BETTER_AUTH_SECRET, as tests/all-tests.md allows; one earlier run hit a transient Google Fonts fetch failure); test:exclusive 9/9, test:single-home 6/6; guards 0 / 0 / 0 / 3 (/trust/ai 239-241) / 0.
+- Deviation (within blast radius): `apps/web/src/app/globals.css` comment (line ~617) named `DisclosureBox` and tripped code guard 1; reworded comment only, no CSS change.
+- Deviation (minor): header kickers rendered with a `·` separator span before each, 10px mono uppercase `--muted`; card kicker is a `<div>` (own line) rather than inline `<span>`.
+- Pending: Agent-Probe rows (mock-Central browser probe light/dark, en/vi/id), owner Preview sign-off. PR #68 already exists; no new PR opened.
 
 ## Autonomous Goal Block
 

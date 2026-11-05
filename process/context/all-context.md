@@ -23,7 +23,7 @@ Start here before loading deeper context files.
 
 The three share `packages/db`. Engine writes go through the **Payload API only** (never directly to Postgres) so editorial hooks (ISR revalidation, search indexing, OG image generation) always fire.
 
-**Editorial integrity is the product.** Clear separation between newsroom reporting, sponsored content (`Paid Partner`, mustard `#FEF3C7` background), and affiliate links (icon + disclosure tooltip). No popups. No in-article advertising. Disclosure boxes on sponsored articles cannot be dismissed. (AI-assisted inline disclosure removed 2026-06-05 — see invariant #5.)
+**Editorial integrity is the product.** Clear separation between newsroom reporting, sponsored content (`Paid Partner`, mustard `#FEF3C7` background), and affiliate links (disclosed in an end-of-article note). No popups. No in-article advertising. The sponsored disclosure is ONE end-of-article note that cannot be dismissed (owner decision 05-11-26). (AI-assisted inline disclosure removed 2026-06-05 — see invariant #5.)
 
 ### Audience (priority order)
 
@@ -134,7 +134,7 @@ Numbered, terse, load-bearing. Each one ties to a feature folder or context grou
 2. **Conflict resolution = `lockedFields` + `editedByHuman` + optimistic lock** (compare `version` or `updatedAt`). Engine never overwrites a field that has been locked or that a human has edited. Human always wins on the same field. See `database/`.
 3. **`origin: 'engine' | 'manual'`** is a required column on every article. Marks provenance.
 4. **Paywall = soft block.** Meter (cookie for guests, DB for users) — never block mid-article. Phase 1 has no payment, only a sign-in nudge after ≥ 3 reads. The "3" must be configurable in CMS, never hardcoded. See `process/features/articles/_GUIDE.md`.
-5. **Disclosure boxes (sponsored)** appear at top + middle + bottom of article and cannot be dismissed. **AI-assisted inline disclosure was removed by product decision 2026-06-05** (the header "AI-ASSISTED" badge + the 3 `kind="ai"` `DisclosureBox`es). The `aiAssisted` field still exists on Articles and the Engine still sets it `true` — it is just no longer surfaced inline. KNOWN GAP: the `/trust/ai` page still describes AI disclosure; reconcile that copy if/when the policy is finalised.
+5. **Sponsored disclosure appears EXACTLY ONCE**, as a note at the END of the article body (`DisclosureNote`, background `var(--sponsored)`, accent left border), plus a plain-text 'Paid Partner' kicker in the header; it cannot be dismissed. Affiliate disclosure is a second end-of-article note (neutral border). Changed 05-11-26 — owner decision (was three boxes: top+middle+bottom). **AI-assisted inline disclosure was removed by product decision 2026-06-05** (the header "AI-ASSISTED" badge + the 3 `kind="ai"` `DisclosureBox`es). The `aiAssisted` field still exists on Articles and the Engine still sets it `true` — it is just no longer surfaced inline. KNOWN GAP: the `/trust/ai` page still describes AI disclosure; reconcile that copy if/when the policy is finalised.
 6. **No popups. No mid-article ads.** Period.
 7. **Brand colors.** Pinned: sponsored bg `#FEF3C7` (dark `#3B2E0A`), up `#10B981`, down `#EF4444`, dark bg `#0F172A` / text `#E2E8F0`. **2026-06-14 design refresh:** the brand's coral accent softened `#E04E1F` → `#D4623C` (terracotta), `--accent-ink` → `#B14A28`. New brand tokens `--banner`/`--brand-navy` deep navy `#1B2A52` (dark `#16223C` for `--banner`, `#E2E8F0` for `--brand-navy`), `--brand-amber` `#D4623C`, `--amber` `#F59E0B`. Six pillar colors re-toned to a muted earthy set (`--ai #3A4E8C`, `--startups #3E6E80`, `--latest #B0512E` (renamed from `--asia` when the asia pillar became latest; value unchanged), `--dev #46735C`, `--products #8F7238`, `--policy #5A6577`). **These hex values are unchanged by the 2026-09 Opentechwire rebrand (ledger D10) — only the old "DTW" name in this note's own wording was removed; no token, no asset, and no color changed.** See `uxui/`.
 8. **Pillar/Sub-section/Tag are CMS entities** — adding a new pillar is a CMS write, not a code deploy. Routes (`/[pillar]/[subsection]/[slug]`), sitemap, and RSS regenerate automatically within 5 minutes.
@@ -265,7 +265,7 @@ dtw-web/
 
 **Import aliases (planned, set in `tsconfig.json` once scaffolded):** `@/` → `apps/web/src/`, `@dtw/db` → `packages/db/src`, `@dtw/ui` → `packages/ui/src`, `@dtw/config` → `packages/config/src`.
 
-**Component layout.** Route-specific components live in the route's `_components/` directory. Shared primitives go in `@dtw/ui`. The design's `ui.jsx` (PillarTag, ByLine, DisclosureBox, Button, Spark, ArrowUpDown, Placeholder, Skeleton) is the canonical reference for primitive shape, not the implementation.
+**Component layout.** Route-specific components live in the route's `_components/` directory. Shared primitives go in `@dtw/ui`. The design's `ui.jsx` (PillarTag, ByLine, DisclosureBox [now `DisclosureNote`], Button, Spark, ArrowUpDown, Placeholder, Skeleton) is the canonical reference for primitive shape, not the implementation.
 
 **Naming.** kebab-case files, PascalCase components, camelCase functions / variables.
 
@@ -284,7 +284,7 @@ dtw-web/
 | Folder | Scope |
 |---|---|
 | `homepage/` | Hero (LQIP, ≤ 440px), Brief band, Wire Drops realtime, Pillar showcase (6 × 4), Most Read (view-ranked; was Asia Spotlight until 2026-07-27), Dashboards teaser, Deep Dive of the Week, Awards banner, Sponsored Strip, Best of Reviews (affiliate), Podcast, Newsletter CTA |
-| `articles/` | Article page (serif body, ByLine, hero LQIP/HLS), disclosure boxes, TTS bar (Phase 2), related row, save / share, paywall meter + sign-in nudge (Phase 1); also covers pillar listing pages `/[pillar]/[subsection]/[slug]` |
+| `articles/` | Article page (serif body, ByLine, hero LQIP/HLS), end-of-article disclosure note, TTS bar (Phase 2), related row, save / share, paywall meter + sign-in nudge (Phase 1); also covers pillar listing pages `/[pillar]/[subsection]/[slug]` |
 | `cms/` | Payload 3 setup, `/admin` embedded mount, RBAC 5 roles, taxonomy entities (Pillar / Sub-section / Tag), sponsor slot configuration, disclosure flag enforcement |
 | `dashboards/` | Asia Funding Tracker + AI Leaderboard (sortable, filterable, sparkline, count-up, CSV export, methodology, sponsor slot) |
 | `search/` | Meilisearch index (articles + awards + people), faceted search with pillar/date/type filters, ⌘K overlay from header, PostHog query analytics for zero-result discovery |

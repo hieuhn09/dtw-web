@@ -96,8 +96,8 @@ Phase 2. Auto-generated quarterly from `Corrections`, `RevenueBreakdown` (planne
 
 Editorial firewall doc. Lives in Payload CMS as a single rich-text page. Must include:
 
-- What "Paid Partner" means (`var(--sponsored)` band, disclosure box, newsroom not involved)
-- What "affiliate" means (icon + tooltip, commission disclosed, redirect tracker logs click)
+- What "Paid Partner" means (header 'Paid Partner' label, end-of-article disclosure note on `var(--sponsored)`, newsroom not involved — owner decision 05-11-26)
+- What "affiliate" means (end-of-article note, commission disclosed, redirect tracker logs click)
 - Why Opentechwire doesn't run mid-article ads or popups (renamed from "DTW" by rebrand decision D1/§5.1.1)
 
 ## i18n

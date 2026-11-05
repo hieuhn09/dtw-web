@@ -4,21 +4,21 @@
 
 ## Scope
 
-The article reader page (`/article/[slug]` — final route shape TBD: likely `/[pillar]/[subsection]/[slug]` per the dynamic taxonomy invariant) AND the pillar listing pages (`/[pillar]` and `/[pillar]/[subsection]`). Owns the disclosure-box discipline, the paywall meter, the TTS bar (Phase 2), related-articles row, save / share controls.
+The article reader page (`/article/[slug]` — final route shape TBD: likely `/[pillar]/[subsection]/[slug]` per the dynamic taxonomy invariant) AND the pillar listing pages (`/[pillar]` and `/[pillar]/[subsection]`). Owns the disclosure-note discipline, the paywall meter, the TTS bar (Phase 2), related-articles row, save / share controls.
 
 Does NOT cover: the homepage hero (`homepage/`), CMS authoring UI (`cms/`), Better-Auth flows (`account/`).
 
 ## Article page composition
 
-1. **Pillar tag chip** + breadcrumb
+1. **Pillar tag chip** + breadcrumb + plain-text `Deep Dive` / `Paid Partner` kickers (`var(--muted)`, no chip)
 2. **Title** (serif, 38–46px, `clamp` for fluid scaling)
 3. **Byline** — `By {Author} [and {CoAuthor}] · {date} · {readMin} min read`, all separators `·` in `var(--hair-2)`
 4. **Hero** — LQIP image (`next/image`) or HLS video. CLS < 0.05.
-5. **Top disclosure box** (sponsored / AI-assisted, if applicable) — non-dismissible
+5. *(no box here — removed 05-11-26, owner decision)*
 6. **Body** — 17px serif, line-height 1.6, 60–75 chars per line, Source Serif 4 with `ss01,ss02` features. RSC + streaming.
-7. **Middle disclosure box** (sponsored only) — non-dismissible
+7. **End-of-article disclosure notes** — sponsored (`--sponsored` bg), then affiliate; exactly once, non-dismissible, outside the paywall branch
 8. **TTS bar** (Phase 2) — Listen / download `.mp3`
-9. **Bottom disclosure box** (sponsored / AI-assisted) — non-dismissible
+9. *(no bottom box — the single end note at 7 replaces it)*
 10. **Save / Share row** — bookmark, OG share. OG image is auto-generated 1200×630 keyed off article slug.
 11. **Related row** — lazy-loaded so it doesn't block LCP.
 12. **Footer**
@@ -47,15 +47,14 @@ Phase 1 behaviour (Phase 2 will add Pro gating on top):
 
 Phase 2 adds real Pro gating with a different banner, but the soft-block rule still holds.
 
-## Disclosure boxes (invariant #5 — non-dismissible)
+## Disclosure note (invariant #5 — non-dismissible; owner decision 05-11-26)
 
-From `design/project/src/ui.jsx::DisclosureBox`:
+`DisclosureNote` in `packages/ui/src/disclosure-box.tsx`, mounted by `apps/web/src/components/article/article-content.tsx` directly after `<ArticleBody>`:
 
-- **Sponsored:** `var(--sponsored)` bg, `#E0B900` border, title "Paid Partner · {sponsor}", body "This is a sponsored feature produced by OTW Studio for the partner above. The Opentechwire newsroom was not involved in writing or editing." (renamed from "DTW Studio"/"The DTW newsroom..." by rebrand decision D1/§5.1.1 — the live render at `article-body.tsx:139-141` still says "DTW" as of this Phase 0 note; fixed in rebrand Phase 4, must match this exact string)
-- **AI-assisted:** `var(--surface-2)` bg, `var(--hair-2)` border, title "AI-assisted reporting", body "This article uses AI tools for translation or transcription. All facts were verified, and all writing was done by a human reporter."
-- Top + middle + bottom placement — `position` prop adjusts the "reminder" subtitle ("· reminder (middle)" / "· reminder (bottom)")
-- 24×24 ink badge with `$` or `AI` mono caps icon
-- No close button. Period.
+- **Sponsored:** `var(--sponsored)` bg, `2px solid var(--accent)` left border, label "Paid Partner · {sponsor}" in `color-mix(in oklab, var(--accent) 65%, var(--ink))`, body "Produced by OTW Studio for {sponsor}. The Opentechwire newsroom was not involved." (translated vi/id).
+- **Affiliate:** neutral `var(--hair-2)` left border, label "Affiliate links" (`var(--muted)`), body "Some links in this story earn Opentechwire a commission. Our recommendations are made independently."
+- Exactly ONE sponsored note, at the end (was three boxes: top+middle+bottom; `splitBody` removed). No `$`/AI badge, no position subtitle, no close button. Period.
+- Header carries plain-text `Deep Dive` / `Paid Partner` kickers; cards carry `SponsoredKicker` (`apps/web/src/components/sponsored-kicker.tsx`).
 
 ## i18n
 
@@ -67,7 +66,7 @@ Dates use `fmtDateL(iso, lang)`.
 
 - `apps/web/src/app/(reader)/[pillar]/[[...slug]]/page.tsx` — dynamic article + listing
 - `apps/web/src/app/(reader)/_components/article-body.tsx` — RSC body renderer
-- `apps/web/src/components/disclosure-box.tsx` — port of `design/project/src/ui.jsx::DisclosureBox`
+- `packages/ui/src/disclosure-box.tsx` — exports `DisclosureNote` (end-of-article note; replaced `DisclosureBox` 05-11-26)
 - `apps/web/src/lib/paywall.ts` — meter increment, threshold check, nudge state
 - `apps/web/src/lib/og.ts` — OG image generation (Vercel OG)
 
@@ -75,7 +74,7 @@ Dates use `fmtDateL(iso, lang)`.
 
 - `process/context/database/all-database.md` — article schema, `lockedFields`, `origin`
 - `process/context/integrations/all-integrations.md` — Engine ↔ Payload contract
-- `process/context/uxui/all-uxui.md` — disclosure box primitive, type scale
+- `process/context/uxui/all-uxui.md` — disclosure note primitive, type scale
 - `process/context/auth/all-auth.md` — sign-in nudge integration with auth modal
 - `process/features/cms/_GUIDE.md` — how editors set sponsored / AI flags
 

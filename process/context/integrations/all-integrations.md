@@ -133,7 +133,7 @@ subscriptions: {
 ## 5. Affiliate Redirect Tracker
 
 - Best of Reviews on the homepage and inline product mentions link out via `/r/[token]` — the redirect handler logs the click (PostHog event) and 302s to the upstream URL.
-- Each affiliate link gets an icon + disclosure tooltip on the source surface (invariant: no hidden affiliate links).
+- Affiliate articles carry an end-of-article affiliate note (`DisclosureNote kind="affiliate"`) — owner decision 05-11-26 (invariant: no hidden affiliate links).
 - Tokens stored in Payload `AffiliateLinks` collection (Admin only writes).
 - Disclosure copy: "Opentechwire may earn a commission on purchases made via this link." Localised. (Renamed from "DTW may earn a commission..." by rebrand decision D1/§5.1.1 — full-name form because this is a complete sentence, not a standalone label. The live render at `article-content.tsx:285-287` and `best-of-reviews.tsx:70` still says "DTW" as of this Phase 0 note; that code is fixed in rebrand Phase 4 and must match this exact string.)
 

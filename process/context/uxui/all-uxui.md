@@ -188,12 +188,13 @@ When implementing in Next.js + shadcn/ui, match the API + visual behavior of the
 - Author name in `var(--muted)` (NOT hardcoded grey)
 - Date uses `fmtDateL(iso, lang)` — localised
 
-### `DisclosureBox`
-- `kind: 'sponsored' | 'ai'`, `sponsor?: string`, `position: 'top' | 'middle' | 'bottom'`
-- Sponsored: `var(--sponsored)` bg + `#E0B900` border + "Paid Partner · {sponsor}" title
-- AI: `var(--surface-2)` bg + `var(--hair-2)` border + "AI-assisted reporting" title
-- Top, middle, and bottom positions on sponsored articles — non-dismissible (invariant #5)
-- 12×14 padding, 6px border radius, 20px vertical margin
+### `DisclosureNote` (was `DisclosureBox`; changed 05-11-26 — owner decision)
+- File `packages/ui/src/disclosure-box.tsx`; props `kind: 'sponsored' | 'affiliate'`, `label`, `body` (callers pass translated strings); renders an `<aside>`
+- Sponsored: `var(--sponsored)` bg, `2px solid var(--accent)` left border, padding `10px 14px`, radius `0 4px 4px 0`; label color `color-mix(in oklab, var(--accent) 65%, var(--ink))` (≥4.5:1 light + dark; never raw `--accent-ink`)
+- Affiliate: transparent bg, `2px solid var(--hair-2)` left border, padding `6px 0 6px 14px`, label `var(--muted)`
+- Label: mono 10px uppercase; body 13px / 1.55 `var(--muted)`; no icon, no position/reminder, no close button
+- Placed ONCE after the article body (sponsored, then affiliate) — invariant #5. No AI variant (AI display removed 2026-06-05)
+- Header shows plain-text `Deep Dive` / `Paid Partner` kickers in `var(--muted)`; cards show `Paid Partner · {sponsor}` via `SponsoredKicker`
 
 ### `Button`
 - Variants: `primary` (ink bg) | `accent` (coral) | `outline` | `ghost`

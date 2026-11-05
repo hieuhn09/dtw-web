@@ -1,12 +1,9 @@
 "use client";
 
 import { RichText, type JSXConvertersFunction } from "@payloadcms/richtext-lexical/react";
-import { DisclosureBox } from "@dtw/ui";
-import type { ArticleBodyState, ArticleView } from "@/lib/article-view";
+import type { ArticleBodyState } from "@/lib/article-view";
 import { creditLabel } from "@/lib/credit";
 import { useT } from "@/lib/i18n";
-
-type EditorState = NonNullable<ArticleBodyState>;
 
 /** The populated media doc inside a body upload node (Central depth-2 shape). */
 type UploadDoc = {
@@ -90,23 +87,6 @@ const bodyConverters: JSXConvertersFunction = ({ defaultConverters }) => ({
   },
 });
 
-/**
- * Split the Lexical root children in half so a middle disclosure box can be
- * injected between the two halves (invariant #5: sponsored boxes appear at
- * top + middle + bottom). Each half is itself a valid editor state that
- * RichText can render independently. (AI-assisted inline disclosure was removed
- * by product decision 2026-06-05 — see all-context.md invariant #5.)
- */
-function splitBody(body: EditorState): [EditorState, EditorState] {
-  const children = body.root.children ?? [];
-  const mid = Math.ceil(children.length / 2);
-  const mk = (slice: typeof children): EditorState => ({
-    ...body,
-    root: { ...body.root, children: slice },
-  });
-  return [mk(children.slice(0, mid)), mk(children.slice(mid))];
-}
-
 const proseStyle: React.CSSProperties = {
   fontFamily: "var(--font-serif)",
   fontSize: 17,
@@ -116,69 +96,22 @@ const proseStyle: React.CSSProperties = {
   margin: "0 auto",
 };
 
-/**
- * Localized sponsored disclosure (invariant #10: chrome is translated). Passes
- * title/body overrides to the @dtw/ui DisclosureBox primitive (which is i18n-free).
- */
-function SponsoredBox({
-  article,
-  position,
-}: {
-  article: ArticleView;
-  position: "top" | "middle" | "bottom";
-}) {
-  const t = useT();
-  if (!article.sponsored) return null;
-  const label = t("Paid Partner", "Đối tác trả phí", "Mitra Berbayar");
-  return (
-    <DisclosureBox
-      kind="sponsored"
-      sponsor={article.sponsor}
-      position={position}
-      title={`${label}${article.sponsor ? ` · ${article.sponsor}` : ""}`}
-      body={t(
-        "This is a sponsored feature produced by OTW Studio for the partner above. The Opentechwire newsroom was not involved in writing or editing.",
-        "Đây là nội dung tài trợ do OTW Studio sản xuất cho đối tác nêu trên. Toà soạn Opentechwire không tham gia viết hay biên tập.",
-        "Ini adalah konten bersponsor yang diproduksi oleh OTW Studio untuk mitra di atas. Ruang redaksi Opentechwire tidak terlibat dalam penulisan atau penyuntingan."
-      )}
-    />
-  );
-}
-
-export function ArticleBody({
-  body,
-  article,
-}: {
-  body: ArticleBodyState;
-  article: ArticleView;
-}) {
+export function ArticleBody({ body }: { body: ArticleBodyState }) {
   const hasBody = Boolean(body && (body.root.children?.length ?? 0) > 0);
 
   if (!hasBody || !body) {
     return (
       <div style={proseStyle} className="article-prose">
-        <SponsoredBox article={article} position="top" />
         <p className="text-mute" style={{ fontStyle: "italic" }}>
           This article has no body content yet.
         </p>
-        <SponsoredBox article={article} position="bottom" />
       </div>
     );
   }
 
-  const [first, second] = splitBody(body);
-
   return (
     <div style={proseStyle} className="article-prose">
-      <SponsoredBox article={article} position="top" />
-
-      <RichText converters={bodyConverters} data={first} />
-
-      <SponsoredBox article={article} position="middle" />
-
-      <RichText converters={bodyConverters} data={second} />
-
-      <SponsoredBox article={article} position="bottom" />
+      <RichText converters={bodyConverters} data={body} />
     </div>
   );
 }
