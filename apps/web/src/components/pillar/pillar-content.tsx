@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Button, PillarTag } from "@dtw/ui";
 import { CoverArt } from "@/components/cover-art";
 import { ExclusiveChip } from "@/components/exclusive-chip";
+import { SponsoredKicker } from "@/components/sponsored-kicker";
 import { Icon } from "@/components/icons";
 import { BylineWired } from "@/components/byline-wired";
 import { TimeAgo } from "@/components/time-ago";
@@ -211,6 +212,7 @@ export function PillarContent({
                 </div>
                 <ExclusiveChip article={featured} />
               </div>
+              <SponsoredKicker article={featured} style={{ marginBottom: 8 }} />
               <h2
                 className="serif"
                 style={{
@@ -259,6 +261,7 @@ export function PillarContent({
                 <PillarTag id={a.pillar} label={localizedPillarLabel(a.pillar, lang)} />
                 <ExclusiveChip article={a} />
               </div>
+              <SponsoredKicker article={a} style={{ marginTop: 8 }} />
               <h3
                 className="serif"
                 style={{

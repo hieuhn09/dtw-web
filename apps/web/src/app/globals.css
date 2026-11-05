@@ -614,8 +614,8 @@ button[data-glow="1"]:hover {
    (font, size, colour) is inherited from the .article-prose wrapper.
    NB: use a descendant (not direct-child) combinator — RichText wraps its
    output in a <div class="payload-richtext">, so paragraphs are nested one
-   level below .article-prose, not direct children. DisclosureBox uses only
-   <div>s, so this never styles disclosure copy. */
+   level below .article-prose, not direct children. The DisclosureNote sits
+   outside .article-prose (after the body), so this never styles it. */
 .article-prose p {
   margin: 0 0 22px;
 }

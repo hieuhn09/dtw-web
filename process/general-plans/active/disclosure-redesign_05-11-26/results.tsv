@@ -1,0 +1,5 @@
+cycle	domain	gate	gaps_open	loop_status	note
+0	plan	CONDITIONAL	6	BASELINE	first-pass validate 2026-11-05 (dark contrast, kicker drift, unused prop, showcase mount, invariant docs, gate precision)
+1	plan	CONDITIONAL	6	SUPPLEMENT_APPLIED	6 gaps addressed; re-validate (reconcile E4)
+2	plan	PASS	0	HALTED_SUCCESS	re-validate after cycle 1; E4 reconciled
+3	tests	PASS	0	HALTED_SUCCESS	EVL vc-tester all gates green @4e78c55 (build env-limited)

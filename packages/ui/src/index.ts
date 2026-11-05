@@ -3,10 +3,9 @@ export { ExclusiveChip, type ExclusiveChipProps } from "./exclusive-chip";
 export { Button, type ButtonProps, type ButtonVariant, type ButtonSize } from "./button";
 export { Byline, type BylineProps, type BylineLabels } from "./byline";
 export {
-  DisclosureBox,
-  type DisclosureBoxProps,
-  type DisclosureKind,
-  type DisclosurePosition,
+  DisclosureNote,
+  type DisclosureNoteProps,
+  type DisclosureNoteKind,
 } from "./disclosure-box";
 export { Spark, type SparkProps } from "./spark";
 export { ArrowUpDown, type ArrowUpDownProps } from "./arrow-up-down";

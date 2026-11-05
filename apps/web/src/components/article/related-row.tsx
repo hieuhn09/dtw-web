@@ -4,6 +4,7 @@ import Link from "next/link";
 import { PillarTag } from "@dtw/ui";
 import { CoverArt } from "@/components/cover-art";
 import { ExclusiveChip } from "@/components/exclusive-chip";
+import { SponsoredKicker } from "@/components/sponsored-kicker";
 import type { ArticleView } from "@/lib/article-view";
 import { localizedPillarLabel, useLang, useT } from "@/lib/i18n";
 import { cardByline } from "@/lib/single-home-pillars";
@@ -62,6 +63,7 @@ export function RelatedRow({ articles }: RelatedRowProps) {
                 <PillarTag id={a.pillar} label={localizedPillarLabel(a.pillar, lang)} />
                 <ExclusiveChip article={a} />
               </div>
+              <SponsoredKicker article={a} style={{ marginTop: 8 }} />
               <h4
                 className="serif"
                 style={{

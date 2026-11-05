@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { PillarTag } from "@dtw/ui";
+import { DisclosureNote, PillarTag } from "@dtw/ui";
 import { Avatar, CoverArt } from "@/components/cover-art";
 import { ArticleBody } from "@/components/article/article-body";
 import { ShareBar } from "@/components/article/share-bar";
@@ -28,6 +28,16 @@ import { useShell } from "@/lib/shell";
  *  feeds the header, the hero wrapper and the hero `sizes` below, so they can
  *  not drift apart. */
 const ARTICLE_COLUMN_MAX_WIDTH = 780;
+
+/** Plain-text header kicker (Deep Dive / Paid Partner): no chip, no hex
+ *  (invariant #5, owner decision 05-11-26). `--muted` keeps ≥4.5:1. */
+const headerKickerStyle: React.CSSProperties = {
+  fontSize: 10,
+  fontWeight: 600,
+  letterSpacing: ".1em",
+  textTransform: "uppercase",
+  color: "var(--muted)",
+};
 
 /** Horizontal `.container` padding per side (globals.css `.container`: 24px,
  *  16px at <=720px). Used only to derive the hero `sizes` breakpoints. */
@@ -143,37 +153,20 @@ export function ArticleContent({ article, body, related }: ArticleContentProps) 
           <ExclusiveChip article={article} href={EXCLUSIVE_DEFINITION_HREF} />
           <span className="mono text-mute" style={{ fontSize: 11 }}>{article.section}</span>
           {article.deepDive && (
-            <span
-              className="mono"
-              style={{
-                fontSize: 10,
-                padding: "2px 8px",
-                background: "var(--ink)",
-                color: "var(--paper)",
-                borderRadius: 3,
-                fontWeight: 600,
-                letterSpacing: ".08em",
-              }}
-            >
-              {t("DEEP DIVE", "PHÂN TÍCH SÂU", "ANALISIS MENDALAM")}
-            </span>
+            <>
+              <span className="mono" aria-hidden="true" style={headerKickerStyle}>·</span>
+              <span className="mono" style={headerKickerStyle}>
+                {t("Deep Dive", "Phân tích sâu", "Analisis mendalam")}
+              </span>
+            </>
           )}
           {article.sponsored && (
-            <span
-              className="mono"
-              style={{
-                fontSize: 10,
-                padding: "2px 8px",
-                background: "#FEF3C7",
-                color: "#7A5800",
-                borderRadius: 3,
-                fontWeight: 600,
-                letterSpacing: ".08em",
-                border: "1px solid #E0B900",
-              }}
-            >
-              {t("PAID PARTNER", "ĐỐI TÁC TRẢ PHÍ", "MITRA BERBAYAR")} · {article.sponsor}
-            </span>
+            <>
+              <span className="mono" aria-hidden="true" style={headerKickerStyle}>·</span>
+              <span className="mono" style={headerKickerStyle}>
+                {t("Paid Partner", "Đối tác trả phí", "Mitra Berbayar")}
+              </span>
+            </>
           )}
         </div>
         <h1
@@ -324,56 +317,49 @@ export function ArticleContent({ article, body, related }: ArticleContentProps) 
       </div>
 
       <div style={{ marginTop: 32 }}>
-        <ArticleBody body={body} article={article} />
+        <ArticleBody body={body} />
       </div>
+
+      {(article.sponsored || article.affiliate) && (
+        <div style={{ maxWidth: 680, margin: "22px auto" }}>
+          {article.sponsored && (
+            <DisclosureNote
+              kind="sponsored"
+              label={`${t("Paid Partner", "Đối tác trả phí", "Mitra Berbayar")}${article.sponsor ? ` · ${article.sponsor}` : ""}`}
+              body={
+                article.sponsor
+                  ? t(
+                      `Produced by OTW Studio for ${article.sponsor}. The Opentechwire newsroom was not involved.`,
+                      `Nội dung do OTW Studio sản xuất cho ${article.sponsor}. Toà soạn Opentechwire không tham gia.`,
+                      `Diproduksi oleh OTW Studio untuk ${article.sponsor}. Ruang redaksi Opentechwire tidak terlibat.`
+                    )
+                  : t(
+                      "Produced by OTW Studio. The Opentechwire newsroom was not involved.",
+                      "Nội dung do OTW Studio sản xuất. Toà soạn Opentechwire không tham gia.",
+                      "Diproduksi oleh OTW Studio. Ruang redaksi Opentechwire tidak terlibat."
+                    )
+              }
+            />
+          )}
+          {article.affiliate && (
+            <DisclosureNote
+              kind="affiliate"
+              label={t("Affiliate links", "Liên kết tiếp thị", "Tautan afiliasi")}
+              body={t(
+                "Some links in this story earn Opentechwire a commission. Our recommendations are made independently.",
+                "Một số liên kết trong bài này mang lại hoa hồng cho Opentechwire. Các đề xuất của chúng tôi được đưa ra độc lập.",
+                "Beberapa tautan dalam artikel ini menghasilkan komisi untuk Opentechwire. Rekomendasi kami dibuat secara independen."
+              )}
+            />
+          )}
+        </div>
+      )}
 
       {!hitPaywall && <ShareBar saved={saved} onToggleSave={onToggleSave} />}
 
       {hitPaywall && (
         <div style={{ marginTop: 32 }}>
           <Paywall onLogin={openAuth} threshold={paywallThreshold} />
-        </div>
-      )}
-
-      {article.affiliate && (
-        <div
-          style={{
-            maxWidth: 680,
-            margin: "24px auto",
-            padding: "12px 14px",
-            background: "var(--surface-2)",
-            borderRadius: 6,
-            fontSize: 12,
-            color: "var(--muted)",
-            display: "flex",
-            gap: 8,
-            alignItems: "flex-start",
-          }}
-        >
-          <span
-            className="mono"
-            style={{
-              fontSize: 11,
-              fontWeight: 600,
-              padding: "2px 6px",
-              background: "var(--ink)",
-              color: "var(--paper)",
-              borderRadius: 3,
-              flexShrink: 0,
-            }}
-          >
-            $
-          </span>
-          <span>
-            <strong style={{ color: "var(--ink)" }}>
-              {t("Affiliate disclosure:", "Công bố affiliate:", "Pengungkapan afiliasi:")}
-            </strong>{" "}
-            {t(
-              "Some links in this review earn Opentechwire a commission. Manufacturers do not approve our reviews, and we do not accept review units in exchange for coverage.",
-              "Một số liên kết trong bài đánh giá này mang lại hoa hồng cho Opentechwire. Nhà sản xuất không duyệt bài đánh giá của chúng tôi, và chúng tôi không nhận sản phẩm dùng thử để đổi lấy bài viết.",
-              "Beberapa tautan dalam ulasan ini menghasilkan komisi untuk Opentechwire. Produsen tidak menyetujui ulasan kami, dan kami tidak menerima unit ulasan sebagai imbalan liputan."
-            )}
-          </span>
         </div>
       )}
 

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Icon, type IconName } from "@/components/icons";
 import { CoverArt } from "@/components/cover-art";
 import { ExclusiveChip } from "@/components/exclusive-chip";
+import { SponsoredKicker } from "@/components/sponsored-kicker";
 import { shouldShowExclusiveChip } from "@/lib/exclusive";
 import { SectionHeader } from "./section-header";
 import { TimeAgo } from "@/components/time-ago";
@@ -117,6 +118,7 @@ export function PillarShowcase({ pillars, byPillar }: PillarShowcaseProps) {
                             <ExclusiveChip article={a} />
                           </div>
                         )}
+                        <SponsoredKicker article={a} style={{ marginBottom: 6 }} />
                         <h4
                           className="serif"
                           style={{

@@ -1,113 +1,84 @@
 import type { CSSProperties } from "react";
 
-export type DisclosureKind = "sponsored" | "ai";
-export type DisclosurePosition = "top" | "middle" | "bottom";
+export type DisclosureNoteKind = "sponsored" | "affiliate";
 
-export interface DisclosureBoxProps {
-  kind: DisclosureKind;
-  sponsor?: string;
-  position?: DisclosurePosition;
-  /**
-   * Title override. Defaults to "Paid Partner · {sponsor}" for sponsored
-   * and "AI-assisted reporting" for AI.
-   */
-  title?: string;
-  /** Body copy override. Defaults match the editorial firewall language. */
-  body?: string;
+export interface DisclosureNoteProps {
+  kind: DisclosureNoteKind;
+  /** Label line, already localized (e.g. "Paid Partner · NVIDIA", "Affiliate links"). */
+  label: string;
+  /** Body paragraph, already localized. */
+  body: string;
 }
 
-const DEFAULT_SPONSORED_BODY =
-  "This is a sponsored feature produced by OTW Studio for the partner above. The Opentechwire newsroom was not involved in writing or editing.";
-
-const DEFAULT_AI_BODY =
-  "This article uses AI tools for translation or transcription. All facts were verified, and all writing was done by a human reporter.";
-
-const containerBase: CSSProperties = {
-  padding: "12px 14px",
-  borderRadius: 6,
-  display: "flex",
-  gap: 12,
-  alignItems: "flex-start",
-  margin: "20px 0",
+const baseStyle: CSSProperties = {
+  display: "block",
+  margin: "22px 0",
+  fontFamily: "var(--font-sans)",
 };
 
-const iconBase: CSSProperties = {
-  width: 24,
-  height: 24,
-  borderRadius: 4,
-  background: "var(--ink)",
-  color: "var(--paper)",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  fontSize: 11,
-  fontWeight: 600,
-  flexShrink: 0,
+const sponsoredStyle: CSSProperties = {
+  ...baseStyle,
+  borderLeft: "2px solid var(--accent)",
+  background: "var(--sponsored)",
+  padding: "10px 14px",
+  borderRadius: "0 4px 4px 0",
+};
+
+const affiliateStyle: CSSProperties = {
+  ...baseStyle,
+  borderLeft: "2px solid var(--hair-2)",
+  background: "transparent",
+  padding: "6px 0 6px 14px",
+  borderRadius: 0,
+};
+
+const labelBase: CSSProperties = {
   fontFamily: "var(--font-mono)",
-};
-
-const titleStyle: CSSProperties = {
   textTransform: "uppercase",
   fontSize: 10,
-  letterSpacing: ".14em",
+  letterSpacing: ".1em",
   fontWeight: 600,
   marginBottom: 4,
-  color: "var(--ink)",
-};
-
-const reminderTagStyle: CSSProperties = {
-  fontWeight: 400,
-  letterSpacing: ".06em",
-  textTransform: "none",
-  marginLeft: 6,
-  color: "var(--muted)",
 };
 
 const bodyStyle: CSSProperties = {
+  margin: 0,
   fontSize: 13,
-  lineHeight: 1.5,
-  color: "var(--ink-2)",
+  lineHeight: 1.55,
+  color: "var(--muted)",
 };
 
 /**
- * Disclosure box — sponsored or AI-assisted.
+ * End-of-article disclosure note — sponsored or affiliate.
  *
- * INVARIANT (#5 in process/context/all-context.md): These boxes appear at
- * top + middle + bottom of an article and CANNOT be dismissed. Do not add
- * a close button to this component. Ever.
+ * INVARIANT (#5 in process/context/all-context.md, owner decision 05-11-26):
+ * the sponsored disclosure appears EXACTLY ONCE, as this note after the
+ * article body (background `var(--sponsored)`), plus a plain-text
+ * "Paid Partner" kicker in the header. It CANNOT be dismissed — do not add a
+ * close button to this component. Ever.
  *
- * Visual spec mirrors design/project/src/ui.jsx::DisclosureBox.
+ * The label mixes accent with ink so it stays ≥4.5:1 on `--sponsored` in
+ * light and dark mode. Tokens only; no hardcoded colors. Copy is i18n-free
+ * here — callers pass translated `label` and `body`.
  */
-export function DisclosureBox({
-  kind,
-  sponsor,
-  position = "top",
-  title,
-  body,
-}: DisclosureBoxProps) {
-  const isAI = kind === "ai";
-
-  const containerStyle: CSSProperties = {
-    ...containerBase,
-    background: isAI ? "var(--surface-2)" : "var(--sponsored)",
-    border: `1px solid ${isAI ? "var(--hair-2)" : "#E0B900"}`,
-  };
-
-  const iconLabel = isAI ? "AI" : "$";
-  const resolvedTitle =
-    title ?? (isAI ? "AI-assisted reporting" : `Paid Partner${sponsor ? ` · ${sponsor}` : ""}`);
-  const resolvedBody = body ?? (isAI ? DEFAULT_AI_BODY : DEFAULT_SPONSORED_BODY);
-
+export function DisclosureNote({ kind, label, body }: DisclosureNoteProps) {
+  const isSponsored = kind === "sponsored";
   return (
-    <div style={containerStyle}>
-      <div style={iconBase}>{iconLabel}</div>
-      <div style={{ flex: 1 }}>
-        <div style={titleStyle}>
-          {resolvedTitle}
-          {position !== "top" && <span style={reminderTagStyle}>· reminder ({position})</span>}
-        </div>
-        <div style={bodyStyle}>{resolvedBody}</div>
+    <aside
+      data-disclosure={kind}
+      style={isSponsored ? sponsoredStyle : affiliateStyle}
+    >
+      <div
+        style={{
+          ...labelBase,
+          color: isSponsored
+            ? "color-mix(in oklab, var(--accent) 65%, var(--ink))"
+            : "var(--muted)",
+        }}
+      >
+        {label}
       </div>
-    </div>
+      <p style={bodyStyle}>{body}</p>
+    </aside>
   );
 }
