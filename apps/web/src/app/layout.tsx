@@ -1,27 +1,25 @@
 import type { Metadata } from "next";
-import { Schibsted_Grotesk, IBM_Plex_Sans } from "next/font/google";
+import { preload } from "react-dom";
 import { DEFAULT_OG_IMAGE, siteOrigin } from "@/lib/metadata";
+import "./fonts.css";
 import "./globals.css";
 
 // Reader chrome (header, footer, providers, modals) lives in (reader)/layout.tsx
 // so /admin (Payload) renders without it. The root layout owns html, body, and
 // font preloads only.
 
-// Editorial display face (design refresh 2026-06-14: Source Serif 4 -> Schibsted
-// Grotesk). Variable font — weight axis 400..900 loads without an explicit list.
-// The --font-serif token name is kept even though the face is now a sans.
-const sourceSerif = Schibsted_Grotesk({
-  subsets: ["latin"],
-  variable: "--font-serif-loaded",
-  display: "swap",
-});
-
-const plexSans = IBM_Plex_Sans({
-  subsets: ["latin"],
-  variable: "--font-sans-loaded",
-  display: "swap",
-  weight: ["400", "500", "600", "700"],
-});
+// Fonts are self-hosted (./fonts.css + public/fonts/), byte-identical to what
+// next/font/google used to serve, so a Google Fonts outage cannot fail the
+// build. Editorial display face is Schibsted Grotesk (design refresh
+// 2026-06-14: Source Serif 4 -> Schibsted Grotesk; the --font-serif token name
+// is kept even though the face is now a sans), UI face is IBM Plex Sans. Both
+// are variable fonts. Only the latin subsets are preloaded, exactly as
+// next/font did with `subsets: ["latin"]`; the other subsets load on demand
+// through their unicode-range.
+const PRELOADED_FONTS = [
+  "/fonts/schibsted-grotesk-latin.e3b56e90.woff2",
+  "/fonts/ibm-plex-sans-latin.056e4e24.woff2",
+] as const;
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteOrigin()),
@@ -60,12 +58,11 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  for (const href of PRELOADED_FONTS) {
+    preload(href, { as: "font", type: "font/woff2", crossOrigin: "anonymous" });
+  }
   return (
-    <html
-      lang="en"
-      className={`${sourceSerif.variable} ${plexSans.variable}`}
-      suppressHydrationWarning
-    >
+    <html lang="en" suppressHydrationWarning>
       <body>{children}</body>
     </html>
   );
