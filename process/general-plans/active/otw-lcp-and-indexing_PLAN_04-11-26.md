@@ -2,7 +2,7 @@
 
 **Date**: 04-11-26
 **Complexity**: COMPLEX (2 vấn đề độc lập, 6 pha, một phần việc thuộc owner và một phần thuộc repo khác)
-**Status**: A1 + A1.6 🔨 CODE DONE, A-V trên Preview ĐẠT (04-11-26); chưa ✅ VERIFIED: chờ merge, PSI production 2 lượt thứ Hai liên tiếp (A1.8) và xác nhận user. A2, A3, B*, C chưa làm. Chi tiết: mục 'Ghi chú tiến độ A1' và 'Ghi chú A-V trên Preview' cuối Verification Evidence.
+**Status**: A1 + A1.6 🧪 TESTING (04-11-26): đã merge `main` qua PR #64 (squash `b4b1e0d`) và deploy production (`dpl_DRPVWA1FXuhUF2oe9ZZouYoqR2hf`, alias www.opentechwire.com); A-V trên Preview ĐẠT, kiểm production tức thời ĐẠT. Chưa ✅ VERIFIED: chờ PSI hub (`site_vitals`, pub `dtw`) 2 lượt thứ Hai 09-11-26 và 16-11-26 (A1.8) và xác nhận user. B0 chờ owner; A2, A3, B1-B4, C chưa làm. Chi tiết: 'Ghi chú tiến độ A1', 'Ghi chú A-V trên Preview' và 'Production (04-11-26)' cuối Verification Evidence.
 **Feature**: general (xuyên suốt, không thuộc feature folder nào; `rebrand/` chỉ là ràng buộc D4)
 **Primary execute anchor**: chính file này. Không có file phase phụ.
 **Context đã đọc**: `process/context/all-context.md` (invariant #8, #11, #15), `uxui/all-uxui.md`, `infra/all-infra.md`, `tests/all-tests.md`; umbrella `process/features/rebrand/active/rebrand-opentechwire-umbrella_PLAN_08-09-26.md` (D3, D4, D5, D11).
@@ -375,9 +375,9 @@ Lưu ý: Playwright và Lighthouse chưa là phần của repo (Known Gaps trong
 | Mục | Bằng chứng cần có | Trạng thái |
 |---|---|---|
 | Baseline A | Bảng số trước thay đổi (LCP, load, bytes, preload) 4 trang, >= 5 lượt | ⏳ |
-| Sau A1 | Cùng bảng sau thay đổi + HTML đếm preload + screenshot | 🔨 một phần: đếm preload local xong (xem ghi chú), chưa đo LCP/screenshot |
+| Sau A1 | Cùng bảng sau thay đổi + HTML đếm preload + screenshot | ✅ A-V trên Preview ĐẠT + kiểm production 04-11-26 (xem 'Ghi chú A-V' và 'Production') |
 | Typecheck/lint/build | Đầu ra lệnh | ✅ typecheck + build đạt; lint 1 warning có sẵn (xem ghi chú) |
-| PSI production | 2 lượt thứ Hai liên tiếp sau deploy | ⏳ |
+| PSI production | 2 lượt thứ Hai liên tiếp sau deploy (09-11-26, 16-11-26) | ⏳ chờ lượt 09-11-26 |
 | B0 | Ảnh/số GSC (sitemap status, Pages report, Crawl stats, Manual actions) | ⏳ |
 | B1 (nếu làm) | curl `/sitemap.xml`, tổng `<loc>`, kết quả phân tích `lastmod` | ⏳ |
 | User Confirmation | Xác nhận của user trước khi ghi ✅ VERIFIED | ⏳ |
@@ -419,9 +419,25 @@ CLS không đổi (tối đa 0,022 trang danh sách, 0,042 trang bài, ở cả 
 
 **Cổng A-V: ĐẠT** (preload ảnh ≤ 3, không trang nào xấu hơn baseline > 10%, CLS ~0). Lưu ý: đây là đo lab mô phỏng trên Preview, chưa phải PSI production; số tuyệt đối thấp hơn PSI (PSI dùng profile chậm hơn).
 
-**Còn lại trước ✅ VERIFIED:** merge PR #64; PSI production của hub (`site_vitals`) 2 lượt thứ Hai liên tiếp sau merge cho thấy LCP trang chủ < 2,5 s; xác nhận của user.
+**Còn lại trước ✅ VERIFIED:** (PR #64 đã merge, xem mục dưới) PSI production của hub (`site_vitals`) 2 lượt thứ Hai liên tiếp sau merge cho thấy LCP trang chủ < 2,5 s; xác nhận của user.
+
+### Production (04-11-26)
+
+- **Merge/deploy:** PR #64 squash `b4b1e0d` vào `main` (04-11-26). Build production đầu tiên LỖI do `next/font/google` tải IBM Plex Sans thất bại (`TypeError: Cannot read properties of null (reading '1')` trong `nextFontGoogleFontLoader`, lỗi mạng tạm thời); redeploy cùng commit thì đạt (`dpl_DRPVWA1FXuhUF2oe9ZZouYoqR2hf`, alias www.opentechwire.com). Cùng lỗi đã gặp ở một build Preview trước đó: 2/4 build trong ngày 04-11-26. Ghi nhận backlog: `process/general-plans/backlog/vercel-google-fonts-build-flake_NOTE_04-11-26.md`.
+- **HTML production (curl):** preload ảnh `/` 26 → 1 (35/36 `<img>` lazy), `/ai` 25 → 1 (24/25), `/exclusive` 8 → 1 (7/8). AC1 đạt trên production.
+- **Lab mô phỏng trên production (Playwright Moto G4, CPU 4x, ~1,6 Mbps, latency 150 ms), 4 lượt trang chủ:** LCP 992 / 1.080 / 1.300 / 2.212 ms (trung vị ~1,2 s); load event 3,6-4,4 s (trước 10-11 s). Lượt đầu sau deploy là cache lạnh (TTFB ~1 s, LCP 3,65 s) nên loại khỏi 4 lượt trên, chỉ ghi chú.
+- **Chưa phải bằng chứng ✅ VERIFIED:** đây là lab mô phỏng; cổng thật là PSI hub (A1.8) và xác nhận user.
 
 ## 19. Resume and Execution Handoff
+
+**Trạng thái hiện tại (cập nhật 04-11-26, UPDATE PROCESS):** A1 + A1.6 đã merge và deploy (🧪 TESTING). Plan GIỮ `active/` (đa workstream, chưa hoàn tất). Các bước kế tiếp, theo thứ tự:
+1. **09-11-26 và 16-11-26 (thứ Hai):** đọc `site_vitals` của content-engine cho pub `dtw`, trang `/` mobile; cần LCP lab trung vị < 2,5 s ở CẢ HAI lượt liên tiếp (dao động lab tới ±750 ms; không kết luận từ một lượt). Ghi số vào mục 'Production' ở trên. Nếu đạt cả hai và user xác nhận bằng lời thì mới ghi A1 ✅ VERIFIED. Nếu không đạt: mở A3 (TTFB/ISR STALE/HTML 150 KB) trước khi cân nhắc A2 (cổng D2).
+2. **B0 (owner, song song, chặn toàn bộ Workstream B):** 6 mục kiểm GSC ở 5.2; dán kết quả vào Verification Evidence.
+3. **Sau B0:** chạy research ngắn cho pha B (đọc lại trạng thái GSC), rồi quyết định D3/D4/D5/D6 ở mục 9 trước khi lập plan con cho B1/B2/B3/B4.
+4. **C.1:** mở issue/plan ở content-engine (đo tách trước/sau mốc rebrand 2026-09-08), độc lập.
+5. A2, A3 chưa làm; A2 chỉ khi có điều kiện vào ở 4.4 và D2.
+
+*Lịch sử (trước khi A1 được thực thi, giữ để tham chiếu):*
 
 - Plan này CHƯA được duyệt để thực thi. Orchestrator trình bày cho user các quyết định ở mục 9 (tối thiểu D0, D1 mặc định, D7) trước khi EXECUTE.
 - Điều gì có thể vào EXECUTE ngay khi user nói "ENTER EXECUTE MODE": **chỉ Pha A1** (checklist A1.1-A1.8) và hạng mục C.1 (mở issue). B0 là việc của owner, không cần EXECUTE. A2/B1/B2/B3/B4 KHÔNG được thực thi từ plan này nếu chưa có quyết định và pha research lại.
