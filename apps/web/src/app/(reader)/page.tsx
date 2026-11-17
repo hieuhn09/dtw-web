@@ -37,7 +37,10 @@ import { isSingleHomePillar, withoutSingleHome } from "@/lib/single-home-pillars
 // this is inert until `dtw` is added to `BRIEF_PUBLISH_PUBS` on the engine admin
 // — that env is the real switch, and the one to pull to take briefs off the
 // homepage again. See process/general-plans/active/brief-display_PLAN_20-08-26.md.
-const SHOW_BRIEF = true;
+// [temp-hidden 2026-11-17] Daily Brief paused by product request; flip to
+// `true` to restore (and flip BRIEFING_HIDDEN in lib/brief.ts). While off,
+// the brief query below is skipped too.
+const SHOW_BRIEF = false;
 const SHOW_WIRE_DROPS = false;
 // Restored 2026-07-31: the teaser now runs on real CMS/LLM Stats data.
 const SHOW_DASHBOARDS = true;
@@ -85,7 +88,7 @@ export default async function HomePage() {
       getAiModels(),
       // Fail-open inside the helper: a brief query that throws resolves to an
       // empty pair rather than taking the homepage down with it.
-      getLatestBriefs(),
+      SHOW_BRIEF ? getLatestBriefs() : Promise.resolve({ am: null, pm: null }),
       // Each non-"latest" pillar band fills from its own newest 4 directly,
       // since low-volume pillars (e.g. Dev) can rank entirely outside the
       // shared newest-40 `articles` pool below, starving to 1 item or getting

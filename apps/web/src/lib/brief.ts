@@ -6,6 +6,25 @@
  * article template all need to read an edition off a slug.
  */
 
+// [temp-hidden 2026-11-17] Daily Brief paused by product request (the engine
+// has stopped composing editions). While `true`, `/briefing` and
+// `/briefing/page/[n]` 404 and the sitemap drops `/briefing` plus brief
+// articles. Flip to `false` to restore (also restore SHOW_BRIEF on the
+// homepage and the "Briefing" entry in NAV_EXTRA, lib/data.ts).
+// Individual `/article/<brief-slug>` pages are deliberately left live.
+export const BRIEFING_HIDDEN = true;
+
+/**
+ * Any brief slug, including the single daily edition the engine has minted
+ * since 2026-11-09 (`daily-brief-YYYY-MM-DD`), which `isBriefSlug` predates.
+ * Used to keep every brief out of the sitemap while BRIEFING_HIDDEN.
+ */
+const ANY_BRIEF_SLUG = /^(morning|evening|daily)-brief-\d{4}-\d{2}-\d{2}$/;
+
+export function isAnyBriefSlug(slug: string): boolean {
+  return ANY_BRIEF_SLUG.test(slug);
+}
+
 /** `Article.contentType` value that marks a brief. Everything else is "article". */
 export const BRIEF_CONTENT_TYPE = "daily-brief" as const;
 
