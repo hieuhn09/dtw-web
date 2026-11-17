@@ -5,7 +5,7 @@ import {
   getPillars,
   getSitemapArticles,
 } from "@/lib/cms-client";
-import { isBriefSlug } from "@/lib/brief";
+import { BRIEFING_HIDDEN, isAnyBriefSlug, isBriefSlug } from "@/lib/brief";
 import { ARTICLES_PAGE_SIZE } from "@/lib/data";
 import { EXCLUSIVE_PAGE_SIZE, exclusivePageCount, exclusivePagePath } from "@/lib/exclusive";
 import { siteOrigin } from "@/lib/metadata";
@@ -101,14 +101,24 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // reachable from nowhere. They just don't compete with reporting for crawl
   // budget, hence the lower weight. Detected by slug because getSitemapArticles
   // uses the refs projection (slug + dates only), which carries no contentType.
-  const articleEntries: MetadataRoute.Sitemap = articles.map((article) => ({
+  // [temp-hidden 2026-11-17] Daily Brief paused by product request: while
+  // BRIEFING_HIDDEN, brief articles are left out of the sitemap (the pages
+  // themselves stay live) and /briefing is dropped from STATIC_ROUTES below.
+  // Flip BRIEFING_HIDDEN in lib/brief.ts to restore.
+  const sitemapArticles = BRIEFING_HIDDEN
+    ? articles.filter((article) => !isAnyBriefSlug(article.slug))
+    : articles;
+  const articleEntries: MetadataRoute.Sitemap = sitemapArticles.map((article) => ({
     url: `${origin}/article/${article.slug}`,
     lastModified: article.updatedAt,
     priority: isBriefSlug(article.slug) ? 0.4 : 0.6,
     changeFrequency: "daily",
   }));
 
-  const staticEntries: MetadataRoute.Sitemap = STATIC_ROUTES.map((route) => ({
+  const staticEntries: MetadataRoute.Sitemap = STATIC_ROUTES.filter(
+    // [temp-hidden 2026-11-17] /briefing 404s while the Daily Brief is paused.
+    (route) => !(BRIEFING_HIDDEN && route === "/briefing")
+  ).map((route) => ({
     url: `${origin}${route}`,
     priority: 0.3,
     changeFrequency: "monthly",

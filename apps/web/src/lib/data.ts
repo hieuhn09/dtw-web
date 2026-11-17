@@ -89,7 +89,9 @@ export interface NavItem {
 
 export const NAV_EXTRA: ReadonlyArray<NavItem> = [
   { id: "exclusive", label: "Exclusive", slug: "/exclusive" },
-  { id: "briefing", label: "Briefing", slug: "/briefing" },
+  // [temp-hidden 2026-11-17] Daily Brief paused by product request; uncomment
+  // to restore (and flip BRIEFING_HIDDEN in lib/brief.ts).
+  // { id: "briefing", label: "Briefing", slug: "/briefing" },
   { id: "pressroom", label: "Pressroom", slug: "/pressroom", gatedOnPillar: "pressroom" },
   { id: "awards", label: "Awards", slug: "/awards" },
   { id: "studio", label: "Studio", slug: "/studio" },
